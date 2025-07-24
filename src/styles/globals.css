@@ -1,0 +1,604 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import './ios26/glass.css';
+@import './ios26/liquid-glass-enhanced.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Meal planner CSS variables */
+:root {
+  /* Design tokens */
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.25);
+  --glass-bg-dark: rgba(24, 24, 27, 0.55);
+  --glass-blur: 14px;
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  
+  /* Meal type gradients */
+  --meal-breakfast-from: #fde68a;
+  --meal-breakfast-to: #fbcf5d;
+  --meal-lunch-from: #7dd3fc;
+  --meal-lunch-to: #5eead4;
+  --meal-snack-from: #6ee7b7;
+  --meal-snack-to: #a7f3d0;
+  --meal-dinner-from: #e879f9;
+  --meal-dinner-to: #fda4af;
+}
+
+.dark {
+  --glass-bg: var(--glass-bg-dark);
+  --glass-border: rgba(255, 255, 255, 0.15);
+}
+
+/* Global reset and base styles */
+@layer base {
+  html {
+    font-family: 'Inter', system-ui, sans-serif;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    @apply transition-colors duration-300;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-gray-100 dark:bg-gray-800;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+
+  /* Focus styles */
+  *:focus {
+    @apply outline-none;
+  }
+
+  *:focus-visible {
+    @apply ring-2 ring-food-fresh ring-offset-2 ring-offset-gray-50 dark:ring-offset-gray-900;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-food-fresh/20 text-food-fresh-dark;
+  }
+}
+
+/* Component layer for reusable styles */
+@layer components {
+  /* Glass morphism effects */
+  .glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    @apply shadow-glass;
+  }
+
+  .glass-interactive {
+    @apply glass hover:bg-white/15 hover:border-white/30;
+    @apply transition-all duration-300 cursor-pointer;
+  }
+
+  .glass-fresh {
+    @apply bg-gradient-to-br from-food-fresh/10 via-food-fresh/5 to-transparent;
+    @apply border border-food-fresh/20 backdrop-blur-md;
+  }
+
+  .glass-warm {
+    @apply bg-gradient-to-br from-food-warm/10 via-food-warm/5 to-transparent;
+    @apply border border-food-warm/20 backdrop-blur-md;
+  }
+
+  .glass-rich {
+    @apply bg-gradient-to-br from-food-rich/10 via-food-rich/5 to-transparent;
+    @apply border border-food-rich/20 backdrop-blur-md;
+  }
+
+  .glass-golden {
+    @apply bg-gradient-to-br from-food-golden/10 via-food-golden/5 to-transparent;
+    @apply border border-food-golden/20 backdrop-blur-md;
+  }
+
+  /* Glass card mixin */
+  .glass-card {
+    @apply backdrop-blur-lg bg-[var(--glass-bg)] border border-[var(--glass-border)] shadow-[0_4px_24px_rgba(0,0,0,.05)] rounded-2xl;
+    @apply transition-all duration-300;
+  }
+  
+  .glass-card:hover {
+    @apply shadow-[0_4px_32px_rgba(0,0,0,.08)];
+  }
+
+  /* Meal planner glass morphism */
+  .planner-glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    @apply shadow-glass-md rounded-2xl;
+  }
+
+  .meal-slot {
+    @apply relative overflow-hidden transition-all duration-300;
+    @apply border border-white/10 rounded-xl p-4;
+    @apply hover:border-white/20 hover:bg-white/5;
+  }
+
+  .meal-slot-desayuno {
+    @apply border-meal-desayuno/20 hover:border-meal-desayuno/40;
+    @apply hover:bg-meal-desayuno/5;
+  }
+
+  .meal-slot-almuerzo {
+    @apply border-meal-almuerzo/20 hover:border-meal-almuerzo/40;
+    @apply hover:bg-meal-almuerzo/5;
+  }
+
+  .meal-slot-cena {
+    @apply border-meal-cena/20 hover:border-meal-cena/40;
+    @apply hover:bg-meal-cena/5;
+  }
+
+  .meal-slot-snack {
+    @apply border-meal-snack/20 hover:border-meal-snack/40;
+    @apply hover:bg-meal-snack/5;
+  }
+
+  /* Gradient classes for meal types */
+  .gradient-meal-breakfast {
+    @apply bg-gradient-to-br from-amber-400 to-yellow-300;
+  }
+
+  .gradient-meal-lunch {
+    @apply bg-gradient-to-br from-sky-400 to-cyan-300;
+  }
+
+  .gradient-meal-snack {
+    @apply bg-gradient-to-br from-emerald-400 to-lime-300;
+  }
+
+  .gradient-meal-dinner {
+    @apply bg-gradient-to-br from-fuchsia-500 to-rose-400;
+  }
+
+  /* Week navigation */
+  .week-nav-button {
+    @apply p-2 rounded-lg glass-interactive;
+    @apply text-gray-600 dark:text-gray-400;
+    @apply hover:text-gray-900 dark:hover:text-white;
+    @apply transition-all duration-200;
+    @apply focus:ring-2 focus:ring-meal-desayuno focus:ring-offset-2;
+  }
+
+  /* Text gradients */
+  .text-gradient-fresh {
+    @apply bg-gradient-to-r from-food-fresh to-food-fresh-dark bg-clip-text text-transparent;
+  }
+
+  .text-gradient-warm {
+    @apply bg-gradient-to-r from-food-warm to-food-warm-dark bg-clip-text text-transparent;
+  }
+
+  .text-gradient-rich {
+    @apply bg-gradient-to-r from-food-rich to-food-rich-dark bg-clip-text text-transparent;
+  }
+
+  .text-gradient-golden {
+    @apply bg-gradient-to-r from-food-golden-400 to-food-golden-600 bg-clip-text text-transparent;
+  }
+
+  /* Animated text gradient */
+  .text-gradient-animated {
+    @apply bg-gradient-to-r from-food-fresh via-food-warm to-food-rich;
+    @apply bg-[length:200%_200%] bg-clip-text text-transparent;
+    @apply animate-text-shimmer;
+    background-size: 200% 200%;
+  }
+
+  /* Button styles */
+  .btn-primary {
+    @apply bg-gradient-to-r from-food-fresh to-food-fresh-dark text-white;
+    @apply px-6 py-3 rounded-xl font-semibold;
+    @apply hover:shadow-lg hover:shadow-food-fresh/20;
+    @apply transition-all duration-300;
+    @apply focus:ring-2 focus:ring-food-fresh focus:ring-offset-2;
+  }
+
+  .btn-secondary {
+    @apply glass-interactive text-gray-700 dark:text-gray-300;
+    @apply px-6 py-3 rounded-xl font-semibold;
+    @apply hover:text-gray-900 dark:hover:text-white;
+  }
+
+  .btn-outline {
+    @apply border-2 border-food-fresh text-food-fresh;
+    @apply px-6 py-3 rounded-xl font-semibold;
+    @apply hover:bg-food-fresh hover:text-white;
+    @apply transition-all duration-300;
+  }
+
+  /* Card styles */
+  .card {
+    @apply glass rounded-2xl p-6;
+    @apply hover:shadow-lg transition-all duration-300;
+  }
+
+  .card-interactive {
+    @apply card hover:scale-105 cursor-pointer;
+  }
+
+  /* Input styles */
+  .input {
+    @apply glass rounded-lg px-4 py-3;
+    @apply border-gray-300 dark:border-gray-600;
+    @apply focus:border-food-fresh focus:ring-food-fresh;
+    @apply transition-all duration-300;
+  }
+
+  /* Navigation styles */
+  .nav-link {
+    @apply text-gray-600 dark:text-gray-400;
+    @apply hover:text-gray-900 dark:hover:text-white;
+    @apply transition-colors duration-300;
+    @apply relative;
+  }
+
+  .nav-link.active {
+    @apply text-food-fresh;
+  }
+
+  .nav-link::after {
+    @apply absolute bottom-0 left-0 w-0 h-0.5;
+    @apply bg-food-fresh transition-all duration-300;
+    content: '';
+  }
+
+  .nav-link:hover::after,
+  .nav-link.active::after {
+    @apply w-full;
+  }
+
+  /* Loading states */
+  .skeleton {
+    @apply bg-gray-200 dark:bg-gray-700 animate-pulse rounded;
+  }
+
+  .shimmer {
+    @apply relative overflow-hidden;
+  }
+
+  .shimmer::after {
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent;
+    @apply animate-shimmer;
+    content: '';
+  }
+
+  /* Responsive utilities */
+  .container-responsive {
+    @apply w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+
+  .grid-responsive {
+    @apply grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6;
+  }
+
+  /* Accessibility */
+  .sr-only {
+    @apply absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0;
+    clip: rect(0, 0, 0, 0);
+  }
+
+  .skip-link {
+    @apply absolute -top-40 left-6 bg-white text-gray-900;
+    @apply px-4 py-2 rounded-md font-medium;
+    @apply focus:top-6 transition-all duration-300;
+    @apply z-50;
+  }
+
+  /* Dark mode utilities */
+  .dark-mode-toggle {
+    @apply p-2 rounded-lg glass-interactive;
+    @apply text-gray-600 dark:text-gray-400;
+    @apply hover:text-gray-900 dark:hover:text-white;
+  }
+}
+
+/* Utility layer for custom utilities */
+@layer utilities {
+  /* Safe area utilities for mobile */
+  .safe-top {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+
+  .safe-left {
+    padding-left: env(safe-area-inset-left);
+  }
+
+  .safe-right {
+    padding-right: env(safe-area-inset-right);
+  }
+
+  /* Performance utilities */
+  .gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+
+  .will-change-transform {
+    will-change: transform;
+  }
+
+  .will-change-opacity {
+    will-change: opacity;
+  }
+
+  /* Print utilities */
+  @media print {
+    .print-hidden {
+      display: none !important;
+    }
+
+    .print-visible {
+      display: block !important;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .motion-safe {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* High contrast mode */
+  @media (prefers-contrast: high) {
+    .glass {
+      @apply bg-white/90 dark:bg-gray-900/90;
+      @apply border-gray-900 dark:border-gray-100;
+    }
+  }
+
+  /* Custom hover effects */
+  .hover-lift {
+    @apply transition-transform duration-300;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1;
+  }
+
+  .hover-glow {
+    @apply transition-all duration-300;
+  }
+
+  .hover-glow:hover {
+    @apply shadow-glow;
+  }
+
+  /* Text effects */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Layout utilities */
+  .grid-auto-fit {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .grid-auto-fill {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  }
+
+  /* Aspect ratio utilities */
+  .aspect-video {
+    aspect-ratio: 16 / 9;
+  }
+
+  .aspect-square {
+    aspect-ratio: 1 / 1;
+  }
+
+  .aspect-portrait {
+    aspect-ratio: 3 / 4;
+  }
+
+  .aspect-landscape {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+/* Animation utilities */
+@layer utilities {
+  .animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out;
+  }
+
+  .animate-fade-in-down {
+    animation: fadeInDown 0.6s ease-out;
+  }
+
+  .animate-fade-in-left {
+    animation: fadeInLeft 0.6s ease-out;
+  }
+
+  .animate-fade-in-right {
+    animation: fadeInRight 0.6s ease-out;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.3s ease-out;
+  }
+
+  .animate-slide-in-bottom {
+    animation: slideInBottom 0.4s ease-out;
+  }
+
+  .animate-slide-in-top {
+    animation: slideInTop 0.4s ease-out;
+  }
+
+  .animate-zoom-in {
+    animation: zoomIn 0.3s ease-out;
+  }
+
+  .animate-rotate-in {
+    animation: rotateIn 0.6s ease-out;
+  }
+
+  .animate-flip-in-x {
+    animation: flipInX 0.8s ease-out;
+  }
+
+  .animate-flip-in-y {
+    animation: flipInY 0.8s ease-out;
+  }
+}
+
+/* Additional keyframes */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 7s infinite;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInBottom {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes rotateIn {
+  from {
+    opacity: 0;
+    transform: rotate(-180deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0);
+  }
+}
+
+@keyframes flipInX {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotateX(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotateX(0);
+  }
+}
+
+@keyframes flipInY {
+  from {
+    opacity: 0;
+    transform: perspective(400px) rotateY(90deg);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(400px) rotateY(0);
+  }
+}

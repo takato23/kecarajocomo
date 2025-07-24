@@ -1,0 +1,399 @@
+<testsuites id="" name="" tests="10" failures="10" skipped="0" errors="0" time="34.81348800000001">
+<testsuite name="recetas/recetas-generador-basic.spec.ts" timestamp="2025-07-23T03:38:58.775Z" hostname="chromium" tests="10" failures="10" skipped="0" time="145.988" errors="0">
+<testcase name="Recipe Generator - Basic E2E Tests › should open recipe creation modal" classname="recetas/recetas-generador-basic.spec.ts" time="15.652">
+<failure message="recetas-generador-basic.spec.ts:82:7 should open recipe creation modal" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:82:7 › Recipe Generator - Basic E2E Tests › should open recipe creation modal 
+
+    Error: Timed out 10000ms waiting for expect(locator).toBeVisible()
+
+    Locator: locator('button').filter({ hasText: 'Crear Receta' })
+    Expected: visible
+    Received: <element(s) not found>
+    Call log:
+      - Expect "toBeVisible" with timeout 10000ms
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      84 |     
+      85 |     const createButton = page.locator('button', { hasText: 'Crear Receta' });
+    > 86 |     await expect(createButton).toBeVisible();
+         |                                ^
+      87 |     
+      88 |     await createButton.click();
+      89 |     await waitForModalOpen(page);
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:86:32
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--5ff52--open-recipe-creation-modal-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should navigate to manual creation mode" classname="recetas/recetas-generador-basic.spec.ts" time="15.703">
+<failure message="recetas-generador-basic.spec.ts:103:7 should navigate to manual creation mode" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:103:7 › Recipe Generator - Basic E2E Tests › should navigate to manual creation mode 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      102 |
+      103 |   test('should navigate to manual creation mode', async ({ page }) => {
+    > 104 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      105 |     await waitForModalOpen(page);
+      106 |     
+      107 |     await page.locator('text=Crear Manualmente').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:104:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--3d33e-ate-to-manual-creation-mode-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should navigate to AI generation mode" classname="recetas/recetas-generador-basic.spec.ts" time="15.626">
+<failure message="recetas-generador-basic.spec.ts:117:7 should navigate to AI generation mode" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:117:7 › Recipe Generator - Basic E2E Tests › should navigate to AI generation mode 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      116 |
+      117 |   test('should navigate to AI generation mode', async ({ page }) => {
+    > 118 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      119 |     await waitForModalOpen(page);
+      120 |     
+      121 |     await page.locator('text=Generar con IA').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:118:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--3b390-igate-to-AI-generation-mode-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should navigate to photo scanning mode" classname="recetas/recetas-generador-basic.spec.ts" time="15.677">
+<failure message="recetas-generador-basic.spec.ts:132:7 should navigate to photo scanning mode" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:132:7 › Recipe Generator - Basic E2E Tests › should navigate to photo scanning mode 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      131 |
+      132 |   test('should navigate to photo scanning mode', async ({ page }) => {
+    > 133 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      134 |     await waitForModalOpen(page);
+      135 |     
+      136 |     await page.locator('text=Escanear Receta').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:133:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--abee0-gate-to-photo-scanning-mode-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should navigate to import mode" classname="recetas/recetas-generador-basic.spec.ts" time="15.573">
+<failure message="recetas-generador-basic.spec.ts:146:7 should navigate to import mode" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:146:7 › Recipe Generator - Basic E2E Tests › should navigate to import mode 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      145 |
+      146 |   test('should navigate to import mode', async ({ page }) => {
+    > 147 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      148 |     await waitForModalOpen(page);
+      149 |     
+      150 |     await page.locator('text=Importar Archivo').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:147:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--365a2-uld-navigate-to-import-mode-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should close modal when clicking X" classname="recetas/recetas-generador-basic.spec.ts" time="13.542">
+<failure message="recetas-generador-basic.spec.ts:160:7 should close modal when clicking X" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:160:7 › Recipe Generator - Basic E2E Tests › should close modal when clicking X 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      159 |
+      160 |   test('should close modal when clicking X', async ({ page }) => {
+    > 161 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      162 |     await waitForModalOpen(page);
+      163 |     
+      164 |     const closeButton = page.locator('button').filter({ has: page.locator('svg') }).first();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:161:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--d4d0b-close-modal-when-clicking-X-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should work on mobile viewport" classname="recetas/recetas-generador-basic.spec.ts" time="13.637">
+<failure message="recetas-generador-basic.spec.ts:170:7 should work on mobile viewport" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:170:7 › Recipe Generator - Basic E2E Tests › should work on mobile viewport 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      171 |     await page.setViewportSize({ width: 375, height: 812 });
+      172 |     
+    > 173 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      174 |     await waitForModalOpen(page);
+      175 |     
+      176 |     await takeScreenshot(page, 'mobile-modal');
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:173:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--1d629-uld-work-on-mobile-viewport-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should handle AI generation flow" classname="recetas/recetas-generador-basic.spec.ts" time="13.621">
+<failure message="recetas-generador-basic.spec.ts:182:7 should handle AI generation flow" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:182:7 › Recipe Generator - Basic E2E Tests › should handle AI generation flow 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      181 |
+      182 |   test('should handle AI generation flow', async ({ page }) => {
+    > 183 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      184 |     await waitForModalOpen(page);
+      185 |     
+      186 |     await page.locator('text=Generar con IA').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:183:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--fc4e2-d-handle-AI-generation-flow-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should handle manual recipe creation" classname="recetas/recetas-generador-basic.spec.ts" time="13.482">
+<failure message="recetas-generador-basic.spec.ts:207:7 should handle manual recipe creation" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:207:7 › Recipe Generator - Basic E2E Tests › should handle manual recipe creation 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      206 |
+      207 |   test('should handle manual recipe creation', async ({ page }) => {
+    > 208 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      209 |     await waitForModalOpen(page);
+      210 |     
+      211 |     await page.locator('text=Crear Manualmente').click();
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:208:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--d5446-ndle-manual-recipe-creation-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+<testcase name="Recipe Generator - Basic E2E Tests › should validate Spanish content" classname="recetas/recetas-generador-basic.spec.ts" time="13.475">
+<failure message="recetas-generador-basic.spec.ts:238:7 should validate Spanish content" type="FAILURE">
+<![CDATA[  [chromium] › recetas/recetas-generador-basic.spec.ts:238:7 › Recipe Generator - Basic E2E Tests › should validate Spanish content 
+
+    TimeoutError: locator.click: Timeout 10000ms exceeded.
+    Call log:
+      - waiting for locator('button').filter({ hasText: 'Crear Receta' })
+
+
+      237 |
+      238 |   test('should validate Spanish content', async ({ page }) => {
+    > 239 |     await page.locator('button', { hasText: 'Crear Receta' }).click();
+          |                                                               ^
+      240 |     await waitForModalOpen(page);
+      241 |     
+      242 |     // Check Spanish phrases are present
+        at /Users/santiagobalosky/kecarajocomer/e2e/recetas/recetas-generador-basic.spec.ts:239:63
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    ../test-results/recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../test-results/recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/error-context.md
+]]>
+</failure>
+<system-out>
+<![CDATA[
+[[ATTACHMENT|recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/test-failed-1.png]]
+
+[[ATTACHMENT|recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/video.webm]]
+
+[[ATTACHMENT|recetas-recetas-generador--03f54-ld-validate-Spanish-content-chromium/error-context.md]]
+]]>
+</system-out>
+</testcase>
+</testsuite>
+</testsuites>

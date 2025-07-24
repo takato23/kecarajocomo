@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Card Snapshots Card Padding should render card with extra large padding 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-8"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Padding should render card with large padding 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-6"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Padding should render card with medium padding 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Padding should render card with no padding 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Padding should render card with small padding 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-3"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card States should render card with glow effect 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-4 hover:shadow-lg"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card States should render card with hover effects 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-4 hover:transform hover:-translate-y-1 hover:shadow-glass-lg"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card States should render card without blur 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render default card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render fresh card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-fresh border border-food-fresh-200/50 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render glass card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render glass interactive card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-interactive cursor-pointer p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render golden card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-golden border border-food-golden-200/50 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render rich card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-rich border border-food-rich-200/50 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Card Variants should render warm card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-warm border border-food-warm-200/50 p-4"
+>
+  <div>
+    Sample content
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots CardBody Snapshots should render card body with custom className 1`] = `
+<div
+  class="text-neutral-700 dark:text-neutral-300 custom-body"
+>
+  <p>
+    Custom styled body
+  </p>
+</div>
+`;
+
+exports[`Card Snapshots CardBody Snapshots should render card body with text content 1`] = `
+<div
+  class="text-neutral-700 dark:text-neutral-300"
+>
+  <p>
+    This is card body content
+  </p>
+</div>
+`;
+
+exports[`Card Snapshots CardFooter Snapshots should render card footer with between justify 1`] = `
+<div
+  class="flex items-center gap-3 mt-4 pt-4 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-between"
+>
+  <button>
+    Action
+  </button>
+  <button>
+    Action
+  </button>
+</div>
+`;
+
+exports[`Card Snapshots CardFooter Snapshots should render card footer with center justify 1`] = `
+<div
+  class="flex items-center gap-3 mt-4 pt-4 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-center"
+>
+  <button>
+    Action
+  </button>
+</div>
+`;
+
+exports[`Card Snapshots CardFooter Snapshots should render card footer with default justify 1`] = `
+<div
+  class="flex items-center gap-3 mt-4 pt-4 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end"
+>
+  <button>
+    Action
+  </button>
+</div>
+`;
+
+exports[`Card Snapshots CardFooter Snapshots should render card footer with start justify 1`] = `
+<div
+  class="flex items-center gap-3 mt-4 pt-4 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-start"
+>
+  <button>
+    Action
+  </button>
+</div>
+`;
+
+exports[`Card Snapshots CardHeader Snapshots should render card header with action 1`] = `
+<div
+  class="flex items-center justify-between mb-4"
+>
+  <div
+    class="min-w-0 flex-1"
+  >
+    <h3
+      class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+    >
+      Card Title
+    </h3>
+  </div>
+  <div
+    class="ml-4 flex-shrink-0"
+  >
+    <button>
+      Action
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots CardHeader Snapshots should render card header with all props 1`] = `
+<div
+  class="flex items-center justify-between mb-4"
+>
+  <div
+    class="min-w-0 flex-1"
+  >
+    <h3
+      class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+    >
+      Card Title
+    </h3>
+    <p
+      class="text-sm text-neutral-500 dark:text-neutral-400 mt-1"
+    >
+      Card subtitle
+    </p>
+  </div>
+  <div
+    class="ml-4 flex-shrink-0"
+  >
+    <button>
+      Action
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots CardHeader Snapshots should render card header with custom children 1`] = `
+<div
+  class="flex items-center justify-between mb-4"
+>
+  <div
+    class="min-w-0 flex-1"
+  >
+    <div>
+      Custom header content
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots CardHeader Snapshots should render card header with title 1`] = `
+<div
+  class="flex items-center justify-between mb-4"
+>
+  <div
+    class="min-w-0 flex-1"
+  >
+    <h3
+      class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+    >
+      Card Title
+    </h3>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots CardHeader Snapshots should render card header with title and subtitle 1`] = `
+<div
+  class="flex items-center justify-between mb-4"
+>
+  <div
+    class="min-w-0 flex-1"
+  >
+    <h3
+      class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+    >
+      Card Title
+    </h3>
+    <p
+      class="text-sm text-neutral-500 dark:text-neutral-400 mt-1"
+    >
+      Card subtitle
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Complete Card Snapshots should render complete card with all components 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass p-6 hover:transform hover:-translate-y-1 hover:shadow-glass-lg"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div
+      class="min-w-0 flex-1"
+    >
+      <h3
+        class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+      >
+        Complete Card
+      </h3>
+      <p
+        class="text-sm text-neutral-500 dark:text-neutral-400 mt-1"
+      >
+        This is a complete card example
+      </p>
+    </div>
+    <div
+      class="ml-4 flex-shrink-0"
+    >
+      <button>
+        Action
+      </button>
+    </div>
+  </div>
+  <div
+    class="text-neutral-700 dark:text-neutral-300"
+  >
+    <p>
+      This is the main content of the card. It can contain any content.
+    </p>
+    <div>
+      Sample content
+    </div>
+  </div>
+  <div
+    class="flex items-center gap-3 mt-4 pt-4 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-between"
+  >
+    <button>
+      Action
+    </button>
+    <button>
+      Action
+    </button>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Complete Card Snapshots should render fresh card with simple content 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-fresh border border-food-fresh-200/50 p-4"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div
+      class="min-w-0 flex-1"
+    >
+      <h3
+        class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+      >
+        Fresh Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="text-neutral-700 dark:text-neutral-300"
+  >
+    <p>
+      Fresh card content
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Card Snapshots Complete Card Snapshots should render interactive card with hover 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-interactive cursor-pointer p-4 hover:transform hover:-translate-y-1 hover:shadow-glass-lg hover:bg-glass-interactive-light"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div
+      class="min-w-0 flex-1"
+    >
+      <h3
+        class="text-lg font-semibold text-neutral-900 dark:text-neutral-100 truncate"
+      >
+        Interactive Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="text-neutral-700 dark:text-neutral-300"
+  >
+    <p>
+      Click me!
+    </p>
+  </div>
+</div>
+`;

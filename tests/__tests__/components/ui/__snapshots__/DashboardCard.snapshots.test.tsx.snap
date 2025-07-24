@@ -1,0 +1,760 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`DashboardCard Snapshots Basic DashboardCard should render basic dashboard card with content only 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Basic Content
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots Basic DashboardCard should render dashboard card with title 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Dashboard Title
+      </h3>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Content with Title
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots Basic DashboardCard should render dashboard card with title and subtitle 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Dashboard Title
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        This is a subtitle
+      </p>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Content with Title and Subtitle
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Complex Content should render dashboard card with chart-like content 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Chart Card
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        Performance metrics
+      </p>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        Details
+      </button>
+    </div>
+  </div>
+  <div
+    class="space-y-4"
+  >
+    <div
+      class="flex items-center justify-between"
+    >
+      <span
+        class="text-sm text-gray-600"
+      >
+        Revenue
+      </span>
+      <span
+        class="font-semibold"
+      >
+        $12,345
+      </span>
+    </div>
+    <div
+      class="w-full bg-gray-200 rounded-full h-2"
+    >
+      <div
+        class="bg-blue-600 h-2 rounded-full"
+        style="width: 70%;"
+      />
+    </div>
+    <div
+      class="flex items-center justify-between"
+    >
+      <span
+        class="text-sm text-gray-600"
+      >
+        Growth
+      </span>
+      <span
+        class="font-semibold text-green-600"
+      >
+        +12%
+      </span>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Complex Content should render dashboard card with complex content structure 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Complex Card
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        With complex content
+      </p>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        View All
+      </button>
+    </div>
+  </div>
+  <div
+    class="space-y-4"
+  >
+    <div
+      class="grid grid-cols-2 gap-4"
+    >
+      <div
+        class="bg-gray-50 p-3 rounded"
+      >
+        <h5
+          class="font-medium"
+        >
+          Metric 1
+        </h5>
+        <p
+          class="text-2xl font-bold"
+        >
+          123
+        </p>
+      </div>
+      <div
+        class="bg-gray-50 p-3 rounded"
+      >
+        <h5
+          class="font-medium"
+        >
+          Metric 2
+        </h5>
+        <p
+          class="text-2xl font-bold"
+        >
+          456
+        </p>
+      </div>
+    </div>
+    <div
+      class="text-sm text-gray-600"
+    >
+      Last updated: 2 minutes ago
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Complex Content should render dashboard card with list content 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        List Card
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        Recent activities
+      </p>
+    </div>
+  </div>
+  <ul
+    class="space-y-2"
+  >
+    <li
+      class="flex items-center justify-between p-2 bg-gray-50 rounded"
+    >
+      <span>
+        Activity 1
+      </span>
+      <span
+        class="text-sm text-gray-500"
+      >
+        2 min ago
+      </span>
+    </li>
+    <li
+      class="flex items-center justify-between p-2 bg-gray-50 rounded"
+    >
+      <span>
+        Activity 2
+      </span>
+      <span
+        class="text-sm text-gray-500"
+      >
+        5 min ago
+      </span>
+    </li>
+    <li
+      class="flex items-center justify-between p-2 bg-gray-50 rounded"
+    >
+      <span>
+        Activity 3
+      </span>
+      <span
+        class="text-sm text-gray-500"
+      >
+        10 min ago
+      </span>
+    </li>
+  </ul>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Custom Styling should render dashboard card with custom className 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 custom-dashboard-card"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Custom Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Custom styled content
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Custom Styling should render dashboard card with multiple custom classes 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border p-6 hover:shadow-md transition-shadow duration-200 custom-class-1 custom-class-2 border-red-500"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Multi-class Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Multi-class content
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Edge Cases should render dashboard card with empty content 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Empty Card
+      </h3>
+    </div>
+  </div>
+  <div />
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Edge Cases should render dashboard card with special characters 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Special Characters: éñüñ & 中文 🎉
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        Testing unicode & emojis
+      </p>
+    </div>
+  </div>
+  <div>
+    Content with special chars: àáâãäåæçèéêë
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Edge Cases should render dashboard card with very long title 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        This is a very long title that might wrap to multiple lines or be truncated
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        This is also a long subtitle that provides additional context
+      </p>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Long title content
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Error States should render error state 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Error Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="text-center"
+    >
+      <p
+        class="text-red-600 text-sm font-medium"
+      >
+        Error loading data
+      </p>
+      <p
+        class="text-gray-500 text-xs mt-1"
+      >
+        Failed to load data
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Error States should render error state with action 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Error Card
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        Error subtitle
+      </p>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        Retry
+      </button>
+    </div>
+  </div>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="text-center"
+    >
+      <p
+        class="text-red-600 text-sm font-medium"
+      >
+        Error loading data
+      </p>
+      <p
+        class="text-gray-500 text-xs mt-1"
+      >
+        Network connection failed
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Error States should render error state with detailed message 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Detailed Error
+      </h3>
+    </div>
+  </div>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="text-center"
+    >
+      <p
+        class="text-red-600 text-sm font-medium"
+      >
+        Error loading data
+      </p>
+      <p
+        class="text-gray-500 text-xs mt-1"
+      >
+        Unable to connect to the server. Please check your internet connection and try again.
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Error States should render error state without title 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="text-center"
+    >
+      <p
+        class="text-red-600 text-sm font-medium"
+      >
+        Error loading data
+      </p>
+      <p
+        class="text-gray-500 text-xs mt-1"
+      >
+        Something went wrong
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Loading States should render loading state 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Loading Card
+      </h3>
+    </div>
+  </div>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+    />
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Loading States should render loading state with action 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Loading Card
+      </h3>
+      <p
+        class="text-sm text-gray-600 mt-1"
+      >
+        Loading subtitle
+      </p>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        Action
+      </button>
+    </div>
+  </div>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+    />
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard Loading States should render loading state without title 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-center py-8"
+  >
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600"
+    />
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard with Actions should render dashboard card with action but no title 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div />
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        Action
+      </button>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Content with Action Only
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard with Actions should render dashboard card with action button 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Dashboard Title
+      </h3>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <button
+        class="mock-button"
+      >
+        Action
+      </button>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Content with Action
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;
+
+exports[`DashboardCard Snapshots DashboardCard with Actions should render dashboard card with multiple actions 1`] = `
+<div
+  class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200"
+>
+  <div
+    class="flex items-center justify-between mb-4"
+  >
+    <div>
+      <h3
+        class="text-lg font-semibold text-gray-900"
+      >
+        Dashboard Title
+      </h3>
+    </div>
+    <div
+      class="flex-shrink-0"
+    >
+      <div
+        class="flex gap-2"
+      >
+        <button
+          class="mock-button"
+        >
+          Edit
+        </button>
+        <button
+          class="mock-button"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+  <div
+    class="mock-content"
+  >
+    <h4>
+      Content with Multiple Actions
+    </h4>
+    <p>
+      This is mock content for testing.
+    </p>
+  </div>
+</div>
+`;

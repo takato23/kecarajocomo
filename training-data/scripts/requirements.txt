@@ -1,0 +1,11 @@
+# Core dependencies for GPT training data collection
+yt-dlp>=2024.1.0
+pandocfilters>=1.5.0
+beautifulsoup4>=4.12.0
+bs4>=0.0.1
+requests>=2.31.0
+
+# Optional but recommended
+lxml>=4.9.0  # Better HTML parsing performance
+pyyaml>=6.0  # For YAML frontmatter parsing
+tqdm>=4.66.0  # Progress bars for long operations

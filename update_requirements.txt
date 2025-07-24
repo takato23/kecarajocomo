@@ -1,0 +1,21 @@
+# Enhanced requirements for mega collection
+yt-dlp>=2024.1.0
+pandocfilters>=1.5.0
+beautifulsoup4>=4.12.0
+bs4>=0.0.1
+requests>=2.31.0
+
+# For enhanced processing
+tqdm>=4.66.0          # Progress bars
+matplotlib>=3.7.0     # Statistics visualization
+lxml>=4.9.0          # Faster HTML parsing
+pyyaml>=6.0          # YAML frontmatter parsing
+pandas>=2.0.0        # Data analysis (optional)
+numpy>=1.24.0        # For matplotlib (optional)
+
+# For parallel processing
+concurrent.futures  # Built-in, for parallel repo cloning
+
+# For web scraping
+urllib3>=1.26.0      # HTTP requests
+chardet>=5.0.0       # Character encoding detection

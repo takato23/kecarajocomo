@@ -1,0 +1,2956 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PantryStatus Snapshots Edge Cases should render pantry with large numbers 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          999
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          123
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          456
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          579
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            123
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            456
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          42
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 42%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Edge Cases should render pantry with single item expiring 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          1
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          1
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          1
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            1
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          0
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 0%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Empty Pantry States should render empty pantry with no alerts 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-center py-6"
+    >
+      <div
+        class="flex items-center justify-center w-12 h-12 bg-green-50 text-green-600 rounded-lg mx-auto mb-3"
+      >
+        <div
+          data-testid="package-icon"
+        >
+          Package
+        </div>
+      </div>
+      <p
+        class="text-sm font-medium text-gray-900 mb-1"
+      >
+        Pantry looks good!
+      </p>
+      <p
+        class="text-xs text-gray-500"
+      >
+        No urgent alerts at this time
+      </p>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Healthy Pantry States should render healthy pantry with good health score 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          50
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-center py-6"
+    >
+      <div
+        class="flex items-center justify-center w-12 h-12 bg-green-50 text-green-600 rounded-lg mx-auto mb-3"
+      >
+        <div
+          data-testid="package-icon"
+        >
+          Package
+        </div>
+      </div>
+      <p
+        class="text-sm font-medium text-gray-900 mb-1"
+      >
+        Pantry looks good!
+      </p>
+      <p
+        class="text-xs text-gray-500"
+      >
+        No urgent alerts at this time
+      </p>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          100
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 100%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Healthy Pantry States should render healthy pantry with no alerts 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          25
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-center py-6"
+    >
+      <div
+        class="flex items-center justify-center w-12 h-12 bg-green-50 text-green-600 rounded-lg mx-auto mb-3"
+      >
+        <div
+          data-testid="package-icon"
+        >
+          Package
+        </div>
+      </div>
+      <p
+        class="text-sm font-medium text-gray-900 mb-1"
+      >
+        Pantry looks good!
+      </p>
+      <p
+        class="text-xs text-gray-500"
+      >
+        No urgent alerts at this time
+      </p>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          100
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 100%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots High Alert Scenarios should render pantry with critical health score 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          100
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          25
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          20
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          45
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            25
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            20
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          55
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 55%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots High Alert Scenarios should render pantry with many expiring items 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          20
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          15
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          8
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          23
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            15
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            8
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          -15
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: -15%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Loading States should render loading state 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="loading"
+    >
+      Loading...
+    </div>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-center py-6"
+    >
+      <div
+        class="flex items-center justify-center w-12 h-12 bg-green-50 text-green-600 rounded-lg mx-auto mb-3"
+      >
+        <div
+          data-testid="package-icon"
+        >
+          Package
+        </div>
+      </div>
+      <p
+        class="text-sm font-medium text-gray-900 mb-1"
+      >
+        Pantry looks good!
+      </p>
+      <p
+        class="text-xs text-gray-500"
+      >
+        No urgent alerts at this time
+      </p>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Pantry with Alerts should render pantry with both expiring and low stock alerts 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          40
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          7
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          4
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          11
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            7
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            4
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          73
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 73%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Pantry with Alerts should render pantry with expiring items only 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          30
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          5
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          5
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            5
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          83
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 83%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Pantry with Alerts should render pantry with low stock items only 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          30
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          0
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          3
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          3
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            3
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          90
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 90%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Various Health Scores should render 10% health score 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          100
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          45
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          45
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          90
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            45
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            45
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          10
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 10%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Various Health Scores should render 50% health score 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          100
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          25
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          25
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          50
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            25
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            25
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          50
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 50%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`PantryStatus Snapshots Various Health Scores should render 90% health score 1`] = `
+<div
+  data-testid="dashboard-card"
+>
+  <div
+    data-testid="card-header"
+  >
+    <h3>
+      Pantry Status
+    </h3>
+    <p>
+      Inventory and alerts
+    </p>
+    <div
+      data-testid="action"
+    >
+      <a
+        class="text-primary-600 hover:text-primary-700 text-sm font-medium"
+        href="/pantry"
+      >
+        Manage
+      </a>
+    </div>
+  </div>
+  <div
+    data-testid="card-content"
+  >
+    <div
+      class="grid grid-cols-3 gap-4 mb-6"
+    >
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-blue-50 text-blue-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="package-icon"
+          >
+            Package
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          100
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Total Items
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-orange-50 text-orange-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="calendar-icon"
+          >
+            Calendar
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          5
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Expiring Soon
+        </div>
+      </div>
+      <div
+        class="text-center"
+      >
+        <div
+          class="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-lg mx-auto mb-2"
+        >
+          <div
+            data-testid="trending-down-icon"
+          >
+            TrendingDown
+          </div>
+        </div>
+        <div
+          class="text-xl font-bold text-gray-900"
+        >
+          5
+        </div>
+        <div
+          class="text-xs text-gray-500"
+        >
+          Low Stock
+        </div>
+      </div>
+    </div>
+    <div
+      class="space-y-3"
+    >
+      <div
+        class="flex items-center justify-between"
+      >
+        <h4
+          class="text-sm font-medium text-gray-900"
+        >
+          Active Alerts
+        </h4>
+        <span
+          class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-800"
+        >
+          10
+           alerts
+        </span>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-orange-50 rounded-lg"
+      >
+        <div
+          data-testid="alert-triangle-icon"
+        >
+          AlertTriangle
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-orange-900"
+          >
+            5
+             items expiring soon
+          </p>
+          <p
+            class="text-xs text-orange-700 mt-1"
+          >
+            Check your pantry for items expiring in the next 3 days
+          </p>
+        </div>
+      </div>
+      <div
+        class="flex items-start space-x-3 p-3 bg-red-50 rounded-lg"
+      >
+        <div
+          data-testid="trending-down-icon"
+        >
+          TrendingDown
+        </div>
+        <div
+          class="flex-1"
+        >
+          <p
+            class="text-sm font-medium text-red-900"
+          >
+            5
+             items low in stock
+          </p>
+          <p
+            class="text-xs text-red-700 mt-1"
+          >
+            Consider adding these to your shopping list
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="mt-6 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="grid grid-cols-2 gap-2"
+      >
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/add"
+        >
+          <div
+            data-testid="plus-icon"
+          >
+            Plus
+          </div>
+          Add Items
+        </a>
+        <a
+          class="flex items-center justify-center px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg text-sm font-medium text-gray-700 transition-colors"
+          href="/pantry/expired"
+        >
+          <div
+            data-testid="archive-icon"
+          >
+            Archive
+          </div>
+          Clean Up
+        </a>
+      </div>
+    </div>
+    <div
+      class="mt-4 pt-4 border-t border-gray-100"
+    >
+      <div
+        class="flex items-center justify-between mb-2"
+      >
+        <span
+          class="text-sm font-medium text-gray-700"
+        >
+          Pantry Health
+        </span>
+        <span
+          class="text-sm font-bold text-green-600"
+        >
+          90
+          %
+        </span>
+      </div>
+      <div
+        class="w-full bg-gray-200 rounded-full h-2"
+      >
+        <div
+          class="h-2 bg-green-500 rounded-full transition-all duration-300"
+          style="width: 90%;"
+        />
+      </div>
+      <p
+        class="text-xs text-gray-500 mt-1"
+      >
+        Based on expiration dates and stock levels
+      </p>
+    </div>
+  </div>
+</div>
+`;

@@ -1,0 +1,95 @@
+[
+  {
+    "id": "test-recipe-1",
+    "title": "Pasta Básica de Prueba",
+    "description": "Una receta simple para probar la importación",
+    "instructions": [
+      "Hervir agua con sal",
+      "Cocinar la pasta según las instrucciones del paquete",
+      "Escurrir y servir con salsa"
+    ],
+    "prepTimeMinutes": 5,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": ["pasta", "fácil", "vegetariano"],
+    "ingredients": [
+      {
+        "name": "pasta",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 200,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 12,
+      "carbs": 65,
+      "fat": 4,
+      "fiber": 3,
+      "sugar": 8,
+      "sodium": 450
+    },
+    "isPublic": true,
+    "source": "test"
+  },
+  {
+    "id": "test-recipe-2",
+    "title": "Ensalada Verde Simple",
+    "description": "Ensalada fresca y saludable",
+    "instructions": [
+      "Lavar y cortar las verduras",
+      "Mezclar en un bowl grande",
+      "Aderezar con aceite de oliva y limón"
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 0,
+    "servings": 2,
+    "difficulty": "easy",
+    "cuisine": "mediterránea",
+    "tags": ["ensalada", "vegano", "saludable"],
+    "ingredients": [
+      {
+        "name": "lechuga",
+        "quantity": 1,
+        "unit": "unidad"
+      },
+      {
+        "name": "tomate",
+        "quantity": 2,
+        "unit": "unidades"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 2,
+        "unit": "cucharadas"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "unidad"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 120,
+      "protein": 3,
+      "carbs": 8,
+      "fat": 10,
+      "fiber": 4,
+      "sugar": 5,
+      "sodium": 15
+    },
+    "isPublic": true,
+    "source": "test"
+  }
+]

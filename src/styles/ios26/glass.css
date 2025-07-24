@@ -1,0 +1,288 @@
+/**
+ * iOS26 Glass Morphism Styles
+ * Core glass effect utilities for the iOS26 design system
+ */
+
+/* CSS Custom Properties */
+:root {
+  /* Glass blur levels */
+  --ios26-blur-subtle: blur(8px);
+  --ios26-blur-medium: blur(16px);
+  --ios26-blur-strong: blur(24px);
+  --ios26-blur-ultra: blur(32px);
+  --ios26-blur-max: blur(48px);
+  
+  /* Glass backgrounds - Light theme */
+  --ios26-glass-bg-light-subtle: rgba(255, 255, 255, 0.8);
+  --ios26-glass-bg-light-medium: rgba(255, 255, 255, 0.6);
+  --ios26-glass-bg-light-strong: rgba(255, 255, 255, 0.4);
+  --ios26-glass-bg-light-ultra: rgba(255, 255, 255, 0.2);
+  
+  /* Glass backgrounds - Dark theme */
+  --ios26-glass-bg-dark-subtle: rgba(0, 0, 0, 0.8);
+  --ios26-glass-bg-dark-medium: rgba(0, 0, 0, 0.6);
+  --ios26-glass-bg-dark-strong: rgba(0, 0, 0, 0.4);
+  --ios26-glass-bg-dark-ultra: rgba(0, 0, 0, 0.2);
+  
+  /* Glass borders */
+  --ios26-glass-border-light: rgba(255, 255, 255, 0.3);
+  --ios26-glass-border-medium: rgba(255, 255, 255, 0.2);
+  --ios26-glass-border-dark: rgba(0, 0, 0, 0.2);
+  
+  /* Glass shadows */
+  --ios26-glass-shadow-subtle: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --ios26-glass-shadow-medium: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --ios26-glass-shadow-strong: 0 16px 48px rgba(0, 0, 0, 0.16);
+  
+  /* Animation timings */
+  --ios26-duration-instant: 100ms;
+  --ios26-duration-fast: 200ms;
+  --ios26-duration-normal: 300ms;
+  --ios26-duration-slow: 500ms;
+  --ios26-duration-liquid: 800ms;
+  --ios26-duration-morph: 1200ms;
+  
+  /* Animation easings */
+  --ios26-ease-sharp: cubic-bezier(0.4, 0, 0.6, 1);
+  --ios26-ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ios26-ease-elastic: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ios26-ease-bounce: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+  --ios26-ease-liquid: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios26-glass-bg: var(--ios26-glass-bg-dark-medium);
+    --ios26-glass-border: var(--ios26-glass-border-dark);
+  }
+}
+
+/* Base glass effect */
+.ios26-glass {
+  backdrop-filter: var(--ios26-blur, var(--ios26-blur-medium));
+  -webkit-backdrop-filter: var(--ios26-blur, var(--ios26-blur-medium));
+  background: var(--ios26-glass-bg, var(--ios26-glass-bg-light-medium));
+  border: 1px solid var(--ios26-glass-border, var(--ios26-glass-border-light));
+  box-shadow: var(--ios26-glass-shadow, var(--ios26-glass-shadow-medium));
+  
+  /* Performance optimizations */
+  contain: layout style paint;
+  will-change: transform, opacity, backdrop-filter;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+}
+
+/* Glass blur variants */
+.ios26-glass-subtle {
+  --ios26-blur: var(--ios26-blur-subtle);
+  --ios26-glass-bg: var(--ios26-glass-bg-light-subtle);
+  --ios26-glass-shadow: var(--ios26-glass-shadow-subtle);
+}
+
+.ios26-glass-medium {
+  --ios26-blur: var(--ios26-blur-medium);
+  --ios26-glass-bg: var(--ios26-glass-bg-light-medium);
+  --ios26-glass-shadow: var(--ios26-glass-shadow-medium);
+}
+
+.ios26-glass-strong {
+  --ios26-blur: var(--ios26-blur-strong);
+  --ios26-glass-bg: var(--ios26-glass-bg-light-strong);
+  --ios26-glass-shadow: var(--ios26-glass-shadow-strong);
+}
+
+.ios26-glass-ultra {
+  --ios26-blur: var(--ios26-blur-ultra);
+  --ios26-glass-bg: var(--ios26-glass-bg-light-ultra);
+  --ios26-glass-shadow: var(--ios26-glass-shadow-strong);
+}
+
+/* Dark mode glass variants */
+.dark .ios26-glass-subtle {
+  --ios26-glass-bg: var(--ios26-glass-bg-dark-subtle);
+  --ios26-glass-border: var(--ios26-glass-border-dark);
+}
+
+.dark .ios26-glass-medium {
+  --ios26-glass-bg: var(--ios26-glass-bg-dark-medium);
+  --ios26-glass-border: var(--ios26-glass-border-dark);
+}
+
+.dark .ios26-glass-strong {
+  --ios26-glass-bg: var(--ios26-glass-bg-dark-strong);
+  --ios26-glass-border: var(--ios26-glass-border-dark);
+}
+
+.dark .ios26-glass-ultra {
+  --ios26-glass-bg: var(--ios26-glass-bg-dark-ultra);
+  --ios26-glass-border: var(--ios26-glass-border-dark);
+}
+
+/* Glass card component */
+.ios26-glass-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1rem;
+  transition: all var(--ios26-duration-normal) var(--ios26-ease-smooth);
+}
+
+.ios26-glass-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.1) 0%, 
+    transparent 100%);
+  pointer-events: none;
+  opacity: 0.5;
+  transition: opacity var(--ios26-duration-normal) var(--ios26-ease-smooth);
+}
+
+.ios26-glass-card:hover::before {
+  opacity: 0.8;
+}
+
+/* Glass button component */
+.ios26-glass-button {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.75rem;
+  transition: all var(--ios26-duration-fast) var(--ios26-ease-smooth);
+  transform-style: preserve-3d;
+}
+
+.ios26-glass-button:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.ios26-glass-button:active {
+  transform: translateY(0) scale(0.98);
+  transition-duration: var(--ios26-duration-instant);
+}
+
+/* Liquid animation */
+@keyframes ios26-liquid {
+  0%, 100% {
+    border-radius: 1rem;
+  }
+  25% {
+    border-radius: 1.25rem 0.875rem 1.125rem 0.9375rem;
+  }
+  50% {
+    border-radius: 0.875rem 1.125rem 0.9375rem 1.25rem;
+  }
+  75% {
+    border-radius: 1.125rem 0.9375rem 1.25rem 0.875rem;
+  }
+}
+
+.ios26-liquid {
+  animation: ios26-liquid 8s ease-in-out infinite;
+}
+
+/* Glow effect */
+@keyframes ios26-glow {
+  0%, 100% {
+    box-shadow: 
+      var(--ios26-glass-shadow),
+      0 0 20px rgba(139, 92, 246, 0);
+  }
+  50% {
+    box-shadow: 
+      var(--ios26-glass-shadow),
+      0 0 40px rgba(139, 92, 246, 0.3);
+  }
+}
+
+.ios26-glow {
+  animation: ios26-glow 2s ease-in-out infinite;
+}
+
+/* Pulse effect */
+@keyframes ios26-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.ios26-pulse {
+  animation: ios26-pulse 2s ease-in-out infinite;
+}
+
+/* Shimmer effect */
+@keyframes ios26-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.ios26-shimmer {
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: ios26-shimmer 3s ease-in-out infinite;
+}
+
+/* Ripple effect */
+.ios26-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ios26-ripple::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.5);
+  transform: translate(-50%, -50%);
+  transition: width var(--ios26-duration-slow), height var(--ios26-duration-slow);
+}
+
+.ios26-ripple:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Focus states */
+.ios26-glass:focus-visible {
+  outline: none;
+  box-shadow: 
+    var(--ios26-glass-shadow),
+    0 0 0 2px rgba(139, 92, 246, 0.5);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .ios26-glass,
+  .ios26-glass-card,
+  .ios26-glass-button,
+  .ios26-liquid,
+  .ios26-glow,
+  .ios26-pulse,
+  .ios26-shimmer,
+  .ios26-ripple::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  
+  .ios26-glass {
+    backdrop-filter: var(--ios26-blur-subtle) !important;
+  }
+}

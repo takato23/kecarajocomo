@@ -1,0 +1,373 @@
+/**
+ * iOS 26 Enhanced Liquid Glass Design System
+ * Advanced glass morphism with liquid animations and refraction effects
+ */
+
+/* Enhanced CSS Variables */
+:root {
+  /* Liquid Glass Gradients */
+  --ios26-gradient-sunrise: linear-gradient(135deg, #FF6B6B 0%, #FFE66D 50%, #4ECDC4 100%);
+  --ios26-gradient-aurora: linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%);
+  --ios26-gradient-ocean: linear-gradient(135deg, #2E3192 0%, #1BFFFF 100%);
+  --ios26-gradient-forest: linear-gradient(135deg, #11998E 0%, #38EF7D 100%);
+  --ios26-gradient-sunset: linear-gradient(135deg, #FC466B 0%, #3F5EFB 100%);
+  --ios26-gradient-crystal: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.1) 100%);
+  
+  /* Enhanced Blur Levels */
+  --ios26-blur-nano: blur(2px);
+  --ios26-blur-micro: blur(4px);
+  --ios26-blur-subtle: blur(8px);
+  --ios26-blur-soft: blur(12px);
+  --ios26-blur-medium: blur(16px);
+  --ios26-blur-heavy: blur(24px);
+  --ios26-blur-ultra: blur(32px);
+  --ios26-blur-extreme: blur(48px);
+  --ios26-blur-max: blur(64px);
+  
+  /* Dynamic Glass Surfaces */
+  --ios26-glass-ultralight: rgba(255, 255, 255, 0.03);
+  --ios26-glass-feather: rgba(255, 255, 255, 0.05);
+  --ios26-glass-light: rgba(255, 255, 255, 0.08);
+  --ios26-glass-soft: rgba(255, 255, 255, 0.12);
+  --ios26-glass-medium: rgba(255, 255, 255, 0.16);
+  --ios26-glass-heavy: rgba(255, 255, 255, 0.20);
+  --ios26-glass-ultra: rgba(255, 255, 255, 0.25);
+  --ios26-glass-solid: rgba(255, 255, 255, 0.30);
+  
+  /* Liquid Animation Timings */
+  --ios26-liquid-instant: 50ms;
+  --ios26-liquid-fast: 150ms;
+  --ios26-liquid-smooth: 300ms;
+  --ios26-liquid-flow: 500ms;
+  --ios26-liquid-morph: 800ms;
+  --ios26-liquid-transform: 1200ms;
+  --ios26-liquid-wave: 2000ms;
+  --ios26-liquid-drift: 3000ms;
+  
+  /* Liquid Easings */
+  --ios26-ease-liquid: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  --ios26-ease-water: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+  --ios26-ease-flow: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+  --ios26-ease-ripple: cubic-bezier(0.77, 0, 0.175, 1);
+  --ios26-ease-wave: cubic-bezier(0.86, 0, 0.07, 1);
+  
+  /* Glass Refraction Colors */
+  --ios26-refraction-red: rgba(255, 59, 48, 0.1);
+  --ios26-refraction-orange: rgba(255, 149, 0, 0.1);
+  --ios26-refraction-yellow: rgba(255, 204, 0, 0.1);
+  --ios26-refraction-green: rgba(52, 199, 89, 0.1);
+  --ios26-refraction-blue: rgba(0, 122, 255, 0.1);
+  --ios26-refraction-purple: rgba(175, 82, 222, 0.1);
+  --ios26-refraction-pink: rgba(255, 45, 85, 0.1);
+  
+  /* Dynamic Shadows */
+  --ios26-shadow-soft: 0 2px 8px rgba(0, 0, 0, 0.04);
+  --ios26-shadow-medium: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --ios26-shadow-deep: 0 8px 32px rgba(0, 0, 0, 0.12);
+  --ios26-shadow-floating: 0 16px 48px rgba(0, 0, 0, 0.16);
+  --ios26-shadow-hover: 0 24px 64px rgba(0, 0, 0, 0.20);
+  
+  /* Glow Effects */
+  --ios26-glow-soft: 0 0 20px rgba(255, 255, 255, 0.1);
+  --ios26-glow-medium: 0 0 40px rgba(255, 255, 255, 0.2);
+  --ios26-glow-strong: 0 0 60px rgba(255, 255, 255, 0.3);
+  --ios26-glow-color: 0 0 40px var(--glow-color, rgba(59, 130, 246, 0.5));
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ios26-glass-ultralight: rgba(255, 255, 255, 0.02);
+    --ios26-glass-feather: rgba(255, 255, 255, 0.03);
+    --ios26-glass-light: rgba(255, 255, 255, 0.05);
+    --ios26-glass-soft: rgba(255, 255, 255, 0.08);
+    --ios26-glass-medium: rgba(255, 255, 255, 0.10);
+    --ios26-glass-heavy: rgba(255, 255, 255, 0.12);
+    --ios26-glass-ultra: rgba(255, 255, 255, 0.15);
+    --ios26-glass-solid: rgba(255, 255, 255, 0.20);
+  }
+}
+
+/* Enhanced Liquid Glass Base */
+.ios26-liquid-glass {
+  position: relative;
+  backdrop-filter: var(--ios26-blur-medium);
+  -webkit-backdrop-filter: var(--ios26-blur-medium);
+  background: var(--ios26-glass-soft);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: var(--ios26-shadow-medium), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  
+  /* Performance */
+  will-change: transform, backdrop-filter;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* Liquid Glass Refraction Layer */
+.ios26-liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: 
+    radial-gradient(circle at 20% 20%, var(--ios26-refraction-blue) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, var(--ios26-refraction-purple) 0%, transparent 50%),
+    radial-gradient(circle at 50% 50%, var(--ios26-refraction-pink) 0%, transparent 50%);
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+  animation: ios26-refraction-shift 20s ease-in-out infinite;
+}
+
+/* Liquid Glass Shimmer Layer */
+.ios26-liquid-glass::after {
+  content: '';
+  position: absolute;
+  inset: -50%;
+  background: linear-gradient(
+    105deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.7) 50%,
+    transparent 60%
+  );
+  animation: ios26-liquid-shimmer 3s linear infinite;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ios26-liquid-smooth);
+}
+
+.ios26-liquid-glass:hover::after {
+  opacity: 0.3;
+}
+
+/* Liquid Morphing Effect */
+.ios26-liquid-morph {
+  animation: ios26-liquid-morph-shape 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@keyframes ios26-liquid-morph-shape {
+  0%, 100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+    transform: rotate(90deg) scale(1.02);
+  }
+  50% {
+    border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%;
+    transform: rotate(180deg) scale(1);
+  }
+  75% {
+    border-radius: 70% 30% 50% 50% / 30% 70% 50% 50%;
+    transform: rotate(270deg) scale(0.98);
+  }
+}
+
+/* Liquid Wave Animation */
+@keyframes ios26-liquid-wave {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  20% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+  40% {
+    transform: translateY(3px) rotate(-1deg);
+  }
+  60% {
+    transform: translateY(-3px) rotate(0.5deg);
+  }
+  80% {
+    transform: translateY(2px) rotate(-0.5deg);
+  }
+}
+
+.ios26-liquid-wave {
+  animation: ios26-liquid-wave 4s ease-in-out infinite;
+}
+
+/* Refraction Shift Animation */
+@keyframes ios26-refraction-shift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(10px, -10px) scale(1.1);
+  }
+  66% {
+    transform: translate(-10px, 10px) scale(0.9);
+  }
+}
+
+/* Liquid Shimmer Animation */
+@keyframes ios26-liquid-shimmer {
+  0% {
+    transform: translateX(-150%) translateY(-150%) rotate(30deg);
+  }
+  100% {
+    transform: translateX(150%) translateY(150%) rotate(30deg);
+  }
+}
+
+/* Liquid Ripple Effect */
+.ios26-liquid-ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ios26-liquid-ripple::before {
+  content: '';
+  position: absolute;
+  top: var(--ripple-y, 50%);
+  left: var(--ripple-x, 50%);
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.5) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  transition: width var(--ios26-liquid-morph), height var(--ios26-liquid-morph);
+}
+
+.ios26-liquid-ripple:active::before {
+  width: 600px;
+  height: 600px;
+}
+
+/* Liquid Glow Effect */
+.ios26-liquid-glow {
+  position: relative;
+  --glow-color: rgba(59, 130, 246, 0.5);
+}
+
+.ios26-liquid-glow::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(45deg, 
+    var(--glow-color) 0%, 
+    transparent 40%, 
+    transparent 60%, 
+    var(--glow-color) 100%
+  );
+  border-radius: inherit;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity var(--ios26-liquid-smooth);
+  filter: blur(10px);
+}
+
+.ios26-liquid-glow:hover::before {
+  opacity: 0.6;
+  animation: ios26-glow-pulse 2s ease-in-out infinite;
+}
+
+@keyframes ios26-glow-pulse {
+  0%, 100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+/* Liquid Transform States */
+.ios26-liquid-transform {
+  transition: all var(--ios26-liquid-flow) var(--ios26-ease-liquid);
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.ios26-liquid-transform:hover {
+  transform: translateY(-2px) rotateX(2deg) scale(1.02);
+}
+
+.ios26-liquid-transform:active {
+  transform: translateY(0) rotateX(0) scale(0.98);
+  transition-duration: var(--ios26-liquid-fast);
+}
+
+/* Liquid Gradient Animations */
+.ios26-liquid-gradient {
+  background: var(--ios26-gradient-aurora);
+  background-size: 400% 400%;
+  animation: ios26-gradient-flow 15s ease infinite;
+}
+
+@keyframes ios26-gradient-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Liquid Depth Layers */
+.ios26-liquid-depth {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.ios26-liquid-depth > * {
+  transform: translateZ(20px);
+}
+
+.ios26-liquid-depth::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  filter: blur(20px) brightness(1.1);
+  transform: translateZ(-10px) scale(0.95);
+  opacity: 0.5;
+}
+
+/* Responsive Liquid Glass */
+@media (max-width: 768px) {
+  .ios26-liquid-glass {
+    --ios26-blur-medium: blur(12px);
+  }
+}
+
+/* High Performance Mode */
+@media (prefers-reduced-motion: reduce) {
+  .ios26-liquid-glass,
+  .ios26-liquid-morph,
+  .ios26-liquid-wave,
+  .ios26-liquid-gradient {
+    animation: none !important;
+  }
+  
+  .ios26-liquid-transform {
+    transition: opacity var(--ios26-liquid-fast) !important;
+  }
+}
+
+/* Utility Classes */
+.ios26-blur-nano { backdrop-filter: var(--ios26-blur-nano); }
+.ios26-blur-micro { backdrop-filter: var(--ios26-blur-micro); }
+.ios26-blur-subtle { backdrop-filter: var(--ios26-blur-subtle); }
+.ios26-blur-soft { backdrop-filter: var(--ios26-blur-soft); }
+.ios26-blur-medium { backdrop-filter: var(--ios26-blur-medium); }
+.ios26-blur-heavy { backdrop-filter: var(--ios26-blur-heavy); }
+.ios26-blur-ultra { backdrop-filter: var(--ios26-blur-ultra); }
+.ios26-blur-extreme { backdrop-filter: var(--ios26-blur-extreme); }
+.ios26-blur-max { backdrop-filter: var(--ios26-blur-max); }
+
+.ios26-glass-ultralight { background: var(--ios26-glass-ultralight); }
+.ios26-glass-feather { background: var(--ios26-glass-feather); }
+.ios26-glass-light { background: var(--ios26-glass-light); }
+.ios26-glass-soft { background: var(--ios26-glass-soft); }
+.ios26-glass-medium { background: var(--ios26-glass-medium); }
+.ios26-glass-heavy { background: var(--ios26-glass-heavy); }
+.ios26-glass-ultra { background: var(--ios26-glass-ultra); }
+.ios26-glass-solid { background: var(--ios26-glass-solid); }

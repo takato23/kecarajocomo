@@ -1,0 +1,774 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Input Snapshots Input Complex Combinations should render complete form input with all features 1`] = `
+<div
+  class="relative custom-container"
+>
+  <label
+    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+    for="input"
+  >
+    Complete Input
+  </label>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass border-glass-border text-neutral-900 focus:border-glass-border-light focus:ring-glass-border/20 dark:text-neutral-100 px-4 py-2.5 text-base pl-10"
+      id="input"
+      placeholder="Enter text here"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-neutral-500 dark:text-neutral-400"
+    >
+      This is a complete input example
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Complex Combinations should render fresh input with error and right icon 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass-fresh text-food-fresh-900 dark:text-food-fresh-100 px-4 py-2.5 text-base border-error-500 focus:border-error-500 focus:ring-error-200 dark:border-error-400 dark:focus:border-error-400 dark:focus:ring-error-400/20 pr-10"
+      id="input"
+      placeholder="Enter valid data"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-error-600 dark:text-error-400 flex items-center gap-1"
+    >
+      <svg
+        class="w-4 h-4 flex-shrink-0"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          clip-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      Invalid input format
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Complex Combinations should render large glass input with label, icon, and helper 1`] = `
+<div
+  class="relative"
+>
+  <label
+    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+    for="input"
+  >
+    Search Query
+  </label>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-6 h-6"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass border-glass-border text-neutral-900 focus:border-glass-border-light focus:ring-glass-border/20 dark:text-neutral-100 px-5 py-3 text-lg pl-12"
+      id="input"
+      placeholder="Search..."
+      type="text"
+    />
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-neutral-500 dark:text-neutral-400"
+    >
+      Enter your search terms
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Complex Combinations should render warm input with both addons and disabled state 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-l-xl px-3 py-2 border-r border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        $
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass-warm border-food-warm-200 text-food-warm-900 focus:border-food-warm-400 focus:ring-food-warm-200 dark:text-food-warm-100 px-4 py-2.5 text-base rounded-l-none pl-20 rounded-r-none pr-20"
+      disabled=""
+      id="input"
+      placeholder="0"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-r-xl px-3 py-2 border-l border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        .00
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Custom Props should render input with custom attributes 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      data-testid="custom-input"
+      id="custom-input"
+      name="customInput"
+      placeholder="Custom attributes"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Custom Props should render input with custom className 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base custom-input"
+      id="input"
+      placeholder="Custom input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Custom Props should render input with custom container className 1`] = `
+<div
+  class="relative custom-container"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Custom container"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Sizes should render large input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-5 py-3 text-lg"
+      id="input"
+      placeholder="Large input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Sizes should render medium input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Medium input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Sizes should render small input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-3 py-1.5 text-sm"
+      id="input"
+      placeholder="Small input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input States should render disabled input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      disabled=""
+      id="input"
+      placeholder="Disabled input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input States should render input with error 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 px-4 py-2.5 text-base border-error-500 focus:border-error-500 focus:ring-error-200 dark:border-error-400 dark:focus:border-error-400 dark:focus:ring-error-400/20"
+      id="input"
+      placeholder="Error input"
+      type="text"
+    />
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-error-600 dark:text-error-400 flex items-center gap-1"
+    >
+      <svg
+        class="w-4 h-4 flex-shrink-0"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          clip-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      This field is required
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input States should render input with error and label 1`] = `
+<div
+  class="relative"
+>
+  <label
+    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+    for="input"
+  >
+    Required Field
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 px-4 py-2.5 text-base border-error-500 focus:border-error-500 focus:ring-error-200 dark:border-error-400 dark:focus:border-error-400 dark:focus:ring-error-400/20"
+      id="input"
+      placeholder="Enter text"
+      type="text"
+    />
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-error-600 dark:text-error-400 flex items-center gap-1"
+    >
+      <svg
+        class="w-4 h-4 flex-shrink-0"
+        fill="currentColor"
+        viewBox="0 0 20 20"
+      >
+        <path
+          clip-rule="evenodd"
+          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+          fill-rule="evenodd"
+        />
+      </svg>
+      This field is required
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input States should render invalid input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white text-neutral-900 dark:bg-neutral-800 dark:text-neutral-100 px-4 py-2.5 text-base border-error-500 focus:border-error-500 focus:ring-error-200 dark:border-error-400 dark:focus:border-error-400 dark:focus:ring-error-400/20"
+      id="input"
+      placeholder="Invalid input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Types should render email input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Enter email"
+      type="email"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Types should render number input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Enter number"
+      type="number"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Types should render password input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Enter password"
+      type="password"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Types should render search input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Search..."
+      type="search"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Variants should render default input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Default input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Variants should render fresh input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass-fresh border-food-fresh-200 text-food-fresh-900 focus:border-food-fresh-400 focus:ring-food-fresh-200 dark:text-food-fresh-100 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Fresh input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Variants should render glass input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass border-glass-border text-neutral-900 focus:border-glass-border-light focus:ring-glass-border/20 dark:text-neutral-100 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Glass input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input Variants should render warm input 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 glass-warm border-food-warm-200 text-food-warm-900 focus:border-food-warm-400 focus:ring-food-warm-200 dark:text-food-warm-100 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Warm input"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Addons should render input with both addons 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-l-xl px-3 py-2 border-r border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        https://
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base rounded-l-none pl-20 rounded-r-none pr-20"
+      id="input"
+      placeholder="website"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-r-xl px-3 py-2 border-l border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        .com
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Addons should render input with left addon 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-l-xl px-3 py-2 border-r border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        https://
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base rounded-l-none pl-20"
+      id="input"
+      placeholder="website.com"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Addons should render input with right addon 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base rounded-r-none pr-20"
+      id="input"
+      placeholder="website"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center"
+    >
+      <div
+        class="glass-secondary rounded-r-xl px-3 py-2 border-l border-glass-border text-sm text-neutral-600 dark:text-neutral-400"
+      >
+        .com
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Icons should render input with both icons 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base pl-10"
+      id="input"
+      placeholder="Both icons"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Icons should render input with left icon 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <div
+      class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base pl-10"
+      id="input"
+      placeholder="Search..."
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Icons should render input with right icon 1`] = `
+<div
+  class="relative"
+>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base pr-10"
+      id="input"
+      placeholder="Enter text"
+      type="text"
+    />
+    <div
+      class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none"
+    >
+      <div
+        class="text-neutral-400 dark:text-neutral-500 w-5 h-5"
+      >
+        <span>
+          🔍
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Label should render input with label 1`] = `
+<div
+  class="relative"
+>
+  <label
+    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+    for="input"
+  >
+    Input Label
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Enter text"
+      type="text"
+    />
+  </div>
+</div>
+`;
+
+exports[`Input Snapshots Input with Label should render input with label and helper text 1`] = `
+<div
+  class="relative"
+>
+  <label
+    class="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2"
+    for="input"
+  >
+    Input Label
+  </label>
+  <div
+    class="relative"
+  >
+    <input
+      class="w-full rounded-xl border transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 disabled:opacity-50 disabled:cursor-not-allowed placeholder:text-neutral-400 dark:placeholder:text-neutral-500 bg-white border-neutral-200 text-neutral-900 focus:border-food-fresh-300 focus:ring-food-fresh-200 dark:bg-neutral-800 dark:border-neutral-700 dark:text-neutral-100 dark:focus:border-food-fresh-400 dark:focus:ring-food-fresh-400/20 px-4 py-2.5 text-base"
+      id="input"
+      placeholder="Enter text"
+      type="text"
+    />
+  </div>
+  <div
+    class="mt-1 text-sm"
+  >
+    <p
+      class="text-neutral-500 dark:text-neutral-400"
+    >
+      This is helper text
+    </p>
+  </div>
+</div>
+`;

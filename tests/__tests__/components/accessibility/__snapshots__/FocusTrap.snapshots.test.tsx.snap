@@ -1,0 +1,653 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`FocusTrap Snapshots Basic FocusTrap should render active focus trap 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Active Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots Basic FocusTrap should render basic focus trap with default props 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Basic Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots Basic FocusTrap should render inactive focus trap 1`] = `
+<div
+  data-active="false"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Inactive Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap Complex Configurations should render focus trap for form-like usage 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="false"
+  data-escape-deactivates="false"
+  data-fallback-focus="#submit-button"
+  data-initial-focus="#first-field"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <form>
+    <input
+      id="first-field"
+      placeholder="First field"
+      type="text"
+    />
+    <input
+      placeholder="Second field"
+      type="text"
+    />
+    <button
+      id="submit-button"
+      type="submit"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap Complex Configurations should render focus trap for modal-like usage 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-initial-focus="#modal-close"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="modal"
+  >
+    <h2>
+      Modal Title
+    </h2>
+    <p>
+      Modal content
+    </p>
+    <button
+      id="modal-close"
+    >
+      Close
+    </button>
+    <button>
+      Save
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap Complex Configurations should render focus trap with complete configuration 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-fallback-focus="#fallback-here"
+  data-initial-focus="#start-here"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Complete Configuration
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap States should render active but paused focus trap 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="true"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Active but Paused Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap States should render inactive and paused focus trap 1`] = `
+<div
+  data-active="false"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="true"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Inactive and Paused Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap States should render paused focus trap 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="true"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Paused Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Callbacks should render focus trap with all callbacks 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Focus Trap with All Callbacks
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Callbacks should render focus trap with onDeactivate callback 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Focus Trap with Callback
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Deactivation Options should render focus trap with all deactivation options disabled 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="false"
+  data-escape-deactivates="false"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      All Deactivation Disabled
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Deactivation Options should render focus trap with click outside deactivation disabled 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="false"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      No Click Outside Deactivation
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Deactivation Options should render focus trap with escape deactivation disabled 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="false"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      No Escape Deactivation
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Different Content should render focus trap with complex nested content 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="complex-content"
+  >
+    <header>
+      <h1>
+        Complex Content
+      </h1>
+      <nav>
+        <a
+          href="#section1"
+        >
+          Section 1
+        </a>
+        <a
+          href="#section2"
+        >
+          Section 2
+        </a>
+      </nav>
+    </header>
+    <main>
+      <section
+        id="section1"
+      >
+        <h2>
+          Section 1
+        </h2>
+        <button>
+          Action 1
+        </button>
+        <input
+          placeholder="Input 1"
+          type="text"
+        />
+      </section>
+      <section
+        id="section2"
+      >
+        <h2>
+          Section 2
+        </h2>
+        <button>
+          Action 2
+        </button>
+        <input
+          placeholder="Input 2"
+          type="text"
+        />
+      </section>
+    </main>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Different Content should render focus trap with no focusable elements 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div>
+    <p>
+      No focusable elements here
+    </p>
+    <span>
+      Just text content
+    </span>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Different Content should render focus trap with simple text content 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <p>
+    Simple text content inside focus trap
+  </p>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Focus Options should render focus trap with both focus selectors 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-fallback-focus="#fallback-focus"
+  data-initial-focus="#initial-focus"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Both Focus Selectors
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Focus Options should render focus trap with disabled initialFocus 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-initial-focus="false"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Disabled Initial Focus
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Focus Options should render focus trap with fallbackFocus selector 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-fallback-focus="#fallback-focus"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Fallback Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;
+
+exports[`FocusTrap Snapshots FocusTrap with Focus Options should render focus trap with initialFocus selector 1`] = `
+<div
+  data-active="true"
+  data-allow-outside-click="true"
+  data-click-outside-deactivates="true"
+  data-escape-deactivates="true"
+  data-initial-focus="#initial-focus"
+  data-paused="false"
+  data-return-focus-on-deactivate="true"
+  data-testid="focus-trap"
+>
+  <div
+    class="mock-content"
+  >
+    <h2>
+      Initial Focus Trap
+    </h2>
+    <button>
+      Button 1
+    </button>
+    <input
+      placeholder="Text input"
+      type="text"
+    />
+    <button>
+      Button 2
+    </button>
+  </div>
+</div>
+`;

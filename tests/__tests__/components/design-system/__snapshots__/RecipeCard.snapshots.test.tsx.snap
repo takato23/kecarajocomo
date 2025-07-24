@@ -1,0 +1,4068 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`RecipeCard Snapshots Basic RecipeCard Variants should render compact variant recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group max-w-sm"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-base leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots Basic RecipeCard Variants should render default recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots Basic RecipeCard Variants should render glass variant recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-interactive cursor-pointer overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Complex Combinations should render compact variant with minimal features 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group max-w-sm"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-rich-100 text-food-rich-800 border border-food-rich-200 dark:bg-food-rich-900/30 dark:text-food-rich-200 dark:border-food-rich-800 glass-rich backdrop-blur-md"
+      >
+        <span
+          class="flex-shrink-0 w-3 h-3"
+        >
+          <div
+            data-testid="star-icon"
+          >
+            Star
+          </div>
+        </span>
+        AI
+      </span>
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-error-500 glow-warm"
+      >
+        <div
+          class="fill-current"
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-fresh-100 text-food-fresh-800 border border-food-fresh-200 dark:bg-food-fresh-900/30 dark:text-food-fresh-200 dark:border-food-fresh-800 glass backdrop-blur-md capitalize"
+      >
+        easy
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        3.8
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-base leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-warm-500"
+              data-testid="flame-icon"
+            >
+              Flame
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              250
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Complex Combinations should render complete recipe card with all features 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 hover:transform hover:-translate-y-1 hover:shadow-glass-lg overflow-hidden group cursor-pointer"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <img
+      alt="Delicious Pasta"
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+      src="https://example.com/pasta.jpg"
+    />
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-rich-100 text-food-rich-800 border border-food-rich-200 dark:bg-food-rich-900/30 dark:text-food-rich-200 dark:border-food-rich-800 glass-rich backdrop-blur-md"
+      >
+        <span
+          class="flex-shrink-0 w-3 h-3"
+        >
+          <div
+            data-testid="star-icon"
+          >
+            Star
+          </div>
+        </span>
+        AI
+      </span>
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-error-500 glow-warm"
+      >
+        <div
+          class="fill-current"
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        4.7
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+          <p
+            class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left mt-1 line-clamp-2"
+          >
+            A complete pasta dish with fresh ingredients, perfect for dinner
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-warm-500"
+              data-testid="flame-icon"
+            >
+              Flame
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              425
+            </p>
+          </div>
+        </div>
+        <button
+          class="p-1 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        >
+          <div
+            class="text-neutral-500"
+            data-testid="share-icon"
+          >
+            Share
+          </div>
+        </button>
+      </div>
+      <div
+        class="flex flex-wrap gap-1"
+      >
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          vegetarian
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          quick
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          italian
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          +
+          1
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Complex Combinations should render glass variant with all features 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md glass-interactive hover:transform hover:-translate-y-1 hover:shadow-glass-lg hover:bg-glass-interactive-light overflow-hidden group cursor-pointer"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-warm-100 text-food-warm-800 border border-food-warm-200 dark:bg-food-warm-900/30 dark:text-food-warm-200 dark:border-food-warm-800 glass backdrop-blur-md capitalize"
+      >
+        hard
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        4.2
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+          <p
+            class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left mt-1 line-clamp-2"
+          >
+            Glass variant with all features
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-warm-500"
+              data-testid="flame-icon"
+            >
+              Flame
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              600
+            </p>
+          </div>
+        </div>
+        <button
+          class="p-1 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        >
+          <div
+            class="text-neutral-500"
+            data-testid="share-icon"
+          >
+            Share
+          </div>
+        </button>
+      </div>
+      <div
+        class="flex flex-wrap gap-1"
+      >
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          gourmet
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          complex
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Custom Styling should render recipe card with custom className 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group custom-recipe-card"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Custom Styling should render recipe card with custom data attributes 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+  data-category="pasta"
+  data-testid="custom-recipe"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Different Time Combinations should render recipe card with different servings 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              12
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-warm-500"
+              data-testid="flame-icon"
+            >
+              Flame
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              800
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Different Time Combinations should render recipe card with long cooking time 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              150
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Different Time Combinations should render recipe card with quick cooking time 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              10
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Difficulty Levels should render easy difficulty recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-fresh-100 text-food-fresh-800 border border-food-fresh-200 dark:bg-food-fresh-900/30 dark:text-food-fresh-200 dark:border-food-fresh-800 glass backdrop-blur-md capitalize"
+      >
+        easy
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Difficulty Levels should render hard difficulty recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-warm-100 text-food-warm-800 border border-food-warm-200 dark:bg-food-warm-900/30 dark:text-food-warm-200 dark:border-food-warm-800 glass backdrop-blur-md capitalize"
+      >
+        hard
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard Difficulty Levels should render medium difficulty recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Content should render recipe card with description 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+          <p
+            class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left mt-1 line-clamp-2"
+          >
+            A delicious pasta dish with fresh ingredients and amazing flavors
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Content should render recipe card with image 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <img
+      alt="Delicious Pasta"
+      class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+      src="https://example.com/pasta.jpg"
+    />
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+          <p
+            class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left mt-1 line-clamp-2"
+          >
+            Delicious pasta with tomatoes
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Content should render recipe card without image (placeholder) 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+          <p
+            class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left mt-1 line-clamp-2"
+          >
+            Delicious pasta with tomatoes
+          </p>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Interactions should render clickable recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 hover:transform hover:-translate-y-1 hover:shadow-glass-lg overflow-hidden group cursor-pointer"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Interactions should render recipe card with all interactions 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 hover:transform hover:-translate-y-1 hover:shadow-glass-lg overflow-hidden group cursor-pointer"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+        <button
+          class="p-1 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        >
+          <div
+            class="text-neutral-500"
+            data-testid="share-icon"
+          >
+            Share
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Interactions should render recipe card with favorite toggle 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Interactions should render recipe card with share button 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+        <button
+          class="p-1 rounded-md hover:bg-neutral-100 dark:hover:bg-neutral-800 transition-colors"
+        >
+          <div
+            class="text-neutral-500"
+            data-testid="share-icon"
+          >
+            Share
+          </div>
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Rating should render recipe card with rating 3.0 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        3.0
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Rating should render recipe card with rating 4.5 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        4.5
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Rating should render recipe card with rating 5.0 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+    <div
+      class="absolute bottom-3 right-3 flex items-center gap-1 glass-interactive backdrop-blur-md rounded-lg px-2 py-1"
+    >
+      <div
+        class="text-food-golden-500 fill-current"
+        data-testid="star-icon"
+      >
+        Star
+      </div>
+      <p
+        class="font-sans text-xs leading-normal font-medium text-neutral-700 dark:text-neutral-300 text-left"
+      >
+        5.0
+      </p>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Special States should render AI generated recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-rich-100 text-food-rich-800 border border-food-rich-200 dark:bg-food-rich-900/30 dark:text-food-rich-200 dark:border-food-rich-800 glass-rich backdrop-blur-md"
+      >
+        <span
+          class="flex-shrink-0 w-3 h-3"
+        >
+          <div
+            data-testid="star-icon"
+          >
+            Star
+          </div>
+        </span>
+        AI
+      </span>
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Special States should render favorite recipe card 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-error-500 glow-warm"
+      >
+        <div
+          class="fill-current"
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Special States should render recipe card with calories 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-warm-500"
+              data-testid="flame-icon"
+            >
+              Flame
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              350
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Tags should render compact recipe card with tags (should not show) 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group max-w-sm"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-base leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Tags should render recipe card with few tags 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex flex-wrap gap-1"
+      >
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          vegetarian
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          quick
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          italian
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`RecipeCard Snapshots RecipeCard with Tags should render recipe card with many tags 1`] = `
+<div
+  class="rounded-2xl transition-all duration-300 ease-glass backdrop-blur-md bg-white border border-neutral-200 shadow-sm dark:bg-neutral-800 dark:border-neutral-700 overflow-hidden group"
+>
+  <div
+    class="relative aspect-video overflow-hidden"
+  >
+    <div
+      class="w-full h-full bg-gradient-to-br from-food-fresh-100 to-food-warm-100 dark:from-food-fresh-900/20 dark:to-food-warm-900/20 flex items-center justify-center"
+    >
+      <div
+        class="text-food-fresh-400 dark:text-food-fresh-600"
+        data-testid="chef-hat-icon"
+      >
+        ChefHat
+      </div>
+    </div>
+    <div
+      class="absolute top-3 right-3 flex gap-2"
+    >
+      <button
+        class="p-2 rounded-full glass-interactive backdrop-blur-md transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-food-fresh-300 text-neutral-600 dark:text-neutral-400 hover:text-error-500"
+      >
+        <div
+          class=""
+          data-testid="heart-icon"
+        >
+          Heart
+        </div>
+      </button>
+    </div>
+    <div
+      class="absolute bottom-3 left-3"
+    >
+      <span
+        class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 text-xs bg-food-golden-100 text-food-golden-800 border border-food-golden-200 dark:bg-food-golden-900/30 dark:text-food-golden-200 dark:border-food-golden-800 glass backdrop-blur-md capitalize"
+      >
+        medium
+      </span>
+    </div>
+  </div>
+  <div
+    class="p-4"
+  >
+    <div
+      class="flex items-center justify-between mb-3"
+    >
+      <div
+        class="min-w-0 flex-1"
+      >
+        <div>
+          <h2
+            class="font-display text-lg leading-relaxed font-semibold text-neutral-900 dark:text-neutral-100 truncate group-hover:text-food-fresh-600 dark:group-hover:text-food-fresh-400 transition-colors"
+          >
+            Delicious Pasta
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div
+      class="text-neutral-700 dark:text-neutral-300 space-y-3"
+    >
+      <div
+        class="flex items-center justify-between text-sm"
+      >
+        <div
+          class="flex items-center gap-4"
+        >
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-golden-500"
+              data-testid="clock-icon"
+            >
+              Clock
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              30
+              m
+            </p>
+          </div>
+          <div
+            class="flex items-center gap-1"
+          >
+            <div
+              class="text-food-fresh-500"
+              data-testid="users-icon"
+            >
+              Users
+            </div>
+            <p
+              class="font-sans text-sm leading-relaxed font-normal text-neutral-500 dark:text-neutral-400 text-left"
+            >
+              4
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex flex-wrap gap-1"
+      >
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          vegetarian
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          quick
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          italian
+        </span>
+        <span
+          class="inline-flex items-center gap-1.5 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-1 rounded-lg px-2 py-0.5 bg-neutral-100 text-neutral-800 border border-neutral-200 dark:bg-neutral-800 dark:text-neutral-200 dark:border-neutral-700 text-xs"
+        >
+          +
+          3
+        </span>
+      </div>
+    </div>
+    <div
+      class="flex items-center gap-3 border-t border-neutral-200/50 dark:border-neutral-700/50 justify-end pt-4 mt-4"
+    >
+      <button
+        class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-3 py-1.5 text-sm gap-1.5 group-hover:bg-food-fresh-50 dark:group-hover:bg-food-fresh-900/20"
+      >
+        <div
+          class="flex items-center gap-inherit"
+        >
+          View Recipe
+        </div>
+        <div
+          class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+          />
+        </div>
+      </button>
+    </div>
+  </div>
+</div>
+`;

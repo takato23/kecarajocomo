@@ -1,0 +1,122 @@
+[
+  {
+    "id": "ing-1",
+    "name": "Pollo",
+    "category": "carnes",
+    "unit": "g"
+  },
+  {
+    "id": "ing-2",
+    "name": "Limón",
+    "category": "frutas",
+    "unit": "un"
+  },
+  {
+    "id": "ing-3",
+    "name": "Pasta",
+    "category": "carbohidratos",
+    "unit": "g"
+  },
+  {
+    "id": "ing-4",
+    "name": "Huevos",
+    "category": "proteínas",
+    "unit": "un"
+  },
+  {
+    "id": "ing-5",
+    "name": "Queso Parmesano",
+    "category": "lácteos",
+    "unit": "g"
+  },
+  {
+    "id": "ing-6",
+    "name": "Panceta",
+    "category": "carnes",
+    "unit": "g"
+  },
+  {
+    "id": "ing-7",
+    "name": "Lechuga",
+    "category": "verduras",
+    "unit": "un"
+  },
+  {
+    "id": "ing-8",
+    "name": "Pan",
+    "category": "carbohidratos",
+    "unit": "rebanadas"
+  },
+  {
+    "id": "ing-9",
+    "name": "Pescado",
+    "category": "carnes",
+    "unit": "g"
+  },
+  {
+    "id": "ing-10",
+    "name": "Tortillas",
+    "category": "carbohidratos",
+    "unit": "un"
+  },
+  {
+    "id": "ing-11",
+    "name": "Aguacate",
+    "category": "frutas",
+    "unit": "un"
+  },
+  {
+    "id": "ing-12",
+    "name": "Arroz",
+    "category": "carbohidratos",
+    "unit": "g"
+  },
+  {
+    "id": "ing-13",
+    "name": "Hongos",
+    "category": "verduras",
+    "unit": "g"
+  },
+  {
+    "id": "ing-14",
+    "name": "Espinaca",
+    "category": "verduras",
+    "unit": "g"
+  },
+  {
+    "id": "ing-15",
+    "name": "Manzana",
+    "category": "frutas",
+    "unit": "un"
+  },
+  {
+    "id": "ing-16",
+    "name": "Plátano",
+    "category": "frutas",
+    "unit": "un"
+  },
+  {
+    "id": "ing-17",
+    "name": "Carne Molida",
+    "category": "carnes",
+    "unit": "g"
+  },
+  {
+    "id": "ing-18",
+    "name": "Tomate",
+    "category": "verduras",
+    "unit": "un"
+  },
+  {
+    "id": "ing-19",
+    "name": "Cebolla",
+    "category": "verduras",
+    "unit": "un"
+  },
+  {
+    "id": "ing-20",
+    "name": "Ajo",
+    "category": "condimentos",
+    "unit": "dientes"
+  }
+]

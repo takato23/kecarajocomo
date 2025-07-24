@@ -1,0 +1,7895 @@
+[
+  {
+    "id": "b0ab0b6a-e70f-4d3e-99a3-819a426ba108",
+    "title": "Empanadas salteñas",
+    "description": "Clásicas empanadas de la región de Salta con relleno jugoso de carne y papas.",
+    "instructions": [
+      "Sofríe la cebolla y las papas en aceite hasta que estén tiernas.",
+      "Añade la carne y cocina hasta dorar; condimenta con ají, pimentón y comino.",
+      "Incorpora huevo duro y aceitunas al relleno y deja enfriar.",
+      "Rellena las tapas de empanada, cierra y realiza el repulgue.",
+      "Hornea a 200 °C durante 20-25 minutos o fríe hasta dorar."
+    ],
+    "prepTimeMinutes": 45,
+    "cookTimeMinutes": 25,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "empanadas",
+      "carne",
+      "salteñas"
+    ],
+    "imageUrl": "https://picsum.photos/seed/empanadas-salteñas/600/400",
+    "ingredients": [
+      {
+        "name": "tapas de empanada",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "carne de res",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "picada"
+      },
+      {
+        "name": "papas",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ají molido",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "comino",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "huevo duro",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "aceitunas",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picadas"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 18,
+      "carbs": 35,
+      "fat": 22,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5077742c-4edc-458d-ae01-9197edd2aade",
+    "title": "Milanesa a la napolitana",
+    "description": "Filetes empanados cubiertos con salsa de tomate, jamón y queso derretido.",
+    "instructions": [
+      "Sazona los bifes con sal y pimienta, pásalos por harina, huevo batido y pan rallado.",
+      "Fríe las milanesas en aceite caliente hasta dorar y escurre.",
+      "Coloca las milanesas en una fuente, cubre con salsa de tomate, jamón y queso.",
+      "Espolvorea con orégano y hornea hasta que el queso se derrita.",
+      "Sirve caliente acompañado de puré o ensalada."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "milanesa",
+      "carne",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesa-a-la-napolitana/600/400",
+    "ingredients": [
+      {
+        "name": "bifes de res",
+        "quantity": 4,
+        "unit": "u",
+        "notes": "finos"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "jamón cocido",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "queso mozzarella",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "orégano",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 650,
+      "protein": 40,
+      "carbs": 45,
+      "fat": 35,
+      "fiber": 2,
+      "sugar": 5,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "fb414474-e376-4502-9999-b54704254a7a",
+    "title": "Choripán argentino",
+    "description": "Sándwich de chorizo a la parrilla servido en pan con chimichurri.",
+    "instructions": [
+      "Asa los chorizos en la parrilla hasta que estén bien cocidos.",
+      "Abre los panes y caliéntalos ligeramente en la parrilla.",
+      "Coloca un chorizo en cada pan, agrega chimichurri, lechuga y tomate.",
+      "Cierra el sándwich y sirve caliente."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "sándwich",
+      "parrilla",
+      "chorizo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/choripán-argentino/600/400",
+    "ingredients": [
+      {
+        "name": "chorizos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "pan para choripán",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "chimichurri",
+        "quantity": 60,
+        "unit": "ml"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 4,
+        "unit": "hojas",
+        "notes": "lavadas"
+      },
+      {
+        "name": "tomate",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 560,
+      "protein": 24,
+      "carbs": 40,
+      "fat": 35,
+      "fiber": 3,
+      "sugar": 3,
+      "sodium": 900
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "0ecd01a4-6bbd-404c-830a-6924fa9769c4",
+    "title": "Matambre a la pizza",
+    "description": "Corte de carne delgado cocido a la parrilla y cubierto con salsa, queso y tomates.",
+    "instructions": [
+      "Hierve el matambre en agua con sal hasta que esté tierno.",
+      "Llévalo a la parrilla y cocínalo por ambos lados.",
+      "Cubre con salsa de tomate, queso mozzarella, rodajas de tomate y orégano.",
+      "Continúa la cocción hasta que el queso se derrita.",
+      "Decora con aceitunas y sirve."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "carne",
+      "parrilla",
+      "pizza"
+    ],
+    "imageUrl": "https://picsum.photos/seed/matambre-a-la-pizza/600/400",
+    "ingredients": [
+      {
+        "name": "matambre de res",
+        "quantity": 1,
+        "unit": "kg"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "queso mozzarella",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "tomate",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "orégano",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceitunas",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 780,
+      "protein": 50,
+      "carbs": 10,
+      "fat": 60,
+      "fiber": 1.5,
+      "sugar": 3,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "009914a3-597e-4df3-a72c-ee34ea60e9f9",
+    "title": "Pastel de papas",
+    "description": "Cazuela gratinada de carne picada y puré de papas.",
+    "instructions": [
+      "Hierve las papas hasta que estén tiernas y haz un puré con leche y manteca.",
+      "Sofríe cebolla, zanahoria y morrón; añade la carne y condimenta.",
+      "Coloca la carne en una fuente, cubre con el puré de papas.",
+      "Lleva al horno hasta gratinar y dorar la superficie.",
+      "Sirve caliente."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 40,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "pastel",
+      "horno",
+      "carne"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pastel-de-papas/600/400",
+    "ingredients": [
+      {
+        "name": "carne picada",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "papas",
+        "quantity": 1.5,
+        "unit": "kg",
+        "notes": "peladas"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "rallada"
+      },
+      {
+        "name": "morrón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "manteca",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 30,
+      "carbs": 45,
+      "fat": 25,
+      "fiber": 4,
+      "sugar": 4,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5951eee9-1c6f-4ceb-b1d4-b02ca0c1cb73",
+    "title": "Carbonada criolla",
+    "description": "Guiso espeso con carne, verduras y fruta típico de la cocina criolla.",
+    "instructions": [
+      "Dora la carne en aceite y reserva.",
+      "Sofríe la cebolla y el tomate hasta que se deshagan.",
+      "Agrega zapallo, papas, batatas y maíz; cubre con caldo.",
+      "Añade la carne nuevamente y cocina a fuego lento hasta que las verduras estén tiernas.",
+      "Incorpora los duraznos al final, condimenta y sirve."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 60,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "guiso",
+      "cazuela",
+      "invierno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/carbonada-criolla/600/400",
+    "ingredients": [
+      {
+        "name": "carne de res",
+        "quantity": 700,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "zapallo",
+        "quantity": 600,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "papas",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "batata",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "maíz",
+        "quantity": 2,
+        "unit": "mazorcas",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "duraznos",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en gajos"
+      },
+      {
+        "name": "tomate",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "caldo",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "aceite",
+        "quantity": 40,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 600,
+      "protein": 35,
+      "carbs": 65,
+      "fat": 20,
+      "fiber": 7,
+      "sugar": 12,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "f5fb118a-e3a9-46b0-b4a4-8cba4d32d1d4",
+    "title": "Polenta con tuco",
+    "description": "Plato reconfortante de polenta cremosa con salsa de tomate y carne.",
+    "instructions": [
+      "Hierve agua con sal y vierte la polenta en forma de lluvia, revolviendo hasta espesar.",
+      "Añade queso rallado y reserva caliente.",
+      "Para el tuco, sofríe la cebolla y la carne hasta dorar, agrega el tomate y condimenta.",
+      "Sirve la polenta en platos hondos y cubre con el tuco.",
+      "Espolvorea queso adicional si deseas."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "polenta",
+      "salsa",
+      "invierno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/polenta-con-tuco/600/400",
+    "ingredients": [
+      {
+        "name": "polenta",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "agua",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "carne picada",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "orégano",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 480,
+      "protein": 20,
+      "carbs": 60,
+      "fat": 15,
+      "fiber": 4,
+      "sugar": 6,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "9dd22df9-8773-414e-b74c-ba0b532881c1",
+    "title": "Ñoquis del 29",
+    "description": "Pasta de papa casera servida tradicionalmente el día 29 de cada mes.",
+    "instructions": [
+      "Hierve las papas con piel, pélalas y haz un puré.",
+      "Agrega harina, huevo y sal al puré; mezcla hasta formar una masa suave.",
+      "Forma cilindros y corta los ñoquis; pásalos por un tenedor para marcar.",
+      "Cocina los ñoquis en agua hirviendo hasta que floten.",
+      "Sirve con salsa de tomate y espolvorea queso rallado."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "pasta",
+      "casera",
+      "noquis"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ñoquis-del-29/600/400",
+    "ingredients": [
+      {
+        "name": "papas",
+        "quantity": 800,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "huevo",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 12,
+      "carbs": 80,
+      "fat": 5,
+      "fiber": 3,
+      "sugar": 4,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "6c027af1-fb6e-4abc-ad27-8b6e07a7bfd2",
+    "title": "Tortilla de papas",
+    "description": "Omelette gruesa de papas y huevo, ideal como tapa o plato principal.",
+    "instructions": [
+      "Fríe las papas en aceite hasta que estén tiernas y doradas.",
+      "Sofríe la cebolla hasta que se ablande.",
+      "Bate los huevos con sal y mezcla con las papas y la cebolla.",
+      "Vierte la mezcla en una sartén y cocina a fuego medio, volteando una vez.",
+      "Cocina hasta que la tortilla esté cuajada y dorada por ambos lados."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 25,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "omelette",
+      "papas",
+      "huevo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/tortilla-de-papas/600/400",
+    "ingredients": [
+      {
+        "name": "papas",
+        "quantity": 600,
+        "unit": "g",
+        "notes": "cortadas en rodajas"
+      },
+      {
+        "name": "huevos",
+        "quantity": 6,
+        "unit": "u"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 12,
+      "carbs": 30,
+      "fat": 18,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 450
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "9722e45f-d19e-4d94-8cbd-192d21e02129",
+    "title": "Milanesa de soja",
+    "description": "Alternativa vegetariana de milanesa elaborada con proteína de soja texturizada.",
+    "instructions": [
+      "Hidrata la soja texturizada con leche caliente y escurre.",
+      "Mezcla la soja con ajo, perejil y condimentos y forma filetes.",
+      "Pasa los filetes por harina, huevo batido y pan rallado.",
+      "Fríe las milanesas en aceite hasta dorar por ambos lados.",
+      "Escurre sobre papel absorbente y sirve con ensalada."
+    ],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "vegetariano",
+      "milanesa",
+      "soja"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesa-de-soja/600/400",
+    "ingredients": [
+      {
+        "name": "soja texturizada fina",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "cucharada",
+        "notes": "picado"
+      },
+      {
+        "name": "leche",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 25,
+      "carbs": 35,
+      "fat": 18,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 550
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "6a47769c-63c9-4a34-b29b-98135b1ffe8a",
+    "title": "Suprema de pollo a la Maryland",
+    "description": "Pechuga de pollo empanada servida con banana frita y salsa blanca.",
+    "instructions": [
+      "Sazona las pechugas, pásalas por harina, huevo y pan rallado.",
+      "Fríe las supremas en aceite caliente hasta dorar.",
+      "Para la salsa blanca, derrite manteca, agrega harina y leche hasta espesar; condimenta con nuez moscada.",
+      "Fríe los plátanos en aceite hasta que estén dorados.",
+      "Sirve las supremas con la salsa blanca y plátanos fritos."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 25,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "pollo",
+      "empanado",
+      "tradicional"
+    ],
+    "imageUrl": "https://picsum.photos/seed/suprema-de-pollo-a-la-maryland/600/400",
+    "ingredients": [
+      {
+        "name": "pechugas de pollo",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "plátanos",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "maduros"
+      },
+      {
+        "name": "manteca",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "harina para salsa",
+        "quantity": 20,
+        "unit": "g"
+      },
+      {
+        "name": "nuez moscada",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 700,
+      "protein": 40,
+      "carbs": 50,
+      "fat": 40,
+      "fiber": 3,
+      "sugar": 7,
+      "sodium": 850
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "8f0bae55-a8af-4ee9-a71a-4287a2552886",
+    "title": "Ensalada rusa",
+    "description": "Ensalada fría de papas, zanahorias, arvejas y mayonesa, típica de celebraciones.",
+    "instructions": [
+      "Hierve las papas y zanahorias hasta que estén tiernas y deja enfriar.",
+      "Mezcla en un bol las papas, zanahorias y arvejas.",
+      "Agrega mayonesa y condimenta con sal y pimienta.",
+      "Refrigera antes de servir como acompañamiento."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 15,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "ensalada",
+      "fría",
+      "acompañamiento"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ensalada-rusa/600/400",
+    "ingredients": [
+      {
+        "name": "papas",
+        "quantity": 500,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "zanahorias",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "arvejas",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "cocidas"
+      },
+      {
+        "name": "mayonesa",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 5,
+      "carbs": 30,
+      "fat": 12,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 400
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "19ea004f-7ff0-435f-9475-fef3c1ecd76f",
+    "title": "Vitello tonnato",
+    "description": "Finísimas lonjas de ternera servidas con salsa de atún y alcaparras.",
+    "instructions": [
+      "Cuece el peceto en caldo hasta que esté tierno y deja enfriar.",
+      "Prepara la salsa licuando el atún, yemas de huevo, jugo de limón y aceite hasta emulsionar.",
+      "Corta el peceto en lonjas finas.",
+      "Cubre las lonjas con la salsa y decora con alcaparras.",
+      "Refrigera antes de servir frío."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 50,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "carne",
+      "frío",
+      "fiesta"
+    ],
+    "imageUrl": "https://picsum.photos/seed/vitello-tonnato/600/400",
+    "ingredients": [
+      {
+        "name": "peceto de ternera",
+        "quantity": 1,
+        "unit": "kg"
+      },
+      {
+        "name": "atún en aceite",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "yemas de huevo",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "alcaparras",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "caldo",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "jugo"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 35,
+      "carbs": 2,
+      "fat": 32,
+      "fiber": 0.5,
+      "sugar": 0.5,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "69a559a4-e816-4c8f-8116-7063e33bfc6a",
+    "title": "Humita en olla",
+    "description": "Crema espesa de maíz fresco con cebolla y queso, típica del noroeste argentino.",
+    "instructions": [
+      "Sofríe la cebolla y el pimiento en manteca hasta transparentar.",
+      "Agrega los granos de choclo rallados y mezcla.",
+      "Incorpora la leche y cocina a fuego lento, revolviendo hasta espesar.",
+      "Añade azúcar y sal para equilibrar el sabor.",
+      "Incorpora el queso fresco al final y sirve caliente."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "maíz",
+      "crema",
+      "vegetariano"
+    ],
+    "imageUrl": "https://picsum.photos/seed/humita-en-olla/600/400",
+    "ingredients": [
+      {
+        "name": "choclos",
+        "quantity": 8,
+        "unit": "u",
+        "notes": "granos rallados"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "queso fresco",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "manteca",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 380,
+      "protein": 14,
+      "carbs": 45,
+      "fat": 16,
+      "fiber": 5,
+      "sugar": 8,
+      "sodium": 450
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "bcca552e-d7a6-41f0-bd19-d87dfda24e46",
+    "title": "Tamales salteños",
+    "description": "Masa de maíz rellena de carne y envuelta en chala, cocida al vapor.",
+    "instructions": [
+      "Prepara el relleno sofriendo la carne y cebolla con especias; añade huevo y aceitunas.",
+      "Cocina la harina de maíz con caldo y grasa hasta obtener una masa húmeda.",
+      "Coloca una porción de masa sobre cada chala, añade relleno y cierra formando tamales.",
+      "Cocina los tamales al vapor durante 1 hora y media.",
+      "Sirve calientes acompañados de salsa."
+    ],
+    "prepTimeMinutes": 60,
+    "cookTimeMinutes": 90,
+    "servings": 8,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "tamales",
+      "maíz",
+      "vapor"
+    ],
+    "imageUrl": "https://picsum.photos/seed/tamales-salteños/600/400",
+    "ingredients": [
+      {
+        "name": "harina de maíz",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "grasa de cerdo",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "caldo",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "carne de res",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "picada"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "comino",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "ají molido",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "duros, picados"
+      },
+      {
+        "name": "aceitunas",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picadas"
+      },
+      {
+        "name": "chalas de maíz",
+        "quantity": 16,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 18,
+      "carbs": 50,
+      "fat": 18,
+      "fiber": 5,
+      "sugar": 2,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "69189fca-2849-44a2-a5e0-1f6538cd5314",
+    "title": "Chocotorta",
+    "description": "Postre frío sin horno de galletitas de chocolate, dulce de leche y queso crema.",
+    "instructions": [
+      "Mezcla el dulce de leche con el queso crema hasta obtener una crema homogénea.",
+      "Remoja brevemente las galletitas en café frío.",
+      "Alterna capas de galletitas y crema en un molde rectangular.",
+      "Refrigera al menos 4 horas antes de servir.",
+      "Decora con cacao en polvo si lo deseas."
+    ],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 0,
+    "servings": 10,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "sin horno",
+      "dulce"
+    ],
+    "imageUrl": "https://picsum.photos/seed/chocotorta/600/400",
+    "ingredients": [
+      {
+        "name": "galletitas de chocolate",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "dulce de leche",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "queso crema",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "café",
+        "quantity": 200,
+        "unit": "ml",
+        "notes": "para mojar"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 380,
+      "protein": 6,
+      "carbs": 50,
+      "fat": 18,
+      "fiber": 2,
+      "sugar": 30,
+      "sodium": 180
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "e6615c18-cdad-4c77-9cdb-1ae1f0a97d07",
+    "title": "Alfajores de maicena",
+    "description": "Dulce tradicional de dos tapas de maicena rellenas con dulce de leche.",
+    "instructions": [
+      "Bate la manteca con el azúcar; agrega las yemas y la vainilla.",
+      "Incorpora la harina, fécula y polvo de hornear hasta formar una masa.",
+      "Estira y corta círculos; hornea a 180 °C por 10-12 minutos.",
+      "Une dos tapas con dulce de leche y rueda los bordes en coco rallado.",
+      "Deja reposar antes de consumir."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 15,
+    "servings": 12,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "alfajores",
+      "maicena"
+    ],
+    "imageUrl": "https://picsum.photos/seed/alfajores-de-maicena/600/400",
+    "ingredients": [
+      {
+        "name": "fécula de maíz",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "manteca",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "yemas"
+      },
+      {
+        "name": "esencia de vainilla",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "polvo de hornear",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "dulce de leche",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "coco rallado",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 200,
+      "protein": 2,
+      "carbs": 30,
+      "fat": 9,
+      "fiber": 1,
+      "sugar": 15,
+      "sodium": 50
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a0a7f91f-e981-4b7b-8aae-3a741faf6d6c",
+    "title": "Panqueques con dulce de leche",
+    "description": "Crepes finas rellenas con abundante dulce de leche, postre rápido y delicioso.",
+    "instructions": [
+      "Prepara una masa lisa mezclando harina, huevos, leche y sal; deja reposar.",
+      "Calienta una sartén antiadherente y engrásala con manteca.",
+      "Vierte porciones de masa formando panqueques finos y cocina por ambos lados.",
+      "Rellena cada panqueque con dulce de leche y enrolla.",
+      "Sirve espolvoreado con azúcar impalpable si lo deseas."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "panqueques",
+      "dulce de leche"
+    ],
+    "imageUrl": "https://picsum.photos/seed/panqueques-con-dulce-de-leche/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "leche",
+        "quantity": 400,
+        "unit": "ml"
+      },
+      {
+        "name": "manteca",
+        "quantity": 30,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "dulce de leche",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 7,
+      "carbs": 45,
+      "fat": 12,
+      "fiber": 1,
+      "sugar": 20,
+      "sodium": 150
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "72352045-c0e1-4e50-85cd-b94ec277414a",
+    "title": "Postre vigilante",
+    "description": "Simple combinación de queso y dulce de membrillo o batata, típica merienda.",
+    "instructions": [
+      "Corta el queso y el dulce en porciones iguales.",
+      "Sirve una porción de queso junto a una porción de dulce en cada plato.",
+      "Disfruta como postre o merienda."
+    ],
+    "prepTimeMinutes": 5,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "rápido",
+      "queso"
+    ],
+    "imageUrl": "https://picsum.photos/seed/postre-vigilante/600/400",
+    "ingredients": [
+      {
+        "name": "queso fresco",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "dulce de membrillo",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en cubos"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 10,
+      "carbs": 40,
+      "fat": 10,
+      "fiber": 2,
+      "sugar": 35,
+      "sodium": 200
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "b67de326-b1d1-4d45-a316-23dcdb34159a",
+    "title": "Chipa guazú",
+    "description": "Torta salada de maíz fresco y queso típica de Paraguay, también apreciada en Argentina.",
+    "instructions": [
+      "Licúa o procesa los granos de maíz con leche hasta obtener una mezcla gruesa.",
+      "Sofríe la cebolla en manteca y mezcla con el maíz procesado.",
+      "Añade los huevos batidos, el queso rallado y la sal.",
+      "Vierte en un molde enmantecado y hornea a 180 °C durante 40-45 minutos.",
+      "Deja entibiar antes de cortar y servir."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 45,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "maíz",
+      "queso",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/chipa-guazú/600/400",
+    "ingredients": [
+      {
+        "name": "granos de maíz",
+        "quantity": 800,
+        "unit": "g"
+      },
+      {
+        "name": "queso paraguay o fresco",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "huevos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "manteca",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 15,
+      "carbs": 40,
+      "fat": 15,
+      "fiber": 5,
+      "sugar": 6,
+      "sodium": 400
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "54dc7083-9dbb-4f3d-8733-d057f67e7144",
+    "title": "Locro de gallina",
+    "description": "Versión ligera del locro criollo preparada con carne de gallina y maíz blanco.",
+    "instructions": [
+      "Remoja el maíz y los porotos la noche anterior.",
+      "Hierve la carne de gallina hasta que esté tierna y reserva.",
+      "En la misma olla, cocina el maíz y los porotos hasta ablandar.",
+      "Agrega el zapallo, la panceta, la cebolla y el puerro; cocina hasta que todo esté tierno.",
+      "Incorpora la carne, condimenta y cocina 15 minutos más antes de servir."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 90,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "guiso",
+      "maíz",
+      "gallina"
+    ],
+    "imageUrl": "https://picsum.photos/seed/locro-de-gallina/600/400",
+    "ingredients": [
+      {
+        "name": "carne de gallina",
+        "quantity": 800,
+        "unit": "g",
+        "notes": "en trozos"
+      },
+      {
+        "name": "maíz blanco partido",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "porotos blancos",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "zapallo",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "puerro",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "panceta",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "agua",
+        "quantity": 2,
+        "unit": "litros"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 40,
+      "carbs": 45,
+      "fat": 22,
+      "fiber": 8,
+      "sugar": 4,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "8d31d55e-0373-4d44-86c3-962149049daa",
+    "title": "Guiso de lentejas",
+    "description": "Plato robusto de lentejas con verduras y chorizo, ideal para el invierno.",
+    "instructions": [
+      "Sofríe la panceta y el chorizo en aceite hasta dorar.",
+      "Agrega la cebolla, zanahoria y pimentón; cocina hasta ablandar.",
+      "Añade las lentejas remojadas, el tomate triturado y laurel; cubre con agua.",
+      "Incorpora las papas y cocina a fuego lento hasta que todo esté tierno.",
+      "Condimenta con sal y sirve caliente."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 60,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "guiso",
+      "lentejas",
+      "invierno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/guiso-de-lentejas/600/400",
+    "ingredients": [
+      {
+        "name": "lentejas",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "chorizo colorado",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "panceta",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "papa",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "laurel",
+        "quantity": 1,
+        "unit": "hoja"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 480,
+      "protein": 30,
+      "carbs": 50,
+      "fat": 18,
+      "fiber": 12,
+      "sugar": 6,
+      "sodium": 750
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a36ae885-8bde-4b66-87e6-3e63b0c29f11",
+    "title": "Fideos con tuco",
+    "description": "Pasta larga servida con una salsa de carne y tomate casera.",
+    "instructions": [
+      "Hierve los fideos en agua con sal hasta que estén al dente.",
+      "En otra olla, sofríe la cebolla y el ajo en aceite, añade la carne y cocina hasta dorar.",
+      "Agrega el tomate triturado, orégano y laurel; cocina a fuego lento.",
+      "Escurre los fideos y mézclalos con el tuco.",
+      "Sirve caliente con queso rallado si lo deseas."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 25,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "pasta",
+      "carne",
+      "salsa"
+    ],
+    "imageUrl": "https://picsum.photos/seed/fideos-con-tuco/600/400",
+    "ingredients": [
+      {
+        "name": "fideos largos",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "carne picada",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "orégano",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "laurel",
+        "quantity": 1,
+        "unit": "hoja"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 25,
+      "carbs": 75,
+      "fat": 12,
+      "fiber": 6,
+      "sugar": 7,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "7d378a71-90cb-4858-bce6-3eafe21f4fb2",
+    "title": "Milanesa de berenjena",
+    "description": "Láminas de berenjena empanadas y horneadas, opción vegetariana ligera.",
+    "instructions": [
+      "Espolvorea las rodajas de berenjena con sal y deja reposar 15 minutos; enjuaga y seca.",
+      "Pasa las rodajas por harina, huevo batido y pan rallado mezclado con ajo y perejil.",
+      "Dispón en una bandeja con aceite de oliva y hornea a 200 °C hasta dorar.",
+      "Sirve calientes como plato principal o acompañamiento."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "vegetariano",
+      "berenjena",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesa-de-berenjena/600/400",
+    "ingredients": [
+      {
+        "name": "berenjenas",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "ajo en polvo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "perejil seco",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 6,
+      "carbs": 30,
+      "fat": 12,
+      "fiber": 7,
+      "sugar": 5,
+      "sodium": 400
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "f2cbb1c8-9452-4670-9123-0930607f181f",
+    "title": "Pizza Margherita",
+    "description": "Pizza italiana clásica con salsa de tomate, mozzarella y albahaca fresca.",
+    "instructions": [
+      "Estira la masa de pizza en forma de círculo y colócala en una bandeja.",
+      "Cubre con salsa de tomate y agrega las rodajas de mozzarella.",
+      "Hornea a 220 °C durante 10-12 minutos o hasta que el borde esté dorado.",
+      "Añade hojas de albahaca fresca y un chorrito de aceite de oliva antes de servir.",
+      "Sirve caliente."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "italiana",
+    "tags": [
+      "pizza",
+      "italiana",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pizza-margherita/600/400",
+    "ingredients": [
+      {
+        "name": "masa de pizza",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "queso mozzarella",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "albahaca fresca",
+        "quantity": 10,
+        "unit": "hojas"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 20,
+      "carbs": 50,
+      "fat": 18,
+      "fiber": 3,
+      "sugar": 6,
+      "sodium": 550
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "3c22dc6d-0f1d-487f-9a63-87b40a0d1a8d",
+    "title": "Pasta Bolognesa",
+    "description": "Pasta italiana con salsa boloñesa de carne y tomate.",
+    "instructions": [
+      "Cocina la pasta en agua con sal hasta que esté al dente.",
+      "En una sartén, sofríe zanahoria, apio y cebolla en aceite; añade la carne y dora.",
+      "Agrega el vino y deja reducir; incorpora tomate triturado y laurel y cocina a fuego lento.",
+      "Condimenta al gusto y mezcla con la pasta escurrida.",
+      "Sirve caliente con queso rallado si deseas."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": [
+      "pasta",
+      "italiana",
+      "carne"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pasta-bolognesa/600/400",
+    "ingredients": [
+      {
+        "name": "espaguetis",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "carne picada de res",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "apio",
+        "quantity": 1,
+        "unit": "tallo",
+        "notes": "picado"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "vino tinto",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "hoja de laurel",
+        "quantity": 1,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 30,
+      "carbs": 70,
+      "fat": 18,
+      "fiber": 5,
+      "sugar": 8,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "40bbd671-ad9b-41c5-ac74-2b1d5a1f365f",
+    "title": "Lasagna de carne",
+    "description": "Capas de pasta intercaladas con salsa de carne, salsa bechamel y queso gratinado.",
+    "instructions": [
+      "Prepara una salsa de carne sofriendo cebolla y ajo, añade la carne y tomate y cocina a fuego lento.",
+      "Prepara una salsa bechamel derritiendo manteca, agregando harina y leche hasta espesar.",
+      "Cocina las láminas de lasaña según indicaciones del paquete.",
+      "En una fuente, alterna capas de pasta, salsa de carne, bechamel y queso.",
+      "Hornea a 180 °C durante 35-40 minutos hasta gratinar."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 45,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "italiana",
+    "tags": [
+      "pasta",
+      "horno",
+      "carne"
+    ],
+    "imageUrl": "https://picsum.photos/seed/lasagna-de-carne/600/400",
+    "ingredients": [
+      {
+        "name": "láminas de lasaña",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "carne picada",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes"
+      },
+      {
+        "name": "leche",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "harina",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "manteca",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 700,
+      "protein": 35,
+      "carbs": 65,
+      "fat": 32,
+      "fiber": 4,
+      "sugar": 7,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5a6feff3-1cd2-4543-97d4-0569a112a4f3",
+    "title": "Paella valenciana",
+    "description": "Tradicional arroz español con pollo, conejo, verduras y azafrán.",
+    "instructions": [
+      "En una paellera, dora el pollo y el conejo en aceite y retira.",
+      "Sofríe las judías verdes, el garrofón y el tomate triturado.",
+      "Incorpora el arroz y rehoga brevemente; añade el caldo caliente con azafrán.",
+      "Devuelve las carnes a la paellera y ajusta la sal.",
+      "Cocina sin remover hasta que el arroz esté en su punto y el líquido se absorba."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 60,
+    "servings": 6,
+    "difficulty": "hard",
+    "cuisine": "española",
+    "tags": [
+      "arroz",
+      "mariscos",
+      "paella"
+    ],
+    "imageUrl": "https://picsum.photos/seed/paella-valenciana/600/400",
+    "ingredients": [
+      {
+        "name": "arroz de paella",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "pollo",
+        "quantity": 500,
+        "unit": "g",
+        "notes": "en trozos"
+      },
+      {
+        "name": "conejo",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en trozos"
+      },
+      {
+        "name": "judías verdes",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "garrofón",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "caldo de pollo",
+        "quantity": 1.2,
+        "unit": "litros"
+      },
+      {
+        "name": "azafrán",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 35,
+      "carbs": 60,
+      "fat": 18,
+      "fiber": 6,
+      "sugar": 5,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "520534ca-a9f4-4b66-ac6e-f401e03cfe9d",
+    "title": "Coq au vin",
+    "description": "Estofado francés de pollo cocido a fuego lento en vino tinto con champiñones y tocino.",
+    "instructions": [
+      "Marina el pollo en vino tinto durante al menos 4 horas.",
+      "Dora el tocino en una olla y retira; dora el pollo marinado en la misma grasa.",
+      "Agrega verduras y champiñones y cocina hasta que se ablanden.",
+      "Espolvorea harina, mezcla y añade el vino de la marinada y caldo; condimenta.",
+      "Cocina a fuego lento hasta que el pollo esté muy tierno y la salsa espese."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 120,
+    "servings": 6,
+    "difficulty": "hard",
+    "cuisine": "francesa",
+    "tags": [
+      "pollo",
+      "vino",
+      "estofado"
+    ],
+    "imageUrl": "https://picsum.photos/seed/coq-au-vin/600/400",
+    "ingredients": [
+      {
+        "name": "pollo en trozos",
+        "quantity": 1.5,
+        "unit": "kg"
+      },
+      {
+        "name": "vino tinto",
+        "quantity": 750,
+        "unit": "ml"
+      },
+      {
+        "name": "tocino",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "champiñones",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "zanahorias",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "caldo de pollo",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "harina",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "tomillo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 600,
+      "protein": 40,
+      "carbs": 10,
+      "fat": 30,
+      "fiber": 2,
+      "sugar": 3,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "73609aaa-67a4-4c9f-af39-c0f3afcb391a",
+    "title": "Ratatouille",
+    "description": "Guiso vegetal provenzal de berenjena, calabacín, tomate y pimientos.",
+    "instructions": [
+      "Saltea la cebolla y el ajo en aceite hasta perfumar.",
+      "Añade las berenjenas, calabacines y pimientos y cocina 10 minutos.",
+      "Incorpora los tomates y condimenta con tomillo, sal y pimienta.",
+      "Cocina a fuego lento hasta que todas las verduras estén tiernas.",
+      "Sirve caliente o frío como acompañamiento."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "francesa",
+    "tags": [
+      "vegetariano",
+      "guiso",
+      "verduras"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ratatouille/600/400",
+    "ingredients": [
+      {
+        "name": "berenjenas",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "calabacines",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "pimiento amarillo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "tomates",
+        "quantity": 4,
+        "unit": "u",
+        "notes": "picados"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "tomillo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 220,
+      "protein": 5,
+      "carbs": 25,
+      "fat": 12,
+      "fiber": 8,
+      "sugar": 9,
+      "sodium": 350
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5d277d60-f6e6-4413-838f-550b102bcdee",
+    "title": "Crepes de Nutella",
+    "description": "Delgadas crepes rellenas de crema de avellanas y chocolate.",
+    "instructions": [
+      "Mezcla harina, huevos, leche y azúcar hasta obtener una masa líquida.",
+      "Calienta una sartén antiadherente y engrásala con mantequilla.",
+      "Vierte una pequeña cantidad de masa y cocina por ambos lados hasta dorar.",
+      "Unta cada crepe con crema de avellanas y enrolla.",
+      "Sirve templado con frutas si deseas."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "francesa",
+    "tags": [
+      "postre",
+      "crepes",
+      "chocolate"
+    ],
+    "imageUrl": "https://picsum.photos/seed/crepes-de-nutella/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "leche",
+        "quantity": 300,
+        "unit": "ml"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 30,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "crema de avellanas",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 30,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 8,
+      "carbs": 40,
+      "fat": 16,
+      "fiber": 3,
+      "sugar": 20,
+      "sodium": 200
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "9ed1483d-a76b-4e5c-8baf-107d7b8ed5a5",
+    "title": "Sushi maki de salmón",
+    "description": "Rollos de sushi rellenos de salmón fresco, arroz y alga nori.",
+    "instructions": [
+      "Enjuaga el arroz hasta que el agua salga clara y cuece con agua.",
+      "Mezcla el arroz caliente con vinagre de arroz, azúcar y sal y deja enfriar.",
+      "Coloca una lámina de alga nori sobre la esterilla y extiende una capa de arroz.",
+      "Acomoda tiras de salmón y pepino; enrolla firmemente con ayuda de la esterilla.",
+      "Corta en piezas y sirve con wasabi y salsa de soja."
+    ],
+    "prepTimeMinutes": 60,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "hard",
+    "cuisine": "japonesa",
+    "tags": [
+      "sushi",
+      "pescado",
+      "arroz"
+    ],
+    "imageUrl": "https://picsum.photos/seed/sushi-maki-de-salmón/600/400",
+    "ingredients": [
+      {
+        "name": "arroz para sushi",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "salmón fresco",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "cortado en tiras"
+      },
+      {
+        "name": "láminas de alga nori",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "vinagre de arroz",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pepino",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "wasabi",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "salsa de soja",
+        "quantity": 60,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 320,
+      "protein": 18,
+      "carbs": 45,
+      "fat": 8,
+      "fiber": 2,
+      "sugar": 4,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "777dc84c-6854-4d6f-9182-36987ef610eb",
+    "title": "Ramen miso",
+    "description": "Sopa japonesa de fideos en caldo de miso con verduras y huevo.",
+    "instructions": [
+      "Hierve el caldo con jengibre, ajo y shiitake durante 15 minutos.",
+      "Agrega la pasta de miso disuelta y la salsa de soja; mezcla bien.",
+      "Cocina los fideos ramen en el caldo hasta que estén tiernos.",
+      "Sirve en tazones y añade huevos cocidos partidos y cebollín.",
+      "Disfruta caliente."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 40,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "japonesa",
+    "tags": [
+      "sopa",
+      "fideos",
+      "miso"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ramen-miso/600/400",
+    "ingredients": [
+      {
+        "name": "fideos ramen",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "caldo de pollo",
+        "quantity": 1.2,
+        "unit": "litros"
+      },
+      {
+        "name": "pasta de miso",
+        "quantity": 80,
+        "unit": "g"
+      },
+      {
+        "name": "salsa de soja",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 10,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "setas shiitake",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "cebollín",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "cocidos"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 18,
+      "carbs": 55,
+      "fat": 12,
+      "fiber": 4,
+      "sugar": 4,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a535ada7-255d-4163-8b48-55493158c55b",
+    "title": "Pollo tikka masala",
+    "description": "Pollo marinado en yogurt y especias, cocido en salsa cremosa de tomate y garam masala.",
+    "instructions": [
+      "Marina el pollo con yogur, garam masala, jengibre y ajo durante 2 horas.",
+      "Dora el pollo marinado en mantequilla hasta sellar.",
+      "Añade el tomate triturado y cocina a fuego lento.",
+      "Incorpora la crema y cocina hasta obtener una salsa espesa.",
+      "Espolvorea con cilantro y sirve con arroz basmati."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 45,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "india",
+    "tags": [
+      "pollo",
+      "curry",
+      "especias"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pollo-tikka-masala/600/400",
+    "ingredients": [
+      {
+        "name": "pechugas de pollo",
+        "quantity": 600,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "yogur natural",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "garam masala",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 10,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "nata o crema",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 1,
+        "unit": "cucharada",
+        "notes": "picado"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 35,
+      "carbs": 15,
+      "fat": 30,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "3c729274-de1e-4786-b74c-9b22386658c2",
+    "title": "Curry de garbanzos",
+    "description": "Curry vegano de garbanzos cocidos en salsa especiada de tomate y coco.",
+    "instructions": [
+      "Sofríe la cebolla, ajo y jengibre en aceite hasta dorar.",
+      "Añade el curry en polvo y cocina hasta liberar aromas.",
+      "Incorpora tomate triturado y leche de coco y deja hervir.",
+      "Agrega los garbanzos y cocina a fuego medio 15 minutos.",
+      "Añade las espinacas al final y cocina 2 minutos; sirve con arroz."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "india",
+    "tags": [
+      "vegano",
+      "curry",
+      "garbanzos"
+    ],
+    "imageUrl": "https://picsum.photos/seed/curry-de-garbanzos/600/400",
+    "ingredients": [
+      {
+        "name": "garbanzos cocidos",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "leche de coco",
+        "quantity": 400,
+        "unit": "ml"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "curry en polvo",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 1,
+        "unit": "cucharadita",
+        "notes": "rallado"
+      },
+      {
+        "name": "espinacas",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 430,
+      "protein": 15,
+      "carbs": 40,
+      "fat": 22,
+      "fiber": 8,
+      "sugar": 7,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "0e36ee25-afa4-4778-afc0-4798d270e8b5",
+    "title": "Falafel con salsa tahini",
+    "description": "Croquetas de garbanzos fritas servidas con salsa de semillas de sésamo.",
+    "instructions": [
+      "Procesa los garbanzos con cebolla, ajo, hierbas y especias hasta formar una pasta.",
+      "Forma bolitas y reposa en refrigerador 30 minutos.",
+      "Fríe los falafel en aceite caliente hasta dorar.",
+      "Mezcla tahini con jugo de limón y agua para formar la salsa.",
+      "Sirve los falafel acompañados de salsa tahini."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "medio oriental",
+    "tags": [
+      "vegano",
+      "legumbres",
+      "frito"
+    ],
+    "imageUrl": "https://picsum.photos/seed/falafel-con-salsa-tahini/600/400",
+    "ingredients": [
+      {
+        "name": "garbanzos remojados",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "dientes"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "manojo",
+        "notes": "picado"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 1,
+        "unit": "manojo",
+        "notes": "picado"
+      },
+      {
+        "name": "comino",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "coriandro en polvo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "harina",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite",
+        "quantity": 300,
+        "unit": "ml",
+        "notes": "para freír"
+      },
+      {
+        "name": "tahini",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "jugo de limón",
+        "quantity": 30,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 500,
+      "protein": 15,
+      "carbs": 35,
+      "fat": 30,
+      "fiber": 8,
+      "sugar": 2,
+      "sodium": 450
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "493bcc94-e537-4e42-911f-4659927a22f9",
+    "title": "Hummus con pita",
+    "description": "Puré de garbanzos con tahini, limón y ajo acompañado de pan pita.",
+    "instructions": [
+      "Procesa garbanzos, tahini, jugo de limón, ajo y sal hasta obtener una crema.",
+      "Añade aceite de oliva poco a poco hasta lograr la textura deseada.",
+      "Sirve el hummus en un plato y rocía con más aceite.",
+      "Calienta el pan pita y corta en triángulos.",
+      "Acompaña el hummus con el pan pita."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "medio oriental",
+    "tags": [
+      "vegano",
+      "dip",
+      "garbanzos"
+    ],
+    "imageUrl": "https://picsum.photos/seed/hummus-con-pita/600/400",
+    "ingredients": [
+      {
+        "name": "garbanzos cocidos",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "tahini",
+        "quantity": 60,
+        "unit": "g"
+      },
+      {
+        "name": "jugo de limón",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "ajo",
+        "quantity": 1,
+        "unit": "diente"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 40,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pan pita",
+        "quantity": 4,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 10,
+      "carbs": 35,
+      "fat": 14,
+      "fiber": 7,
+      "sugar": 2,
+      "sodium": 350
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "628a0008-7603-4fd0-971f-296169bbf139",
+    "title": "Shawarma de cordero",
+    "description": "Tiras de cordero marinado y asado, servido en pan plano con verduras y salsa.",
+    "instructions": [
+      "Marina el cordero con yogur, jugo de limón, comino, pimentón y ajo durante 4 horas.",
+      "Asa o saltea las tiras de cordero hasta que estén cocidas y doradas.",
+      "Calienta los panes pita y abre para formar bolsas.",
+      "Rellena con cordero, lechuga, tomate y salsa tahini.",
+      "Sirve caliente como sándwich."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "medio oriental",
+    "tags": [
+      "cordero",
+      "sándwich",
+      "especias"
+    ],
+    "imageUrl": "https://picsum.photos/seed/shawarma-de-cordero/600/400",
+    "ingredients": [
+      {
+        "name": "pierna de cordero",
+        "quantity": 800,
+        "unit": "g",
+        "notes": "en tiras"
+      },
+      {
+        "name": "yogur natural",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "jugo"
+      },
+      {
+        "name": "comino",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "pan pita",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 4,
+        "unit": "hojas"
+      },
+      {
+        "name": "tomate",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "salsa tahini",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 600,
+      "protein": 35,
+      "carbs": 45,
+      "fat": 25,
+      "fiber": 5,
+      "sugar": 5,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "9330940e-5b64-4fb5-98d7-f6a3b7add21b",
+    "title": "Taco de carnitas",
+    "description": "Tortillas de maíz rellenas de cerdo confitado y deshebrado con cilantro y cebolla.",
+    "instructions": [
+      "Cuece la carne con jugo de naranja, laurel, ajo y sal hasta que esté tierna y se deshaga.",
+      "Desmenuza la carne y dórela en su propia grasa.",
+      "Calienta las tortillas de maíz en una plancha.",
+      "Rellena cada tortilla con carnitas, cebolla, cilantro y unas gotas de limón.",
+      "Sirve con salsa picante si deseas."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 120,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "mexicana",
+    "tags": [
+      "tacos",
+      "cerdo",
+      "callejero"
+    ],
+    "imageUrl": "https://picsum.photos/seed/taco-de-carnitas/600/400",
+    "ingredients": [
+      {
+        "name": "paleta de cerdo",
+        "quantity": 1,
+        "unit": "kg",
+        "notes": "en trozos"
+      },
+      {
+        "name": "jugo de naranja",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "hoja de laurel",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "ajo",
+        "quantity": 4,
+        "unit": "dientes"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharada"
+      },
+      {
+        "name": "tortillas de maíz",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 1,
+        "unit": "manojo",
+        "notes": "picado"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "limones",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en gajos"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 30,
+      "carbs": 45,
+      "fat": 28,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "ba7bb305-9f41-4d74-915e-e16bb9dca8b9",
+    "title": "Burrito de carne",
+    "description": "Tortilla de harina rellena de carne, arroz, frijoles, queso y salsa.",
+    "instructions": [
+      "Sofríe la carne hasta dorar y condimenta con sal y pimienta.",
+      "Calienta las tortillas en una sartén para ablandarlas.",
+      "Coloca en cada tortilla carne, frijoles, arroz, queso, lechuga y salsa.",
+      "Enrolla el burrito cerrando los extremos y calienta ligeramente para fundir el queso.",
+      "Sirve caliente."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "mexicana",
+    "tags": [
+      "burrito",
+      "rápido",
+      "comida rápida"
+    ],
+    "imageUrl": "https://picsum.photos/seed/burrito-de-carne/600/400",
+    "ingredients": [
+      {
+        "name": "tortillas de harina",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "carne molida",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "frijoles negros cocidos",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "arroz blanco cocido",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 4,
+        "unit": "hojas",
+        "notes": "picadas"
+      },
+      {
+        "name": "aceite",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 650,
+      "protein": 30,
+      "carbs": 60,
+      "fat": 30,
+      "fiber": 6,
+      "sugar": 5,
+      "sodium": 750
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a345c26b-56bd-4394-b176-d4b51e6bf716",
+    "title": "Quesadillas de pollo",
+    "description": "Tortillas rellenas de queso derretido y pollo desmenuzado, doradas en sartén.",
+    "instructions": [
+      "En una sartén, saltea el pimiento y la cebolla hasta que estén tiernos.",
+      "Añade el pollo desmenuzado y mezcla.",
+      "Coloca una tortilla en una sartén, distribuye queso y el relleno de pollo y verduras, y cubre con otra tortilla.",
+      "Cocina hasta que el queso se derrita y la tortilla esté dorada por ambos lados.",
+      "Corta en porciones y sirve con salsa."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "mexicana",
+    "tags": [
+      "queso",
+      "pollo",
+      "rápido"
+    ],
+    "imageUrl": "https://picsum.photos/seed/quesadillas-de-pollo/600/400",
+    "ingredients": [
+      {
+        "name": "tortillas de harina",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "pollo cocido",
+        "quantity": 300,
+        "unit": "g",
+        "notes": "desmenuzado"
+      },
+      {
+        "name": "queso cheddar",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "aceite",
+        "quantity": 20,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 28,
+      "carbs": 40,
+      "fat": 26,
+      "fiber": 4,
+      "sugar": 3,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "199d5718-148f-47a2-8e9e-84d0010910f4",
+    "title": "Guacamole",
+    "description": "Dip cremoso de aguacate con tomate, cebolla, chile y limón.",
+    "instructions": [
+      "Machaca los aguacates en un bol hasta obtener un puré grueso.",
+      "Añade tomate, cebolla, chile y cilantro y mezcla.",
+      "Agrega jugo de limón y sal al gusto.",
+      "Sirve inmediatamente acompañado de totopos."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "mexicana",
+    "tags": [
+      "dip",
+      "aguacate",
+      "vegano"
+    ],
+    "imageUrl": "https://picsum.photos/seed/guacamole/600/400",
+    "ingredients": [
+      {
+        "name": "aguacates maduros",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "tomate",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "cebolla morada",
+        "quantity": 0.5,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 2,
+        "unit": "cucharadas",
+        "notes": "picado"
+      },
+      {
+        "name": "jugo de limón",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "chile jalapeño",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 3,
+      "carbs": 12,
+      "fat": 22,
+      "fiber": 7,
+      "sugar": 2,
+      "sodium": 300
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "1dcb9e0f-bd91-4794-9291-995365148a06",
+    "title": "Chili con carne",
+    "description": "Guiso picante de carne molida con frijoles, tomate y chiles.",
+    "instructions": [
+      "Sofríe la cebolla y el ajo en aceite; añade la carne y cocina hasta dorar.",
+      "Agrega el tomate, el chile en polvo y el comino; mezcla bien.",
+      "Incorpora los frijoles y el caldo; cocina a fuego medio 30 minutos.",
+      "Condimenta con sal y sirve acompañado de arroz o nachos."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 45,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "tex-mex",
+    "tags": [
+      "guiso",
+      "picante",
+      "frijoles"
+    ],
+    "imageUrl": "https://picsum.photos/seed/chili-con-carne/600/400",
+    "ingredients": [
+      {
+        "name": "carne molida",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "frijoles rojos cocidos",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "dientes"
+      },
+      {
+        "name": "chile en polvo",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      },
+      {
+        "name": "comino",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "caldo de carne",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 480,
+      "protein": 30,
+      "carbs": 35,
+      "fat": 20,
+      "fiber": 10,
+      "sugar": 6,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "db3698a5-5770-4b8b-87db-6b471dcf00de",
+    "title": "Hamburguesa con queso",
+    "description": "Clásica hamburguesa americana con queso cheddar en pan suave.",
+    "instructions": [
+      "Forma hamburguesas con la carne y condimenta con sal y pimienta.",
+      "Cocina las hamburguesas en una parrilla o sartén hasta el punto deseado.",
+      "Coloca una loncha de queso sobre cada hamburguesa para que se derrita.",
+      "Arma los sándwiches con pan, hamburguesa con queso, lechuga, tomate y cebolla.",
+      "Sirve con papas fritas si deseas."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "americana",
+    "tags": [
+      "hamburguesa",
+      "carne",
+      "rápido"
+    ],
+    "imageUrl": "https://picsum.photos/seed/hamburguesa-con-queso/600/400",
+    "ingredients": [
+      {
+        "name": "carne molida",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "queso cheddar",
+        "quantity": 4,
+        "unit": "lonchas"
+      },
+      {
+        "name": "pan de hamburguesa",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 4,
+        "unit": "hojas"
+      },
+      {
+        "name": "tomate",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en aros"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite",
+        "quantity": 20,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 650,
+      "protein": 35,
+      "carbs": 40,
+      "fat": 35,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "80c8818f-9cb8-4968-9426-13454b1d1c89",
+    "title": "Pollo frito estilo sureño",
+    "description": "Piezas de pollo marinadas en suero de leche, rebozadas y fritas hasta quedar crujientes.",
+    "instructions": [
+      "Marina las piezas de pollo en suero de leche con sal durante 4 horas.",
+      "Mezcla la harina con pimentón, ajo en polvo y pimienta cayena.",
+      "Reboza el pollo en la mezcla de harina hasta cubrir por completo.",
+      "Fríe el pollo en aceite caliente hasta que esté dorado y cocido.",
+      "Escurre sobre papel absorbente y sirve caliente."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "americana",
+    "tags": [
+      "pollo",
+      "frito",
+      "crujiente"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pollo-frito-estilo-sureño/600/400",
+    "ingredients": [
+      {
+        "name": "pollo",
+        "quantity": 1.2,
+        "unit": "kg",
+        "notes": "en piezas"
+      },
+      {
+        "name": "suero de leche",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "harina",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "ajo en polvo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "pimienta cayena",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "sal",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      },
+      {
+        "name": "aceite",
+        "quantity": 1,
+        "unit": "litro",
+        "notes": "para freír"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 750,
+      "protein": 40,
+      "carbs": 30,
+      "fat": 50,
+      "fiber": 2,
+      "sugar": 4,
+      "sodium": 900
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "87a4ce4b-680b-4615-ae3e-2c8b4ca4d8bc",
+    "title": "Pastel de manzana",
+    "description": "Tarta dulce con relleno de manzanas especiadas y masa crujiente.",
+    "instructions": [
+      "Coloca una lámina de masa en el molde y pincha la base.",
+      "Mezcla las manzanas con azúcar, canela y jugo de limón.",
+      "Rellena la base con las manzanas y distribuye trocitos de mantequilla.",
+      "Cubre con la segunda lámina de masa y sella los bordes; haz cortes para ventilar.",
+      "Hornea a 180 °C durante 45-50 minutos hasta dorar."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 50,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "americana",
+    "tags": [
+      "postre",
+      "tarta",
+      "manzana"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pastel-de-manzana/600/400",
+    "ingredients": [
+      {
+        "name": "masa de tarta",
+        "quantity": 2,
+        "unit": "láminas"
+      },
+      {
+        "name": "manzanas",
+        "quantity": 6,
+        "unit": "u",
+        "notes": "peladas y en láminas"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "canela en polvo",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "jugo de limón",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 3,
+      "carbs": 55,
+      "fat": 15,
+      "fiber": 4,
+      "sugar": 25,
+      "sodium": 250
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "0accbd1c-f348-4924-aca9-d67f68c85832",
+    "title": "Brownies de chocolate",
+    "description": "Bizcochos densos y húmedos de chocolate, ideales para los amantes del cacao.",
+    "instructions": [
+      "Derrite el chocolate con la mantequilla al baño maría.",
+      "Bate los huevos con el azúcar hasta integrar y añade la mezcla de chocolate.",
+      "Incorpora la harina y el cacao tamizados y mezcla suavemente; agrega las nueces.",
+      "Vierte la masa en un molde rectangular enmantecado.",
+      "Hornea a 180 °C durante 20-25 minutos hasta que los bordes estén firmes."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 25,
+    "servings": 12,
+    "difficulty": "easy",
+    "cuisine": "americana",
+    "tags": [
+      "postre",
+      "chocolate",
+      "brownies"
+    ],
+    "imageUrl": "https://picsum.photos/seed/brownies-de-chocolate/600/400",
+    "ingredients": [
+      {
+        "name": "chocolate negro",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "harina",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "cacao en polvo",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "nueces",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "picadas"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 5,
+      "carbs": 35,
+      "fat": 17,
+      "fiber": 2,
+      "sugar": 25,
+      "sodium": 70
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "36a2e3a6-0380-464d-a0a9-2b6d0acddec4",
+    "title": "Moussaka griega",
+    "description": "Pastel griego de berenjena y carne con salsa bechamel gratinada.",
+    "instructions": [
+      "Salpica las berenjenas con sal y deja reposar; enjuaga y seca.",
+      "Fríe las rodajas de berenjena y patata en aceite y reserva.",
+      "Sofríe cebolla y ajo, añade la carne y dora; incorpora tomate y vino y cocina a fuego lento.",
+      "Prepara la salsa bechamel con mantequilla, harina y leche hasta espesar.",
+      "En una fuente, intercala capas de patata, berenjena, carne y bechamel; cubre con queso y hornea 45 minutos."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 60,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "griega",
+    "tags": [
+      "berenjena",
+      "carne",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/moussaka-griega/600/400",
+    "ingredients": [
+      {
+        "name": "berenjenas",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "carne picada de cordero",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes"
+      },
+      {
+        "name": "vino tinto",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "patatas",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "harina",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 40,
+        "unit": "g"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "sal, pimienta y canela",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 650,
+      "protein": 30,
+      "carbs": 45,
+      "fat": 40,
+      "fiber": 6,
+      "sugar": 8,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "ef9adc24-3b65-4b06-88b2-ff0a18143de6",
+    "title": "Ensalada griega",
+    "description": "Ensalada fresca de pepino, tomate, cebolla, aceitunas y queso feta.",
+    "instructions": [
+      "Mezcla tomates, pepino, cebolla y aceitunas en una ensaladera.",
+      "Agrega el queso feta y espolvorea con orégano.",
+      "Aliña con aceite de oliva, vinagre y sal al gusto.",
+      "Sirve inmediatamente como entrada o acompañamiento."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "griega",
+    "tags": [
+      "ensalada",
+      "vegetariano",
+      "fresco"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ensalada-griega/600/400",
+    "ingredients": [
+      {
+        "name": "tomates",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "en trozos"
+      },
+      {
+        "name": "pepino",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "cebolla morada",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en julianas"
+      },
+      {
+        "name": "aceitunas negras",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "queso feta",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "orégano",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 40,
+        "unit": "ml"
+      },
+      {
+        "name": "vinagre de vino tinto",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 220,
+      "protein": 8,
+      "carbs": 10,
+      "fat": 18,
+      "fiber": 2,
+      "sugar": 5,
+      "sodium": 350
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "788f79ce-f320-44d5-a6da-e144cf105626",
+    "title": "Goulash húngaro",
+    "description": "Estofado de carne de res con paprika, cebolla y pimientos originario de Hungría.",
+    "instructions": [
+      "Sofríe la cebolla en aceite hasta dorar; añade la paprika y mezcla.",
+      "Agrega la carne y dora todos los lados.",
+      "Incorpora el pimiento y el tomate y cocina unos minutos.",
+      "Vierte el caldo, condimenta y cocina a fuego lento 2 horas hasta que la carne esté tierna.",
+      "Sirve con pan o puré."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 120,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "húngara",
+    "tags": [
+      "estofado",
+      "carne",
+      "paprika"
+    ],
+    "imageUrl": "https://picsum.photos/seed/goulash-húngaro/600/400",
+    "ingredients": [
+      {
+        "name": "carne de res",
+        "quantity": 1,
+        "unit": "kg",
+        "notes": "en cubos"
+      },
+      {
+        "name": "cebollas",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "paprika dulce",
+        "quantity": 2,
+        "unit": "cucharadas"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "caldo de carne",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "aceite",
+        "quantity": 40,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "comino",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 35,
+      "carbs": 12,
+      "fat": 35,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "1486e712-93f4-447c-a7b1-15d7da5f68a8",
+    "title": "Schnitzel alemán",
+    "description": "Chuleta de cerdo empanada y frita, acompañada de limón.",
+    "instructions": [
+      "Salpimenta las chuletas y pásalas por harina, huevo batido y pan rallado.",
+      "Fríe en aceite caliente hasta dorar ambos lados.",
+      "Escurre sobre papel absorbente.",
+      "Sirve con rodajas de limón y ensalada de papa."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "alemana",
+    "tags": [
+      "cerdo",
+      "empanado",
+      "frito"
+    ],
+    "imageUrl": "https://picsum.photos/seed/schnitzel-alemán/600/400",
+    "ingredients": [
+      {
+        "name": "chuletas de cerdo",
+        "quantity": 4,
+        "unit": "u",
+        "notes": "aplanadas"
+      },
+      {
+        "name": "harina",
+        "quantity": 60,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en cuartos"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 28,
+      "carbs": 25,
+      "fat": 30,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "16ea7fe0-4077-44a4-a219-24363f210750",
+    "title": "Pasta carbonara",
+    "description": "Espaguetis italianos con salsa cremosa de huevo, queso y panceta.",
+    "instructions": [
+      "Hierve la pasta en agua con sal hasta al dente.",
+      "Saltea la panceta en aceite hasta que esté crujiente.",
+      "Bate los huevos con el queso parmesano.",
+      "Mezcla la pasta caliente con la panceta y luego incorpora la mezcla de huevo y queso.",
+      "Condimenta con pimienta y sirve de inmediato."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": [
+      "pasta",
+      "italiana",
+      "rápido"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pasta-carbonara/600/400",
+    "ingredients": [
+      {
+        "name": "espaguetis",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "panceta",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en tiras"
+      },
+      {
+        "name": "huevos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "queso parmesano",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 620,
+      "protein": 25,
+      "carbs": 65,
+      "fat": 28,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "4ac1211b-8348-4325-aafa-9768c74f5e10",
+    "title": "Risotto de hongos",
+    "description": "Arroz cremoso italiano cocido lentamente con caldo y champiñones.",
+    "instructions": [
+      "Sofríe la cebolla en aceite y mitad de la mantequilla hasta transparente.",
+      "Añade los champiñones y cocina hasta que suelten su agua.",
+      "Incorpora el arroz y rehoga hasta que los granos estén nacarados.",
+      "Vierte el vino y cocina hasta evaporar; añade caldo caliente poco a poco mientras remueves.",
+      "Al final, incorpora el resto de mantequilla y el queso parmesano; ajusta la sal."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "italiana",
+    "tags": [
+      "arroz",
+      "italiana",
+      "cremoso"
+    ],
+    "imageUrl": "https://picsum.photos/seed/risotto-de-hongos/600/400",
+    "ingredients": [
+      {
+        "name": "arroz arborio",
+        "quantity": 350,
+        "unit": "g"
+      },
+      {
+        "name": "champiñones",
+        "quantity": 300,
+        "unit": "g",
+        "notes": "en láminas"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "caldo de pollo",
+        "quantity": 1.2,
+        "unit": "litros"
+      },
+      {
+        "name": "vino blanco",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 60,
+        "unit": "g"
+      },
+      {
+        "name": "queso parmesano",
+        "quantity": 80,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 550,
+      "protein": 15,
+      "carbs": 70,
+      "fat": 20,
+      "fiber": 3,
+      "sugar": 3,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "17c6cafd-1d66-47d4-a5e7-1f90a2eae937",
+    "title": "Panna cotta",
+    "description": "Postre italiano de nata cocida cuajada, servido con coulis de frutas.",
+    "instructions": [
+      "Hidrata la gelatina en un poco de leche fría.",
+      "Calienta la nata con el azúcar y la vainilla; retira del fuego y añade la gelatina disuelta.",
+      "Vierte la mezcla en moldes y refrigera hasta cuajar.",
+      "Para el coulis, cocina las frutas con azúcar hasta obtener una salsa.",
+      "Sirve la panna cotta desmoldada con el coulis de frutas."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": [
+      "postre",
+      "nata",
+      "gelatina"
+    ],
+    "imageUrl": "https://picsum.photos/seed/panna-cotta/600/400",
+    "ingredients": [
+      {
+        "name": "nata para montar",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "leche",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 80,
+        "unit": "g"
+      },
+      {
+        "name": "gelatina sin sabor",
+        "quantity": 10,
+        "unit": "g"
+      },
+      {
+        "name": "extracto de vainilla",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "frutas rojas",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar para el coulis",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 320,
+      "protein": 4,
+      "carbs": 25,
+      "fat": 24,
+      "fiber": 1,
+      "sugar": 20,
+      "sodium": 50
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "2697a697-0f77-4898-acb9-de7967f1a934",
+    "title": "Pad thai",
+    "description": "Salteado tailandés de fideos de arroz con camarones, huevo, tofu y salsa de tamarindo.",
+    "instructions": [
+      "Remoja los fideos de arroz en agua caliente hasta ablandar.",
+      "En un wok, saltea el tofu en aceite hasta dorar; añade los camarones y cocina.",
+      "Empuja a un lado, agrega los huevos batidos y revuelve hasta cuajar.",
+      "Incorpora los fideos escurridos, la salsa de tamarindo, salsa de pescado y azúcar; mezcla bien.",
+      "Añade brotes de soja, cacahuetes y cebollín antes de servir."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "tailandesa",
+    "tags": [
+      "fideos",
+      "camarones",
+      "salteado"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pad-thai/600/400",
+    "ingredients": [
+      {
+        "name": "fideos de arroz",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "camarones",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "pelados"
+      },
+      {
+        "name": "tofu",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "brotes de soja",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "cacahuetes",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picados"
+      },
+      {
+        "name": "cebollín",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "salsa de tamarindo",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "salsa de pescado",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 500,
+      "protein": 25,
+      "carbs": 60,
+      "fat": 18,
+      "fiber": 4,
+      "sugar": 10,
+      "sodium": 850
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5d7b0dd0-d48d-4c07-a551-3c8b82463a6d",
+    "title": "Pho vietnamita",
+    "description": "Sopa de fideos de arroz con caldo aromático de res y hierbas frescas.",
+    "instructions": [
+      "Hierve los huesos y la falda de res con jengibre, cebolla y especias durante 3 horas, retirando impurezas.",
+      "Cuela el caldo y vuelve a calentar; añade salsa de pescado y azúcar.",
+      "Cocina los fideos de arroz en agua caliente hasta ablandar.",
+      "Sirve el caldo con fideos, lonjas de falda cocida, brotes de soja y hierbas frescas.",
+      "Acompaña con gajos de lima y salsa hoisin opcional."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 180,
+    "servings": 6,
+    "difficulty": "hard",
+    "cuisine": "vietnamita",
+    "tags": [
+      "sopa",
+      "fideos",
+      "caldo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pho-vietnamita/600/400",
+    "ingredients": [
+      {
+        "name": "huesos de res",
+        "quantity": 1.5,
+        "unit": "kg"
+      },
+      {
+        "name": "falda de res",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "fideos de arroz",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "tostado"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "tostadas"
+      },
+      {
+        "name": "anis estrellado",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "clavos de olor",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "canela en rama",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "salsa de pescado",
+        "quantity": 60,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 20,
+        "unit": "g"
+      },
+      {
+        "name": "hojas de cilantro",
+        "quantity": 1,
+        "unit": "manojo",
+        "notes": "fresco"
+      },
+      {
+        "name": "brotes de soja",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "lima",
+        "quantity": 2,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 30,
+      "carbs": 60,
+      "fat": 10,
+      "fiber": 3,
+      "sugar": 4,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "b24b8548-c8df-4385-9e3a-6ffe94878d57",
+    "title": "Bulgogi coreano",
+    "description": "Tiras de carne de res marinadas en salsa de soja y asadas a la parrilla.",
+    "instructions": [
+      "Mezcla salsa de soja, azúcar, ajo, jengibre y aceite de sésamo para la marinada.",
+      "Marina la carne con la salsa al menos 2 horas.",
+      "Asa la carne en una parrilla o sartén a fuego fuerte hasta caramelizar.",
+      "Decora con sésamo tostado y cebollín.",
+      "Sirve con arroz blanco y kimchi."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 10,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "coreana",
+    "tags": [
+      "carne",
+      "marinado",
+      "parrilla"
+    ],
+    "imageUrl": "https://picsum.photos/seed/bulgogi-coreano/600/400",
+    "ingredients": [
+      {
+        "name": "carne de res en lonchas",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "salsa de soja",
+        "quantity": 80,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 30,
+        "unit": "g"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 10,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "aceite de sésamo",
+        "quantity": 20,
+        "unit": "ml"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "sésamo tostado",
+        "quantity": 10,
+        "unit": "g"
+      },
+      {
+        "name": "cebollín",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picado"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 25,
+      "carbs": 15,
+      "fat": 22,
+      "fiber": 1,
+      "sugar": 10,
+      "sodium": 900
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "c5b688a9-e23a-4bd4-bd1c-954b6b7be8de",
+    "title": "Dim sum de cerdo",
+    "description": "Pequeñas empanadillas al vapor rellenas de carne de cerdo y vegetales.",
+    "instructions": [
+      "Prepara la masa mezclando harina y agua hasta obtener una masa lisa; deja reposar.",
+      "Mezcla la carne con col, jengibre, ajo, salsa de soja, aceite de sésamo y sal.",
+      "Estira la masa y corta círculos; coloca relleno en el centro y cierra formando dumplings.",
+      "Cocina al vapor durante 12-15 minutos.",
+      "Sirve con salsa de soja y vinagre."
+    ],
+    "prepTimeMinutes": 60,
+    "cookTimeMinutes": 15,
+    "servings": 6,
+    "difficulty": "hard",
+    "cuisine": "china",
+    "tags": [
+      "dumpling",
+      "al vapor",
+      "cerdo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/dim-sum-de-cerdo/600/400",
+    "ingredients": [
+      {
+        "name": "harina de trigo",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "agua",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "carne de cerdo picada",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "col china",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "picada"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 10,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "salsa de soja",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite de sésamo",
+        "quantity": 10,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 15,
+      "carbs": 35,
+      "fat": 10,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "7456e364-1641-4d33-bd4f-d18f50658e4d",
+    "title": "Arroz frito con cerdo",
+    "description": "Salteado chino de arroz cocido con cerdo, verduras y salsa de soja.",
+    "instructions": [
+      "En un wok caliente, saltea el cerdo en aceite hasta dorar y retira.",
+      "Bate los huevos y cocina en el mismo wok, cortando en trozos pequeños.",
+      "Agrega la zanahoria y arvejas; cocina un par de minutos.",
+      "Añade el arroz, el cerdo y la salsa de soja; mezcla bien.",
+      "Condimenta y añade cebolla verde antes de servir."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "china",
+    "tags": [
+      "arroz",
+      "salteado",
+      "cerdo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/arroz-frito-con-cerdo/600/400",
+    "ingredients": [
+      {
+        "name": "arroz cocido",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "lomo de cerdo",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en tiras"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "arvejas",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla verde",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "salsa de soja",
+        "quantity": 60,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 18,
+      "carbs": 60,
+      "fat": 15,
+      "fiber": 4,
+      "sugar": 3,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "42a7d7c4-6f47-4a79-816c-6eab50f56741",
+    "title": "Sopa miso",
+    "description": "Caldo japonés ligero con miso, tofu y algas wakame.",
+    "instructions": [
+      "Hidrata las algas wakame en agua tibia.",
+      "Lleva el caldo dashi a ebullición y reduce el fuego.",
+      "Disuelve la pasta de miso en un poco de caldo caliente y añade al resto.",
+      "Incorpora el tofu y las algas rehidratadas y calienta sin hervir.",
+      "Sirve caliente y decora con cebollín picado."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 10,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "japonesa",
+    "tags": [
+      "sopa",
+      "miso",
+      "vegano"
+    ],
+    "imageUrl": "https://picsum.photos/seed/sopa-miso/600/400",
+    "ingredients": [
+      {
+        "name": "caldo dashi",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "pasta de miso",
+        "quantity": 60,
+        "unit": "g"
+      },
+      {
+        "name": "tofu firme",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "algas wakame",
+        "quantity": 10,
+        "unit": "g"
+      },
+      {
+        "name": "cebollín",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picado"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 120,
+      "protein": 8,
+      "carbs": 8,
+      "fat": 6,
+      "fiber": 1,
+      "sugar": 2,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "3edbe4c4-26aa-4eab-a023-78ebba7c9cbe",
+    "title": "Ensalada caprese",
+    "description": "Ensalada italiana simple de tomate, mozzarella fresca y albahaca.",
+    "instructions": [
+      "Coloca alternadamente rodajas de tomate y mozzarella en un plato.",
+      "Añade hojas de albahaca entre las capas.",
+      "Rocía con aceite de oliva y vinagre balsámico.",
+      "Salpimenta al gusto y sirve."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": [
+      "ensalada",
+      "fresco",
+      "vegetariano"
+    ],
+    "imageUrl": "https://picsum.photos/seed/ensalada-caprese/600/400",
+    "ingredients": [
+      {
+        "name": "tomates",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "mozzarella fresca",
+        "quantity": 250,
+        "unit": "g",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "hojas de albahaca",
+        "quantity": 20,
+        "unit": "u"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "vinagre balsámico",
+        "quantity": 15,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 12,
+      "carbs": 6,
+      "fat": 20,
+      "fiber": 2,
+      "sugar": 4,
+      "sodium": 350
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "dd609a3d-8ea5-48fa-9876-87fa3df6954f",
+    "title": "Waffles belgas",
+    "description": "Gofres crujientes y ligeros, típicos de Bélgica, ideales para desayunar.",
+    "instructions": [
+      "Mezcla harina, levadura, azúcar y sal en un bol.",
+      "Añade la leche, huevos y mantequilla y bate hasta obtener una masa homogénea.",
+      "Calienta la gofrera y engrasa ligeramente.",
+      "Vierte porciones de masa y cocina hasta que los waffles estén dorados y crujientes.",
+      "Sirve con miel, frutas o crema batida."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "belga",
+    "tags": [
+      "desayuno",
+      "dulce",
+      "goffre"
+    ],
+    "imageUrl": "https://picsum.photos/seed/waffles-belgas/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 250,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 300,
+        "unit": "ml"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 80,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "levadura química",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "sal",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 8,
+      "carbs": 40,
+      "fat": 18,
+      "fiber": 1,
+      "sugar": 10,
+      "sodium": 300
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "db7bc691-3ebf-484f-8567-7c8d48bfe575",
+    "title": "Galletas de avena",
+    "description": "Galletas caseras crujientes con copos de avena y pasas.",
+    "instructions": [
+      "Bate la mantequilla con el azúcar hasta cremoso; agrega el huevo.",
+      "Incorpora la harina, avena, polvo de hornear y canela; mezcla bien.",
+      "Agrega las pasas y forma pequeñas bolitas.",
+      "Coloca en bandeja de horno y aplana ligeramente.",
+      "Hornea a 180 °C durante 12 minutos o hasta dorar."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 12,
+    "servings": 24,
+    "difficulty": "easy",
+    "cuisine": "americana",
+    "tags": [
+      "postre",
+      "galletas",
+      "avena"
+    ],
+    "imageUrl": "https://picsum.photos/seed/galletas-de-avena/600/400",
+    "ingredients": [
+      {
+        "name": "avena en copos",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar moreno",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "huevo",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "pasas",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "polvo de hornear",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "canela",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 150,
+      "protein": 2,
+      "carbs": 20,
+      "fat": 7,
+      "fiber": 1,
+      "sugar": 10,
+      "sodium": 50
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a299af53-d3da-4565-980b-a683e18f76fc",
+    "title": "Pie de limón",
+    "description": "Tarta refrescante con base de galletas y relleno cremoso de limón.",
+    "instructions": [
+      "Mezcla las galletas trituradas con la mantequilla y presiona en un molde para formar la base.",
+      "Hornea la base 10 minutos a 180 °C y deja enfriar.",
+      "Bate la leche condensada con el jugo y ralladura de limón y las yemas; vierte sobre la base.",
+      "Bate las claras con el azúcar a punto de merengue y cubre el relleno.",
+      "Hornea 10 minutos más hasta dorar el merengue y refrigera antes de servir."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 15,
+    "servings": 8,
+    "difficulty": "easy",
+    "cuisine": "americana",
+    "tags": [
+      "postre",
+      "limón",
+      "tarta"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pie-de-limón/600/400",
+    "ingredients": [
+      {
+        "name": "galletas digestivas",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "trituradas"
+      },
+      {
+        "name": "mantequilla",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "leche condensada",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "jugo de limón",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "ralladura de limón",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "yemas de huevo",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "claras de huevo",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 100,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 6,
+      "carbs": 50,
+      "fat": 18,
+      "fiber": 1,
+      "sugar": 35,
+      "sodium": 180
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "f54d0ec6-1698-43eb-85f6-0ef4d1ce87be",
+    "title": "Revuelto Gramajo",
+    "description": "Salteado crujiente de papas fritas, huevo y jamón típico argentino.",
+    "instructions": [
+      "Fríe las papas hasta dorar y reserva.",
+      "Saltea la cebolla y el jamón en una sartén.",
+      "Añade las papas y mezcla.",
+      "Agrega los huevos batidos y cocina revolviendo hasta que cuajen.",
+      "Condimenta y sirve de inmediato."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "salteado",
+      "papas",
+      "huevo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/revuelto-gramajo/600/400",
+    "ingredients": [
+      {
+        "name": "papas",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en bastones"
+      },
+      {
+        "name": "jamón cocido",
+        "quantity": 150,
+        "unit": "g",
+        "notes": "en tiras"
+      },
+      {
+        "name": "huevos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 380,
+      "protein": 16,
+      "carbs": 30,
+      "fat": 22,
+      "fiber": 3,
+      "sugar": 3,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "8986b228-bb1c-436a-86ea-f957be993ee3",
+    "title": "Asado argentino",
+    "description": "Carne vacuna asada lentamente a las brasas, símbolo gastronómico de Argentina.",
+    "instructions": [
+      "Sazona la carne con sal gruesa y deja reposar.",
+      "Coloca la carne en la parrilla a fuego medio y cocina lentamente, girando ocasionalmente.",
+      "Mantén las brasas constantes y evita llamas.",
+      "Sirve la carne con chimichurri a gusto."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 120,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "parrilla",
+      "carne",
+      "tradicional"
+    ],
+    "imageUrl": "https://picsum.photos/seed/asado-argentino/600/400",
+    "ingredients": [
+      {
+        "name": "costilla de res",
+        "quantity": 2,
+        "unit": "kg"
+      },
+      {
+        "name": "sal gruesa",
+        "quantity": 2,
+        "unit": "cucharadas"
+      },
+      {
+        "name": "chimichurri",
+        "quantity": 100,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 800,
+      "protein": 60,
+      "carbs": 0,
+      "fat": 60,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 1000
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "04a9afa7-7611-4b03-9cfa-ce03d4a98821",
+    "title": "Mondongo a la provenzal",
+    "description": "Guiso de mondongo (tripas) con salsa de tomate, garbanzos y hierbas.",
+    "instructions": [
+      "Cuece el mondongo en agua con laurel hasta tiernizar y corta en tiras.",
+      "En otra olla, sofríe cebolla, zanahoria y pimiento; agrega pimentón.",
+      "Añade el tomate, caldo y mondongo y cocina a fuego lento.",
+      "Incorpora los garbanzos y cocina 15 minutos más.",
+      "Condimenta y sirve caliente."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 90,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "guiso",
+      "mondongo",
+      "tradicional"
+    ],
+    "imageUrl": "https://picsum.photos/seed/mondongo-a-la-provenzal/600/400",
+    "ingredients": [
+      {
+        "name": "mondongo",
+        "quantity": 1,
+        "unit": "kg",
+        "notes": "limpio"
+      },
+      {
+        "name": "garbanzos cocidos",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en cubos"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "laurel",
+        "quantity": 1,
+        "unit": "hoja"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "caldo",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "aceite",
+        "quantity": 40,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 480,
+      "protein": 35,
+      "carbs": 20,
+      "fat": 25,
+      "fiber": 5,
+      "sugar": 6,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "b1c3082f-bce8-4bf2-9717-38fee2f536cc",
+    "title": "Buseca criolla",
+    "description": "Cazuela espesa de mondongo, chorizo, porotos y fideos gruesos.",
+    "instructions": [
+      "Hierve el mondongo hasta ablandar y corta en trozos.",
+      "En una olla grande sofríe cebolla y zanahoria en aceite, añade chorizo y especias.",
+      "Agrega el tomate, porotos escurridos y caldo; cocina hasta que los porotos estén tiernos.",
+      "Incorpora el mondongo y los fideos y cocina hasta que estén al dente.",
+      "Ajusta la sazón y sirve caliente."
+    ],
+    "prepTimeMinutes": 45,
+    "cookTimeMinutes": 120,
+    "servings": 8,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "cazuela",
+      "mondongo",
+      "invierno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/buseca-criolla/600/400",
+    "ingredients": [
+      {
+        "name": "mondongo",
+        "quantity": 1,
+        "unit": "kg"
+      },
+      {
+        "name": "chorizo colorado",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "porotos blancos",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "remojados"
+      },
+      {
+        "name": "fideos caracol",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "ají molido",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "comino",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "caldo",
+        "quantity": 2,
+        "unit": "litros"
+      },
+      {
+        "name": "aceite",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 600,
+      "protein": 35,
+      "carbs": 50,
+      "fat": 25,
+      "fiber": 8,
+      "sugar": 6,
+      "sodium": 900
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "cc300791-ab86-4857-ae01-bbf43cdc50df",
+    "title": "Milanesas de pollo",
+    "description": "Pechugas de pollo empanadas y doradas, una variante ligera de la milanesa.",
+    "instructions": [
+      "Condimenta las pechugas y pásalas por harina, huevo batido con ajo y perejil, y pan rallado.",
+      "Fríe en aceite caliente hasta dorar por ambos lados.",
+      "Escurre en papel absorbente y sirve con limón."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "pollo",
+      "empanado",
+      "frito"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesas-de-pollo/600/400",
+    "ingredients": [
+      {
+        "name": "pechugas de pollo",
+        "quantity": 4,
+        "unit": "u",
+        "notes": "fileteadas"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "cucharada",
+        "notes": "picado"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 35,
+      "carbs": 25,
+      "fat": 20,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "89c2b29b-9f21-4778-b21e-bbad7bef9f65",
+    "title": "Riñones al vino tinto",
+    "description": "Riñones de ternera salteados en salsa de vino tinto con cebolla y perejil.",
+    "instructions": [
+      "Blanquea los riñones en agua hirviendo, escúrrelos y córtalos en rodajas.",
+      "Sofríe la cebolla y el ajo en aceite y añade los riñones.",
+      "Agrega el vino tinto y cocina hasta reducir la salsa.",
+      "Condimenta y espolvorea con perejil antes de servir."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "vísceras",
+      "vino",
+      "salteado"
+    ],
+    "imageUrl": "https://picsum.photos/seed/riñones-al-vino-tinto/600/400",
+    "ingredients": [
+      {
+        "name": "riñones de ternera",
+        "quantity": 600,
+        "unit": "g",
+        "notes": "limpios"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "vino tinto",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "cucharada",
+        "notes": "picado"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 30,
+      "carbs": 5,
+      "fat": 20,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 450
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "c3529a42-7933-49ce-9347-82fb513e29db",
+    "title": "Mollejas a la parrilla",
+    "description": "Delicada achura de ternera cocida a la parrilla con limón y sal.",
+    "instructions": [
+      "Lava las mollejas y retira la membrana exterior.",
+      "Hierve en agua con sal 5 minutos y escurre.",
+      "Condimenta con sal gruesa y cocina a la parrilla hasta dorar por ambos lados.",
+      "Sirve con gajos de limón."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 25,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "parrilla",
+      "achuras",
+      "ternera"
+    ],
+    "imageUrl": "https://picsum.photos/seed/mollejas-a-la-parrilla/600/400",
+    "ingredients": [
+      {
+        "name": "mollejas de ternera",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "sal gruesa",
+        "quantity": 1,
+        "unit": "cucharada"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en gajos"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 320,
+      "protein": 25,
+      "carbs": 1,
+      "fat": 22,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a3c7b718-7f5b-433e-b78f-15927d6ae640",
+    "title": "Empanadas de jamón y queso",
+    "description": "Empanadas argentinas rellenas de jamón cocido y queso derretido.",
+    "instructions": [
+      "Rellena cada tapa con jamón y queso.",
+      "Cierra las empanadas y haz el repulgue.",
+      "Pincela con huevo batido y hornea a 200 °C hasta dorar.",
+      "Sirve calientes."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "empanadas",
+      "jamón",
+      "queso"
+    ],
+    "imageUrl": "https://picsum.photos/seed/empanadas-de-jamón-y-queso/600/400",
+    "ingredients": [
+      {
+        "name": "tapas de empanada",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "jamón cocido",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "picado"
+      },
+      {
+        "name": "queso mozzarella",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "huevo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "para pincelar"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 300,
+      "protein": 15,
+      "carbs": 25,
+      "fat": 16,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 550
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "5844478e-2c95-4e07-83f7-d64095857b7c",
+    "title": "Empanadas tucumanas",
+    "description": "Empanadas del norte argentino con relleno de carne cortada a cuchillo y comino.",
+    "instructions": [
+      "Sofríe la cebolla hasta transparentar, añade la carne y condimenta con pimentón, comino y ají.",
+      "Incorpora huevo duro y aceitunas y deja enfriar el relleno.",
+      "Rellena las tapas de empanada y cierra con repulgue.",
+      "Hornea o fríe hasta dorar y sirve."
+    ],
+    "prepTimeMinutes": 45,
+    "cookTimeMinutes": 25,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "empanadas",
+      "tucumanas",
+      "tradicional"
+    ],
+    "imageUrl": "https://picsum.photos/seed/empanadas-tucumanas/600/400",
+    "ingredients": [
+      {
+        "name": "tapas de empanada",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "carne de res",
+        "quantity": 500,
+        "unit": "g",
+        "notes": "cortada a cuchillo"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 2,
+        "unit": "cucharaditas"
+      },
+      {
+        "name": "comino",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "ají molido",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "duros, picados"
+      },
+      {
+        "name": "aceitunas",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picadas"
+      },
+      {
+        "name": "aceite",
+        "quantity": 30,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 18,
+      "carbs": 32,
+      "fat": 22,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "f91c5ae8-6309-4bc8-a72f-68d5e8101eda",
+    "title": "Pastelitos criollos",
+    "description": "Dulces fritos de hojaldre rellenos con dulce de membrillo o batata.",
+    "instructions": [
+      "Corta la masa en cuadrados pequeños.",
+      "Coloca un cubo de dulce en el centro de un cuadrado y cubre con otro, sellando los bordes.",
+      "Fríe los pastelitos en aceite caliente hasta dorar.",
+      "Prepara un almíbar con agua y azúcar y baña los pastelitos recién fritos.",
+      "Deja escurrir y sirve."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 20,
+    "servings": 12,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "frito",
+      "dulce"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pastelitos-criollos/600/400",
+    "ingredients": [
+      {
+        "name": "masa de hojaldre",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "dulce de membrillo",
+        "quantity": 300,
+        "unit": "g",
+        "notes": "en cubos"
+      },
+      {
+        "name": "agua",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 500,
+        "unit": "ml",
+        "notes": "para freír"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 2,
+      "carbs": 40,
+      "fat": 12,
+      "fiber": 1,
+      "sugar": 20,
+      "sodium": 80
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "44540d22-0ae3-4ba7-9aaa-b93b2dde19f9",
+    "title": "Bizcochos de grasa",
+    "description": "Pequeños panes salados elaborados con grasa de vaca, crujientes y esponjosos.",
+    "instructions": [
+      "Mezcla la harina con la sal y la levadura disuelta en agua.",
+      "Añade la grasa derretida y amasa hasta obtener una masa suave.",
+      "Deja reposar la masa tapada hasta que duplique su volumen.",
+      "Estira, corta círculos y pincha con un tenedor.",
+      "Hornea a 200 °C durante 15-20 minutos."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 20,
+    "servings": 12,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "pan",
+      "salado",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/bizcochos-de-grasa/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "grasa bovina",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "agua tibia",
+        "quantity": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "levadura",
+        "quantity": 10,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 180,
+      "protein": 4,
+      "carbs": 25,
+      "fat": 8,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 150
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "0c209e48-6c84-4e7d-88be-54776e4936c9",
+    "title": "Tortas fritas",
+    "description": "Discos de masa frita, típicos para los días de lluvia en Argentina.",
+    "instructions": [
+      "Mezcla harina, sal y polvo de hornear; añade agua y grasa y amasa.",
+      "Estira la masa y corta círculos; haz un agujero en el centro.",
+      "Fríe en aceite caliente hasta dorar.",
+      "Escurre y espolvorea con azúcar si deseas."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 8,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "fritas",
+      "masa",
+      "tradicional"
+    ],
+    "imageUrl": "https://picsum.photos/seed/tortas-fritas/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "agua",
+        "quantity": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "grasa bovina",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "derretida"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "polvo de hornear",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "aceite",
+        "quantity": 500,
+        "unit": "ml",
+        "notes": "para freír"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 220,
+      "protein": 4,
+      "carbs": 30,
+      "fat": 10,
+      "fiber": 1,
+      "sugar": 2,
+      "sodium": 200
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a2f08e12-0b12-4768-8a5a-1ef2a5b0ef62",
+    "title": "Pastafrola",
+    "description": "Tarta argentina rellena de dulce de membrillo con enrejado de masa.",
+    "instructions": [
+      "Mezcla harina, polvo de hornear y azúcar; agrega manteca y trabaja hasta arenar.",
+      "Añade huevos y ralladura y forma una masa; refrigera.",
+      "Ablanda el dulce de membrillo con agua en un cazo hasta lograr una pasta.",
+      "Estira la mayoría de la masa en un molde y rellena con el dulce.",
+      "Con la masa restante, forma tiras y decora en forma de enrejado; hornea a 180 °C por 30 minutos."
+    ],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 30,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "tarta",
+      "membrillo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pastafrola/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "manteca",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "huevo",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "ralladura de limón",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "polvo de hornear",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "dulce de membrillo",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "agua",
+        "quantity": 50,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 6,
+      "carbs": 60,
+      "fat": 15,
+      "fiber": 2,
+      "sugar": 30,
+      "sodium": 200
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "e8756542-1ffb-4999-ad92-6ecced3a5686",
+    "title": "Arroz con leche",
+    "description": "Postre cremoso de arroz cocido en leche con canela y azúcar.",
+    "instructions": [
+      "Hierve la leche con canela y cáscara de limón.",
+      "Añade el arroz y cocina a fuego lento removiendo hasta que esté tierno y cremoso.",
+      "Agrega el azúcar y cocina unos minutos más.",
+      "Retira las especias y deja enfriar.",
+      "Sirve espolvoreado con canela en polvo."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 40,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "arroz",
+      "dulce"
+    ],
+    "imageUrl": "https://picsum.photos/seed/arroz-con-leche/600/400",
+    "ingredients": [
+      {
+        "name": "arroz",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 1.5,
+        "unit": "litros"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "canela en rama",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "cáscara de limón",
+        "quantity": 1,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 250,
+      "protein": 6,
+      "carbs": 45,
+      "fat": 6,
+      "fiber": 0.5,
+      "sugar": 25,
+      "sodium": 80
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "df3b1d35-f2d0-4e96-8042-edb350fe3e14",
+    "title": "Facturas (medialunas)",
+    "description": "Panecillos dulces laminados y glaseados, similares a los croissants.",
+    "instructions": [
+      "Prepara una masa mezclando harina, azúcar, sal y levadura disuelta en leche; añade huevos y esencia.",
+      "Deja reposar la masa 30 minutos; estira y coloca la manteca en el centro, dobla y lamina varias veces.",
+      "Corta triángulos y enrolla formando medialunas; deja levar.",
+      "Hornea a 200 °C durante 15 minutos hasta dorar.",
+      "Pincela con glaseado al salir del horno."
+    ],
+    "prepTimeMinutes": 120,
+    "cookTimeMinutes": 15,
+    "servings": 12,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "panadería",
+      "dulce",
+      "desayuno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/facturas-(medialunas)/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 250,
+        "unit": "ml"
+      },
+      {
+        "name": "levadura",
+        "quantity": 20,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "manteca",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "esencia de vainilla",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "glaseado",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "azúcar impalpable con agua"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 280,
+      "protein": 5,
+      "carbs": 40,
+      "fat": 12,
+      "fiber": 1,
+      "sugar": 12,
+      "sodium": 200
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "e24b221a-7d25-49e6-bf94-c9a44d6a3619",
+    "title": "Sandwich de miga",
+    "description": "Delicados sándwiches de pan de miga con jamón, queso y verduras.",
+    "instructions": [
+      "Unta el pan de miga con mayonesa.",
+      "Alterna capas de pan con jamón, queso, lechuga y tomate.",
+      "Corta los bordes si se desea y divide en triángulos.",
+      "Sirve como tentempié."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "sandwich",
+      "jamón",
+      "queso"
+    ],
+    "imageUrl": "https://picsum.photos/seed/sandwich-de-miga/600/400",
+    "ingredients": [
+      {
+        "name": "pan de miga",
+        "quantity": 12,
+        "unit": "rebanadas"
+      },
+      {
+        "name": "jamón cocido",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "queso en fetas",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "mayonesa",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 4,
+        "unit": "hojas"
+      },
+      {
+        "name": "tomate",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en rodajas"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 18,
+      "carbs": 35,
+      "fat": 15,
+      "fiber": 2,
+      "sugar": 3,
+      "sodium": 650
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "379db534-ae15-430a-b87d-4d4814683ac6",
+    "title": "Milanesa con puré",
+    "description": "Clásica milanesa acompañada de puré de papas cremoso.",
+    "instructions": [
+      "Empana y fríe los bifes como se indica en las milanesas tradicionales.",
+      "Hierve las papas peladas hasta ablandar y haz un puré con leche y manteca.",
+      "Sirve las milanesas acompañadas de puré de papas."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 25,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "milanesa",
+      "puré",
+      "casero"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesa-con-puré/600/400",
+    "ingredients": [
+      {
+        "name": "bifes de res",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "papas",
+        "quantity": 800,
+        "unit": "g"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "manteca",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 700,
+      "protein": 40,
+      "carbs": 60,
+      "fat": 32,
+      "fiber": 5,
+      "sugar": 4,
+      "sodium": 800
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "92e8c7dc-e07f-42bb-824d-f30ca8f457e6",
+    "title": "Cordero patagónico",
+    "description": "Pierna de cordero cocida lentamente al asador, típico de la Patagonia.",
+    "instructions": [
+      "Marina el cordero en salmuera con ajo y hierbas durante varias horas.",
+      "Monta el cordero en cruz de asador y cocina lentamente al fuego de leña, pincelando con salmuera.",
+      "Gira ocasionalmente hasta que la carne esté tierna y la piel crujiente.",
+      "Sirve desmenuzado con ensaladas."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 180,
+    "servings": 6,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "asado",
+      "cordero",
+      "patagonia"
+    ],
+    "imageUrl": "https://picsum.photos/seed/cordero-patagónico/600/400",
+    "ingredients": [
+      {
+        "name": "pierna de cordero",
+        "quantity": 2,
+        "unit": "kg"
+      },
+      {
+        "name": "salmuera",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "ajo",
+        "quantity": 4,
+        "unit": "dientes",
+        "notes": "machacados"
+      },
+      {
+        "name": "hierbas patagónicas",
+        "quantity": 2,
+        "unit": "cucharadas",
+        "notes": "orégano, tomillo"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 780,
+      "protein": 55,
+      "carbs": 0,
+      "fat": 60,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 900
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "443f98a8-ecc9-455c-80bb-0085b4be56e2",
+    "title": "Cazuela de mariscos",
+    "description": "Sopa espesa de mariscos variados cocidos en caldo aromático con verduras.",
+    "instructions": [
+      "Sofríe la cebolla y pimiento en aceite; agrega el tomate triturado.",
+      "Añade el vino blanco y deja evaporar; incorpora el caldo de pescado y lleva a ebullición.",
+      "Agrega los trozos de pescado, calamares y mejillones y cocina 10 minutos.",
+      "Incorpora los camarones al final y cocina 3 minutos más.",
+      "Condimenta y sirve caliente con pan."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 45,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "mariscos",
+      "cazuela",
+      "sopa"
+    ],
+    "imageUrl": "https://picsum.photos/seed/cazuela-de-mariscos/600/400",
+    "ingredients": [
+      {
+        "name": "camarones",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "mejillones",
+        "quantity": 500,
+        "unit": "g"
+      },
+      {
+        "name": "calamares",
+        "quantity": 300,
+        "unit": "g",
+        "notes": "en anillos"
+      },
+      {
+        "name": "pescado blanco",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "en trozos"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "pimiento",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en tiras"
+      },
+      {
+        "name": "tomate triturado",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "caldo de pescado",
+        "quantity": 1.5,
+        "unit": "litros"
+      },
+      {
+        "name": "vino blanco",
+        "quantity": 150,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 50,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 35,
+      "carbs": 15,
+      "fat": 18,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "a72289d7-6f30-4d60-86ea-f95d4636e488",
+    "title": "Milanesas de cerdo",
+    "description": "Chuletas de cerdo empanadas fritas hasta quedar crujientes.",
+    "instructions": [
+      "Salpimenta las chuletas y pásalas por harina, huevo batido con ajo y perejil, y pan rallado.",
+      "Fríe en aceite caliente hasta dorar.",
+      "Escurre y sirve con limón y ensalada."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "cerdo",
+      "empanado",
+      "frito"
+    ],
+    "imageUrl": "https://picsum.photos/seed/milanesas-de-cerdo/600/400",
+    "ingredients": [
+      {
+        "name": "chuletas de cerdo",
+        "quantity": 4,
+        "unit": "u",
+        "notes": "aplanadas"
+      },
+      {
+        "name": "huevos",
+        "quantity": 2,
+        "unit": "u"
+      },
+      {
+        "name": "pan rallado",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "harina",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "cucharada",
+        "notes": "picado"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "dientes",
+        "notes": "picados"
+      },
+      {
+        "name": "aceite",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 30,
+      "carbs": 25,
+      "fat": 25,
+      "fiber": 1,
+      "sugar": 1,
+      "sodium": 600
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "55740c19-3823-46f4-99ab-e8499892571d",
+    "title": "Canelones de verdura",
+    "description": "Canelones rellenos de espinaca y ricotta cubiertos con salsa blanca y tomate.",
+    "instructions": [
+      "Mezcla espinaca con ricotta y condimenta con nuez moscada, sal y pimienta.",
+      "Rellena los panqueques con la mezcla y enróllalos.",
+      "Coloca los canelones en una fuente, cubre con salsa de tomate y salsa blanca.",
+      "Espolvorea queso rallado y hornea a 180 °C durante 25 minutos.",
+      "Sirve calientes."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 30,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "pasta",
+      "vegetariano",
+      "horno"
+    ],
+    "imageUrl": "https://picsum.photos/seed/canelones-de-verdura/600/400",
+    "ingredients": [
+      {
+        "name": "panqueques",
+        "quantity": 8,
+        "unit": "u"
+      },
+      {
+        "name": "espinacas",
+        "quantity": 500,
+        "unit": "g",
+        "notes": "cocidas y picadas"
+      },
+      {
+        "name": "ricotta",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "salsa blanca",
+        "quantity": 300,
+        "unit": "ml"
+      },
+      {
+        "name": "salsa de tomate",
+        "quantity": 300,
+        "unit": "ml"
+      },
+      {
+        "name": "nuez moscada",
+        "quantity": 0.5,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "sal y pimienta",
+        "quantity": 1,
+        "unit": "cucharadita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 500,
+      "protein": 22,
+      "carbs": 50,
+      "fat": 22,
+      "fiber": 5,
+      "sugar": 8,
+      "sodium": 700
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "881c3c0d-fb31-4b3a-b6e8-a124a98d42b6",
+    "title": "Budín de pan",
+    "description": "Postre aprovechado de pan sobrante, con leche, huevo y caramelo.",
+    "instructions": [
+      "Cubre el fondo de un molde con caramelo líquido.",
+      "Remoja el pan en la leche caliente hasta deshacerlo.",
+      "Bate los huevos con el azúcar y la vainilla y mezcla con el pan remojado.",
+      "Vierte en el molde caramelizado y hornea a baño María a 180 °C durante 1 hora.",
+      "Deja enfriar y desmolda antes de servir."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 60,
+    "servings": 8,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "reciclado",
+      "caramelo"
+    ],
+    "imageUrl": "https://picsum.photos/seed/budín-de-pan/600/400",
+    "ingredients": [
+      {
+        "name": "pan duro",
+        "quantity": 300,
+        "unit": "g",
+        "notes": "troceado"
+      },
+      {
+        "name": "leche",
+        "quantity": 1,
+        "unit": "litro"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "esencia de vainilla",
+        "quantity": 1,
+        "unit": "cucharadita"
+      },
+      {
+        "name": "caramelo",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "para el molde"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 320,
+      "protein": 8,
+      "carbs": 45,
+      "fat": 12,
+      "fiber": 1,
+      "sugar": 25,
+      "sodium": 160
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "f3a6173c-6ad7-453f-ac9a-b9d99d4a21a5",
+    "title": "Pionono salado",
+    "description": "Rollo de bizcocho salado relleno de jamón, queso y vegetales.",
+    "instructions": [
+      "Bate los huevos con el azúcar hasta punto letra; incorpora la harina tamizada suavemente.",
+      "Extiende en una bandeja y hornea a 180 °C por 10 minutos.",
+      "Desmolda sobre un paño húmedo y enrolla para darle forma.",
+      "Desenrolla y unta con mayonesa; coloca jamón, queso, lechuga y zanahoria.",
+      "Enrolla nuevamente y refrigera antes de cortar."
+    ],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 15,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "rollo",
+      "salado",
+      "entrada"
+    ],
+    "imageUrl": "https://picsum.photos/seed/pionono-salado/600/400",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "huevos",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 20,
+        "unit": "g"
+      },
+      {
+        "name": "mayonesa",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "jamón",
+        "quantity": 200,
+        "unit": "g",
+        "notes": "en lonchas"
+      },
+      {
+        "name": "queso crema",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "en tiras"
+      },
+      {
+        "name": "zanahoria rallada",
+        "quantity": 1,
+        "unit": "u"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 280,
+      "protein": 10,
+      "carbs": 30,
+      "fat": 14,
+      "fiber": 2,
+      "sugar": 4,
+      "sodium": 500
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "id": "40b6dd9f-f1e2-42ec-994f-3264f056de7a",
+    "title": "Torre de panqueques",
+    "description": "Capas alternadas de panqueques con diversos rellenos salados, ideal para fiestas.",
+    "instructions": [
+      "Dispón un panqueque como base y unta con queso crema.",
+      "Agrega jamón y huevo duro picado.",
+      "Coloca otro panqueque y unta con mayonesa; añade zanahoria, lechuga y aceitunas.",
+      "Repite alternando rellenos hasta terminar con todos los panqueques.",
+      "Refrigera y corta en porciones para servir."
+    ],
+    "prepTimeMinutes": 40,
+    "cookTimeMinutes": 20,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "panqueques",
+      "fiesta",
+      "salado"
+    ],
+    "imageUrl": "https://picsum.photos/seed/torre-de-panqueques/600/400",
+    "ingredients": [
+      {
+        "name": "panqueques",
+        "quantity": 10,
+        "unit": "u"
+      },
+      {
+        "name": "jamón",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "queso crema",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "huevo duro",
+        "quantity": 3,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "aceitunas",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picadas"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "rallada"
+      },
+      {
+        "name": "lechuga",
+        "quantity": 50,
+        "unit": "g",
+        "notes": "picada"
+      },
+      {
+        "name": "mayonesa",
+        "quantity": 150,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 400,
+      "protein": 15,
+      "carbs": 40,
+      "fat": 20,
+      "fiber": 3,
+      "sugar": 4,
+      "sodium": 550
+    },
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Tarta de acelga",
+    "description": "Empanada o tarta salada de masa y relleno de acelga, huevo y queso, típica de la cocina argentina.",
+    "instructions": [
+      "Precalentar el horno a 180°C.",
+      "Lavar y picar la acelga; cocinarla al vapor y escurrir bien.",
+      "Rehogar cebolla picada en aceite hasta que esté transparente.",
+      "Mezclar acelga, cebolla, huevos batidos y queso rallado; salpimentar.",
+      "Forrar un molde con masa para tarta, verter el relleno y cubrir con otra capa de masa.",
+      "Pinchar la superficie con un tenedor y hornear 35-40 minutos hasta dorar."
+    ],
+    "prepTimeMinutes": 25,
+    "cookTimeMinutes": 40,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "tarta",
+      "acelga",
+      "vegetariana"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?tarta-acelga",
+    "ingredients": [
+      {
+        "name": "masa para tarta",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "discos"
+      },
+      {
+        "name": "acelga",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "queso rallado",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "huevo",
+        "quantity": 3,
+        "unit": "u"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 2,
+        "unit": "cda"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cdita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 280,
+      "protein": 12,
+      "carbs": 30,
+      "fat": 12,
+      "fiber": 3,
+      "sugar": 2,
+      "sodium": 450
+    },
+    "id": "4e985ab5-39b7-4025-a2a9-cb63abd4d1db",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Pollo al horno con papas",
+    "description": "Clásico plato argentino de pollo asado al horno acompañado con papas doradas.",
+    "instructions": [
+      "Precalentar el horno a 200°C.",
+      "Cortar el pollo en presas y colocarlo en una bandeja para horno.",
+      "Condimentar con sal, pimienta, ajo picado y pimentón; añadir un chorro de aceite.",
+      "Pelar y cortar las papas en gajos, mezclar con aceite y especias y distribuir alrededor del pollo.",
+      "Hornear durante 60-70 minutos, girando las presas y papas a mitad de cocción.",
+      "Servir bien caliente con jugo de cocción."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 70,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "pollo",
+      "horno",
+      "plato principal"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?pollo-horno",
+    "ingredients": [
+      {
+        "name": "pollo",
+        "quantity": 1.5,
+        "unit": "kg",
+        "notes": "en presas"
+      },
+      {
+        "name": "papa",
+        "quantity": 1,
+        "unit": "kg",
+        "notes": "cortadas en gajos"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "notes": "picados"
+      },
+      {
+        "name": "pimentón",
+        "quantity": 1,
+        "unit": "cda"
+      },
+      {
+        "name": "aceite",
+        "quantity": 3,
+        "unit": "cda"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cdita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 600,
+      "protein": 45,
+      "carbs": 35,
+      "fat": 32,
+      "fiber": 4,
+      "sugar": 3,
+      "sodium": 700
+    },
+    "id": "ec5d5eb8-d4a0-4569-a938-479569250d04",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Flan casero con dulce de leche",
+    "description": "Postre tradicional argentino de flan de huevo con caramelo y dulce de leche.",
+    "instructions": [
+      "Preparar el caramelo calentando azúcar hasta dorar y verter en el fondo de un molde.",
+      "Batir huevos, leche y azúcar hasta integrar.",
+      "Colocar la mezcla en el molde con caramelo.",
+      "Cocinar a baño María en horno a 180°C durante 50-60 minutos.",
+      "Dejar enfriar, desmoldar y servir con dulce de leche."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 60,
+    "servings": 8,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "flan"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?flan",
+    "ingredients": [
+      {
+        "name": "leche",
+        "quantity": 1,
+        "unit": "l"
+      },
+      {
+        "name": "huevo",
+        "quantity": 6,
+        "unit": "u"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "azúcar para caramelo",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "esencia de vainilla",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "dulce de leche",
+        "quantity": 200,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 230,
+      "protein": 7,
+      "carbs": 36,
+      "fat": 6,
+      "sugar": 32,
+      "sodium": 95
+    },
+    "id": "c9da6efc-817d-4189-9ebe-cf32883bffff",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Empanadas de humita",
+    "description": "Empanadas rellenas de crema de choclo y queso, típicas del noroeste argentino.",
+    "instructions": [
+      "Saltear cebolla y pimientos picados en manteca hasta transparentes.",
+      "Agregar granos de choclo y leche, cocinar hasta que espese.",
+      "Mezclar con queso fresco cortado en cubos y condimentar con sal y pimienta.",
+      "Rellenar discos de empanada con la mezcla de humita, cerrar y hacer el repulgue.",
+      "Freír en abundante aceite caliente hasta dorar o hornear a 200°C por 20 minutos."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 25,
+    "servings": 12,
+    "difficulty": "medium",
+    "cuisine": "argentina",
+    "tags": [
+      "empanadas",
+      "humita"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?empanadas-humita",
+    "ingredients": [
+      {
+        "name": "discos de empanada",
+        "quantity": 12,
+        "unit": "u"
+      },
+      {
+        "name": "choclo",
+        "quantity": 400,
+        "unit": "g",
+        "notes": "granos"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "pimiento rojo",
+        "quantity": 0.5,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "manteca",
+        "quantity": 2,
+        "unit": "cda"
+      },
+      {
+        "name": "leche",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "queso fresco",
+        "quantity": 150,
+        "unit": "g"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cdita"
+      },
+      {
+        "name": "aceite para freír",
+        "quantity": 500,
+        "unit": "ml",
+        "notes": "para freír"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 180,
+      "protein": 6,
+      "carbs": 22,
+      "fat": 8,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 320
+    },
+    "id": "d12e2ce1-a71c-493e-8c7b-3cf5b7e37dac",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Buñuelos de verdura",
+    "description": "Frituras de masa con vegetales picados, crujientes y sabrosos, típicos de meriendas o acompañamientos.",
+    "instructions": [
+      "Mezclar harina, polvo de hornear y sal en un bol.",
+      "Agregar huevo batido y agua hasta formar una masa espesa.",
+      "Incorporar las verduras picadas: espinaca, zanahoria y cebolla.",
+      "Calentar abundante aceite y freír cucharadas de la mezcla hasta dorar.",
+      "Escurrir sobre papel absorbente y servir."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 15,
+    "servings": 6,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "aperitivo",
+      "frito"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?buñuelos",
+    "ingredients": [
+      {
+        "name": "harina",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "polvo de hornear",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "huevo",
+        "quantity": 1,
+        "unit": "u"
+      },
+      {
+        "name": "agua",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "espinaca",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "picada"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "rallada"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picada"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "aceite para freír",
+        "quantity": 500,
+        "unit": "ml"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 220,
+      "protein": 5,
+      "carbs": 28,
+      "fat": 10,
+      "fiber": 2,
+      "sugar": 2,
+      "sodium": 360
+    },
+    "id": "db5dce5d-2b25-4a4f-abda-af82666cf6d6",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Lengua a la vinagreta",
+    "description": "Entrante frío de lengua vacuna cocida y marinada en vinagreta de perejil, ajo y vinagre.",
+    "instructions": [
+      "Cocinar la lengua en agua con sal y verduras durante 2-3 horas hasta que esté tierna.",
+      "Pelar la lengua cocida y cortarla en rodajas finas.",
+      "Preparar la vinagreta mezclando aceite, vinagre, ajo picado, perejil y sal.",
+      "Colocar las rodajas de lengua en una fuente y cubrir con la vinagreta.",
+      "Refrigerar al menos 4 horas antes de servir fría."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 180,
+    "servings": 8,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "entrante",
+      "frío"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?lengua-vinagreta",
+    "ingredients": [
+      {
+        "name": "lengua vacuna",
+        "quantity": 1.2,
+        "unit": "kg"
+      },
+      {
+        "name": "vinagre de vino",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "diente",
+        "notes": "picados"
+      },
+      {
+        "name": "perejil",
+        "quantity": 1,
+        "unit": "ramillete",
+        "notes": "picado"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cdita"
+      },
+      {
+        "name": "zanahoria",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "para cocinar la lengua"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "para cocinar la lengua"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 350,
+      "protein": 30,
+      "carbs": 2,
+      "fat": 24,
+      "sugar": 1,
+      "sodium": 500
+    },
+    "id": "aa47df06-b246-440b-9a5d-4c8eef88602c",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Postre Balcarce",
+    "description": "Postre argentino elaborado con merengue, crema chantilly, dulce de leche, castañas de cajú y coco rallado.",
+    "instructions": [
+      "Preparar discos de merengue cocinándolos a baja temperatura hasta secar.",
+      "Montar crema chantilly batiendo crema con azúcar y esencia de vainilla.",
+      "Armar el postre alternando capas de merengue, dulce de leche, chantilly y castañas picadas.",
+      "Cubrir con coco rallado y refrigerar antes de servir."
+    ],
+    "prepTimeMinutes": 60,
+    "cookTimeMinutes": 90,
+    "servings": 10,
+    "difficulty": "hard",
+    "cuisine": "argentina",
+    "tags": [
+      "postre",
+      "merengue"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?postre-balcarce",
+    "ingredients": [
+      {
+        "name": "claras de huevo",
+        "quantity": 6,
+        "unit": "u"
+      },
+      {
+        "name": "azúcar",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "crema de leche",
+        "quantity": 500,
+        "unit": "ml"
+      },
+      {
+        "name": "azúcar impalpable",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "esencia de vainilla",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "dulce de leche",
+        "quantity": 300,
+        "unit": "g"
+      },
+      {
+        "name": "castañas de cajú",
+        "quantity": 100,
+        "unit": "g",
+        "notes": "picadas"
+      },
+      {
+        "name": "coco rallado",
+        "quantity": 50,
+        "unit": "g"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 420,
+      "protein": 6,
+      "carbs": 45,
+      "fat": 25,
+      "sugar": 35,
+      "sodium": 90
+    },
+    "id": "32a03002-e944-48db-b380-ee1487c15026",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Pescado al horno con limón",
+    "description": "Filetes de pescado horneados con limón, ajo y perejil, una opción ligera y saludable.",
+    "instructions": [
+      "Precalentar el horno a 190°C.",
+      "Colocar los filetes de pescado en una fuente para horno.",
+      "Rociar con jugo de limón, aceite de oliva, ajo picado y perejil; salpimentar.",
+      "Hornear durante 15-20 minutos hasta que el pescado se desmenuce con facilidad.",
+      "Servir con rodajas de limón."
+    ],
+    "prepTimeMinutes": 10,
+    "cookTimeMinutes": 20,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "argentina",
+    "tags": [
+      "pescado",
+      "horno"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?pescado-horno",
+    "ingredients": [
+      {
+        "name": "filete de pescado blanco",
+        "quantity": 800,
+        "unit": "g"
+      },
+      {
+        "name": "limón",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "jugo"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "diente",
+        "notes": "picados"
+      },
+      {
+        "name": "perejil",
+        "quantity": 0.25,
+        "unit": "taza",
+        "notes": "picado"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 2,
+        "unit": "cda"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.5,
+        "unit": "cdita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 200,
+      "protein": 30,
+      "carbs": 2,
+      "fat": 8,
+      "fiber": 0,
+      "sugar": 0,
+      "sodium": 380
+    },
+    "id": "07bbbd51-02f0-4063-ad80-6d14c5b58719",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Ceviche peruano",
+    "description": "Plato peruano de pescado crudo marinado en jugo de limón con cebolla, ají y cilantro.",
+    "instructions": [
+      "Cortar el pescado fresco en cubos y colocar en un bol.",
+      "Agregar jugo de limón y dejar marinar 10 minutos.",
+      "Incorporar cebolla morada en pluma, ají picado y cilantro.",
+      "Condimentar con sal y pimienta, mezclar y servir inmediatamente.",
+      "Acompañar con rodajas de camote y granos de maíz cocido."
+    ],
+    "prepTimeMinutes": 20,
+    "cookTimeMinutes": 0,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "peruana",
+    "tags": [
+      "pescado",
+      "marinado"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?ceviche",
+    "ingredients": [
+      {
+        "name": "pescado blanco fresco",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "limón",
+        "quantity": 8,
+        "unit": "u",
+        "notes": "jugo"
+      },
+      {
+        "name": "cebolla morada",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "cortada en pluma"
+      },
+      {
+        "name": "ají limo",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "picado"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 0.25,
+        "unit": "taza",
+        "notes": "picado"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.25,
+        "unit": "cdita"
+      },
+      {
+        "name": "camote cocido",
+        "quantity": 1,
+        "unit": "u",
+        "notes": "en rodajas"
+      },
+      {
+        "name": "maíz cocido",
+        "quantity": 0.5,
+        "unit": "taza"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 180,
+      "protein": 25,
+      "carbs": 10,
+      "fat": 3,
+      "fiber": 2,
+      "sugar": 3,
+      "sodium": 450
+    },
+    "id": "9ec71215-5780-47c7-91de-ba1cb7d3bdee",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Pollo korma",
+    "description": "Curry indio suave de pollo cocido en salsa cremosa de yogur, almendras y especias.",
+    "instructions": [
+      "Marinar el pollo en yogur, ajo, jengibre y especias durante 1 hora.",
+      "Dorar el pollo en aceite hasta sellar.",
+      "Añadir cebolla picada, cocinar hasta dorar y agregar especias como garam masala, cúrcuma y comino.",
+      "Incorporar puré de tomate, agua y cocinar hasta que el pollo esté tierno.",
+      "Agregar crema de coco o yogur y almendras molidas, cocinar a fuego lento unos minutos.",
+      "Servir con arroz basmati y cilantro fresco."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 45,
+    "servings": 6,
+    "difficulty": "medium",
+    "cuisine": "india",
+    "tags": [
+      "curry",
+      "pollo"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?pollo-korma",
+    "ingredients": [
+      {
+        "name": "pollo",
+        "quantity": 1.2,
+        "unit": "kg",
+        "notes": "en trozos"
+      },
+      {
+        "name": "yogur natural",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "almendra molida",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "crema de coco",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "cebolla",
+        "quantity": 2,
+        "unit": "u",
+        "notes": "picadas"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "diente",
+        "notes": "picados"
+      },
+      {
+        "name": "jengibre",
+        "quantity": 1,
+        "unit": "cda",
+        "notes": "rallado"
+      },
+      {
+        "name": "garam masala",
+        "quantity": 1,
+        "unit": "cda"
+      },
+      {
+        "name": "comino molido",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "cúrcuma",
+        "quantity": 0.5,
+        "unit": "cdita"
+      },
+      {
+        "name": "aceite vegetal",
+        "quantity": 3,
+        "unit": "cda"
+      },
+      {
+        "name": "pasta de tomate",
+        "quantity": 100,
+        "unit": "g"
+      },
+      {
+        "name": "agua",
+        "quantity": 200,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "cilantro",
+        "quantity": 0.25,
+        "unit": "taza",
+        "notes": "picado"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 450,
+      "protein": 30,
+      "carbs": 12,
+      "fat": 30,
+      "fiber": 3,
+      "sugar": 5,
+      "sodium": 600
+    },
+    "id": "a8fdf152-dabe-4c02-beb3-446c86f97551",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Kebab turco de cordero",
+    "description": "Pinchos de cordero marinados en especias y asados a la parrilla, servidos con pan pita y salsa de yogur.",
+    "instructions": [
+      "Cortar la carne de cordero en cubos y marinar con aceite, ajo, comino, pimentón y sal durante 2 horas.",
+      "Enhebrar los cubos de cordero en brochetas.",
+      "Asar a la parrilla o plancha caliente hasta que estén cocidos y dorados.",
+      "Mezclar yogur con pepino rallado, ajo y menta para la salsa tzatziki.",
+      "Servir los kebabs en pan pita con salsa y ensalada."
+    ],
+    "prepTimeMinutes": 30,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "medium",
+    "cuisine": "turca",
+    "tags": [
+      "cordero",
+      "brochetas"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?kebab",
+    "ingredients": [
+      {
+        "name": "carne de cordero",
+        "quantity": 600,
+        "unit": "g"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 3,
+        "unit": "cda"
+      },
+      {
+        "name": "ajo",
+        "quantity": 3,
+        "unit": "diente",
+        "notes": "picado"
+      },
+      {
+        "name": "comino molido",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimentón dulce",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "yogur natural",
+        "quantity": 200,
+        "unit": "g"
+      },
+      {
+        "name": "pepino",
+        "quantity": 0.5,
+        "unit": "u",
+        "notes": "rallado"
+      },
+      {
+        "name": "menta fresca",
+        "quantity": 2,
+        "unit": "cda",
+        "notes": "picada"
+      },
+      {
+        "name": "pan pita",
+        "quantity": 4,
+        "unit": "u"
+      },
+      {
+        "name": "ensalada mixta",
+        "quantity": 2,
+        "unit": "taza"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 32,
+      "carbs": 28,
+      "fat": 32,
+      "fiber": 2,
+      "sugar": 4,
+      "sodium": 650
+    },
+    "id": "4151b1cb-342b-4763-b30a-01e702e8a837",
+    "isPublic": true,
+    "source": "ai-generated"
+  },
+  {
+    "title": "Pasta al pesto genovés",
+    "description": "Pasta italiana con salsa pesto de albahaca, piñones, ajo y queso parmesano.",
+    "instructions": [
+      "Cocinar la pasta al dente en abundante agua con sal.",
+      "Preparar el pesto triturando albahaca, piñones, ajo, queso parmesano y aceite de oliva hasta obtener una salsa.",
+      "Escurrir la pasta y mezclar con la salsa pesto.",
+      "Servir espolvoreada con queso parmesano adicional."
+    ],
+    "prepTimeMinutes": 15,
+    "cookTimeMinutes": 15,
+    "servings": 4,
+    "difficulty": "easy",
+    "cuisine": "italiana",
+    "tags": [
+      "pasta",
+      "pesto"
+    ],
+    "imageUrl": "https://source.unsplash.com/600x400/?pasta-pesto",
+    "ingredients": [
+      {
+        "name": "pasta (spaghetti o linguini)",
+        "quantity": 400,
+        "unit": "g"
+      },
+      {
+        "name": "albahaca fresca",
+        "quantity": 1,
+        "unit": "taza"
+      },
+      {
+        "name": "piñones",
+        "quantity": 50,
+        "unit": "g"
+      },
+      {
+        "name": "ajo",
+        "quantity": 2,
+        "unit": "diente"
+      },
+      {
+        "name": "queso parmesano",
+        "quantity": 80,
+        "unit": "g",
+        "notes": "rallado"
+      },
+      {
+        "name": "aceite de oliva",
+        "quantity": 100,
+        "unit": "ml"
+      },
+      {
+        "name": "sal",
+        "quantity": 1,
+        "unit": "cdita"
+      },
+      {
+        "name": "pimienta",
+        "quantity": 0.25,
+        "unit": "cdita"
+      }
+    ],
+    "nutritionInfo": {
+      "calories": 520,
+      "protein": 15,
+      "carbs": 60,
+      "fat": 24,
+      "fiber": 3,
+      "sugar": 3,
+      "sodium": 300
+    },
+    "id": "781cca6e-a4ca-4108-9fc3-0ee0ab780262",
+    "isPublic": true,
+    "source": "ai-generated"
+  }
+]

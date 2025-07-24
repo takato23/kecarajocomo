@@ -1,0 +1,545 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button Snapshots Button Complex Combinations should render disabled fresh button with icons 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-fresh text-food-fresh-700 border-food-fresh-200 hover:bg-food-fresh-100 hover:text-food-fresh-800 focus:ring-food-fresh-300 dark:text-food-fresh-300 dark:hover:text-food-fresh-200 px-4 py-2 text-base gap-2"
+  disabled=""
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+    Disabled Fresh Button
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Complex Combinations should render full width loading button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+  disabled=""
+>
+  <div
+    class="absolute inset-0 flex items-center justify-center"
+  >
+    <div
+      class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+    />
+  </div>
+  <div
+    class="flex items-center gap-inherit opacity-0"
+  >
+    Full Width Loading Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Complex Combinations should render large glass button with glow and left icon 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-6 py-3 text-lg gap-2.5"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+    Complex Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Complex Combinations should render small warm button with glow 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-warm text-food-warm-700 border-food-warm-200 hover:bg-food-warm-100 hover:text-food-warm-800 focus:ring-food-warm-300 dark:text-food-warm-300 dark:hover:text-food-warm-200 px-3 py-1.5 text-sm gap-1.5 glow-warm"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Small Warm Glow
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Custom Props should render button with custom attributes 1`] = `
+<button
+  aria-label="Custom Button"
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+  data-testid="custom-button"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Custom Attributes
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Custom Props should render button with custom className 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2 custom-class"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Custom Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Sizes should render extra large button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-8 py-4 text-xl gap-3"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Extra Large Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Sizes should render large button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-6 py-3 text-lg gap-2.5"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Large Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Sizes should render medium button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Medium Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Sizes should render small button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-3 py-1.5 text-sm gap-1.5"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Small Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button States should render button with glow effect 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2 glow-fresh"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Glow Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button States should render disabled button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+  disabled=""
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Disabled Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button States should render full width button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden w-full bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Full Width Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button States should render loading button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+  disabled=""
+>
+  <div
+    class="absolute inset-0 flex items-center justify-center"
+  >
+    <div
+      class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"
+    />
+  </div>
+  <div
+    class="flex items-center gap-inherit opacity-0"
+  >
+    Loading Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render fresh button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-fresh text-food-fresh-700 border-food-fresh-200 hover:bg-food-fresh-100 hover:text-food-fresh-800 focus:ring-food-fresh-300 dark:text-food-fresh-300 dark:hover:text-food-fresh-200 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Fresh Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render ghost button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-transparent text-neutral-700 border border-transparent hover:bg-neutral-100 hover:text-neutral-900 focus:ring-neutral-300 dark:text-neutral-300 dark:hover:bg-neutral-800 dark:hover:text-neutral-100 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Ghost Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render glass button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-interactive text-neutral-900 hover:transform hover:-translate-y-0.5 focus:ring-neutral-300 dark:text-neutral-100 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Glass Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render golden button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-golden text-food-golden-700 border-food-golden-200 hover:bg-food-golden-100 hover:text-food-golden-800 focus:ring-food-golden-300 dark:text-food-golden-300 dark:hover:text-food-golden-200 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Golden Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render primary button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Primary Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render rich button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-rich text-food-rich-700 border-food-rich-200 hover:bg-food-rich-100 hover:text-food-rich-800 focus:ring-food-rich-300 dark:text-food-rich-300 dark:hover:text-food-rich-200 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Rich Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render secondary button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-neutral-100 text-neutral-900 border border-neutral-200 hover:bg-neutral-200 hover:shadow-md focus:ring-neutral-300 active:bg-neutral-300 dark:bg-neutral-800 dark:text-neutral-100 dark:border-neutral-700 dark:hover:bg-neutral-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Secondary Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button Variants should render warm button 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden glass-warm text-food-warm-700 border-food-warm-200 hover:bg-food-warm-100 hover:text-food-warm-800 focus:ring-food-warm-300 dark:text-food-warm-300 dark:hover:text-food-warm-200 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Warm Button
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button with Icons should render button with both icons 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+    Button with Both Icons
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button with Icons should render button with left icon 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+    Button with Left Icon
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;
+
+exports[`Button Snapshots Button with Icons should render button with right icon 1`] = `
+<button
+  class="inline-flex items-center justify-center rounded-xl font-medium transition-all duration-200 ease-glass focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden bg-food-fresh-500 text-white border border-food-fresh-600 hover:bg-food-fresh-600 hover:shadow-glow-fresh focus:ring-food-fresh-300 active:bg-food-fresh-700 px-4 py-2 text-base gap-2"
+>
+  <div
+    class="flex items-center gap-inherit"
+  >
+    Button with Right Icon
+    <span
+      class="flex-shrink-0"
+    >
+      <span>
+        🔧
+      </span>
+    </span>
+  </div>
+  <div
+    class="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500"
+  >
+    <div
+      class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 translate-x-[-100%] hover:translate-x-[100%] transition-transform duration-1000"
+    />
+  </div>
+</button>
+`;

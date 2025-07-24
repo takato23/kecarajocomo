@@ -1,0 +1,329 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`LiveRegion Snapshots Basic LiveRegion should render basic live region with message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Hello screen readers
+</div>
+`;
+
+exports[`LiveRegion Snapshots Basic LiveRegion should render empty live region with no message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+/>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Clear Options should render live region with clearOnUnmount disabled 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Clear on unmount disabled
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Clear Options should render live region with clearOnUnmount enabled 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Clear on unmount enabled
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Clear Options should render live region with default clearOnUnmount 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Default clear on unmount
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Edge Cases should render live region with single character message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  ✓
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Edge Cases should render live region with very long message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  This is a very long message that contains a lot of information and might be used to test how the live region handles lengthy announcements that could potentially be truncated or cause performance issues in screen readers but should still be announced properly to users who rely on assistive technologies.
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Edge Cases should render live region with whitespace message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+     Message with whitespace   
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Politeness Levels should render assertive live region 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="assertive"
+  class="sr-only"
+  role="status"
+>
+  Assertive announcement
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Politeness Levels should render live region with default politeness 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Default politeness announcement
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion Politeness Levels should render polite live region 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Polite announcement
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Complex Messages should render live region with dynamic content message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Cart updated: 2 items, total $45.99
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Complex Messages should render live region with multi-line message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Recipe saved successfully. You can find it in your recipe collection. Share it with friends or make it again later.
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Complex Messages should render live region with numbered list message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="assertive"
+  class="sr-only"
+  role="status"
+>
+  3 errors found: 1. Name is required. 2. Email is invalid. 3. Password is too short.
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Different Message Types should render live region with error message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="assertive"
+  class="sr-only"
+  role="status"
+>
+  Error: Unable to save your data. Please try again.
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Different Message Types should render live region with info message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Info: 5 items remaining in your cart
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Different Message Types should render live region with success message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Success: Your data has been saved successfully
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Different Message Types should render live region with warning message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="assertive"
+  class="sr-only"
+  role="status"
+>
+  Warning: This action cannot be undone
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Form-related Messages should render live region with field help message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Password must be at least 8 characters long
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Form-related Messages should render live region with form submission message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Form submitted successfully
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Form-related Messages should render live region with form validation message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="assertive"
+  class="sr-only"
+  role="status"
+>
+  Please enter a valid email address
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Loading States should render live region with completion message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Task completed successfully
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Loading States should render live region with loading message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Loading your data, please wait...
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Loading States should render live region with progress message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Progress: 75% complete
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Navigation Messages should render live region with content update message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Content updated: 3 new items added
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Navigation Messages should render live region with page navigation message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Navigated to Dashboard page
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Navigation Messages should render live region with search results message 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Search completed: 12 results found
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Special Characters should render live region with HTML entities 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Data imported: 5 recipes & 12 ingredients
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Special Characters should render live region with special characters 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Price: $29.99 (was $39.99) - 25% off!
+</div>
+`;
+
+exports[`LiveRegion Snapshots LiveRegion with Special Characters should render live region with unicode characters 1`] = `
+<div
+  aria-atomic="true"
+  aria-live="polite"
+  class="sr-only"
+  role="status"
+>
+  Recipe saved: Crème brûlée with café notes ✨
+</div>
+`;

@@ -1,0 +1,27 @@
+Component Type,File Path,Status,Key Features,Currently Used,Recommendation,Notes
+DASHBOARD,src/components/dashboard/iOS26Dashboard.tsx,Unknown,iOS-style design,Unknown,EVALUATE,Check if actively used
+DASHBOARD,src/components/dashboard/MobileDashboard.tsx,Unknown,Mobile-optimized,Unknown,EVALUATE,Check mobile experience
+DASHBOARD,src/components/dashboard/ModernDashboard.tsx,Unknown,Modern design,Unknown,EVALUATE,Potential main candidate
+DASHBOARD,src/components/growth-stack/GrowthDashboard.tsx,Unknown,Growth features,Unknown,EVALUATE,Check if specialized
+DASHBOARD,src/components/pantry/PantryDashboard.tsx,Functional,Pantry-specific,Pantry feature,KEEP,Feature-specific dashboard
+MEAL_PLANNER,src/components/meal-planner/AdvancedMealPlanner.tsx,Unknown,Advanced features,Unknown,EVALUATE,Check complexity
+MEAL_PLANNER,src/components/meal-planner/EnhancedMealPlanner.tsx,Unknown,Enhanced version,Unknown,EVALUATE,Compare with others
+MEAL_PLANNER,src/components/meal-planner/ModernMealPlanner.tsx,Unknown,Modern UI,Unknown,EVALUATE,Potential candidate
+MEAL_PLANNER,src/components/meal-planner/PremiumMealPlanner.tsx,Unknown,Premium features,Unknown,EVALUATE,Check if needed
+MEAL_PLANNER,src/components/meal-planner/RevolutionaryMealPlanner.tsx,Unknown,Revolutionary?,Unknown,EVALUATE,Check uniqueness
+MEAL_PLANNER,src/components/planner/SimpleMealPlanner.tsx,Unknown,Simple version,Unknown,EVALUATE,Basic implementation
+MEAL_PLANNER,src/components/ai/MealPlanner.tsx,Unknown,AI integration,Unknown,EVALUATE,Check AI features
+NAVIGATION,src/components/navigation/AppNavigation.tsx,Unknown,App navigation,Unknown,EVALUATE,Main navigation?
+NAVIGATION,src/components/navigation/GlassNavigation.tsx,Unknown,Glass design,Unknown,EVALUATE,Glassmorphism style
+NAVIGATION,src/components/navigation/Navigation.tsx,Unknown,Basic navigation,Unknown,EVALUATE,Original version?
+NAVIGATION,src/components/navigation/iOS26Navigation.tsx,Unknown,iOS style nav,Unknown,EVALUATE,iOS specific
+NAVIGATION,src/components/navigation/iOS26EnhancedNavigation.tsx,Unknown,Enhanced iOS,Unknown,EVALUATE,iOS enhanced
+SUPPORT,src/components/dashboard/DashboardLayout.tsx,Unknown,Layout wrapper,Unknown,KEEP,Utility component
+SUPPORT,src/components/dashboard/MealPlannerCard.tsx,Unknown,Card component,Unknown,KEEP,Reusable component
+SUPPORT,src/components/meal-planner/MealPlannerCalendar.tsx,Unknown,Calendar view,Unknown,KEEP,Specific feature
+SUPPORT,src/components/recipe/MealPlannerIntegration.tsx,Unknown,Integration,Unknown,KEEP,Integration logic
+SUPPORT,src/components/planner/MealPlannerView.tsx,Unknown,View component,Unknown,EVALUATE,Check usage
+SUPPORT,src/components/ui/DashboardCard.tsx,Unknown,UI component,Unknown,KEEP,Reusable UI
+BACKUP,src/components/LanguageSwitcher.tsx.backup,Backup,Language switch,None,DELETE,Backup file
+BACKUP,src/components/recipe/RecipeDetail.tsx.bak,Backup,Recipe detail,None,DELETE,Backup file
+BACKUP,src/components/recipe/RecipeForm.tsx.bak,Backup,Recipe form,None,DELETE,Backup file

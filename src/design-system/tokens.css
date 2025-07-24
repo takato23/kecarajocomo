@@ -1,0 +1,219 @@
+/**
+ * Design System CSS Variables
+ * Generated from design tokens
+ * 
+ * These variables are available globally and can be used in any CSS/SCSS file
+ * Example: color: var(--color-brand-primary);
+ */
+
+:root {
+  /* Brand Colors */
+  --color-brand-primary: #FF6B35;
+  --color-brand-secondary: #4ECDC4;
+  --color-brand-accent: #FFE66D;
+
+  /* Neutral Colors */
+  --color-neutral-0: #FFFFFF;
+  --color-neutral-50: #FAFAFA;
+  --color-neutral-100: #F5F5F5;
+  --color-neutral-200: #CACACA;
+  --color-neutral-300: #AAAAAA;
+  --color-neutral-400: #9A9A9A;
+  --color-neutral-500: #7A7A7A;
+  --color-neutral-600: #6A6A6A;
+  --color-neutral-700: #4A4A4A;
+  --color-neutral-800: #2A2A2A;
+  --color-neutral-900: #1A1A1A;
+
+  /* Semantic Colors */
+  --color-success: #06D6A0;
+  --color-warning: #FFD166;
+  --color-error: #EF476F;
+  --color-info: #118AB2;
+
+  /* Food Theme - Fresh */
+  --color-fresh-50: #f0fdf4;
+  --color-fresh-100: #dcfce7;
+  --color-fresh-200: #bbf7d0;
+  --color-fresh-300: #86efac;
+  --color-fresh-400: #4ade80;
+  --color-fresh-500: #22c55e;
+  --color-fresh-600: #16a34a;
+  --color-fresh-700: #15803d;
+  --color-fresh-800: #166534;
+  --color-fresh-900: #14532d;
+
+  /* Food Theme - Warm */
+  --color-warm-50: #fff7ed;
+  --color-warm-100: #ffedd5;
+  --color-warm-200: #fed7aa;
+  --color-warm-300: #fdba74;
+  --color-warm-400: #fb923c;
+  --color-warm-500: #f97316;
+  --color-warm-600: #ea580c;
+  --color-warm-700: #c2410c;
+  --color-warm-800: #9a3412;
+  --color-warm-900: #7c2d12;
+
+  /* Food Theme - Rich */
+  --color-rich-50: #faf5ff;
+  --color-rich-100: #f3e8ff;
+  --color-rich-200: #e9d5ff;
+  --color-rich-300: #d8b4fe;
+  --color-rich-400: #c084fc;
+  --color-rich-500: #a855f7;
+  --color-rich-600: #9333ea;
+  --color-rich-700: #7c3aed;
+  --color-rich-800: #6b21a8;
+  --color-rich-900: #581c87;
+
+  /* Food Theme - Golden */
+  --color-golden-50: #fffbeb;
+  --color-golden-100: #fef3c7;
+  --color-golden-200: #fde68a;
+  --color-golden-300: #fcd34d;
+  --color-golden-400: #fbbf24;
+  --color-golden-500: #f59e0b;
+  --color-golden-600: #d97706;
+  --color-golden-700: #b45309;
+  --color-golden-800: #92400e;
+  --color-golden-900: #78350f;
+
+  /* Typography - Font Families */
+  --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', Monaco, Consolas, 'Courier New', monospace;
+
+  /* Typography - Font Sizes */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.125rem;    /* 18px */
+  --text-xl: 1.25rem;     /* 20px */
+  --text-2xl: 1.5rem;     /* 24px */
+  --text-3xl: 1.875rem;   /* 30px */
+  --text-4xl: 2.25rem;    /* 36px */
+  --text-5xl: 3rem;       /* 48px */
+  --text-6xl: 3.75rem;    /* 60px */
+
+  /* Spacing Scale */
+  --spacing-0: 0px;
+  --spacing-1: 0.25rem;   /* 4px */
+  --spacing-2: 0.5rem;    /* 8px */
+  --spacing-3: 0.75rem;   /* 12px */
+  --spacing-4: 1rem;      /* 16px */
+  --spacing-5: 1.25rem;   /* 20px */
+  --spacing-6: 1.5rem;    /* 24px */
+  --spacing-7: 1.75rem;   /* 28px */
+  --spacing-8: 2rem;      /* 32px */
+  --spacing-10: 2.5rem;   /* 40px */
+  --spacing-12: 3rem;     /* 48px */
+  --spacing-16: 4rem;     /* 64px */
+  --spacing-20: 5rem;     /* 80px */
+  --spacing-24: 6rem;     /* 96px */
+
+  /* Border Radius */
+  --radius-none: 0px;
+  --radius-sm: 0.125rem;  /* 2px */
+  --radius-base: 0.25rem; /* 4px */
+  --radius-md: 0.375rem;  /* 6px */
+  --radius-lg: 0.5rem;    /* 8px */
+  --radius-xl: 0.75rem;   /* 12px */
+  --radius-2xl: 1rem;     /* 16px */
+  --radius-3xl: 1.5rem;   /* 24px */
+  --radius-full: 9999px;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 2px 4px -1px rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
+  --shadow-base: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+
+  /* Glass Effects */
+  --glass-white-5: rgba(255, 255, 255, 0.05);
+  --glass-white-8: rgba(255, 255, 255, 0.08);
+  --glass-white-10: rgba(255, 255, 255, 0.10);
+  --glass-white-15: rgba(255, 255, 255, 0.15);
+  --glass-white-20: rgba(255, 255, 255, 0.20);
+  --glass-white-30: rgba(255, 255, 255, 0.30);
+
+  /* Glow Effects */
+  --glow-fresh: 0 0 16px rgba(34, 197, 94, 0.4);
+  --glow-warm: 0 0 16px rgba(249, 115, 22, 0.4);
+  --glow-rich: 0 0 16px rgba(168, 85, 247, 0.4);
+  --glow-golden: 0 0 16px rgba(245, 158, 11, 0.4);
+  --glow-brand: 0 0 16px rgba(255, 107, 53, 0.4);
+
+  /* Blur Values */
+  --blur-sm: 4px;
+  --blur-base: 8px;
+  --blur-md: 12px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+
+  /* Z-Index Scale */
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-popover: 60;
+  --z-tooltip: 70;
+  --z-notification: 80;
+  --z-top: 90;
+
+  /* Transitions */
+  --transition-fast: 150ms;
+  --transition-base: 200ms;
+  --transition-slow: 300ms;
+  --transition-slower: 500ms;
+  
+  /* Easing */
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* Dark mode overrides */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Override specific colors for dark mode */
+    --color-text-primary: var(--color-neutral-100);
+    --color-text-secondary: var(--color-neutral-300);
+    --color-bg-primary: var(--color-neutral-900);
+    --color-bg-secondary: var(--color-neutral-800);
+    --color-border-primary: var(--color-neutral-700);
+  }
+}
+
+/* Utility classes using tokens */
+.glass-effect {
+  background: var(--glass-white-8);
+  backdrop-filter: blur(var(--blur-md));
+  -webkit-backdrop-filter: blur(var(--blur-md));
+  border: 1px solid var(--glass-white-15);
+  box-shadow: var(--shadow-base);
+}
+
+.glow-fresh {
+  box-shadow: var(--glow-fresh);
+}
+
+.glow-warm {
+  box-shadow: var(--glow-warm);
+}
+
+.glow-rich {
+  box-shadow: var(--glow-rich);
+}
+
+.glow-golden {
+  box-shadow: var(--glow-golden);
+}
+
+.glow-brand {
+  box-shadow: var(--glow-brand);
+}
