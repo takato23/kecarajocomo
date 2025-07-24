@@ -54,3 +54,17 @@ yarn-error.log*
 
 *storybook.log
 storybook-static
+
+# Training data repos (submodules)
+training-data/repos/
+
+# Large training data files
+training-data/processed/
+training_data_expanded/
+
+# Cache directories
+.cache/
+
+# Test results
+test-results/
+playwright-report/
