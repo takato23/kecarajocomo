@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { DarkModeToggle } from '@/components/ui/DarkModeToggle';
 import { 
   Calendar,
   ChefHat,
@@ -28,7 +29,6 @@ import {
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
-import Image from 'next/image';
 
 import { GlassCard, GlassButton, GlassModal } from '@/components/ui/GlassCard';
 import { useAuth } from '@/components/auth/AuthProvider';
@@ -125,13 +125,7 @@ const UltraModernDashboard: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-800">
-      {/* Animated gradient background */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-60 -left-40 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-700" />
-        <div className="absolute bottom-40 right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-1000" />
-      </div>
+    <div className="relative">
 
       {/* Content */}
       <div className="relative z-10">
@@ -145,16 +139,16 @@ const UltraModernDashboard: React.FC = () => {
               className="mb-8"
             >
               <h1 className="text-3xl font-bold mb-2">
-                <span className="bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 dark:from-orange-400 dark:via-pink-400 dark:to-purple-400 bg-clip-text text-transparent">
                   {greeting}, {user?.user_metadata?.full_name || 'Chef'}
                 </span>
               </h1>
-              <p className="text-gray-600 dark:text-gray-400">
+              <p className="text-gray-600 dark:text-gray-300">
                 {format(currentDate, "EEEE, d 'de' MMMM", { locale: es })}
               </p>
             </motion.div>
 
-            {/* Quick Access Cards */}
+            {/* Quick Access Cards - Acciones principales del usuario */}
             <motion.div 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -164,7 +158,7 @@ const UltraModernDashboard: React.FC = () => {
               <GlassCard 
                 variant="light" 
                 className="p-6 hover:scale-105 transition-transform cursor-pointer group"
-                // onClick={() => router.push('/planificador')}
+                onClick={() => router.push('/meal-planning')}
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-3 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl mb-4 group-hover:from-blue-500/30 group-hover:to-cyan-500/30 transition-colors">
@@ -285,108 +279,6 @@ const UltraModernDashboard: React.FC = () => {
               ))}
             </motion.div>
 
-            {/* Quick Stats Cards */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8"
-            >
-              {[
-                { 
-                  icon: Flame, 
-                  label: 'Racha', 
-                  value: 15, 
-                  suffix: ' días', 
-                  color: 'from-orange-500 to-red-500',
-                  trend: '+3',
-                  trendUp: true
-                },
-                { 
-                  icon: Star, 
-                  label: 'Puntos', 
-                  value: 2450, 
-                  suffix: '', 
-                  color: 'from-yellow-500 to-amber-500',
-                  trend: '+120',
-                  trendUp: true
-                },
-                { 
-                  icon: Heart, 
-                  label: 'Favoritos', 
-                  value: 48, 
-                  suffix: '', 
-                  color: 'from-pink-500 to-rose-500',
-                  trend: '+5',
-                  trendUp: true
-                },
-                { 
-                  icon: Award, 
-                  label: 'Nivel', 
-                  value: 12, 
-                  suffix: '', 
-                  color: 'from-purple-500 to-indigo-500',
-                  progress: 75
-                }
-              ].map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 0.1 * index }}
-                  whileHover={{ scale: 1.05 }}
-                  className="relative group cursor-pointer"
-                  onClick={() => {
-                    if (stat.label === 'Nivel' || stat.label === 'Puntos') router.push('/perfil');
-                    if (stat.label === 'Favoritos') router.push('/recetas');
-                    // if (stat.label === 'Racha') router.push('/planificador');
-                  }}
-                >
-                  <div className={cn(
-                    "absolute inset-0 bg-gradient-to-r rounded-2xl blur-xl opacity-50 group-hover:opacity-75 transition-opacity",
-                    stat.color
-                  )} />
-                  <GlassCard 
-                    variant="medium"
-                    className="relative h-full p-6"
-                    interactive
-                    particles
-                  >
-                    <div className="flex items-start justify-between mb-4">
-                      <div className={cn(
-                        "p-3 rounded-xl bg-gradient-to-br text-white",
-                        stat.color
-                      )}>
-                        <stat.icon className="w-6 h-6" />
-                      </div>
-                      {stat.trend && (
-                        <div className={cn(
-                          "flex items-center gap-1 text-sm font-medium",
-                          stat.trendUp ? "text-green-600" : "text-red-600"
-                        )}>
-                          {stat.trendUp ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
-                          {stat.trend}
-                        </div>
-                      )}
-                    </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">{stat.label}</p>
-                    <p className="text-2xl font-bold">
-                      <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                    </p>
-                    {stat.progress && (
-                      <div className="mt-3 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-                        <motion.div
-                          className="h-full bg-gradient-to-r from-purple-500 to-indigo-500"
-                          initial={{ width: 0 }}
-                          animate={{ width: `${stat.progress}%` }}
-                          transition={{ duration: 1, delay: 0.5 }}
-                        />
-                      </div>
-                    )}
-                  </GlassCard>
-                </motion.div>
-              ))}
-            </motion.div>
 
             {/* Main Dashboard Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -399,8 +291,8 @@ const UltraModernDashboard: React.FC = () => {
               >
                 <GlassCard variant="strong" className="h-full p-6">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-xl font-bold flex items-center gap-2">
-                      <Calendar className="w-5 h-5 text-purple-600" />
+                    <h2 className="text-xl font-bold flex items-center gap-2 dark:text-white">
+                      <Calendar className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                       Plan de Hoy
                     </h2>
                     <GlassButton
@@ -495,10 +387,10 @@ const UltraModernDashboard: React.FC = () => {
                                   )}>
                                     <mealData.icon className="w-4 h-4" />
                                   </div>
-                                  <span className="text-sm font-medium">{mealData.meal}</span>
-                                  <span className="text-xs text-gray-500">• {mealData.time}</span>
+                                  <span className="text-sm font-medium dark:text-white">{mealData.meal}</span>
+                                  <span className="text-xs text-gray-500 dark:text-gray-400">• {mealData.time}</span>
                                 </div>
-                                <h4 className="font-medium text-sm">{mealData.name}</h4>
+                                <h4 className="font-medium text-sm dark:text-gray-200">{mealData.name}</h4>
                               </div>
                               
                               {mealData.status === 'current' && mealData.timer && (
@@ -514,14 +406,14 @@ const UltraModernDashboard: React.FC = () => {
                             </div>
 
                             <div className="flex items-center justify-between">
-                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                              <span className="text-sm text-gray-600 dark:text-gray-300">
                                 {mealData.calories} cal
                               </span>
                               <motion.div
                                 whileHover={{ x: 5 }}
                                 className="opacity-0 group-hover:opacity-100 transition-opacity"
                               >
-                                <ArrowRight className="w-4 h-4 text-gray-400" />
+                                <ArrowRight className="w-4 h-4 text-gray-400 dark:text-gray-500" />
                               </motion.div>
                             </div>
                           </div>
@@ -544,8 +436,8 @@ const UltraModernDashboard: React.FC = () => {
                   <div className="mt-6 p-4 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="text-sm font-medium mb-1">Resumen del Día</p>
-                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                        <p className="text-sm font-medium mb-1 dark:text-white">Resumen del Día</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-300">
                           Total: 1,470 cal • Proteínas: 78g • Carbos: 156g • Grasas: 52g
                         </p>
                       </div>
@@ -574,8 +466,8 @@ const UltraModernDashboard: React.FC = () => {
                       <Sparkles className="w-6 h-6" />
                     </div>
                     <div>
-                      <h3 className="font-semibold">Chef IA Sugiere</h3>
-                      <p className="text-xs text-gray-500">Basado en tu despensa</p>
+                      <h3 className="font-semibold dark:text-white">Chef IA Sugiere</h3>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Basado en tu despensa</p>
                     </div>
                   </div>
                   
@@ -586,8 +478,8 @@ const UltraModernDashboard: React.FC = () => {
                       className="w-full p-3 bg-gradient-to-r from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 rounded-xl text-left group"
                       onClick={() => router.push('/recetas')}
                     >
-                      <p className="font-medium text-sm mb-1">Risotto de Champiñones</p>
-                      <p className="text-xs text-gray-500">Tienes todos los ingredientes</p>
+                      <p className="font-medium text-sm mb-1 dark:text-white">Risotto de Champiñones</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Tienes todos los ingredientes</p>
                     </motion.button>
                     
                     <motion.button
@@ -596,8 +488,8 @@ const UltraModernDashboard: React.FC = () => {
                       className="w-full p-3 bg-gradient-to-r from-blue-50 to-cyan-50 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-xl text-left"
                       onClick={() => router.push('/recetas')}
                     >
-                      <p className="font-medium text-sm mb-1">Curry de Garbanzos</p>
-                      <p className="text-xs text-gray-500">Te falta: leche de coco</p>
+                      <p className="font-medium text-sm mb-1 dark:text-white">Curry de Garbanzos</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Te falta: leche de coco</p>
                     </motion.button>
                   </div>
 
@@ -614,32 +506,76 @@ const UltraModernDashboard: React.FC = () => {
 
                 {/* Quick Stats */}
                 <GlassCard variant="medium" className="p-6">
-                  <h3 className="font-semibold mb-4 flex items-center gap-2">
-                    <Activity className="w-5 h-5 text-purple-600" />
+                  <h3 className="font-semibold mb-4 flex items-center gap-2 dark:text-white">
+                    <Activity className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                     Esta Semana
                   </h3>
                   
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Comidas planificadas</span>
-                      <span className="font-medium">21/28</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Comidas planificadas</span>
+                      <span className="font-medium dark:text-white">21/28</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Calorías promedio</span>
-                      <span className="font-medium">1,850</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Calorías promedio</span>
+                      <span className="font-medium dark:text-white">1,850</span>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Ahorro estimado</span>
-                      <span className="font-medium text-green-600">$45</span>
+                      <span className="text-sm text-gray-600 dark:text-gray-300">Ahorro estimado</span>
+                      <span className="font-medium text-green-600 dark:text-green-400">$45</span>
                     </div>
                   </div>
+                </GlassCard>
+
+                {/* Pantry Snapshot - NUEVO */}
+                <GlassCard variant="medium" className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="font-semibold flex items-center gap-2 dark:text-white">
+                      <Package className="w-5 h-5 text-purple-600 dark:text-purple-400" />
+                      Mi Despensa
+                    </h3>
+                    <span className="px-2 py-1 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 text-xs rounded-full font-medium">
+                      2 por vencer
+                    </span>
+                  </div>
+
+                  <div className="space-y-2 mb-4">
+                    {[
+                      { name: 'Yogur natural', days: 2, urgent: true },
+                      { name: 'Leche entera', days: 4, urgent: false },
+                      { name: 'Tomates cherry', days: 6, urgent: false },
+                      { name: 'Pan integral', days: 1, urgent: true },
+                      { name: 'Espinacas', days: 3, urgent: false }
+                    ].slice(0, 4).map((item, i) => (
+                      <div key={i} className="flex items-center justify-between text-sm">
+                        <span className="dark:text-gray-300 flex-1 truncate">{item.name}</span>
+                        <span className={cn(
+                          "px-2 py-0.5 rounded-full text-xs font-medium ml-2",
+                          item.days <= 2 ? "bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400" :
+                          item.days <= 4 ? "bg-orange-100 text-orange-600 dark:bg-orange-900/30 dark:text-orange-400" :
+                          "bg-green-100 text-green-600 dark:bg-green-900/30 dark:text-green-400"
+                        )}>
+                          {item.days}d
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <GlassButton
+                    variant="subtle"
+                    size="sm"
+                    className="w-full justify-center"
+                    onClick={() => router.push('/despensa')}
+                  >
+                    Ver despensa completa
+                  </GlassButton>
                 </GlassCard>
 
                 {/* Shopping List Preview */}
                 <GlassCard variant="medium" className="p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h3 className="font-semibold flex items-center gap-2">
-                      <ShoppingCart className="w-5 h-5 text-purple-600" />
+                    <h3 className="font-semibold flex items-center gap-2 dark:text-white">
+                      <ShoppingCart className="w-5 h-5 text-purple-600 dark:text-purple-400" />
                       Lista de Compras
                     </h3>
                     <span className="px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 text-xs rounded-full font-medium">
@@ -651,7 +587,7 @@ const UltraModernDashboard: React.FC = () => {
                     {['Leche de coco', 'Espinacas frescas', 'Pan integral'].map((item, i) => (
                       <label key={i} className="flex items-center gap-3 cursor-pointer group">
                         <input type="checkbox" className="w-4 h-4 text-purple-600 rounded" />
-                        <span className="text-sm group-hover:text-purple-600 transition-colors">{item}</span>
+                        <span className="text-sm group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors dark:text-gray-300">{item}</span>
                       </label>
                     ))}
                   </div>
@@ -668,16 +604,70 @@ const UltraModernDashboard: React.FC = () => {
               </motion.div>
             </div>
 
+            {/* Stats compactas - menos prominentes */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-8 mb-8"
+            >
+              <GlassCard variant="light" className="p-6">
+                <h3 className="text-lg font-semibold mb-4 text-gray-700 dark:text-gray-300">Progreso Personal</h3>
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                  {[
+                    { 
+                      icon: Flame, 
+                      label: 'Racha', 
+                      value: 15, 
+                      suffix: ' días', 
+                      color: 'text-orange-600 dark:text-orange-400',
+                    },
+                    { 
+                      icon: Star, 
+                      label: 'Puntos', 
+                      value: 2450, 
+                      suffix: '', 
+                      color: 'text-yellow-600 dark:text-yellow-400',
+                    },
+                    { 
+                      icon: Heart, 
+                      label: 'Favoritos', 
+                      value: 48, 
+                      suffix: '', 
+                      color: 'text-pink-600 dark:text-pink-400',
+                    },
+                    { 
+                      icon: Award, 
+                      label: 'Nivel', 
+                      value: 12, 
+                      suffix: '', 
+                      color: 'text-purple-600 dark:text-purple-400',
+                    }
+                  ].map((stat, index) => (
+                    <div key={stat.label} className="text-center">
+                      <div className="flex justify-center mb-2">
+                        <stat.icon className={cn("w-6 h-6", stat.color)} />
+                      </div>
+                      <p className="text-2xl font-bold dark:text-white">
+                        <AnimatedCounter value={stat.value} suffix={stat.suffix} />
+                      </p>
+                      <p className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</p>
+                    </div>
+                  ))}
+                </div>
+              </GlassCard>
+            </motion.div>
+
             {/* Trending Recipes Section */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6 }}
-              className="mt-12"
+              className="mt-4"
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold flex items-center gap-2">
-                  <TrendingUp className="w-6 h-6 text-purple-600" />
+                <h2 className="text-2xl font-bold flex items-center gap-2 dark:text-white">
+                  <TrendingUp className="w-6 h-6 text-purple-600 dark:text-purple-400" />
                   Recetas Populares
                 </h2>
                 
@@ -758,8 +748,8 @@ const UltraModernDashboard: React.FC = () => {
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="font-semibold mb-2 line-clamp-1">{recipe.name}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                        <h3 className="font-semibold mb-2 line-clamp-1 dark:text-white">{recipe.name}</h3>
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
                           por {recipe.author}
                         </p>
 
@@ -767,9 +757,9 @@ const UltraModernDashboard: React.FC = () => {
                           <div className="flex items-center gap-2">
                             <div className="flex items-center gap-1">
                               <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                              <span className="text-sm font-medium">{recipe.rating}</span>
+                              <span className="text-sm font-medium dark:text-white">{recipe.rating}</span>
                             </div>
-                            <span className="text-sm text-gray-500">
+                            <span className="text-sm text-gray-500 dark:text-gray-400">
                               ({recipe.saves} guardados)
                             </span>
                           </div>
@@ -806,12 +796,12 @@ const UltraModernDashboard: React.FC = () => {
             
             <div className="flex items-center gap-4 mb-6">
               <div className="flex items-center gap-1">
-                <Clock className="w-5 h-5 text-gray-500" />
-                <span>{selectedRecipe.time}</span>
+                <Clock className="w-5 h-5 text-gray-500 dark:text-gray-400" />
+                <span className="dark:text-gray-300">{selectedRecipe.time}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Star className="w-5 h-5 text-yellow-500 fill-current" />
-                <span>{selectedRecipe.rating}</span>
+                <Star className="w-5 h-5 text-yellow-500 dark:text-yellow-400 fill-current" />
+                <span className="dark:text-gray-300">{selectedRecipe.rating}</span>
               </div>
               <span className="px-3 py-1 bg-gray-100 dark:bg-gray-800 rounded-full text-sm">
                 {selectedRecipe.difficulty}
@@ -850,7 +840,7 @@ const UltraModernDashboard: React.FC = () => {
             className="absolute top-20 right-6 w-80 glass-container glass-strong rounded-2xl shadow-2xl overflow-hidden z-50"
           >
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
-              <h3 className="font-semibold">Notificaciones</h3>
+              <h3 className="font-semibold dark:text-white">Notificaciones</h3>
             </div>
             <div className="max-h-96 overflow-y-auto">
               {[
@@ -888,11 +878,11 @@ const UltraModernDashboard: React.FC = () => {
                       <notif.icon className="w-5 h-5" />
                     </div>
                     <div className="flex-1">
-                      <p className="font-medium text-sm">{notif.title}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                      <p className="font-medium text-sm dark:text-white">{notif.title}</p>
+                      <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">
                         {notif.message}
                       </p>
-                      <p className="text-xs text-gray-500 mt-2">{notif.time}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">{notif.time}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -901,6 +891,16 @@ const UltraModernDashboard: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Floating Dark Mode Toggle for Demo */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 1, duration: 0.3 }}
+        className="fixed bottom-8 right-8 z-50"
+      >
+        <DarkModeToggle size="lg" />
+      </motion.div>
     </div>
   );
 };

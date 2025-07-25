@@ -5,15 +5,16 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Plus, Search, Filter, AlertTriangle, ShoppingCart, Sparkles, Receipt, Loader2, X } from 'lucide-react';
 
-import { usePantryStore } from '@/stores/pantry';
-import { useAuthStore } from '@/stores/auth';
-import { useShoppingStore } from '@/stores/shopping';
 import { PantryItemCard } from '@/features/pantry/components/PantryItemCard';
 import { AddPantryItemModal } from '@/features/pantry/components/AddPantryItemModal';
 import { PantrySuggestions } from '@/features/ai/components/PantrySuggestions';
 import { VoiceModal } from '@/components/voice/VoiceModal';
 import { DiscreteVoiceButton } from '@/components/voice/DiscreteVoiceButton';
 import { INGREDIENT_CATEGORIES } from '@/types/pantry';
+
+import { useShopping, useShoppingActions } from '@/store';
+import { useUser, useUserActions } from '@/store';
+import { usePantry, usePantryActions } from '@/store';
 
 // Lazy load the receipt scanner
 const ReceiptScanner = lazy(() => 

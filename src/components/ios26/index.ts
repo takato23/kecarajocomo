@@ -3,7 +3,7 @@
  * Export all iOS26 components from a single entry point
  */
 
-export { IOS26Provider as iOS26Provider, useIOS26 } from './iOS26Provider';
+export { IOS26Provider, useIOS26 } from './iOS26Provider';
 export { iOS26LiquidCard } from './iOS26LiquidCard';
 export { iOS26LiquidButton } from './iOS26LiquidButton';
 export { iOS26LiquidInput } from './iOS26LiquidInput';

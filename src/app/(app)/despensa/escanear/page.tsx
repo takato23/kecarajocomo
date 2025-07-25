@@ -1,12 +1,10 @@
-import { Metadata } from 'next';
-import { Camera, Zap, QrCode, Package, Smartphone, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Escanear Items | KeCarajoComér',
-  description: 'Escanea códigos de barras para agregar productos automáticamente'
-};
+import { Camera, Zap, QrCode, Package, Smartphone, CheckCircle, AlertCircle, Clock } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 export default function DespensaEscanearPage() {
+  const router = useRouter();
   const scanMethods = [
     {
       id: 'barcode',
@@ -123,7 +121,17 @@ export default function DespensaEscanearPage() {
                   </span>
                 </div>
                 
-                <button className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors">
+                <button 
+                  onClick={() => {
+                    if (method.id === 'receipt') {
+                      router.push('/pantry/scan');
+                    } else {
+                      // Por ahora, los otros métodos también van a la misma página
+                      router.push('/pantry/scan');
+                    }
+                  }}
+                  className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                >
                   Iniciar escaneo
                 </button>
               </div>
@@ -155,11 +163,17 @@ export default function DespensaEscanearPage() {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-md mx-auto">
-                <button className="flex items-center justify-center gap-2 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors">
+                <button 
+                  onClick={() => router.push('/pantry/scan')}
+                  className="flex items-center justify-center gap-2 p-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
                   <QrCode className="w-5 h-5" />
                   Código de barras
                 </button>
-                <button className="flex items-center justify-center gap-2 p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors">
+                <button 
+                  onClick={() => router.push('/pantry/scan')}
+                  className="flex items-center justify-center gap-2 p-3 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                >
                   <Camera className="w-5 h-5" />
                   Foto producto
                 </button>

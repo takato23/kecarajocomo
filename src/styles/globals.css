@@ -1,5 +1,4 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
-@import './ios26/glass.css';
 @import './ios26/liquid-glass-enhanced.css';
 @tailwind base;
 @tailwind components;
@@ -7,7 +6,7 @@
 
 /* Meal planner CSS variables */
 :root {
-  /* Design tokens */
+  /* Light mode design tokens */
   --glass-bg: rgba(255, 255, 255, 0.65);
   --glass-border: rgba(255, 255, 255, 0.25);
   --glass-bg-dark: rgba(24, 24, 27, 0.55);
@@ -23,11 +22,40 @@
   --meal-snack-to: #a7f3d0;
   --meal-dinner-from: #e879f9;
   --meal-dinner-to: #fda4af;
+  
+  /* Light mode colors */
+  --bg-primary: #ffffff;
+  --bg-secondary: #f9fafb;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #4b5563;
+  --text-tertiary: #6b7280;
 }
 
 .dark {
-  --glass-bg: var(--glass-bg-dark);
+  /* Dark mode design tokens */
+  --glass-bg: rgba(24, 24, 27, 0.55);
   --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-blur: 20px;
+  --glass-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  
+  /* Dark mode colors */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #171717;
+  --bg-tertiary: #262626;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --text-tertiary: #9ca3af;
+  
+  /* Adjusted meal gradients for dark mode */
+  --meal-breakfast-from: #fde68a;
+  --meal-breakfast-to: #fbcf5d;
+  --meal-lunch-from: #7dd3fc;
+  --meal-lunch-to: #5eead4;
+  --meal-snack-from: #6ee7b7;
+  --meal-snack-to: #a7f3d0;
+  --meal-dinner-from: #e879f9;
+  --meal-dinner-to: #fda4af;
 }
 
 /* Global reset and base styles */
@@ -81,10 +109,19 @@
     @apply bg-white/10 backdrop-blur-md border border-white/20;
     @apply shadow-glass;
   }
+  
+  .dark .glass {
+    @apply bg-black/20 backdrop-blur-lg border-white/10;
+    @apply shadow-lg shadow-black/20;
+  }
 
   .glass-interactive {
     @apply glass hover:bg-white/15 hover:border-white/30;
     @apply transition-all duration-300 cursor-pointer;
+  }
+  
+  .dark .glass-interactive {
+    @apply hover:bg-black/30 hover:border-white/20;
   }
 
   .glass-fresh {

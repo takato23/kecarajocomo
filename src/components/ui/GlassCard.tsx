@@ -2,14 +2,12 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
+import { glassVariants, glassButtonVariants, type GlassVariantsProps, type GlassButtonVariantsProps } from '@/lib/glass-variants';
 
-interface GlassCardProps {
+interface GlassCardProps extends GlassVariantsProps {
   children: React.ReactNode;
-  variant?: 'subtle' | 'medium' | 'strong';
-  interactive?: boolean;
   particles?: boolean;
   spotlight?: boolean;
   className?: string;
@@ -21,6 +19,7 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   children,
   variant = 'medium',
   interactive = false,
+  glow = false,
   particles = false,
   spotlight = false,
   className,
@@ -30,27 +29,28 @@ export const GlassCard: React.FC<GlassCardProps> = ({
   return (
     <Component
       className={cn(
-        'glass-container',
-        variant === 'subtle' && 'glass-subtle',
-        variant === 'medium' && 'glass-medium',
-        variant === 'strong' && 'glass-strong',
-        interactive && 'glass-interactive',
-        spotlight && 'relative overflow-hidden',
+        'rounded-2xl',
+        glassVariants({ variant, interactive, glow }),
         className
       )}
       onClick={onClick}
     >
       {particles && (
-        <div className="glass-particles" />
-      )}
-      
-      {spotlight && (
-        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-white/20 to-transparent rounded-full blur-xl" />
+        <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+          <div className="absolute -top-4 -left-4 w-24 h-24 bg-purple-500/20 rounded-full blur-2xl animate-pulse" />
+          <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-blue-500/20 rounded-full blur-2xl animate-pulse delay-700" />
         </div>
       )}
       
-      {children}
+      {spotlight && (
+        <div className="absolute inset-0 opacity-0 hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-gradient-radial from-white/20 dark:from-white/10 to-transparent rounded-full blur-xl" />
+        </div>
+      )}
+      
+      <div className="relative z-10">
+        {children}
+      </div>
     </Component>
   );
 };
@@ -106,12 +106,12 @@ export const GlassRecipeCard: React.FC<GlassRecipeCardProps> = ({
             <div className="flex items-center justify-between">
               {rating && (
                 <div className="flex items-center space-x-1">
-                  <span className="text-yellow-300">★</span>
-                  <span className="text-sm font-medium">{rating.toFixed(1)}</span>
+                  <span className="text-yellow-300 dark:text-yellow-400">★</span>
+                  <span className="text-sm font-medium dark:text-white">{rating.toFixed(1)}</span>
                 </div>
               )}
               {prepTime && (
-                <div className="flex items-center space-x-1 text-sm">
+                <div className="flex items-center space-x-1 text-sm dark:text-white">
                   <span>🕐</span>
                   <span>{prepTime} min</span>
                 </div>
@@ -245,10 +245,8 @@ export const GlassModal: React.FC<GlassModalProps> = ({
   );
 };
 
-interface GlassButtonProps {
+interface GlassButtonProps extends GlassButtonVariantsProps {
   children: React.ReactNode;
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
   icon?: React.ReactNode;
   iconPosition?: 'left' | 'right';
   disabled?: boolean;
@@ -260,7 +258,7 @@ interface GlassButtonProps {
 
 export const GlassButton: React.FC<GlassButtonProps> = ({
   children,
-  variant = 'primary',
+  variant = 'secondary',
   size = 'md',
   icon,
   iconPosition = 'left',
@@ -270,18 +268,6 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
   className,
   type = 'button'
 }) => {
-  const variantClasses = {
-    primary: 'glass-button bg-gradient-to-r from-green-500/15 via-blue-500/15 to-purple-500/15 text-green-800 dark:text-green-100 border-green-500/20 hover:from-green-500/25 hover:via-blue-500/25 hover:to-purple-500/25 shadow-lg shadow-green-500/10 hover:shadow-green-500/20',
-    secondary: 'glass-button bg-gradient-to-r from-blue-500/10 to-purple-500/10 text-blue-800 dark:text-blue-100 border-blue-500/20 hover:from-blue-500/20 hover:to-purple-500/20 shadow-lg shadow-blue-500/10 hover:shadow-blue-500/15',
-    ghost: 'glass-button bg-white/5 border-white/10 hover:bg-white/15 hover:border-white/20 text-gray-700 dark:text-gray-200 hover:shadow-sm'
-  };
-
-  const sizeClasses = {
-    sm: 'px-3 py-1.5 text-sm',
-    md: 'px-4 py-2 text-base',
-    lg: 'px-6 py-3 text-lg'
-  };
-
   return (
     <motion.button
       type={type}
@@ -296,9 +282,8 @@ export const GlassButton: React.FC<GlassButtonProps> = ({
         damping: 25 
       }}
       className={cn(
-        variantClasses[variant],
-        sizeClasses[size],
-        'flex items-center justify-center space-x-2 font-medium rounded-xl transition-all duration-300 ease-out backdrop-blur-sm',
+        glassButtonVariants({ variant, size }),
+        'flex items-center justify-center space-x-2 transition-all duration-300 ease-out',
         disabled && 'opacity-50 cursor-not-allowed',
         className
       )}

@@ -25,16 +25,16 @@ import {
   Mic,
   Volume2
 } from 'lucide-react';
-import Image from 'next/image';
 
 import { GlassCard, GlassButton, GlassInput, GlassModal } from '@/components/ui/GlassCard';
 import { EnhancedRecipeGrid } from '@/components/recipes/EnhancedRecipeGrid';
 import { EnhancedRecipeCreationModal } from '@/features/recipes/components/EnhancedRecipeCreationModal';
-import { useAuthStore } from '@/stores/auth';
 import { useNotifications } from '@/services/notifications';
 import { useAnalytics } from '@/services/analytics';
 import { getVoiceService } from '@/services/voice/UnifiedVoiceService';
 import { cn } from '@/lib/utils';
+
+import { useUser, useUserActions } from '@/store';
 
 // Mock data mejorado
 const mockRecipes = [
@@ -156,7 +156,7 @@ const mockRecipes = [
 
 export default function RecetasPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
+  const user = useUser();
   const { notify } = useNotifications();
   const { track } = useAnalytics();
   
@@ -210,10 +210,10 @@ export default function RecetasPage() {
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 dark:from-orange-400 dark:via-pink-400 dark:to-purple-400 bg-clip-text text-transparent mb-2">
                 Explora Recetas
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 Descubre {mockRecipes.length}+ recetas adaptadas a tus ingredientes y preferencias
               </p>
             </div>
@@ -285,8 +285,8 @@ export default function RecetasPage() {
                   className={cn(
                     "absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-lg transition-colors",
                     isListening 
-                      ? "bg-red-100 text-red-600 hover:bg-red-200" 
-                      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                      ? "bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 hover:bg-red-200 dark:hover:bg-red-900/50" 
+                      : "bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600"
                   )}
                   disabled={isListening}
                 >
@@ -362,8 +362,8 @@ export default function RecetasPage() {
           transition={{ delay: 0.2 }}
           className="mb-8"
         >
-          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2">
-            <TrendingUp className="w-6 h-6 text-orange-600" />
+          <h2 className="text-2xl font-bold mb-4 flex items-center gap-2 dark:text-white">
+            <TrendingUp className="w-6 h-6 text-orange-600 dark:text-orange-400" />
             Categorías Populares
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -383,8 +383,8 @@ export default function RecetasPage() {
                   )}>
                     {category.icon}
                   </div>
-                  <h3 className="font-medium text-sm mb-1">{category.name}</h3>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                  <h3 className="font-medium text-sm mb-1 dark:text-white">{category.name}</h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-300">
                     {category.count} recetas
                   </p>
                 </GlassCard>
@@ -403,11 +403,11 @@ export default function RecetasPage() {
               className="mb-6"
             >
               <GlassCard variant="medium" className="p-6">
-                <h3 className="text-lg font-semibold mb-4">Filtros Avanzados</h3>
+                <h3 className="text-lg font-semibold mb-4 dark:text-white">Filtros Avanzados</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-medium mb-2">Tiempo de Preparación</label>
-                    <select className="glass-input w-full">
+                    <label className="block text-sm font-medium mb-2 dark:text-gray-300">Tiempo de Preparación</label>
+                    <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
                       <option>Cualquier duración</option>
                       <option>Menos de 15 min</option>
                       <option>15-30 min</option>
@@ -416,8 +416,8 @@ export default function RecetasPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Dificultad</label>
-                    <select className="glass-input w-full">
+                    <label className="block text-sm font-medium mb-2 dark:text-gray-300">Dificultad</label>
+                    <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
                       <option>Todas</option>
                       <option>Fácil</option>
                       <option>Media</option>
@@ -425,8 +425,8 @@ export default function RecetasPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium mb-2">Tipo de Cocina</label>
-                    <select className="glass-input w-full">
+                    <label className="block text-sm font-medium mb-2 dark:text-gray-300">Tipo de Cocina</label>
+                    <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
                       <option>Todas las cocinas</option>
                       <option>Mexicana</option>
                       <option>Italiana</option>
@@ -461,8 +461,8 @@ export default function RecetasPage() {
           ].map((stat) => (
             <GlassCard key={stat.label} variant="subtle" className="p-4 text-center">
               <stat.icon className={cn("w-8 h-8 mx-auto mb-2", stat.color)} />
-              <div className="text-2xl font-bold">{stat.value}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">{stat.label}</div>
+              <div className="text-2xl font-bold dark:text-white">{stat.value}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-300">{stat.label}</div>
             </GlassCard>
           ))}
         </motion.div>
@@ -485,28 +485,28 @@ export default function RecetasPage() {
             
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               <div className="text-center">
-                <Clock className="w-6 h-6 mx-auto mb-1 text-gray-500" />
-                <p className="text-sm font-medium">{selectedRecipe.prepTime + selectedRecipe.cookTime} min</p>
-                <p className="text-xs text-gray-500">Tiempo Total</p>
+                <Clock className="w-6 h-6 mx-auto mb-1 text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium dark:text-white">{selectedRecipe.prepTime + selectedRecipe.cookTime} min</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Tiempo Total</p>
               </div>
               <div className="text-center">
-                <Users className="w-6 h-6 mx-auto mb-1 text-gray-500" />
-                <p className="text-sm font-medium">{selectedRecipe.servings} personas</p>
-                <p className="text-xs text-gray-500">Porciones</p>
+                <Users className="w-6 h-6 mx-auto mb-1 text-gray-500 dark:text-gray-400" />
+                <p className="text-sm font-medium dark:text-white">{selectedRecipe.servings} personas</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Porciones</p>
               </div>
               <div className="text-center">
-                <Star className="w-6 h-6 mx-auto mb-1 text-yellow-500" />
-                <p className="text-sm font-medium">{selectedRecipe.rating}</p>
-                <p className="text-xs text-gray-500">Calificación</p>
+                <Star className="w-6 h-6 mx-auto mb-1 text-yellow-500 dark:text-yellow-400" />
+                <p className="text-sm font-medium dark:text-white">{selectedRecipe.rating}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Calificación</p>
               </div>
               <div className="text-center">
-                <Flame className="w-6 h-6 mx-auto mb-1 text-orange-500" />
-                <p className="text-sm font-medium">{selectedRecipe.macronutrients?.calories} cal</p>
-                <p className="text-xs text-gray-500">Por porción</p>
+                <Flame className="w-6 h-6 mx-auto mb-1 text-orange-500 dark:text-orange-400" />
+                <p className="text-sm font-medium dark:text-white">{selectedRecipe.macronutrients?.calories} cal</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Por porción</p>
               </div>
             </div>
 
-            <p className="text-gray-600 dark:text-gray-400">
+            <p className="text-gray-600 dark:text-gray-300">
               {selectedRecipe.description}
             </p>
 

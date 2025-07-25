@@ -15,14 +15,15 @@ import {
   AlertTriangle
 } from 'lucide-react';
 
-import { useShoppingStore } from '@/stores/shopping';
-import { usePantryStore } from '@/stores/pantry';
-import { useAuthStore } from '@/stores/auth';
 import { useToast } from '@/hooks/use-toast';
 import { INGREDIENT_CATEGORIES } from '@/types/pantry';
 import { ShoppingVoiceButton } from '@/components/shopping/ShoppingVoiceButton';
 import { SupermarketMode } from '@/components/shopping/SupermarketMode';
 import { CategoryBadge } from '@/components/shopping/CategoryBadge';
+
+import { useUser, useUserActions } from '@/store';
+import { usePantry, usePantryActions } from '@/store';
+import { useShopping, useShoppingActions } from '@/store';
 
 export default function ShoppingListPage() {
   const { user } = useAuthStore();

@@ -6,6 +6,10 @@
 export { PriceTracker } from './priceTracker';
 export { PriceComparator } from './priceComparator';
 export { PriceScrapingService } from '../scraping/priceScrapingService';
+export { 
+  IngredientPriceService, 
+  getIngredientPriceService 
+} from './ingredientPriceService';
 
 // Export types
 export type {
@@ -14,3 +18,7 @@ export type {
   PriceAlert,
   PriceTrend
 } from './priceTracker';
+
+export type {
+  IngredientPriceInfo
+} from './ingredientPriceService';

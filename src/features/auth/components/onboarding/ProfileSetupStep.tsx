@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Camera, User } from 'lucide-react';
-import Image from 'next/image';
 
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { useAuthStore } from '../../store/authStore';

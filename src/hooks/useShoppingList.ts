@@ -1,290 +1,316 @@
 import { useState, useEffect, useCallback } from 'react';
+import { toast } from 'sonner';
+import { shoppingService } from '@/lib/supabase/shopping';
+import { useAuthStore } from '@/features/auth';
+import type { Database } from '@/lib/supabase/database.types';
 
-import { useAuth } from '@/components/auth/AuthProvider';
-import { shoppingListService, ShoppingList, ShoppingItem } from '@/lib/services/shoppingListService';
+type ShoppingList = Database['public']['Tables']['shopping_lists']['Row'] & {
+  shopping_items?: ShoppingItem[];
+};
+type ShoppingItem = Database['public']['Tables']['shopping_items']['Row'];
 
-import { usePriceIntegration } from './usePriceIntegration';
-
-export interface UseShoppingListReturn {
-  // State
-  list: ShoppingList | null;
-  items: ShoppingItem[];
-  loading: boolean;
-  error: string | null;
-  
-  // Stats
-  stats: {
-    totalItems: number;
-    checkedItems: number;
-    totalPrice: number;
-    checkedPrice: number;
-    progress: number;
-    savings: number;
-  };
-  
-  // Actions
-  createList: (name?: string, budget?: number) => Promise<void>;
-  addItem: (item: Partial<ShoppingItem>) => Promise<void>;
-  updateItem: (itemId: string, updates: Partial<ShoppingItem>) => Promise<void>;
-  toggleItem: (itemId: string) => Promise<void>;
-  deleteItem: (itemId: string) => Promise<void>;
-  updateQuantity: (itemId: string, change: number) => Promise<void>;
-  clearCompleted: () => Promise<void>;
-  duplicateList: () => Promise<void>;
-  updateBudget: (budget: number) => Promise<void>;
-  
-  // Price integration
-  optimizePrices: () => Promise<void>;
-  isOptimizing: boolean;
-  lastOptimization: any;
-}
-
-export function useShoppingList(): UseShoppingListReturn {
-  const { user } = useAuth();
-  const { optimizePrices: optimizePricesBase, lastOptimization, isOptimizing } = usePriceIntegration();
-  
-  const [list, setList] = useState<ShoppingList | null>(null);
-  const [items, setItems] = useState<ShoppingItem[]>([]);
-  const [loading, setLoading] = useState(true);
+export function useShoppingList() {
+  const { user } = useAuthStore();
+  const [lists, setLists] = useState<ShoppingList[]>([]);
+  const [activeList, setActiveList] = useState<ShoppingList | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Calculate statistics
-  const stats = (() => {
-    const totalItems = items.length;
-    const checkedItems = items.filter(item => item.checked).length;
-    const totalPrice = items.reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
-    const checkedPrice = items
-      .filter(item => item.checked)
-      .reduce((sum, item) => sum + (item.price || 0) * item.quantity, 0);
-    const progress = totalItems > 0 ? (checkedItems / totalItems) * 100 : 0;
-    const savings = totalPrice * 0.15; // Estimated 15% savings
-
-    return {
-      totalItems,
-      checkedItems,
-      totalPrice,
-      checkedPrice,
-      progress,
-      savings
-    };
-  })();
-
-  // Load active list and items
-  const loadListData = useCallback(async () => {
+  // Fetch all lists
+  const fetchLists = useCallback(async () => {
     if (!user) return;
 
     try {
-      setLoading(true);
+      setIsLoading(true);
+      const data = await shoppingService.getLists(user.id);
+      setLists(data);
       setError(null);
-
-      // Get active list
-      let activeList = await shoppingListService.getActiveList(user.id);
-      
-      // Create a new list if none exists
-      if (!activeList) {
-        activeList = await shoppingListService.createList(user.id);
-      }
-
-      setList(activeList);
-
-      // Get items for the list
-      const listItems = await shoppingListService.getListItems(activeList.id);
-      setItems(listItems);
-    } catch (err: unknown) {
-      console.error('Error loading shopping list:', err);
-      setError('Error al cargar la lista de compras');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al cargar las listas';
+      setError(message);
+      toast.error(message);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   }, [user]);
 
-  // Create new list
-  const createList = async (name?: string, budget?: number) => {
+  // Fetch active list with items
+  const fetchActiveList = useCallback(async () => {
     if (!user) return;
 
     try {
-      const newList = await shoppingListService.createList(user.id, name, budget);
-      setList(newList);
-      setItems([]); // Clear items for new list
-    } catch (err: unknown) {
-      console.error('Error creating list:', err);
-      setError('Error al crear la lista');
+      setIsLoading(true);
+      const data = await shoppingService.getActiveList(user.id);
+      setActiveList(data);
+      setError(null);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al cargar la lista activa';
+      setError(message);
+      toast.error(message);
+    } finally {
+      setIsLoading(false);
     }
-  };
+  }, [user]);
 
-  // Add item to list
-  const addItem = async (item: Partial<ShoppingItem>) => {
-    if (!list) return;
+  // Create a new list
+  const createList = useCallback(async (name: string, makeActive = false) => {
+    if (!user) return;
 
     try {
-      const newItem = await shoppingListService.addItem(list.id, item);
-      setItems(prev => [...prev, newItem]);
-      
-      // Save price history if price is provided
-      if (newItem.price && newItem.store) {
-        await shoppingListService.savePriceHistory(newItem.id, newItem.store, newItem.price, newItem.unit);
+      const newList = await shoppingService.createList(user.id, { name, is_active: makeActive });
+      setLists(prev => [newList, ...prev]);
+      if (makeActive) {
+        setActiveList(newList);
       }
-    } catch (err: unknown) {
-      console.error('Error adding item:', err);
-      setError('Error al agregar el producto');
+      toast.success('Lista creada exitosamente');
+      return newList;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al crear la lista';
+      toast.error(message);
+      throw err;
     }
-  };
+  }, [user]);
+
+  // Update list
+  const updateList = useCallback(async (listId: string, updates: Partial<ShoppingList>) => {
+    try {
+      const updatedList = await shoppingService.updateList(listId, updates);
+      setLists(prev => prev.map(list => list.id === listId ? { ...list, ...updatedList } : list));
+      if (activeList?.id === listId) {
+        setActiveList(prev => prev ? { ...prev, ...updatedList } : null);
+      }
+      toast.success('Lista actualizada');
+      return updatedList;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al actualizar la lista';
+      toast.error(message);
+      throw err;
+    }
+  }, [activeList]);
+
+  // Delete list
+  const deleteList = useCallback(async (listId: string) => {
+    try {
+      await shoppingService.deleteList(listId);
+      setLists(prev => prev.filter(list => list.id !== listId));
+      if (activeList?.id === listId) {
+        setActiveList(null);
+      }
+      toast.success('Lista eliminada');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al eliminar la lista';
+      toast.error(message);
+      throw err;
+    }
+  }, [activeList]);
+
+  // Add item to active list
+  const addItem = useCallback(async (item: Omit<ShoppingItem, 'id' | 'list_id' | 'created_at' | 'updated_at' | 'position'>) => {
+    if (!activeList) {
+      toast.error('No hay una lista activa');
+      return;
+    }
+
+    try {
+      const newItem = await shoppingService.addItem(activeList.id, item);
+      setActiveList(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          shopping_items: [...(prev.shopping_items || []), newItem]
+        };
+      });
+      toast.success('Item agregado');
+      return newItem;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al agregar el item';
+      toast.error(message);
+      throw err;
+    }
+  }, [activeList]);
 
   // Update item
-  const updateItem = async (itemId: string, updates: Partial<ShoppingItem>) => {
+  const updateItem = useCallback(async (itemId: string, updates: Partial<ShoppingItem>) => {
     try {
-      const updatedItem = await shoppingListService.updateItem(itemId, updates);
-      setItems(prev => prev.map(item => 
-        item.id === itemId ? updatedItem : item
-      ));
-      
-      // Save price history if price was updated
-      if (updates.price && updatedItem.store) {
-        await shoppingListService.savePriceHistory(itemId, updatedItem.store, updates.price, updatedItem.unit);
-      }
-    } catch (err: unknown) {
-      console.error('Error updating item:', err);
-      setError('Error al actualizar el producto');
+      const updatedItem = await shoppingService.updateItem(itemId, updates);
+      setActiveList(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          shopping_items: prev.shopping_items?.map(item => 
+            item.id === itemId ? { ...item, ...updatedItem } : item
+          )
+        };
+      });
+      return updatedItem;
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al actualizar el item';
+      toast.error(message);
+      throw err;
     }
-  };
-
-  // Toggle item checked status
-  const toggleItem = async (itemId: string) => {
-    try {
-      await shoppingListService.toggleItem(itemId);
-      setItems(prev => prev.map(item => 
-        item.id === itemId ? { ...item, checked: !item.checked } : item
-      ));
-    } catch (err: unknown) {
-      console.error('Error toggling item:', err);
-      setError('Error al actualizar el estado');
-    }
-  };
+  }, []);
 
   // Delete item
-  const deleteItem = async (itemId: string) => {
+  const deleteItem = useCallback(async (itemId: string) => {
     try {
-      await shoppingListService.deleteItem(itemId);
-      setItems(prev => prev.filter(item => item.id !== itemId));
-    } catch (err: unknown) {
-      console.error('Error deleting item:', err);
-      setError('Error al eliminar el producto');
+      await shoppingService.deleteItem(itemId);
+      setActiveList(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          shopping_items: prev.shopping_items?.filter(item => item.id !== itemId)
+        };
+      });
+      toast.success('Item eliminado');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al eliminar el item';
+      toast.error(message);
+      throw err;
     }
-  };
+  }, []);
 
-  // Update item quantity
-  const updateQuantity = async (itemId: string, change: number) => {
-    const item = items.find(i => i.id === itemId);
-    if (!item) return;
-
-    const newQuantity = Math.max(1, item.quantity + change);
-    await updateItem(itemId, { quantity: newQuantity });
-  };
-
-  // Clear completed items
-  const clearCompleted = async () => {
-    if (!list) return;
-
+  // Toggle item
+  const toggleItem = useCallback(async (itemId: string) => {
     try {
-      await shoppingListService.clearCompleted(list.id);
-      setItems(prev => prev.filter(item => !item.checked));
-    } catch (err: unknown) {
-      console.error('Error clearing completed items:', err);
-      setError('Error al limpiar completados');
+      const updatedItem = await shoppingService.toggleItem(itemId);
+      setActiveList(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          shopping_items: prev.shopping_items?.map(item => 
+            item.id === itemId ? updatedItem : item
+          )
+        };
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al actualizar el item';
+      toast.error(message);
+      throw err;
     }
-  };
+  }, []);
 
-  // Duplicate current list
-  const duplicateList = async () => {
-    if (!list || !user) return;
-
-    try {
-      const newList = await shoppingListService.duplicateList(list.id, user.id);
-      setList(newList);
-      await loadListData(); // Reload to get the new items
-    } catch (err: unknown) {
-      console.error('Error duplicating list:', err);
-      setError('Error al duplicar la lista');
-    }
-  };
-
-  // Update budget
-  const updateBudget = async (budget: number) => {
-    if (!list) return;
+  // Bulk toggle items
+  const bulkToggleItems = useCallback(async (itemIds: string[], checked: boolean) => {
+    if (!activeList) return;
 
     try {
-      await shoppingListService.updateItem(list.id, { budget });
-      setList(prev => prev ? { ...prev, budget } : null);
-    } catch (err: unknown) {
-      console.error('Error updating budget:', err);
-      setError('Error al actualizar el presupuesto');
+      await shoppingService.bulkToggleItems(activeList.id, itemIds, checked);
+      setActiveList(prev => {
+        if (!prev) return null;
+        return {
+          ...prev,
+          shopping_items: prev.shopping_items?.map(item => 
+            itemIds.includes(item.id) ? { ...item, checked } : item
+          )
+        };
+      });
+      toast.success(`${itemIds.length} items actualizados`);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al actualizar los items';
+      toast.error(message);
+      throw err;
     }
-  };
+  }, [activeList]);
 
-  // Optimize prices integration
-  const optimizePrices = async () => {
-    const itemNames = items.map(item => `${item.quantity} ${item.name}`);
-    const results = await optimizePricesBase(itemNames);
-    
-    // Update items with found prices
-    if (results && results.itemsWithPrices) {
-      for (const priceResult of results.itemsWithPrices) {
-        const item = items.find(i => 
-          i.name.toLowerCase().includes(priceResult.productName.toLowerCase()) ||
-          priceResult.productName.toLowerCase().includes(i.name.toLowerCase())
-        );
-        
-        if (item && priceResult.bestPrice) {
-          await updateItem(item.id, {
-            price: priceResult.bestPrice.price,
-            store: priceResult.bestPrice.store
-          });
-        }
+  // Reorder items
+  const reorderItems = useCallback(async (itemIds: string[]) => {
+    if (!activeList) return;
+
+    try {
+      await shoppingService.reorderItems(activeList.id, itemIds);
+      // Reorder locally
+      setActiveList(prev => {
+        if (!prev || !prev.shopping_items) return null;
+        const itemMap = new Map(prev.shopping_items.map(item => [item.id, item]));
+        const reorderedItems = itemIds.map((id, index) => {
+          const item = itemMap.get(id);
+          return item ? { ...item, position: index } : null;
+        }).filter(Boolean) as ShoppingItem[];
+        return { ...prev, shopping_items: reorderedItems };
+      });
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Error al reordenar los items';
+      toast.error(message);
+      throw err;
+    }
+  }, [activeList]);
+
+  // Set active list
+  const setActiveListById = useCallback(async (listId: string) => {
+    const list = lists.find(l => l.id === listId);
+    if (list) {
+      // Fetch full list with items
+      try {
+        const data = await shoppingService.getItems(listId);
+        setActiveList({ ...list, shopping_items: data });
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Error al cargar los items';
+        toast.error(message);
       }
     }
-  };
+  }, [lists]);
 
-  // Load data on mount and user change
+  // Initialize
   useEffect(() => {
-    loadListData();
-  }, [loadListData]);
+    if (user) {
+      fetchLists();
+      fetchActiveList();
+    }
+  }, [user, fetchLists, fetchActiveList]);
 
   // Subscribe to real-time updates
   useEffect(() => {
-    if (!list) return;
+    if (!activeList) return;
 
-    const unsubscribe = shoppingListService.subscribeToListItems(list.id, (payload) => {
+    const unsubscribe = shoppingService.subscribeToList(activeList.id, (payload) => {
+      // Handle real-time updates
       if (payload.eventType === 'INSERT') {
-        setItems(prev => [...prev, payload.new]);
+        setActiveList(prev => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            shopping_items: [...(prev.shopping_items || []), payload.new]
+          };
+        });
       } else if (payload.eventType === 'UPDATE') {
-        setItems(prev => prev.map(item => 
-          item.id === payload.new.id ? payload.new : item
-        ));
+        setActiveList(prev => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            shopping_items: prev.shopping_items?.map(item => 
+              item.id === payload.new.id ? payload.new : item
+            )
+          };
+        });
       } else if (payload.eventType === 'DELETE') {
-        setItems(prev => prev.filter(item => item.id !== payload.old.id));
+        setActiveList(prev => {
+          if (!prev) return null;
+          return {
+            ...prev,
+            shopping_items: prev.shopping_items?.filter(item => item.id !== payload.old.id)
+          };
+        });
       }
     });
 
     return unsubscribe;
-  }, [list?.id]);
+  }, [activeList?.id]);
 
   return {
-    list,
-    items,
-    loading,
+    lists,
+    activeList,
+    isLoading,
     error,
-    stats,
     createList,
+    updateList,
+    deleteList,
     addItem,
     updateItem,
-    toggleItem,
     deleteItem,
-    updateQuantity,
-    clearCompleted,
-    duplicateList,
-    updateBudget,
-    optimizePrices,
-    isOptimizing,
-    lastOptimization
+    toggleItem,
+    bulkToggleItems,
+    reorderItems,
+    setActiveListById,
+    refresh: fetchActiveList
   };
 }

@@ -1,7 +1,6 @@
 import { forwardRef, HTMLAttributes } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 

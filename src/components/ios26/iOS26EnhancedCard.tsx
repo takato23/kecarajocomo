@@ -28,8 +28,17 @@ const iOS26EnhancedCard = forwardRef<HTMLDivElement, iOS26EnhancedCardProps>(
     interactive = false,
     gradient = false,
     children,
-    ...props 
+    // Filter out custom props before spreading
+    ...restProps 
   }, ref) => {
+    // Remove custom props that shouldn't be passed to DOM
+    const domProps = Object.entries(restProps).reduce((acc, [key, value]) => {
+      // Only include standard HTML attributes
+      if (!['variant', 'elevation', 'liquidEffect', 'glowEffect', 'morphEffect', 'floatEffect', 'interactive', 'gradient'].includes(key)) {
+        acc[key] = value;
+      }
+      return acc;
+    }, {} as HTMLAttributes<HTMLDivElement>);
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
@@ -86,7 +95,7 @@ const iOS26EnhancedCard = forwardRef<HTMLDivElement, iOS26EnhancedCardProps>(
           '--mouse-x': `${mousePosition.x}%`,
           '--mouse-y': `${mousePosition.y}%`,
         } as React.CSSProperties : undefined}
-        {...props}
+        {...domProps}
       >
         {/* Background gradient layer */}
         <div className="absolute inset-0 opacity-50">

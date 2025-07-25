@@ -168,9 +168,38 @@ export class ShoppingOptimizer {
         ...item
       };
       
-      // TODO: Actualizar en base de datos
+      // Guardar en base de datos
+      const { data, error } = await this.supabase
+        .from('shopping_items')
+        .insert({
+          list_id: listId,
+          name: newItem.name,
+          quantity: newItem.quantity,
+          unit: newItem.unit,
+          category: newItem.category,
+          estimated_price: newItem.estimatedPrice,
+          checked: newItem.checked,
+          priority: newItem.priority,
+          notes: newItem.notes,
+          store: newItem.store,
+          price: newItem.estimatedPrice,
+          aisle: newItem.aisle
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error al guardar item en DB:', error);
+        throw error;
+      }
+
+      // Actualizar el total estimado de la lista
+      await this.updateListTotal(listId);
       
-      return newItem;
+      return {
+        ...newItem,
+        id: data.id
+      };
       
     } catch (error: unknown) {
       console.error('Error agregando item:', error);
@@ -183,7 +212,34 @@ export class ShoppingOptimizer {
    */
   async checkItem(listId: string, itemId: string, checked: boolean): Promise<void> {
     try {
-      // TODO: Actualizar en base de datos
+      const { error } = await this.supabase
+        .from('shopping_items')
+        .update({ checked })
+        .eq('id', itemId)
+        .eq('list_id', listId);
+
+      if (error) {
+        console.error('Error al actualizar item en DB:', error);
+        throw error;
+      }
+
+      // Si se marca como comprado, actualizar historial de uso
+      if (checked) {
+        const { data: item } = await this.supabase
+          .from('shopping_items')
+          .select('name, quantity, unit')
+          .eq('id', itemId)
+          .single();
+
+        if (item) {
+          await this.addToUsageHistory({
+            itemName: item.name,
+            quantity: item.quantity,
+            unit: item.unit,
+            context: 'shopping_list'
+          });
+        }
+      }
 
     } catch (error: unknown) {
       console.error('Error actualizando item:', error);
@@ -196,9 +252,53 @@ export class ShoppingOptimizer {
    */
   async getUserLists(userId: string, status?: string): Promise<ShoppingList[]> {
     try {
-      // TODO: Implementar query real
-      // Por ahora retornamos lista vacía
-      return [];
+      let query = this.supabase
+        .from('shopping_lists')
+        .select(`
+          *,
+          shopping_items (*)
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (status) {
+        query = query.eq('status', status);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error obteniendo listas de DB:', error);
+        throw error;
+      }
+
+      if (!data) return [];
+
+      // Transformar datos de DB a nuestro formato
+      return data.map(list => ({
+        id: list.id,
+        userId: list.user_id,
+        name: list.name,
+        createdAt: new Date(list.created_at),
+        updatedAt: new Date(list.updated_at),
+        items: (list.shopping_items || []).map((item: any) => ({
+          id: item.id,
+          name: item.name,
+          quantity: item.quantity,
+          unit: item.unit,
+          category: item.category,
+          estimatedPrice: item.estimated_price || item.price || 0,
+          store: item.store,
+          aisle: item.aisle,
+          checked: item.checked,
+          priority: item.priority || 'recommended',
+          notes: item.notes
+        })),
+        totalEstimated: list.total_estimated || 0,
+        optimizedRoute: list.optimized_route || [],
+        relatedMealPlan: list.related_meal_plan,
+        status: list.status || 'active'
+      }));
     } catch (error: unknown) {
       console.error('Error obteniendo listas:', error);
       return [];
@@ -478,8 +578,64 @@ export class ShoppingOptimizer {
    * Guardar lista en base de datos
    */
   private async saveList(list: ShoppingList): Promise<void> {
-    // TODO: Implementar guardado en Supabase
+    try {
+      // Primero guardar la lista
+      const { data: savedList, error: listError } = await this.supabase
+        .from('shopping_lists')
+        .insert({
+          id: list.id,
+          user_id: list.userId,
+          name: list.name,
+          total_estimated: list.totalEstimated,
+          optimized_route: list.optimizedRoute,
+          related_meal_plan: list.relatedMealPlan,
+          status: list.status
+        })
+        .select()
+        .single();
 
+      if (listError) {
+        console.error('Error guardando lista:', listError);
+        throw listError;
+      }
+
+      // Luego guardar los items
+      if (list.items.length > 0) {
+        const itemsToInsert = list.items.map(item => ({
+          list_id: savedList.id,
+          name: item.name,
+          quantity: item.quantity,
+          unit: item.unit,
+          category: item.category,
+          estimated_price: item.estimatedPrice,
+          store: item.store,
+          aisle: item.aisle,
+          checked: item.checked,
+          priority: item.priority,
+          notes: item.notes,
+          price: item.estimatedPrice // Usar precio estimado inicialmente
+        }));
+
+        const { error: itemsError } = await this.supabase
+          .from('shopping_items')
+          .insert(itemsToInsert);
+
+        if (itemsError) {
+          console.error('Error guardando items:', itemsError);
+          // Si falla guardar items, eliminar la lista para mantener consistencia
+          await this.supabase
+            .from('shopping_lists')
+            .delete()
+            .eq('id', savedList.id);
+          throw itemsError;
+        }
+      }
+
+      console.log('✅ Lista guardada exitosamente:', savedList.id);
+    } catch (error: unknown) {
+      console.error('Error guardando lista en DB:', error);
+      throw new Error('Error al guardar lista de compras');
+    }
   }
   
   /**
@@ -585,6 +741,185 @@ export class ShoppingOptimizer {
     }
   }
   
+  /**
+   * Actualizar total de la lista
+   */
+  private async updateListTotal(listId: string): Promise<void> {
+    try {
+      // Obtener todos los items de la lista
+      const { data: items, error: itemsError } = await this.supabase
+        .from('shopping_items')
+        .select('estimated_price')
+        .eq('list_id', listId);
+
+      if (itemsError) {
+        console.error('Error obteniendo items:', itemsError);
+        return;
+      }
+
+      // Calcular total
+      const total = items?.reduce((sum, item) => sum + (item.estimated_price || 0), 0) || 0;
+
+      // Actualizar lista
+      const { error: updateError } = await this.supabase
+        .from('shopping_lists')
+        .update({ total_estimated: total })
+        .eq('id', listId);
+
+      if (updateError) {
+        console.error('Error actualizando total:', updateError);
+      }
+    } catch (error: unknown) {
+      console.error('Error actualizando total de lista:', error);
+    }
+  }
+
+  /**
+   * Agregar al historial de uso
+   */
+  private async addToUsageHistory(params: {
+    itemName: string;
+    quantity: number;
+    unit?: string;
+    context: string;
+  }): Promise<void> {
+    try {
+      const { data: { user } } = await this.supabase.auth.getUser();
+      if (!user) return;
+
+      const { error } = await this.supabase
+        .from('item_usage_history')
+        .insert({
+          user_id: user.id,
+          item_name: params.itemName,
+          quantity: params.quantity,
+          unit: params.unit,
+          context: params.context
+        });
+
+      if (error) {
+        console.error('Error guardando historial de uso:', error);
+      }
+    } catch (error: unknown) {
+      console.error('Error en historial de uso:', error);
+    }
+  }
+
+  /**
+   * Obtener historial de items
+   */
+  async getItemHistory(userId: string, itemName?: string): Promise<any[]> {
+    try {
+      let query = this.supabase
+        .from('item_usage_history')
+        .select('*')
+        .eq('user_id', userId)
+        .order('used_at', { ascending: false })
+        .limit(100);
+
+      if (itemName) {
+        query = query.ilike('item_name', `%${itemName}%`);
+      }
+
+      const { data, error } = await query;
+
+      if (error) {
+        console.error('Error obteniendo historial:', error);
+        return [];
+      }
+
+      return data || [];
+    } catch (error: unknown) {
+      console.error('Error obteniendo historial de items:', error);
+      return [];
+    }
+  }
+
+  /**
+   * Actualizar ahorros del usuario
+   */
+  async updateSavings(userId: string, listId: string): Promise<void> {
+    try {
+      // Obtener items de la lista con precios reales vs estimados
+      const { data: items, error } = await this.supabase
+        .from('shopping_items')
+        .select('estimated_price, price')
+        .eq('list_id', listId);
+
+      if (error || !items) {
+        console.error('Error obteniendo items para ahorros:', error);
+        return;
+      }
+
+      // Calcular ahorro total
+      const totalSavings = items.reduce((sum, item) => {
+        const estimated = item.estimated_price || 0;
+        const actual = item.price || estimated;
+        return sum + (estimated - actual);
+      }, 0);
+
+      console.log(`💰 Ahorro total en lista ${listId}: $${totalSavings}`);
+
+      // Marcar lista como completada si tiene ahorros calculados
+      if (totalSavings !== 0) {
+        await this.supabase
+          .from('shopping_lists')
+          .update({ status: 'completed' })
+          .eq('id', listId);
+      }
+    } catch (error: unknown) {
+      console.error('Error actualizando ahorros:', error);
+    }
+  }
+
+  /**
+   * Actualizar stock en despensa
+   */
+  async updateStock(listId: string): Promise<void> {
+    try {
+      // Obtener items comprados de la lista
+      const { data: items, error } = await this.supabase
+        .from('shopping_items')
+        .select('*')
+        .eq('list_id', listId)
+        .eq('checked', true);
+
+      if (error || !items) {
+        console.error('Error obteniendo items comprados:', error);
+        return;
+      }
+
+      // Para cada item comprado, actualizar o crear en despensa
+      for (const item of items) {
+        // Buscar si existe en despensa
+        const { data: pantryItem } = await this.supabase
+          .from('pantry_items')
+          .select('*')
+          .eq('user_id', (await this.supabase.auth.getUser()).data.user?.id)
+          .ilike('name', item.name)
+          .single();
+
+        if (pantryItem) {
+          // Actualizar cantidad existente
+          await this.supabase
+            .from('pantry_items')
+            .update({ 
+              quantity: pantryItem.quantity + item.quantity,
+              status: 'good',
+              updated_at: new Date().toISOString()
+            })
+            .eq('id', pantryItem.id);
+        } else {
+          // Crear nuevo item en despensa
+          // Nota: Esto requeriría más lógica para obtener ingredient_id correcto
+          console.log(`📦 Nuevo item para despensa: ${item.name}`);
+        }
+      }
+    } catch (error: unknown) {
+      console.error('Error actualizando stock:', error);
+    }
+  }
+
   /**
    * Compartir lista por WhatsApp
    */

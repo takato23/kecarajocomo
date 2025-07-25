@@ -10,7 +10,6 @@ import {
   AlertCircle,
   Loader2
 } from "lucide-react";
-import Image from 'next/image';
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";

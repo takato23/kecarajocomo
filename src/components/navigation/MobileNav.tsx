@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
 import { 
   Home, 
@@ -13,11 +13,14 @@ import {
   Plus,
   Search,
   User,
-  Package
+  Package,
+  LogOut
 } from 'lucide-react';
 import { useSwipeable } from 'react-swipeable';
 
 import { cn } from '@/lib/utils';
+
+import { useUser, useUserActions } from '@/store';
 
 interface NavItem {
   label: string;
@@ -37,11 +40,11 @@ const navItems: NavItem[] = [
     href: '/recetas',
     icon: BookOpen,
   },
-  // {
-  //   label: 'Planificar',
-  //   href: '/planificador',
-  //   icon: Calendar,
-  // },
+  {
+    label: 'Planificar',
+    href: '/planificador',
+    icon: Calendar,
+  },
   {
     label: 'Comprar',
     href: '/lista-compras',
@@ -70,6 +73,8 @@ const moreItems: NavItem[] = [
 
 export function MobileNav() {
   const pathname = usePathname();
+  const router = useRouter();
+  const user = useUser();
   const [moreMenuOpen, setMoreMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState(0);
   const controls = useAnimation();
@@ -117,7 +122,22 @@ export function MobileNav() {
   return (
     <>
       {/* Mobile bottom navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-white/95 dark:bg-gray-900/95 backdrop-blur-lg border-t border-gray-200 dark:border-gray-800">
+      <div className="lg:hidden fixed bottom-4 left-4 right-4 z-50">
+        {/* Glow effect behind mobile nav */}
+        <div className="absolute inset-0 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-2xl blur-xl opacity-50 transition-opacity duration-500" />
+        
+        <nav className="relative rounded-2xl overflow-hidden"
+             style={{
+               background: 'rgba(255, 255, 255, 0.1)',
+               backdropFilter: 'blur(30px)',
+               WebkitBackdropFilter: 'blur(30px)',
+               border: '1px solid rgba(255, 255, 255, 0.2)',
+               boxShadow: `
+                 inset 3px 3px 6px rgba(255, 255, 255, 0.3),
+                 inset -3px -3px 6px rgba(0, 0, 0, 0.05),
+                 8px 8px 20px rgba(0, 0, 0, 0.2)
+               `,
+             }}>
         <div className="relative" {...handlers}>
           {/* Active tab indicator */}
           <motion.div
@@ -139,8 +159,8 @@ export function MobileNav() {
                   "flex flex-col items-center justify-center flex-1 py-2 px-1 relative",
                   "transition-all duration-200",
                   isActive(item.href) 
-                    ? "text-orange-600 dark:text-orange-400" 
-                    : "text-gray-600 dark:text-gray-400"
+                    ? "text-gray-900" 
+                    : "text-gray-700"
                 )}
               >
                 <motion.div
@@ -191,7 +211,8 @@ export function MobileNav() {
             </button>
           </div>
         </div>
-      </nav>
+        </nav>
+      </div>
 
       {/* More menu overlay */}
       <AnimatePresence>
@@ -210,7 +231,14 @@ export function MobileNav() {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="lg:hidden fixed bottom-16 left-0 right-0 z-50 bg-white dark:bg-gray-900 rounded-t-2xl shadow-2xl"
+              className="lg:hidden fixed bottom-24 left-4 right-4 z-50 rounded-2xl overflow-hidden"
+              style={{
+                background: 'rgba(255, 255, 255, 0.95)',
+                backdropFilter: 'blur(30px)',
+                WebkitBackdropFilter: 'blur(30px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                boxShadow: '0 -10px 40px rgba(0, 0, 0, 0.2)',
+              }}
             >
               <div className="p-4">
                 <div className="w-12 h-1 bg-gray-300 dark:bg-gray-700 rounded-full mx-auto mb-4" />
@@ -232,29 +260,33 @@ export function MobileNav() {
                     </Link>
                   ))}
                 </div>
+                
+                {/* Logout button */}
+                <button
+                  onClick={async () => {
+                    setMoreMenuOpen(false);
+                    triggerHaptic([0, 10, 100, 20]); // Success pattern
+                    try {
+                      // TODO: Implement sign out
+                      router.push('/login');
+                      router.push('/');
+                    } catch (error) {
+                      console.error('Error al cerrar sesión:', error);
+                    }
+                  }}
+                  className="mt-4 w-full flex items-center justify-center space-x-2 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"
+                >
+                  <LogOut className="w-5 h-5 text-red-600 dark:text-red-400" />
+                  <span className="text-sm font-medium text-red-600 dark:text-red-400">
+                    Cerrar Sesión
+                  </span>
+                </button>
               </div>
             </motion.div>
           </>
         )}
       </AnimatePresence>
 
-      {/* Floating Action Button */}
-      <motion.button
-        className="lg:hidden fixed bottom-24 right-6 z-40 w-14 h-14 bg-gradient-to-br from-orange-500 to-pink-500 rounded-full shadow-lg flex items-center justify-center"
-        whileTap={{ scale: 0.9 }}
-        whileHover={{ scale: 1.1 }}
-        onClick={() => {
-          triggerHaptic([0, 20, 50, 10]); // Recognition pattern
-          // Handle FAB action based on current route
-        }}
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-        >
-          <Plus className="w-6 h-6 text-white" />
-        </motion.div>
-      </motion.button>
     </>
   );
 }

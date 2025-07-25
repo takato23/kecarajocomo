@@ -73,18 +73,18 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
       keywords: ['cocinar', 'comida', 'recipe'],
       category: 'navigation',
     },
-    // {
-    //   id: 'nav-planner',
-    //   title: 'Planificador de Comidas',
-    //   description: 'Planificar menús semanales',
-    //   icon: Calendar,
-    //   action: () => {
-    //     router.push('/planificador');
-    //     onClose();
-    //   },
-    //   keywords: ['plan', 'menu', 'semana'],
-    //   category: 'navigation',
-    // },
+    {
+      id: 'nav-planner',
+      title: 'Planificador de Comidas',
+      description: 'Planificar menús semanales',
+      icon: Calendar,
+      action: () => {
+        router.push('/planificador');
+        onClose();
+      },
+      keywords: ['plan', 'menu', 'semana'],
+      category: 'navigation',
+    },
     {
       id: 'nav-pantry',
       title: 'Despensa',

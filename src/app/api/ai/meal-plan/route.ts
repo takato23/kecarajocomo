@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-import { claudeService } from '@/lib/ai/claude';
+import { getAIService } from '@/services/ai';
 import type { Database } from '@/lib/supabase/types';
 
 export async function POST(request: NextRequest) {
@@ -24,21 +24,23 @@ export async function POST(request: NextRequest) {
       .eq('user_id', session.user.id)
       .single();
 
-    // Generate meal plan using Claude
-    const mealPlan = await claudeService.generateMealPlan({
+    // Generate meal plan using AI service
+    const aiService = getAIService();
+    const mealPlan = await aiService.generateMealPlan({
       days: body.days || 7,
       peopleCount: body.peopleCount || preferences?.household_size || 2,
-      dietaryRestrictions: body.dietaryRestrictions || preferences?.dietary_restrictions || [],
-      cuisinePreferences: body.cuisinePreferences || preferences?.cuisine_preferences || [],
+      dietary: body.dietaryRestrictions || preferences?.dietary_restrictions || [],
+      cuisines: body.cuisinePreferences || preferences?.cuisine_preferences || [],
       budget: body.budget || 'medium',
-      nutritionGoals: body.nutritionGoals || [preferences?.nutrition_goals?.type || 'balanced'],
+      goals: body.nutritionGoals || [preferences?.nutrition_goals?.type || 'balanced'],
     });
 
     return NextResponse.json({ mealPlan });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error('Meal plan generation error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to generate meal plan';
     return NextResponse.json(
-      { error: error.message || 'Failed to generate meal plan' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

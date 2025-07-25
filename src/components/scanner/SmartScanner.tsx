@@ -3,10 +3,11 @@
 import React, { useState, useCallback } from 'react';
 import { Camera, Upload, Mic, X, Check, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
 
 import { useHolisticSystem } from '@/hooks/useHolisticSystem';
 import { cn } from '@/lib/utils';
+import { useAuthStore } from '@/features/auth/store/authStore';
+import { iOS26LiquidButton, iOS26LiquidCard } from '@/components/ios26';
 
 type ScanMode = 'camera' | 'upload' | 'voice';
 
@@ -30,6 +31,7 @@ export function SmartScanner() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
   const { processReceipt, progress } = useHolisticSystem();
+  const { user } = useAuthStore();
   
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -43,11 +45,18 @@ export function SmartScanner() {
   const handleScan = useCallback(async () => {
     if (!selectedFile) return;
     
+    // Check if user is authenticated
+    if (!user) {
+      console.error('Usuario no autenticado');
+      // Could show an error message or redirect to login
+      return;
+    }
+    
     setIsProcessing(true);
     
     try {
-      // Conectar con el servicio real
-      const userId = 'temp-user-id'; // TODO: Obtener del contexto de auth
+      // Use actual userId from authenticated user
+      const userId = user.id;
       const result = await processReceipt(selectedFile, userId);
       
       if (result.success && result.scannedReceipt) {
@@ -83,7 +92,7 @@ export function SmartScanner() {
     } finally {
       setIsProcessing(false);
     }
-  }, [selectedFile, processReceipt]);
+  }, [selectedFile, processReceipt, user]);
   
   const handleReset = () => {
     setSelectedFile(null);

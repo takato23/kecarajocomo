@@ -4,9 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
-import { useAuthStore } from '@/stores/auth';
 import { supabase } from '@/lib/supabase/client';
 import { OnboardingStep } from '@/features/auth/components/OnboardingStep';
+
+import { useUser, useUserActions } from '@/store';
 
 const ONBOARDING_STEPS = [
   {

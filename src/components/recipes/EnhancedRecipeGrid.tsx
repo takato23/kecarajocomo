@@ -16,7 +16,6 @@ import {
   List,
   SlidersHorizontal
 } from 'lucide-react';
-import Image from 'next/image';
 
 import { GlassCard, GlassRecipeCard, GlassButton, GlassInput } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';

@@ -82,12 +82,12 @@ export function EnhancedLoading({
 
   const baseClasses = {
     modal: 'fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50',
-    inline: 'w-full p-6 bg-white rounded-lg shadow-lg border',
+    inline: 'w-full p-6 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700',
     fullscreen: 'fixed inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center z-50'
   };
 
   const contentClasses = {
-    modal: 'bg-white rounded-xl shadow-2xl max-w-lg w-full mx-4 p-8',
+    modal: 'bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-lg w-full mx-4 p-8',
     inline: 'w-full',
     fullscreen: 'max-w-2xl w-full mx-4'
   };
@@ -125,7 +125,7 @@ export function EnhancedLoading({
             {currentStage ? currentStage.name : 'Procesando...'}
           </h2>
           
-          <p className="text-gray-600 text-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
             {currentStage ? currentStage.description : loadingState.message}
           </p>
         </div>
@@ -133,15 +133,15 @@ export function EnhancedLoading({
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="flex justify-between items-center mb-2">
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               Progreso General
             </span>
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
               {Math.round(loadingState.overallProgress)}%
             </span>
           </div>
           
-          <div className="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+          <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full"
               initial={{ width: 0 }}
@@ -150,7 +150,7 @@ export function EnhancedLoading({
             />
           </div>
           
-          <div className="flex justify-between items-center mt-2 text-xs text-gray-500">
+          <div className="flex justify-between items-center mt-2 text-xs text-gray-500 dark:text-gray-400">
             <span>
               Etapa {loadingState.currentStage + 1} de {totalStages}
             </span>
@@ -180,7 +180,7 @@ export function EnhancedLoading({
                     ? 'border-blue-200 bg-blue-50'
                     : stage.status === 'error'
                     ? 'border-red-200 bg-red-50'
-                    : 'border-gray-200 bg-gray-50'
+                    : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800'
                 }`}
               >
                 <div className="flex-shrink-0 mr-3">
@@ -191,7 +191,7 @@ export function EnhancedLoading({
                   ) : stage.status === 'active' ? (
                     <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
                   ) : (
-                    <div className="w-5 h-5 rounded-full border-2 border-gray-300" />
+                    <div className="w-5 h-5 rounded-full border-2 border-gray-300 dark:border-gray-600" />
                   )}
                 </div>
                 
@@ -201,7 +201,7 @@ export function EnhancedLoading({
                       stage.status === 'completed' ? 'text-green-800' :
                       stage.status === 'active' ? 'text-blue-800' :
                       stage.status === 'error' ? 'text-red-800' :
-                      'text-gray-600'
+                      'text-gray-600 dark:text-gray-400'
                     }`}>
                       {stage.name}
                     </h4>
@@ -217,13 +217,13 @@ export function EnhancedLoading({
                     stage.status === 'completed' ? 'text-green-600' :
                     stage.status === 'active' ? 'text-blue-600' :
                     stage.status === 'error' ? 'text-red-600' :
-                    'text-gray-500'
+                    'text-gray-500 dark:text-gray-400'
                   }`}>
                     {stage.details || stage.description}
                   </p>
                   
                   {stage.status === 'active' && stage.progress > 0 && (
-                    <div className="mt-2 w-full bg-gray-200 rounded-full h-1">
+                    <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1">
                       <motion.div
                         className="h-1 bg-blue-500 rounded-full"
                         initial={{ width: 0 }}
@@ -258,7 +258,7 @@ export function EnhancedLoading({
           {loadingState.canCancel && onCancel && (
             <button
               onClick={onCancel}
-              className="px-6 py-2 text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               Cancelar
             </button>
@@ -267,7 +267,7 @@ export function EnhancedLoading({
           {loadingState.error && (
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-700 transition-colors"
             >
               Intentar Nuevamente
             </button>
@@ -275,12 +275,12 @@ export function EnhancedLoading({
         </div>
 
         {/* Fun Facts or Tips */}
-        <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+        <div className="mt-6 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg">
           <div className="flex items-center mb-2">
             <Sparkles className="w-4 h-4 text-yellow-500 mr-2" />
-            <span className="text-sm font-medium text-gray-700">¿Sabías que?</span>
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">¿Sabías que?</span>
           </div>
-          <p className="text-xs text-gray-600">
+          <p className="text-xs text-gray-600 dark:text-gray-400">
             {getFunFact(currentStage?.id || 'default')}
           </p>
         </div>
@@ -587,10 +587,10 @@ export function SkeletonLoader({
   
   if (variant === 'card') {
     return (
-      <div className={`${className} bg-white rounded-lg shadow-sm border`}>
-        <div className={`h-48 bg-gray-200 rounded-t-lg ${animationClass}`} />
+      <div className={`${className} bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700`}>
+        <div className={`h-48 bg-gray-200 dark:bg-gray-700 rounded-t-lg ${animationClass}`} />
         <div className="p-4 space-y-3">
-          <div className={`h-4 bg-gray-200 rounded ${animationClass}`} />
+          <div className={`h-4 bg-gray-200 dark:bg-gray-700 rounded ${animationClass}`} />
           <div className={`h-4 bg-gray-200 rounded w-3/4 ${animationClass}`} />
           <div className={`h-4 bg-gray-200 rounded w-1/2 ${animationClass}`} />
         </div>
@@ -600,10 +600,10 @@ export function SkeletonLoader({
 
   if (variant === 'recipe') {
     return (
-      <div className={`${className} bg-white rounded-lg shadow-sm border overflow-hidden`}>
-        <div className={`h-32 bg-gray-200 ${animationClass}`} />
+      <div className={`${className} bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden`}>
+        <div className={`h-32 bg-gray-200 dark:bg-gray-700 ${animationClass}`} />
         <div className="p-4">
-          <div className={`h-6 bg-gray-200 rounded mb-3 ${animationClass}`} />
+          <div className={`h-6 bg-gray-200 dark:bg-gray-700 rounded mb-3 ${animationClass}`} />
           <div className={`h-4 bg-gray-200 rounded mb-2 ${animationClass}`} />
           <div className={`h-4 bg-gray-200 rounded w-2/3 ${animationClass}`} />
         </div>
@@ -613,11 +613,11 @@ export function SkeletonLoader({
 
   if (variant === 'calendar') {
     return (
-      <div className={`${className} bg-white rounded-lg shadow-sm border p-4`}>
+      <div className={`${className} bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4`}>
         <div className={`h-6 bg-gray-200 rounded mb-4 ${animationClass}`} />
         <div className="space-y-3">
           {Array.from({ length: 4 }).map((_, i) => (
-            <div key={i} className={`h-12 bg-gray-200 rounded ${animationClass}`} />
+            <div key={i} className={`h-12 bg-gray-200 dark:bg-gray-700 rounded ${animationClass}`} />
           ))}
         </div>
       </div>

@@ -42,19 +42,62 @@ export class ReceiptScanner {
       try {
 
         const geminiService = getGeminiService();
-        const aiResult = await geminiService.parseReceipt(ocrText);
         
-        // Enriquecer items con información adicional
-        const enrichedItems = await geminiService.enrichItems(aiResult.items);
+        // Check if service is available
+        if (!geminiService.checkAvailability()) {
+          throw new Error('Gemini service not available');
+        }
+        
+        // Use Gemini to parse the receipt
+        const prompt = `Parse this receipt text and extract the following information in JSON format:
+        - items: array of {name, quantity, unit, price, category}
+        - store: store name
+        - date: purchase date
+        - total: total amount
+        - confidence: confidence score 0-1
+        
+        Receipt text:
+        ${ocrText}
+        
+        Respond with valid JSON only.`;
+        
+        const response = await geminiService.generateContent(prompt);
+        
+        if (!response || response === '') {
+          throw new Error('Empty response from Gemini');
+        }
+        
+        // Parse the JSON response
+        let aiResult;
+        try {
+          aiResult = JSON.parse(response);
+        } catch (parseError) {
+          // Try to extract JSON from the response if it contains extra text
+          const jsonMatch = response.match(/\{[\s\S]*\}/);
+          if (jsonMatch) {
+            aiResult = JSON.parse(jsonMatch[0]);
+          } else {
+            throw new Error('Could not parse AI response as JSON');
+          }
+        }
+        
+        // Validate the response has required fields
+        if (!aiResult.items || !Array.isArray(aiResult.items)) {
+          throw new Error('Invalid response format from AI');
+        }
         
         parsedReceipt = {
-          items: enrichedItems.map(item => ({
-            ...item,
-            confidence: aiResult.confidence
+          items: aiResult.items.map((item: any) => ({
+            name: item.name || 'Unknown',
+            quantity: item.quantity || 1,
+            unit: item.unit || 'unit',
+            price: item.price || 0,
+            category: item.category || 'other',
+            confidence: aiResult.confidence || 0.7
           })),
-          store: aiResult.store,
-          date: new Date(aiResult.date),
-          total: aiResult.total,
+          store: aiResult.store || 'Unknown Store',
+          date: aiResult.date ? new Date(aiResult.date) : new Date(),
+          total: aiResult.total || 0,
           rawText: ocrText
         };
 

@@ -2,8 +2,6 @@
 
 import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
 
-import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
 import { supabase } from '@/lib/supabase';
 import { ensureUserProfile } from '@/lib/profile/ensure-profile';
 import { success } from '@/services/notifications';
@@ -19,6 +17,8 @@ import type {
   PlanningConstraints,
   MealSchedule
 } from '@/types/profile';
+
+import { useUser, useUserActions } from '@/store';
 
 interface ProfileContextValue {
   // Core Profile Data
@@ -58,15 +58,19 @@ interface ProfileContextValue {
 const ProfileContext = createContext<ProfileContextValue | null>(null);
 
 export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuthStore();
+  const user = useUser();
+  const userActions = useUserActions();
   const { 
     profile: storeProfile, 
-    preferences: storePreferences, 
-    fetchProfile, 
-    fetchPreferences,
+    preferences: storePreferences,
     updateProfile: updateStoreProfile,
-    updatePreferences: updateStorePreferences
-  } = useUserStore();
+    setPreferences: updateStorePreferences
+  } = { 
+    profile: user,
+    preferences: user?.preferences,
+    updateProfile: userActions?.updateProfile,
+    setPreferences: userActions?.setPreferences
+  };
   const [householdMembers, setHouseholdMembers] = useState<HouseholdMember[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
@@ -83,9 +87,8 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
           // Ensure profile and preferences exist
           await ensureUserProfile(user);
           
-          // Then fetch them
-          await fetchProfile(user.id);
-          await fetchPreferences(user.id);
+          // Profile is managed by the main store
+          logger.info('Profile initialized');
           await loadHouseholdMembers();
         } catch (error: unknown) {
           logger.error('Error initializing profile', 'ProfileContext', error);
@@ -320,8 +323,6 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
       
       // Reload all profile data
       await Promise.all([
-        fetchProfile(user.id),
-        fetchPreferences(user.id),
         loadHouseholdMembers()
       ]);
       

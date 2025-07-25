@@ -104,33 +104,33 @@ export const navigationItems: NavigationItem[] = [
       },
     ],
   },
-  // {
-  //   id: 'planner',
-  //   label: 'Planificador',
-  //   href: '/planificador',
-  //   icon: Calendar,
-  //   subItems: [
-  //     {
-  //       id: 'planner-week',
-  //       label: 'Vista Semanal',
-  //       href: '/planificador',
-  //       icon: Calendar,
-  //     },
-  //     {
-  //       id: 'planner-month',
-  //       label: 'Vista Mensual',
-  //       href: '/planificador/monthly',
-  //       icon: Calendar,
-  //       isPremium: true,
-  //     },
-  //     {
-  //       id: 'planner-history',
-  //       label: 'Historial',
-  //       href: '/planificador/history',
-  //       icon: Clock,
-  //     },
-  //   ],
-  // },
+  {
+    id: 'planner',
+    label: 'Planificador',
+    href: '/planificador',
+    icon: Calendar,
+    subItems: [
+      {
+        id: 'planner-week',
+        label: 'Vista Semanal',
+        href: '/planificador',
+        icon: Calendar,
+      },
+      {
+        id: 'planner-month',
+        label: 'Vista Mensual',
+        href: '/planificador/monthly',
+        icon: Calendar,
+        isPremium: true,
+      },
+      {
+        id: 'planner-history',
+        label: 'Historial',
+        href: '/planificador/history',
+        icon: Clock,
+      },
+    ],
+  },
   {
     id: 'shopping',
     label: 'Lista de Compras',

@@ -4,6 +4,7 @@ import type { Database } from '@/types/database';
 
 import type { HolisticFoodSystem } from '../core/HolisticSystem';
 import type { ScannedItem } from '../scanner/ReceiptScanner';
+import { getIngredientPriceService } from '../pricing/ingredientPriceService';
 
 export interface PantryItem {
   id: string;
@@ -42,9 +43,11 @@ export interface PantryStats {
  */
 export class PantryManager {
   private supabase;
+  private priceService;
   
   constructor(private system: HolisticFoodSystem) {
     this.supabase = createClientComponentClient<Database>();
+    this.priceService = getIngredientPriceService();
   }
   
   /**
@@ -239,10 +242,13 @@ export class PantryManager {
         mostUsedCategories: []
       };
       
-      // Calcular valor estimado
+      // Calcular valor estimado con precios reales
+      const ingredientIds = items.map(item => item.ingredient_id);
+      const prices = await this.priceService.getBatchPrices(ingredientIds);
+      
       stats.estimatedValue = items.reduce((total, item) => {
-        // TODO: Obtener precio promedio del ingrediente
-        return total + (item.quantity * 100); // Placeholder
+        const price = prices.get(item.ingredient_id) || 0;
+        return total + (item.quantity * price);
       }, 0);
       
       // Calcular categorías más usadas
@@ -285,10 +291,14 @@ export class PantryManager {
         .single();
         
       if (!searchError && existing) {
+        // Update price if we have a new one from the receipt
+        if (item.price && item.price > 0) {
+          await this.updateIngredientPrice(existing.id, item.price);
+        }
         return existing;
       }
       
-      // Crear nuevo ingrediente
+      // Crear nuevo ingrediente con precio inicial si está disponible
       const { data: newIngredient, error: createError } = await this.supabase
         .from('ingredients')
         .insert({
@@ -296,7 +306,7 @@ export class PantryManager {
           name_normalized: normalized,
           category: item.category || 'Sin categoría',
           common_units: JSON.stringify([item.unit]),
-          average_price: item.price,
+          average_price: item.price || null, // Store price if available from receipt
           nutrition: JSON.stringify({})
         })
         .select()
@@ -309,6 +319,42 @@ export class PantryManager {
     } catch (error: unknown) {
       console.error('Error con ingrediente:', error);
       throw error;
+    }
+  }
+  
+  /**
+   * Actualizar precio promedio del ingrediente
+   */
+  private async updateIngredientPrice(ingredientId: string, newPrice: number): Promise<void> {
+    try {
+      // Get current average price
+      const { data: ingredient } = await this.supabase
+        .from('ingredients')
+        .select('average_price')
+        .eq('id', ingredientId)
+        .single();
+        
+      if (!ingredient) return;
+      
+      let updatedPrice = newPrice;
+      
+      // If there's an existing average, calculate weighted average
+      if (ingredient.average_price && ingredient.average_price > 0) {
+        // Weight recent prices more heavily (70% new, 30% old)
+        updatedPrice = (newPrice * 0.7) + (ingredient.average_price * 0.3);
+      }
+      
+      // Update the ingredient price
+      await this.supabase
+        .from('ingredients')
+        .update({ 
+          average_price: Math.round(updatedPrice),
+          updated_at: new Date().toISOString()
+        })
+        .eq('id', ingredientId);
+        
+    } catch (error: unknown) {
+      console.error('Error updating ingredient price:', error);
     }
   }
   
@@ -406,6 +452,43 @@ export class PantryManager {
   }
   
   /**
+   * Obtener información de precio de un item
+   */
+  async getItemPriceInfo(itemId: string): Promise<{
+    currentPrice: number;
+    averagePrice: number;
+    lowestPrice?: number;
+    highestPrice?: number;
+    pricePerUnit: number;
+    totalValue: number;
+  } | null> {
+    try {
+      const { data: item, error } = await this.supabase
+        .from('pantry_items')
+        .select('*, ingredients(*)')
+        .eq('id', itemId)
+        .single();
+        
+      if (error || !item) return null;
+      
+      const priceInfo = await this.priceService.getDetailedPriceInfo(item.ingredient_id);
+      
+      return {
+        currentPrice: priceInfo.averagePrice,
+        averagePrice: priceInfo.averagePrice,
+        lowestPrice: priceInfo.lowestPrice,
+        highestPrice: priceInfo.highestPrice,
+        pricePerUnit: priceInfo.pricePerUnit,
+        totalValue: priceInfo.averagePrice * item.quantity
+      };
+      
+    } catch (error: unknown) {
+      console.error('Error getting item price info:', error);
+      return null;
+    }
+  }
+  
+  /**
    * Obtener sugerencias de compra basadas en uso
    */
   async getShoppingSuggestions(userId: string): Promise<Array<{
@@ -413,6 +496,7 @@ export class PantryManager {
     reason: string;
     priority: 'high' | 'medium' | 'low';
     estimatedQuantity: number;
+    estimatedPrice?: number;
   }>> {
     try {
       const items = await this.getPantryItems(userId);
@@ -423,12 +507,21 @@ export class PantryManager {
         i => i.status === 'expired' || i.status === 'expiring_soon'
       );
       
+      // Get prices for all items
+      const ingredientIds = [...expiredOrExpiring, ...items.filter(i => i.status === 'low_stock')]
+        .map(item => item.ingredient_id);
+      const prices = await this.priceService.getBatchPrices(ingredientIds);
+      
       for (const item of expiredOrExpiring) {
+        const quantity = this.estimateRepurchaseQuantity(item);
+        const pricePerUnit = prices.get(item.ingredient_id) || 0;
+        
         suggestions.push({
           name: item.name,
           reason: item.status === 'expired' ? 'Producto vencido' : 'Próximo a vencer',
           priority: 'high' as const,
-          estimatedQuantity: this.estimateRepurchaseQuantity(item)
+          estimatedQuantity: quantity,
+          estimatedPrice: quantity * pricePerUnit
         });
       }
       
@@ -436,11 +529,15 @@ export class PantryManager {
       const lowStock = items.filter(i => i.status === 'low_stock');
       
       for (const item of lowStock) {
+        const quantity = this.estimateRepurchaseQuantity(item);
+        const pricePerUnit = prices.get(item.ingredient_id) || 0;
+        
         suggestions.push({
           name: item.name,
           reason: 'Stock bajo',
           priority: 'medium' as const,
-          estimatedQuantity: this.estimateRepurchaseQuantity(item)
+          estimatedQuantity: quantity,
+          estimatedPrice: quantity * pricePerUnit
         });
       }
       
@@ -465,6 +562,96 @@ export class PantryManager {
     
     // Recomendar para 2 semanas de uso promedio
     return Math.ceil(avgUsage * 14) || item.quantity || 1;
+  }
+  
+  /**
+   * Obtener tendencia del valor de la despensa
+   */
+  async getPantryValueTrend(userId: string, days: number = 30): Promise<{
+    dates: string[];
+    values: number[];
+    trend: 'increasing' | 'decreasing' | 'stable';
+    percentageChange: number;
+  }> {
+    try {
+      // Get pantry items with their history
+      const items = await this.getPantryItems(userId);
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - days);
+      
+      // Create daily snapshots
+      const dailyValues = new Map<string, number>();
+      const currentDate = new Date(startDate);
+      
+      // Get current prices for all ingredients
+      const ingredientIds = items.map(item => item.ingredient_id);
+      const prices = await this.priceService.getBatchPrices(ingredientIds);
+      
+      while (currentDate <= endDate) {
+        const dateStr = currentDate.toISOString().split('T')[0];
+        let dailyValue = 0;
+        
+        // Calculate value for this date
+        items.forEach(item => {
+          const purchaseDate = new Date(item.purchase_date);
+          
+          // Only count items that were in pantry on this date
+          if (purchaseDate <= currentDate) {
+            const price = prices.get(item.ingredient_id) || 0;
+            
+            // Adjust quantity based on usage history
+            let quantity = item.quantity;
+            item.usage_history.forEach(usage => {
+              const usageDate = new Date(usage.date);
+              if (usageDate <= currentDate) {
+                quantity += usage.quantity; // usage quantities are negative
+              }
+            });
+            
+            if (quantity > 0) {
+              dailyValue += quantity * price;
+            }
+          }
+        });
+        
+        dailyValues.set(dateStr, dailyValue);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+      
+      // Convert to arrays
+      const dates = Array.from(dailyValues.keys());
+      const values = Array.from(dailyValues.values());
+      
+      // Calculate trend
+      let trend: 'increasing' | 'decreasing' | 'stable' = 'stable';
+      let percentageChange = 0;
+      
+      if (values.length >= 2) {
+        const firstValue = values[0] || 1;
+        const lastValue = values[values.length - 1] || 1;
+        percentageChange = ((lastValue - firstValue) / firstValue) * 100;
+        
+        if (percentageChange > 5) trend = 'increasing';
+        else if (percentageChange < -5) trend = 'decreasing';
+      }
+      
+      return {
+        dates,
+        values,
+        trend,
+        percentageChange
+      };
+      
+    } catch (error: unknown) {
+      console.error('Error getting pantry value trend:', error);
+      return {
+        dates: [],
+        values: [],
+        trend: 'stable',
+        percentageChange: 0
+      };
+    }
   }
 }
 

@@ -339,6 +339,140 @@ Respond with JSON array of recommendations.`;
   }
 
   /**
+   * Suggest recipes from pantry items
+   */
+  async suggestRecipesFromPantry(
+    pantryItems: string[],
+    config?: Partial<AIServiceConfig>
+  ): Promise<any[]> {
+    const prompt = `Based on these pantry items, suggest 3-5 recipes that can be made:
+
+Pantry items: ${pantryItems.join(', ')}
+
+For each recipe, provide:
+- Name
+- Description
+- Required ingredients (highlighting which ones are from the pantry)
+- Basic instructions
+- Cooking time
+- Difficulty level
+
+Respond with a JSON array of recipe objects.`;
+
+    const response = await this.generateJSON<any[]>(
+      { prompt, format: 'json' },
+      undefined,
+      config
+    );
+
+    return response.data;
+  }
+
+  /**
+   * Analyze nutrition information
+   */
+  async analyzeNutrition(
+    ingredients: any[],
+    config?: Partial<AIServiceConfig>
+  ): Promise<any> {
+    const prompt = `Analyze the nutritional content of these ingredients:
+
+${JSON.stringify(ingredients, null, 2)}
+
+Provide:
+- Total calories
+- Macronutrients (protein, carbs, fats)
+- Key vitamins and minerals
+- Health benefits
+- Dietary considerations
+
+Respond with detailed nutrition analysis in JSON format.`;
+
+    const response = await this.generateJSON<any>(
+      { prompt, format: 'json' },
+      undefined,
+      config
+    );
+
+    return response.data;
+  }
+
+  /**
+   * Improve existing recipe
+   */
+  async improveRecipe(
+    recipe: any,
+    requirements: string,
+    config?: Partial<AIServiceConfig>
+  ): Promise<string> {
+    const prompt = `Improve this recipe based on the following requirements:
+
+Recipe: ${JSON.stringify(recipe, null, 2)}
+
+Requirements: ${requirements}
+
+Provide specific suggestions for improvement, considering:
+- Flavor enhancement
+- Nutritional value
+- Cooking technique
+- Ingredient substitutions
+- Time optimization`;
+
+    const response = await this.generateText({ prompt }, config);
+    return response.data;
+  }
+
+  /**
+   * Suggest ingredient substitutions
+   */
+  async suggestSubstitutions(
+    ingredient: string,
+    reason?: string,
+    config?: Partial<AIServiceConfig>
+  ): Promise<string[]> {
+    const prompt = `Suggest substitutions for "${ingredient}"${reason ? ` because: ${reason}` : ''}.
+
+Consider:
+- Similar flavor profiles
+- Texture compatibility
+- Nutritional equivalence
+- Common availability
+- Cooking behavior
+
+List 3-5 suitable substitutions with brief explanations.`;
+
+    const response = await this.generateText({ prompt }, config);
+    
+    // Parse the response to extract substitutions
+    const lines = response.data.split('\n').filter(line => line.trim());
+    return lines.filter(line => line.match(/^[\d\-\*\•]/)); // Lines starting with bullet points
+  }
+
+  /**
+   * Generate shopping tips
+   */
+  async generateShoppingTips(
+    items: string[],
+    config?: Partial<AIServiceConfig>
+  ): Promise<string> {
+    const prompt = `Provide shopping tips for these items:
+
+Items: ${items.join(', ')}
+
+Include:
+- How to select fresh/quality items
+- Best time to buy (seasonality)
+- Storage tips
+- Money-saving suggestions
+- Quantity recommendations
+
+Format as practical, actionable tips.`;
+
+    const response = await this.generateText({ prompt }, config);
+    return response.data;
+  }
+
+  /**
    * Batch process multiple requests
    */
   async batch<T>(

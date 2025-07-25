@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { Crown, Trophy, Medal, Star, TrendingUp, Users } from 'lucide-react';
-import Image from 'next/image';
 
 import { LeaderboardEntry, LeaderboardType, LeaderboardPeriod } from '../types';
 

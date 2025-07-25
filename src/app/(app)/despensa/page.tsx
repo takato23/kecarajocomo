@@ -29,11 +29,11 @@ import {
 } from 'lucide-react';
 import { format, addDays, differenceInDays } from 'date-fns';
 import { es } from 'date-fns/locale';
-import Image from 'next/image';
 
 import { GlassCard, GlassButton, GlassInput, GlassModal } from '@/components/ui/GlassCard';
-import { useAuthStore } from '@/stores/auth';
 import { cn } from '@/lib/utils';
+
+import { useUser, useUserActions } from '@/store';
 
 // Mock data para la despensa
 const mockPantryItems = [
@@ -130,7 +130,7 @@ const locations = [
 
 export default function DespensaPage() {
   const router = useRouter();
-  const { user: _user } = useAuthStore();
+  const user = useUser();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
@@ -210,10 +210,10 @@ export default function DespensaPage() {
         >
           <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6 mb-8">
             <div>
-              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 bg-clip-text text-transparent mb-2">
+              <h1 className="text-4xl lg:text-5xl font-bold bg-gradient-to-r from-green-600 via-blue-600 to-purple-600 dark:from-green-400 dark:via-blue-400 dark:to-purple-400 bg-clip-text text-transparent mb-2">
                 Mi Despensa
               </h1>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
+              <p className="text-lg text-gray-600 dark:text-gray-300">
                 Gestiona {stats.totalItems} ingredientes y controla fechas de vencimiento
               </p>
             </div>
@@ -229,7 +229,7 @@ export default function DespensaPage() {
               <GlassButton
                 variant="secondary"
                 icon={<Camera className="w-4 h-4" />}
-                onClick={() => router.push('/pantry/scan')}
+                onClick={() => router.push('/despensa/escanear')}
               >
                 Escanear Ticket
               </GlassButton>
@@ -255,7 +255,7 @@ export default function DespensaPage() {
                   <Package className="w-8 h-8 text-purple-500" />
                   <span className="text-2xl font-bold">{stats.totalItems}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Total Items</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Total Items</p>
               </GlassCard>
             </motion.div>
 
@@ -275,7 +275,7 @@ export default function DespensaPage() {
                   <AlertTriangle className="w-8 h-8 text-orange-500" />
                   <span className="text-2xl font-bold">{stats.expiringSoon}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Por Vencer</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Por Vencer</p>
               </GlassCard>
             </motion.div>
 
@@ -290,7 +290,7 @@ export default function DespensaPage() {
                   <TrendingDown className="w-8 h-8 text-red-500" />
                   <span className="text-2xl font-bold">{stats.lowStock}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Stock Bajo</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Stock Bajo</p>
               </GlassCard>
             </motion.div>
 
@@ -305,7 +305,7 @@ export default function DespensaPage() {
                   <BarChart3 className="w-8 h-8 text-blue-500" />
                   <span className="text-2xl font-bold">{stats.categories}</span>
                 </div>
-                <p className="text-sm text-gray-600 dark:text-gray-400">Categorías</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">Categorías</p>
               </GlassCard>
             </motion.div>
           </div>
@@ -327,7 +327,7 @@ export default function DespensaPage() {
                 <select
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
-                  className="glass-input"
+                  className="glass-input dark:bg-gray-800 dark:text-white"
                 >
                   <option value="name">Nombre</option>
                   <option value="expiry">Vencimiento</option>
@@ -441,8 +441,8 @@ export default function DespensaPage() {
                         
                         {/* Category Badge */}
                         <div className="absolute top-3 left-3">
-                          <div className="p-2 bg-white/90 backdrop-blur-sm rounded-lg">
-                            <CategoryIcon className="w-5 h-5" />
+                          <div className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg">
+                            <CategoryIcon className="w-5 h-5 dark:text-white" />
                           </div>
                         </div>
 
@@ -468,15 +468,15 @@ export default function DespensaPage() {
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
+                        <h3 className="font-semibold text-lg mb-1 dark:text-white">{item.name}</h3>
                         {item.brand && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">{item.brand}</p>
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{item.brand}</p>
                         )}
                         <div className="flex items-center justify-between text-sm">
-                          <span className="text-gray-500">
+                          <span className="text-gray-500 dark:text-gray-400">
                             {locations.find(l => l.id === item.location)?.name}
                           </span>
-                          <span className="text-gray-500">
+                          <span className="text-gray-500 dark:text-gray-400">
                             Agregado {format(item.addedDate, 'dd/MM', { locale: es })}
                           </span>
                         </div>
@@ -517,8 +517,8 @@ export default function DespensaPage() {
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h3 className="font-semibold">{item.name}</h3>
-                              <p className="text-sm text-gray-600 dark:text-gray-400">
+                              <h3 className="font-semibold dark:text-white">{item.name}</h3>
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {item.quantity} {item.unit} • {locations.find(l => l.id === item.location)?.name}
                               </p>
                             </div>
@@ -533,7 +533,7 @@ export default function DespensaPage() {
                           </div>
                         </div>
 
-                        <CategoryIcon className="w-5 h-5 text-gray-400" />
+                        <CategoryIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
                       </div>
                     </GlassCard>
                   </motion.div>
@@ -551,7 +551,7 @@ export default function DespensaPage() {
             className="text-center py-12"
           >
             <GlassCard variant="subtle" className="p-8 max-w-md mx-auto">
-              <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+              <Package className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
                 No se encontraron items
               </h3>
@@ -589,7 +589,7 @@ export default function DespensaPage() {
               type="number"
               placeholder="1"
             />
-            <select className="glass-input">
+            <select className="glass-input dark:bg-gray-800 dark:text-white">
               <option>unidades</option>
               <option>kg</option>
               <option>gramos</option>
@@ -600,8 +600,8 @@ export default function DespensaPage() {
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium mb-2">Categoría</label>
-              <select className="glass-input w-full">
+              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Categoría</label>
+              <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
                 {categories.filter(c => c.id !== 'all').map(category => (
                   <option key={category.id} value={category.id}>
                     {category.name}
@@ -610,8 +610,8 @@ export default function DespensaPage() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Ubicación</label>
-              <select className="glass-input w-full">
+              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Ubicación</label>
+              <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
                 {locations.filter(l => l.id !== 'all').map(location => (
                   <option key={location.id} value={location.id}>
                     {location.name}
@@ -654,24 +654,24 @@ export default function DespensaPage() {
             
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <p className="text-sm text-gray-500 mb-1">Cantidad</p>
-                <p className="font-semibold">{selectedItem.quantity} {selectedItem.unit}</p>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Cantidad</p>
+                <p className="font-semibold dark:text-white">{selectedItem.quantity} {selectedItem.unit}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-500 mb-1">Ubicación</p>
-                <p className="font-semibold">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Ubicación</p>
+                <p className="font-semibold dark:text-white">
                   {locations.find(l => l.id === selectedItem.location)?.name}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500 mb-1">Vencimiento</p>
-                <p className="font-semibold">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vencimiento</p>
+                <p className="font-semibold dark:text-white">
                   {format(selectedItem.expiryDate, "d 'de' MMMM, yyyy", { locale: es })}
                 </p>
               </div>
               <div>
-                <p className="text-sm text-gray-500 mb-1">Agregado</p>
-                <p className="font-semibold">
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Agregado</p>
+                <p className="font-semibold dark:text-white">
                   {format(selectedItem.addedDate, "d 'de' MMMM, yyyy", { locale: es })}
                 </p>
               </div>

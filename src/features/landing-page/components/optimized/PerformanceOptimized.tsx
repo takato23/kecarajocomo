@@ -1,5 +1,4 @@
 import React, { lazy, Suspense, memo, useMemo, useCallback } from 'react';
-import Image from 'next/image';
 
 import { cn } from '@/lib/utils';
 

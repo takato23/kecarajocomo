@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback } from 'react';
 import { Search, X, Settings, TrendingUp } from 'lucide-react';
-import Image from 'next/image';
 
 import { useEnhancedPriceScraper } from '@/hooks/useEnhancedPriceScraper';
 import { StoreProduct } from '@/lib/services/enhancedStoreScraper';

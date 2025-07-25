@@ -3,11 +3,12 @@
 import React, { useState, useRef, useCallback } from 'react';
 import { Camera, Upload, X, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Image from 'next/image';
 
-import { ReceiptScannerService, ReceiptData } from '@/services/receiptScannerService';
-import { usePantryStore } from '@/stores/pantry';
-import { useAuthStore } from '@/stores/auth';
+import { UnifiedAIService } from '@/services/ai';
+import type { ParsedReceipt, ReceiptItem } from '@/services/ai/types';
+
+import { useUser, usePantryActions } from '@/store';
+import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface ReceiptScannerProps {
   isOpen: boolean;
@@ -18,11 +19,11 @@ export const ReceiptScanner = React.memo<ReceiptScannerProps>(({
   isOpen,
   onClose,
 }) => {
-  const { user } = useAuthStore();
-  const { addItem } = usePantryStore();
+  const { user } = useAuth();
+  const { addPantryItem } = usePantryActions();
   
   const [isScanning, setIsScanning] = useState(false);
-  const [scannedData, setScannedData] = useState<ReceiptData | null>(null);
+  const [scannedData, setScannedData] = useState<ParsedReceipt | null>(null);
   const [selectedItems, setSelectedItems] = useState<Set<number>>(new Set());
   const [error, setError] = useState<string | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -49,16 +50,17 @@ export const ReceiptScanner = React.memo<ReceiptScannerProps>(({
       });
 
       setIsScanning(true);
-      const receiptData = await ReceiptScannerService.scanReceipt(base64);
+      const aiService = UnifiedAIService.getInstance();
+      const receiptData = await aiService.parseReceipt({ image: base64 });
       
-      if (ReceiptScannerService.validateReceiptData(receiptData)) {
+      if (receiptData && receiptData.items && receiptData.items.length > 0) {
         setScannedData(receiptData);
         // Select all items by default
         setSelectedItems(new Set(receiptData.items.map((_, index) => index)));
       } else {
         throw new Error('No se pudieron extraer productos del ticket');
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message || 'Error al procesar el ticket');
     } finally {
       setIsScanning(false);
@@ -100,15 +102,14 @@ export const ReceiptScanner = React.memo<ReceiptScannerProps>(({
       for (let i = 0; i < scannedData.items.length; i++) {
         if (selectedItems.has(i)) {
           const item = scannedData.items[i];
-          await addItem(user.id, {
-            ingredient: {
-              name: item.name,
-              category: item.category || 'otros',
-            },
+          await addPantryItem({
+            name: item.name,
             quantity: item.quantity,
             unit: item.unit,
-            purchase_date: scannedData.date ? new Date(scannedData.date).toISOString() : new Date().toISOString(),
+            category: item.category || 'otros',
+            purchaseDate: scannedData.date ? new Date(scannedData.date).toISOString() : new Date().toISOString(),
             price: item.price,
+            userId: user.id
           });
         }
       }
@@ -120,7 +121,7 @@ export const ReceiptScanner = React.memo<ReceiptScannerProps>(({
       setScannedData(null);
       setSelectedItems(new Set());
       setImagePreview(null);
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError('Error al agregar productos a la despensa');
     } finally {
       setIsScanning(false);

@@ -50,15 +50,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es">
+    <html lang="es" className="h-full">
       <head>
         <link rel="apple-touch-icon" href="/icon-192.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icon-32.png" />
         <link rel="icon" type="image/png" sizes="16x16" href="/icon-16.png" />
         <meta name="apple-mobile-web-app-title" content="KeCarajoComer" />
         <meta name="application-name" content="KeCarajoComer" />
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            html { height: 100%; }
+            body { 
+              margin: 0; 
+              min-height: 100vh; 
+              background-color: #fafafa;
+            }
+            .dark body { 
+              background-color: #09090b;
+              color: #fafafa;
+            }
+          `
+        }} />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: "(function() { try { var theme = localStorage.getItem('ui-theme') || 'system'; var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches); if (isDark) { document.documentElement.classList.add('dark'); } } catch (e) {} })();"
+          }}
+        />
       </head>
-      <body className={inter.className}>
+      <body className={`${inter.className} h-full`}>
         <Providers>
           {children}
           <PWAInstaller />

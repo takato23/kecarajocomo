@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
-import { useAuthStore } from '@/stores/auth';
+import { useUser, useUserActions } from '@/store';
 
 export default function AppLayout({
   children,

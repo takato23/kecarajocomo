@@ -3,7 +3,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ShoppingCart, Store, Clock, AlertCircle, ChevronDown } from 'lucide-react';
-import Image from 'next/image';
 
 import { StoreProduct, ProductGroup } from '@/lib/services/enhancedStoreScraper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';

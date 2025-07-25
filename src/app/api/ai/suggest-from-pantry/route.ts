@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 
-import { claudeService } from '@/lib/ai/claude';
+import { getAIService } from '@/services/ai';
 import type { Database } from '@/lib/supabase/types';
 
 export async function POST(request: NextRequest) {
@@ -40,14 +40,16 @@ export async function POST(request: NextRequest) {
       .map(item => item.ingredient?.name)
       .filter(Boolean) as string[];
 
-    // Get recipe suggestions from Claude
-    const suggestions = await claudeService.suggestRecipesFromPantry(ingredientNames);
+    // Get recipe suggestions from AI service
+    const aiService = getAIService();
+    const suggestions = await aiService.suggestRecipesFromPantry(ingredientNames);
 
     return NextResponse.json({ suggestions });
-  } catch (error: unknown) {
+  } catch (error) {
     console.error('Recipe suggestion error:', error);
+    const errorMessage = error instanceof Error ? error.message : 'Failed to suggest recipes';
     return NextResponse.json(
-      { error: error.message || 'Failed to suggest recipes' },
+      { error: errorMessage },
       { status: 500 }
     );
   }

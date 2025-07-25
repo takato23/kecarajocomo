@@ -3,14 +3,16 @@
 import { useEffect, useState } from 'react';
 
 import { useProfile } from '@/contexts/ProfileContext';
-import { useAuthStore } from '@/stores/auth';
-import { useUserStore } from '@/stores/user';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase';
 
+import { useUser, useUserActions } from '@/store';
+import { useAuthStore } from '@/features/auth';
+
 export function ProfileDebug() {
   const { user } = useAuthStore();
-  const { profile, preferences, isLoading, error } = useUserStore();
+  const userStore = useUser();
+  const { profile, preferences, isLoading, error } = userStore || {};
   const profileContext = useProfile();
   const [dbData, setDbData] = useState<any>({});
 

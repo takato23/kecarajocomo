@@ -1,6 +1,5 @@
 // Simple test to verify gamification system functionality
 import { useGamificationStore } from '../store/gamificationStore';
-import { XPEventType } from '../types';
 
 export function testGamificationSystem() {
 

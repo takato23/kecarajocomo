@@ -25,7 +25,6 @@ import {
   Trash2,
   Flame
 } from 'lucide-react';
-import Image from 'next/image';
 
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';

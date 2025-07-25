@@ -11,7 +11,6 @@ import {
   Scan,
   RefreshCw
 } from 'lucide-react';
-import Image from 'next/image';
 
 import { Alert, AlertDescription } from '@/components/ui/alert';
 // Simple toast function

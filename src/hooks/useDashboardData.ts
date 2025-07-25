@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { useAuthStore } from '@/stores/auth';
 import { supabase } from '@/lib/supabase/client';
+
+import { useUser, useUserActions } from '@/store';
 
 interface Recipe {
   id: string;

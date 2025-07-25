@@ -82,14 +82,14 @@ const ModernSidebar: React.FC<ModernSidebarProps> = ({
       description: '¿Qué es esto?',
       badge: 'NEW'
     },
-    // { 
-    //   id: 'meal-planner',
-    //   name: 'Planificador', 
-    //   href: '/meal-planner', 
-    //   icon: Calendar,
-    //   color: 'from-violet-500 to-purple-600',
-    //   description: 'Organiza tu semana'
-    // },
+    { 
+      id: 'meal-planner',
+      name: 'Planificador', 
+      href: '/planificador', 
+      icon: Calendar,
+      color: 'from-violet-500 to-purple-600',
+      description: 'Organiza tu semana'
+    },
     { 
       id: 'pantry',
       name: 'Despensa', 

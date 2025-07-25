@@ -2,7 +2,6 @@
 
 import { useState, useEffect, useCallback } from 'react';
 
-import { usePantryStore } from '@/stores/pantry';
 import { 
   fetchUserPantryItems,
   addPantryItem,
@@ -13,6 +12,9 @@ import {
 import { parseMultipleIngredients, categorizeIngredient } from '@/lib/pantry/parser';
 import { PantryItem, ParsedIngredientInput } from '@/types/pantry';
 import { logger } from '@/services/logger';
+import { uploadPantryPhoto, validateImageFile, compressImage } from '@/lib/supabase/storage';
+
+import { usePantry, usePantryActions } from '@/store';
 
 // Hook for pantry management with database integration
 export function usePantry(userId?: string) {
@@ -68,6 +70,35 @@ export function usePantry(userId?: string) {
       const category = categorizeIngredient(formData.ingredient_name);
       const ingredient = await getOrCreateIngredient(formData.ingredient_name, category);
 
+      let photoUrl: string | undefined;
+
+      // Handle photo upload if provided
+      if (formData.photo) {
+        try {
+          // Validate image
+          const validationError = validateImageFile(formData.photo);
+          if (validationError) {
+            throw new Error(validationError);
+          }
+
+          // Compress image for better performance
+          const compressedFile = await compressImage(formData.photo);
+          
+          // Upload to Supabase Storage
+          const uploadResult = await uploadPantryPhoto(userId, compressedFile);
+          photoUrl = uploadResult.url;
+          
+          logger.info('Photo uploaded successfully', 'usePantry', { 
+            path: uploadResult.path,
+            url: uploadResult.url 
+          });
+        } catch (photoError: unknown) {
+          logger.error('Error uploading photo', 'usePantry', photoError);
+          // Don't fail the entire operation if photo upload fails
+          console.warn('Photo upload failed, continuing without photo:', photoError);
+        }
+      }
+
       // Prepare pantry item data
       const itemData = {
         ingredient_id: ingredient.id,
@@ -76,8 +107,7 @@ export function usePantry(userId?: string) {
         expiration_date: formData.expiration_date,
         location: formData.location || 'despensa',
         notes: formData.notes,
-        // TODO: Handle photo upload
-        photo_url: undefined,
+        photo_url: photoUrl,
         low_stock_threshold: Math.ceil(formData.quantity * 0.2) // 20% of current quantity
       };
 

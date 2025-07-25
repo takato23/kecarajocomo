@@ -8,7 +8,8 @@ import { motion } from 'framer-motion';
 import { signIn, signInWithGoogle, signInWithGitHub } from '@/lib/supabase/client';
 import { AuthForm } from '@/features/auth/components/AuthForm';
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons';
-import { useAuthStore } from '@/stores/auth';
+
+import { useUser, useUserActions } from '@/store';
 
 export default function LoginPage() {
   const router = useRouter();

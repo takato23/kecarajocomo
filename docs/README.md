@@ -1,50 +1,36 @@
-# kecarajocomer - AI-Powered Meal Planning & Recipe Management
+# KeCarajoComer Documentation
 
-A next-generation meal planning application that leverages AI to provide personalized recipe generation, intelligent pantry management, and optimized shopping experiences.
-
-## 🚀 Overview
-
-kecarajocomer is designed to be the "utopically perfect" meal planning app, combining cutting-edge AI technology with exceptional user experience. Built with Next.js 15, TypeScript, and powered by Claude and Gemini AI, it transforms how people plan, cook, and eat.
-
-## ✨ Key Features
-
-- **🤖 AI-Powered Recipe Generation**: Create personalized recipes based on dietary preferences, available ingredients, and cooking skills
-- **📅 Smart Weekly Meal Planning**: AI-assisted meal plans that balance nutrition, variety, and budget
-- **🏪 Intelligent Pantry Management**: Track inventory, expiration dates, and get alerts for items running low
-- **🛒 Optimized Shopping Lists**: Automatically generated lists organized by store sections with price tracking
-- **📊 Nutritional Dashboard**: Daily tracking with personalized insights and recommendations
-- **⚡ Real-time Collaboration**: Share meal plans and shopping lists with family members
-- **📱 Offline Support**: Core features work without internet connection
-
-## 🛠️ Tech Stack
-
-- **Frontend**: Next.js 15 (App Router), TypeScript, Tailwind CSS
-- **State Management**: Zustand with persistence
-- **Backend**: Supabase (PostgreSQL, Auth, Realtime)
-- **AI Integration**: Claude API, Gemini API
-- **Deployment**: Vercel Edge Network
-- **Testing**: Jest, Playwright, React Testing Library
-
-## 📖 Documentation
-
-Comprehensive documentation is available in the `docs/` folder:
+## 📚 Documentation Structure
 
 ### Core Documentation
-- [API Documentation](./docs/API.md) - Complete API reference and examples
-- [Component Documentation](./docs/COMPONENTS.md) - UI component system and usage guide
-- [Feature Documentation](./docs/FEATURES.md) - Detailed feature modules and architecture
-- [Testing Documentation](./docs/TESTING.md) - Testing strategy and guidelines
-- [Deployment Documentation](./docs/DEPLOYMENT.md) - Deployment and production guide
-- [Contributing Guide](./docs/CONTRIBUTING.md) - How to contribute to the project
+- **[SYSTEM_ARCHITECTURE.md](SYSTEM_ARCHITECTURE.md)** - Complete system architecture overview
+- **[PRD.md](PRD.md)** - Product Requirements Document
+- **[IMPLEMENTATION_ROADMAP.md](IMPLEMENTATION_ROADMAP.md)** - Development roadmap and phases
+- **[TECHNICAL_STANDARDS.md](TECHNICAL_STANDARDS.md)** - Coding standards and conventions
 
-### Architecture Documentation
-- [Architecture Overview](./ARCHITECTURE.md) - System design and technical architecture
-- [Database Schema](./DATABASE_SCHEMA.md) - Complete database design with migrations
-- [API Design](./API_DESIGN.md) - RESTful and Edge Function APIs
-- [Component Architecture](./COMPONENT_ARCHITECTURE.md) - UI component system and patterns
-- [AI Integration Guide](./AI_INTEGRATION.md) - Claude and Gemini implementation details
-- [Performance & Scalability](./PERFORMANCE_SCALABILITY.md) - Optimization strategies
-- [Implementation Roadmap](./IMPLEMENTATION_ROADMAP.md) - 12-week development plan
+### Feature Documentation  
+- **[AI_INTEGRATION.md](AI_INTEGRATION.md)** - AI integration patterns and implementation
+- **[API_DESIGN.md](API_DESIGN.md)** - API architecture and endpoints
+- **[DATABASE_SCHEMA.md](DATABASE_SCHEMA.md)** - Database structure and models
+- **[COMPONENT_ARCHITECTURE.md](COMPONENT_ARCHITECTURE.md)** - Frontend component design
+
+### System Modules
+- **[PROFILE_SYSTEM.md](PROFILE_SYSTEM.md)** - User profile management
+- **[NAVIGATION_SYSTEM.md](NAVIGATION_SYSTEM.md)** - Navigation and routing
+
+### Development Guides
+- **[SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)** - Project setup guide
+- **[CONTRIBUTING.md](CONTRIBUTING.md)** - Contribution guidelines
+- **[TESTING.md](TESTING.md)** - Testing strategies and guides
+- **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deployment procedures
+
+### Feature Specifications
+- **[UNIFIED_MEAL_PLANNER_SPEC.md](UNIFIED_MEAL_PLANNER_SPEC.md)** - Meal planning system
+- **[VOICE_RECOGNITION_SYSTEM.md](VOICE_RECOGNITION_SYSTEM.md)** - Voice integration
+- **[iOS26_DESIGN_SYSTEM_ARCHITECTURE.md](iOS26_DESIGN_SYSTEM_ARCHITECTURE.md)** - Design system
+
+### Archive
+Older documentation and session summaries have been moved to the `archive/` directory for reference.
 
 ## 🚦 Getting Started
 
