@@ -13,44 +13,63 @@ import { parseMultipleIngredients, categorizeIngredient } from '@/lib/pantry/par
 import { PantryItem, ParsedIngredientInput } from '@/types/pantry';
 import { logger } from '@/services/logger';
 import { uploadPantryPhoto, validateImageFile, compressImage } from '@/lib/supabase/storage';
-
-import { usePantry, usePantryActions } from '@/store';
+import { usePantry as usePantryStore } from '@/store';
 
 // Hook for pantry management with database integration
 export function usePantry(userId?: string) {
-  const {
-    items,
-    stats,
-    isLoading,
-    error,
-    setItems,
-    addItem,
-    updateItem,
-    deleteItem,
-    setLoading,
-    calculateStats,
-    getOrCreateIngredient: getOrCreateIngredientLocal
-  } = usePantryStore();
+  // Basic local state for pantry management
+  const [items, setItems] = useState<PantryItem[]>([]);
+  const [stats, setStats] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
 
   // Local loading states
   const [isAdding, setIsAdding] = useState(false);
   const [isDeleting, setIsDeleting] = useState<Record<string, boolean>>({});
   const [isUpdatingItems, setIsUpdatingItems] = useState<Record<string, boolean>>({});
 
+  // Calculate stats from items
+  const calculateStats = useCallback(() => {
+    const now = new Date();
+    const threeDaysFromNow = new Date(now.getTime() + 3 * 24 * 60 * 60 * 1000);
+    
+    const expiringSoon = items.filter(item => {
+      if (!item.expiration_date) return false;
+      return new Date(item.expiration_date) <= threeDaysFromNow;
+    }).length;
+
+    const lowStock = items.filter(item => {
+      if (!item.low_stock_threshold) return false;
+      return item.quantity <= item.low_stock_threshold;
+    }).length;
+
+    const categories = new Set(items.map(item => item.ingredient?.category).filter(Boolean)).size;
+
+    setStats({
+      total_items: items.length,
+      expiring_soon: expiringSoon,
+      low_stock: lowStock,
+      categories
+    });
+  }, [items]);
+
   // Fetch pantry items from database
   const fetchItems = useCallback(async () => {
     if (!userId) return;
 
-    setLoading(true);
+    setIsLoading(true);
+    setError(null);
     try {
-      const items = await fetchUserPantryItems(userId);
-      setItems(items);
+      const fetchedItems = await fetchUserPantryItems(userId);
+      setItems(fetchedItems);
     } catch (error: unknown) {
+      const errorObj = error as Error;
+      setError(errorObj);
       logger.error('Error fetching pantry items', 'usePantry', error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }, [userId, setItems, setLoading]);
+  }, [userId]);
 
   // Add a single item to pantry
   const addItemToPantry = useCallback(async (formData: {
@@ -114,8 +133,8 @@ export function usePantry(userId?: string) {
       // Add to database
       const newItem = await addPantryItem(userId, itemData);
       
-      // Update local store
-      addItem(newItem);
+      // Update local state
+      setItems(prev => [newItem, ...prev]);
       
       return newItem;
     } catch (error: unknown) {
@@ -124,7 +143,7 @@ export function usePantry(userId?: string) {
     } finally {
       setIsAdding(false);
     }
-  }, [userId, addItem]);
+  }, [userId]);
 
   // Add multiple items from voice input
   const addMultipleItemsToPantry = useCallback(async (parsedItems: ParsedIngredientInput[]) => {
@@ -151,8 +170,8 @@ export function usePantry(userId?: string) {
       // Add all items to database
       const newItems = await addMultiplePantryItems(userId, itemsToAdd);
       
-      // Update local store
-      newItems.forEach(item => addItem(item));
+      // Update local state
+      setItems(prev => [...newItems, ...prev]);
       
       return newItems;
     } catch (error: unknown) {
@@ -161,14 +180,15 @@ export function usePantry(userId?: string) {
     } finally {
       setIsAdding(false);
     }
-  }, [userId, addItem]);
+  }, [userId]);
 
   // Update a pantry item
-  const updatePantryItem = useCallback(async (id: string, updates: Partial<PantryItem>) => {
+  const updatePantryItemLocal = useCallback(async (id: string, updates: Partial<PantryItem>) => {
     setIsUpdatingItems(prev => ({ ...prev, [id]: true }));
     try {
+      const { updatePantryItem } = await import('@/lib/pantry/database');
       const updatedItem = await updatePantryItem(id, updates);
-      updateItem(id, updates);
+      setItems(prev => prev.map(item => item.id === id ? { ...item, ...updates } : item));
       return updatedItem;
     } catch (error: unknown) {
       logger.error('Error updating pantry item', 'usePantry', error);
@@ -179,14 +199,15 @@ export function usePantry(userId?: string) {
         return rest;
       });
     }
-  }, [updateItem]);
+  }, []);
 
   // Delete a pantry item
-  const deletePantryItem = useCallback(async (id: string) => {
+  const deletePantryItemLocal = useCallback(async (id: string) => {
     setIsDeleting(prev => ({ ...prev, [id]: true }));
     try {
+      const { deletePantryItem } = await import('@/lib/pantry/database');
       await deletePantryItem(id);
-      deleteItem(id);
+      setItems(prev => prev.filter(item => item.id !== id));
     } catch (error: unknown) {
       logger.error('Error deleting pantry item', 'usePantry', error);
       throw error;
@@ -196,12 +217,12 @@ export function usePantry(userId?: string) {
         return rest;
       });
     }
-  }, [deleteItem]);
+  }, []);
 
   // Quick quantity update
   const updateQuantity = useCallback(async (id: string, quantity: number) => {
-    return updatePantryItem(id, { quantity });
-  }, [updatePantryItem]);
+    return updatePantryItemLocal(id, { quantity });
+  }, [updatePantryItemLocal]);
 
   // Process voice input
   const processVoiceInput = useCallback(async (transcript: string) => {
@@ -252,15 +273,10 @@ export function usePantry(userId?: string) {
     fetchItems,
     addItemToPantry,
     addMultipleItemsToPantry,
-    updatePantryItem,
-    deletePantryItem,
+    updatePantryItem: updatePantryItemLocal,
+    deletePantryItem: deletePantryItemLocal,
     updateQuantity,
-    processVoiceInput,
-    
-    // Utility functions
-    getExpiringItems: usePantryStore((state) => state.getExpiringItems),
-    getLowStockItems: usePantryStore((state) => state.getLowStockItems),
-    getItemsByCategory: usePantryStore((state) => state.getItemsByCategory)
+    processVoiceInput
   };
 }
 

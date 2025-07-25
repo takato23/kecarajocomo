@@ -3,8 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 
 import { supabase } from '@/lib/supabase/client';
-
-import { useUser, useUserActions } from '@/store';
+import { useUser } from '@/store';
 
 interface Recipe {
   id: string;
@@ -91,7 +90,7 @@ interface DashboardError {
 }
 
 export function useDashboardData() {
-  const { user } = useAuthStore();
+  const { user } = useUser();
   const [stats, setStats] = useState<DashboardStats>({
     recipesCount: 0,
     recipesThisWeek: 0,

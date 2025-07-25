@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
+
 import { shoppingService } from '@/lib/supabase/shopping';
 import { useAuthStore } from '@/features/auth';
 import type { Database } from '@/lib/supabase/database.types';

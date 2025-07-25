@@ -21,10 +21,6 @@ import { ShoppingVoiceButton } from '@/components/shopping/ShoppingVoiceButton';
 import { SupermarketMode } from '@/components/shopping/SupermarketMode';
 import { CategoryBadge } from '@/components/shopping/CategoryBadge';
 
-import { useUser, useUserActions } from '@/store';
-import { usePantry, usePantryActions } from '@/store';
-import { useShopping, useShoppingActions } from '@/store';
-
 export default function ShoppingListPage() {
   const { user } = useAuthStore();
   const { toast } = useToast();

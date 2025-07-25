@@ -146,7 +146,7 @@ export class ReceiptScanner {
       .then(({ data: { text } }) => {
         resolve(text);
       })
-      .catch (reject: unknown);
+      .catch((error: unknown) => reject(error));
     });
   }
   

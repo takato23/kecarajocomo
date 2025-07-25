@@ -10,7 +10,6 @@ import {
   Calendar, 
   ShoppingCart,
   MoreHorizontal,
-  Plus,
   Search,
   User,
   Package,
@@ -19,8 +18,7 @@ import {
 import { useSwipeable } from 'react-swipeable';
 
 import { cn } from '@/lib/utils';
-
-import { useUser, useUserActions } from '@/store';
+import { useUser } from '@/store';
 
 interface NavItem {
   label: string;

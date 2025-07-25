@@ -1,6 +1,14 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useCallback } from 'react';
+import React, { 
+  createContext, 
+  useContext, 
+  useEffect, 
+  useState, 
+  useCallback, 
+  useMemo,
+  memo
+} from 'react';
 
 import { supabase } from '@/lib/supabase';
 import { ensureUserProfile } from '@/lib/profile/ensure-profile';
@@ -17,79 +25,112 @@ import type {
   PlanningConstraints,
   MealSchedule
 } from '@/types/profile';
-
 import { useUser, useUserActions } from '@/store';
 
-interface ProfileContextValue {
-  // Core Profile Data
+// ===== SPLIT CONTEXTS FOR GRANULAR UPDATES =====
+
+// Core Profile Data Context (rarely changes)
+interface ProfileDataContextValue {
   profile: UserProfile | null;
   preferences: UserPreferences | null;
-  householdMembers: HouseholdMember[];
   isLoading: boolean;
   error: Error | null;
-  
-  // Profile Actions
-  updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
-  updatePreferences: (updates: Partial<UserPreferences>) => Promise<void>;
-  uploadAvatar: (file: File) => Promise<string>;
+}
+
+// Household Members Context (moderate changes)
+interface HouseholdContextValue {
+  householdMembers: HouseholdMember[];
   addHouseholdMember: (member: Omit<HouseholdMember, 'id' | 'userId'>) => Promise<void>;
   updateHouseholdMember: (id: string, updates: Partial<HouseholdMember>) => Promise<void>;
   removeHouseholdMember: (id: string) => Promise<void>;
-  
-  // Preference Helpers
+}
+
+// Profile Actions Context (stable functions)
+interface ProfileActionsContextValue {
+  updateProfile: (updates: Partial<UserProfile>) => Promise<void>;
+  updatePreferences: (updates: Partial<UserPreferences>) => Promise<void>;
+  uploadAvatar: (file: File) => Promise<string>;
+  refreshProfile: () => Promise<void>;
+  syncToCloud: () => Promise<void>;
+  clearCache: () => void;
+}
+
+// Computed Values Context (derived from profile data)
+interface ProfileComputedContextValue {
   getDietaryRestrictions: () => DietaryRestriction[];
   getAllergies: () => Allergy[];
   getHouseholdSize: () => number;
   getBudget: (period: 'weekly' | 'monthly') => number;
   getMealSchedule: () => MealSchedule | undefined;
   getCookingTimeAvailable: (dayType: 'weekday' | 'weekend') => number;
-  
-  // Integration Helpers
   getPersonalizationData: () => PersonalizationData;
   getRecommendationProfile: () => RecommendationProfile;
   getPlanningConstraints: () => PlanningConstraints;
-  
-  // Sync & Cache
-  refreshProfile: () => Promise<void>;
-  syncToCloud: () => Promise<void>;
-  clearCache: () => void;
 }
 
-const ProfileContext = createContext<ProfileContextValue | null>(null);
+// Create separate contexts
+const ProfileDataContext = createContext<ProfileDataContextValue | null>(null);
+const HouseholdContext = createContext<HouseholdContextValue | null>(null);
+const ProfileActionsContext = createContext<ProfileActionsContextValue | null>(null);
+const ProfileComputedContext = createContext<ProfileComputedContextValue | null>(null);
 
-export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+// ===== MEMOIZED HELPER FUNCTIONS =====
+
+// Cache for expensive calculations
+const memoCache = new Map<string, { value: any; timestamp: number; deps: string }>();
+const CACHE_TTL = 5 * 60 * 1000; // 5 minutes
+
+function createMemoizedFunction<T, Args extends any[]>(
+  fn: (...args: Args) => T,
+  keyFn: (...args: Args) => string,
+  deps: () => string
+) {
+  return (...args: Args): T => {
+    const key = keyFn(...args);
+    const depsKey = deps();
+    const cached = memoCache.get(key);
+    
+    if (cached && 
+        cached.timestamp > Date.now() - CACHE_TTL && 
+        cached.deps === depsKey) {
+      return cached.value;
+    }
+    
+    const result = fn(...args);
+    memoCache.set(key, { 
+      value: result, 
+      timestamp: Date.now(), 
+      deps: depsKey 
+    });
+    
+    return result;
+  };
+}
+
+// ===== PROFILE DATA PROVIDER =====
+
+const ProfileDataProvider = memo<{ children: React.ReactNode }>(({ children }) => {
   const user = useUser();
   const userActions = useUserActions();
-  const { 
-    profile: storeProfile, 
-    preferences: storePreferences,
-    updateProfile: updateStoreProfile,
-    setPreferences: updateStorePreferences
-  } = { 
-    profile: user,
-    preferences: user?.preferences,
+  
+  // Memoize store mappings to prevent re-renders
+  const storeData = useMemo(() => ({
+    profile: user as UserProfile | null,
+    preferences: user?.preferences as UserPreferences | null,
     updateProfile: userActions?.updateProfile,
     setPreferences: userActions?.setPreferences
-  };
-  const [householdMembers, setHouseholdMembers] = useState<HouseholdMember[]>([]);
+  }), [user, userActions?.updateProfile, userActions?.setPreferences]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
-  // Enhanced profile data with defaults
-  const profile = storeProfile as UserProfile | null;
-  const preferences = storePreferences as UserPreferences | null;
-
-  // Load profile and preferences when user is available
+  // Initialize profile when user changes
   useEffect(() => {
     if (user?.id) {
       const initializeProfile = async () => {
         try {
-          // Ensure profile and preferences exist
           await ensureUserProfile(user);
-          
-          // Profile is managed by the main store
           logger.info('Profile initialized');
-          await loadHouseholdMembers();
         } catch (error: unknown) {
           logger.error('Error initializing profile', 'ProfileContext', error);
           setError(error as Error);
@@ -100,7 +141,31 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
   }, [user?.id]);
 
-  const loadHouseholdMembers = async () => {
+  // Memoized context value
+  const value = useMemo<ProfileDataContextValue>(() => ({
+    profile: storeData.profile,
+    preferences: storeData.preferences,
+    isLoading,
+    error,
+  }), [storeData.profile, storeData.preferences, isLoading, error]);
+
+  return (
+    <ProfileDataContext.Provider value={value}>
+      {children}
+    </ProfileDataContext.Provider>
+  );
+});
+
+ProfileDataProvider.displayName = 'ProfileDataProvider';
+
+// ===== HOUSEHOLD PROVIDER =====
+
+const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => {
+  const user = useUser();
+  const [householdMembers, setHouseholdMembers] = useState<HouseholdMember[]>([]);
+
+  // Memoized load function
+  const loadHouseholdMembers = useCallback(async () => {
     if (!user?.id) return;
     
     try {
@@ -115,45 +180,129 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     } catch (err: unknown) {
       logger.error('Error loading household members', 'ProfileContext', err);
     }
-  };
+  }, [user?.id]);
 
-  // Profile Actions
-  const updateProfile = async (updates: Partial<UserProfile>) => {
-    if (!user?.id || !profile) return;
+  // Load household members on user change
+  useEffect(() => {
+    if (user?.id) {
+      loadHouseholdMembers();
+    }
+  }, [user?.id, loadHouseholdMembers]);
+
+  // Memoized action functions
+  const addHouseholdMember = useCallback(async (member: Omit<HouseholdMember, 'id' | 'userId'>) => {
+    if (!user?.id) return;
 
     try {
-      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('household_members')
+        .insert({ ...member, user_id: user.id })
+        .select()
+        .single();
+
+      if (error) throw error;
+      
+      setHouseholdMembers(prev => [...prev, data]);
+      success('Miembro del hogar agregado');
+    } catch (err: unknown) {
+      console.error('Error al agregar miembro del hogar');
+      throw err;
+    }
+  }, [user?.id]);
+
+  const updateHouseholdMember = useCallback(async (id: string, updates: Partial<HouseholdMember>) => {
+    try {
+      const { error } = await supabase
+        .from('household_members')
+        .update(updates)
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      setHouseholdMembers(prev => 
+        prev.map(m => m.id === id ? { ...m, ...updates } : m)
+      );
+      success('Miembro actualizado');
+    } catch (err: unknown) {
+      console.error('Error al actualizar miembro');
+      throw err;
+    }
+  }, []);
+
+  const removeHouseholdMember = useCallback(async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('household_members')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      setHouseholdMembers(prev => prev.filter(m => m.id !== id));
+      success('Miembro eliminado');
+    } catch (err: unknown) {
+      console.error('Error al eliminar miembro');
+      throw err;
+    }
+  }, []);
+
+  // Memoized context value
+  const value = useMemo<HouseholdContextValue>(() => ({
+    householdMembers,
+    addHouseholdMember,
+    updateHouseholdMember,
+    removeHouseholdMember,
+  }), [householdMembers, addHouseholdMember, updateHouseholdMember, removeHouseholdMember]);
+
+  return (
+    <HouseholdContext.Provider value={value}>
+      {children}
+    </HouseholdContext.Provider>
+  );
+});
+
+HouseholdProvider.displayName = 'HouseholdProvider';
+
+// ===== PROFILE ACTIONS PROVIDER =====
+
+const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }) => {
+  const user = useUser();
+  const userActions = useUserActions();
+  const { profile } = useProfileData();
+  
+  // Get stable references
+  const updateStoreProfile = userActions?.updateProfile;
+  const updateStorePreferences = userActions?.setPreferences;
+
+  // Memoized action functions
+  const updateProfile = useCallback(async (updates: Partial<UserProfile>) => {
+    if (!user?.id || !profile || !updateStoreProfile) return;
+
+    try {
       await updateStoreProfile(updates);
       success('Perfil actualizado correctamente');
     } catch (err: unknown) {
-      error('Error al actualizar el perfil');
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
+      console.error('Error al actualizar el perfil');
+      throw err;
     }
-  };
+  }, [user?.id, profile, updateStoreProfile]);
 
-  const updatePreferences = async (updates: Partial<UserPreferences>) => {
-    if (!user?.id || !preferences) return;
+  const updatePreferences = useCallback(async (updates: Partial<UserPreferences>) => {
+    if (!user?.id || !updateStorePreferences) return;
 
     try {
-      setIsLoading(true);
       await updateStorePreferences(updates);
       success('Preferencias actualizadas');
     } catch (err: unknown) {
-      error('Error al actualizar las preferencias');
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
+      console.error('Error al actualizar las preferencias');
+      throw err;
     }
-  };
+  }, [user?.id, updateStorePreferences]);
 
-  const uploadAvatar = async (file: File): Promise<string> => {
+  const uploadAvatar = useCallback(async (file: File): Promise<string> => {
     if (!user?.id) throw new Error('Usuario no autenticado');
 
     try {
-      setIsLoading(true);
-      
       const fileExt = file.name.split('.').pop();
       const fileName = `${user.id}/avatar.${fileExt}`;
       const filePath = `avatars/${fileName}`;
@@ -175,86 +324,100 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
       return data.publicUrl;
     } catch (err: unknown) {
-      error('Error al subir la imagen');
+      console.error('Error al subir la imagen');
       throw err;
-    } finally {
-      setIsLoading(false);
     }
-  };
+  }, [user?.id, updateProfile]);
 
-  // Household Member Management
-  const addHouseholdMember = async (member: Omit<HouseholdMember, 'id' | 'userId'>) => {
+  const refreshProfile = useCallback(async () => {
     if (!user?.id) return;
 
     try {
-      const { data, error } = await supabase
-        .from('household_members')
-        .insert({ ...member, user_id: user.id })
-        .select()
-        .single();
-
-      if (error) throw error;
-      
-      setHouseholdMembers([...householdMembers, data]);
-      success('Miembro del hogar agregado');
+      // Clear cache
+      memoCache.clear();
+      success('Perfil actualizado');
     } catch (err: unknown) {
-      error('Error al agregar miembro del hogar');
+      console.error('Error al actualizar el perfil');
       throw err;
     }
-  };
+  }, [user?.id]);
 
-  const updateHouseholdMember = async (id: string, updates: Partial<HouseholdMember>) => {
-    try {
-      const { error } = await supabase
-        .from('household_members')
-        .update(updates)
-        .eq('id', id);
+  const syncToCloud = useCallback(async () => {
+    await refreshProfile();
+  }, [refreshProfile]);
 
-      if (error) throw error;
-      
-      setHouseholdMembers(members => 
-        members.map(m => m.id === id ? { ...m, ...updates } : m)
-      );
-      success('Miembro actualizado');
-    } catch (err: unknown) {
-      error('Error al actualizar miembro');
-      throw err;
+  const clearCache = useCallback(() => {
+    memoCache.clear();
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('user-profile-cache');
+      localStorage.removeItem('user-preferences-cache');
     }
-  };
+  }, []);
 
-  const removeHouseholdMember = async (id: string) => {
-    try {
-      const { error } = await supabase
-        .from('household_members')
-        .delete()
-        .eq('id', id);
+  // Memoized context value
+  const value = useMemo<ProfileActionsContextValue>(() => ({
+    updateProfile,
+    updatePreferences,
+    uploadAvatar,
+    refreshProfile,
+    syncToCloud,
+    clearCache,
+  }), [updateProfile, updatePreferences, uploadAvatar, refreshProfile, syncToCloud, clearCache]);
 
-      if (error) throw error;
-      
-      setHouseholdMembers(members => members.filter(m => m.id !== id));
-      success('Miembro eliminado');
-    } catch (err: unknown) {
-      error('Error al eliminar miembro');
-      throw err;
-    }
-  };
+  return (
+    <ProfileActionsContext.Provider value={value}>
+      {children}
+    </ProfileActionsContext.Provider>
+  );
+});
 
-  // Preference Helpers
-  const getDietaryRestrictions = useCallback((): DietaryRestriction[] => {
-    const userRestrictions = preferences?.dietaryRestrictions || [];
-    const memberRestrictions = householdMembers.flatMap(m => m.dietaryRestrictions || []);
-    return [...new Set([...userRestrictions, ...memberRestrictions])];
-  }, [preferences?.dietaryRestrictions, householdMembers]);
+ProfileActionsProvider.displayName = 'ProfileActionsProvider';
 
-  const getAllergies = useCallback((): Allergy[] => {
-    const userAllergies = preferences?.allergies || [];
-    const memberAllergies = householdMembers.flatMap(m => m.allergies || []);
-    return [...new Set([...userAllergies, ...memberAllergies])];
-  }, [preferences?.allergies, householdMembers]);
+// ===== COMPUTED VALUES PROVIDER =====
+
+const ProfileComputedProvider = memo<{ children: React.ReactNode }>(({ children }) => {
+  const { preferences } = useProfileData();
+  const { householdMembers } = useHouseholdContext();
+
+  // Create dependency key for memoization
+  const createDepsKey = useCallback(() => {
+    return JSON.stringify({
+      preferencesVersion: preferences?.version || 0,
+      householdMembersCount: householdMembers.length,
+      householdMembersHash: householdMembers.map(m => `${m.id}:${m.version || 0}`).join(',')
+    });
+  }, [preferences?.version, householdMembers]);
+
+  // Memoized helper functions
+  const getDietaryRestrictions = useMemo(() => 
+    createMemoizedFunction(
+      (): DietaryRestriction[] => {
+        const userRestrictions = preferences?.dietaryRestrictions || [];
+        const memberRestrictions = householdMembers.flatMap(m => m.dietaryRestrictions || []);
+        return [...new Set([...userRestrictions, ...memberRestrictions])];
+      },
+      () => 'dietary-restrictions',
+      createDepsKey
+    ), 
+    [preferences?.dietaryRestrictions, householdMembers, createDepsKey]
+  );
+
+  const getAllergies = useMemo(() => 
+    createMemoizedFunction(
+      (): Allergy[] => {
+        const userAllergies = preferences?.allergies || [];
+        const memberAllergies = householdMembers.flatMap(m => m.allergies || []);
+        return [...new Set([...userAllergies, ...memberAllergies])];
+      },
+      () => 'allergies',
+      createDepsKey
+    ), 
+    [preferences?.allergies, householdMembers, createDepsKey]
+  );
 
   const getHouseholdSize = useCallback((): number => {
-    return 1 + householdMembers.length; // User + members
-  }, [householdMembers]);
+    return 1 + householdMembers.length;
+  }, [householdMembers.length]);
 
   const getBudget = useCallback((period: 'weekly' | 'monthly'): number => {
     if (!preferences?.budget) return 0;
@@ -268,98 +431,69 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
   const getCookingTimeAvailable = useCallback((dayType: 'weekday' | 'weekend'): number => {
     if (!preferences?.cookingPreferences?.timeAvailable) return 30;
     return preferences.cookingPreferences.timeAvailable[dayType] || 30;
-  }, [preferences?.cookingPreferences]);
+  }, [preferences?.cookingPreferences?.timeAvailable]);
 
-  // Integration Helpers
-  const getPersonalizationData = useCallback((): PersonalizationData => {
-    return {
-      dietaryRestrictions: getDietaryRestrictions(),
-      allergies: getAllergies(),
-      cuisinePreferences: preferences?.cuisinePreferences || [],
-      cookingSkillLevel: preferences?.cookingSkillLevel || 'intermediate',
-      householdSize: getHouseholdSize(),
-      budget: getBudget('weekly'),
-      timeConstraints: {
-        weekday: getCookingTimeAvailable('weekday'),
-        weekend: getCookingTimeAvailable('weekend'),
-      },
-    };
-  }, [getDietaryRestrictions, getAllergies, preferences, getHouseholdSize, getBudget, getCookingTimeAvailable]);
+  // Complex computed functions with memoization
+  const getPersonalizationData = useMemo(() => 
+    createMemoizedFunction(
+      (): PersonalizationData => ({
+        dietaryRestrictions: getDietaryRestrictions(),
+        allergies: getAllergies(),
+        cuisinePreferences: preferences?.cuisinePreferences || [],
+        cookingSkillLevel: preferences?.cookingSkillLevel || 'intermediate',
+        householdSize: getHouseholdSize(),
+        budget: getBudget('weekly'),
+        timeConstraints: {
+          weekday: getCookingTimeAvailable('weekday'),
+          weekend: getCookingTimeAvailable('weekend'),
+        },
+      }),
+      () => 'personalization-data',
+      createDepsKey
+    ), 
+    [getDietaryRestrictions, getAllergies, preferences, getHouseholdSize, getBudget, getCookingTimeAvailable, createDepsKey]
+  );
 
-  const getRecommendationProfile = useCallback((): RecommendationProfile => {
-    return {
-      preferences: getPersonalizationData(),
-      history: {
-        likedRecipes: [],
-        dislikedRecipes: [],
-        cookedRecipes: [],
-      },
-      goals: preferences?.nutritionGoals || [],
-    };
-  }, [getPersonalizationData, preferences?.nutritionGoals]);
+  const getRecommendationProfile = useMemo(() => 
+    createMemoizedFunction(
+      (): RecommendationProfile => ({
+        preferences: getPersonalizationData(),
+        history: {
+          likedRecipes: [],
+          dislikedRecipes: [],
+          cookedRecipes: [],
+        },
+        goals: preferences?.nutritionGoals || [],
+      }),
+      () => 'recommendation-profile',
+      createDepsKey
+    ), 
+    [getPersonalizationData, preferences?.nutritionGoals, createDepsKey]
+  );
 
-  const getPlanningConstraints = useCallback((): PlanningConstraints => {
-    return {
-      dietary: getDietaryRestrictions(),
-      allergies: getAllergies(),
-      budget: getBudget('weekly'),
-      timeConstraints: {
-        weekday: getCookingTimeAvailable('weekday'),
-        weekend: getCookingTimeAvailable('weekend'),
-      },
-      householdSize: getHouseholdSize(),
-      mealSchedule: getMealSchedule(),
-      batchCookingEnabled: preferences?.planningPreferences?.batchCooking || false,
-      leftoverStrategy: preferences?.planningPreferences?.leftoverStrategy || 'incorporate',
-    };
-  }, [getDietaryRestrictions, getAllergies, getBudget, getCookingTimeAvailable, getHouseholdSize, getMealSchedule, preferences?.planningPreferences]);
+  const getPlanningConstraints = useMemo(() => 
+    createMemoizedFunction(
+      (): PlanningConstraints => ({
+        dietary: getDietaryRestrictions(),
+        allergies: getAllergies(),
+        budget: getBudget('weekly'),
+        timeConstraints: {
+          weekday: getCookingTimeAvailable('weekday'),
+          weekend: getCookingTimeAvailable('weekend'),
+        },
+        householdSize: getHouseholdSize(),
+        mealSchedule: getMealSchedule(),
+        batchCookingEnabled: preferences?.planningPreferences?.batchCooking || false,
+        leftoverStrategy: preferences?.planningPreferences?.leftoverStrategy || 'incorporate',
+      }),
+      () => 'planning-constraints',
+      createDepsKey
+    ), 
+    [getDietaryRestrictions, getAllergies, getBudget, getCookingTimeAvailable, getHouseholdSize, getMealSchedule, preferences?.planningPreferences, createDepsKey]
+  );
 
-  // Sync & Cache
-  const refreshProfile = async () => {
-    if (!user?.id) return;
-
-    try {
-      setIsLoading(true);
-      
-      // Reload all profile data
-      await Promise.all([
-        loadHouseholdMembers()
-      ]);
-      
-      success('Perfil actualizado');
-    } catch (err: unknown) {
-      error('Error al actualizar el perfil');
-      setError(err as Error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const syncToCloud = async () => {
-    // Force sync any pending changes
-    await refreshProfile();
-  };
-
-  const clearCache = () => {
-    // Clear local storage cache
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('user-profile-cache');
-      localStorage.removeItem('user-preferences-cache');
-    }
-  };
-
-  const value: ProfileContextValue = {
-    profile,
-    preferences,
-    householdMembers,
-    isLoading,
-    error,
-    updateProfile,
-    updatePreferences,
-    uploadAvatar,
-    addHouseholdMember,
-    updateHouseholdMember,
-    removeHouseholdMember,
+  // Memoized context value
+  const value = useMemo<ProfileComputedContextValue>(() => ({
     getDietaryRestrictions,
     getAllergies,
     getHouseholdSize,
@@ -369,24 +503,100 @@ export const ProfileProvider: React.FC<{ children: React.ReactNode }> = ({ child
     getPersonalizationData,
     getRecommendationProfile,
     getPlanningConstraints,
-    refreshProfile,
-    syncToCloud,
-    clearCache,
-  };
+  }), [
+    getDietaryRestrictions,
+    getAllergies,
+    getHouseholdSize,
+    getBudget,
+    getMealSchedule,
+    getCookingTimeAvailable,
+    getPersonalizationData,
+    getRecommendationProfile,
+    getPlanningConstraints,
+  ]);
 
   return (
-    <ProfileContext.Provider value={value}>
+    <ProfileComputedContext.Provider value={value}>
       {children}
-    </ProfileContext.Provider>
+    </ProfileComputedContext.Provider>
   );
-};
+});
 
-export const useProfile = () => {
-  const context = useContext(ProfileContext);
+ProfileComputedProvider.displayName = 'ProfileComputedProvider';
+
+// ===== MAIN PROVIDER =====
+
+export const ProfileProvider = memo<{ children: React.ReactNode }>(({ children }) => {
+  return (
+    <ProfileDataProvider>
+      <HouseholdProvider>
+        <ProfileActionsProvider>
+          <ProfileComputedProvider>
+            {children}
+          </ProfileComputedProvider>
+        </ProfileActionsProvider>
+      </HouseholdProvider>
+    </ProfileDataProvider>
+  );
+});
+
+ProfileProvider.displayName = 'ProfileProvider';
+
+// ===== HOOK EXPORTS =====
+
+export const useProfileData = () => {
+  const context = useContext(ProfileDataContext);
   if (!context) {
-    throw new Error('useProfile must be used within ProfileProvider');
+    throw new Error('useProfileData must be used within ProfileProvider');
   }
   return context;
+};
+
+export const useHouseholdContext = () => {
+  const context = useContext(HouseholdContext);
+  if (!context) {
+    throw new Error('useHouseholdContext must be used within ProfileProvider');
+  }
+  return context;
+};
+
+export const useProfileActions = () => {
+  const context = useContext(ProfileActionsContext);
+  if (!context) {
+    throw new Error('useProfileActions must be used within ProfileProvider');
+  }
+  return context;
+};
+
+export const useProfileComputed = () => {
+  const context = useContext(ProfileComputedContext);
+  if (!context) {
+    throw new Error('useProfileComputed must be used within ProfileProvider');
+  }
+  return context;
+};
+
+// ===== BACKWARD COMPATIBILITY =====
+
+// Combined interface for backward compatibility
+interface ProfileContextValue extends 
+  ProfileDataContextValue, 
+  HouseholdContextValue, 
+  ProfileActionsContextValue, 
+  ProfileComputedContextValue {}
+
+export const useProfile = (): ProfileContextValue => {
+  const profileData = useProfileData();
+  const household = useHouseholdContext();
+  const actions = useProfileActions();
+  const computed = useProfileComputed();
+
+  return useMemo(() => ({
+    ...profileData,
+    ...household,
+    ...actions,
+    ...computed,
+  }), [profileData, household, actions, computed]);
 };
 
 export const useProfileContext = useProfile;

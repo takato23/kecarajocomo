@@ -9,8 +9,6 @@ import { signIn, signInWithGoogle, signInWithGitHub } from '@/lib/supabase/clien
 import { AuthForm } from '@/features/auth/components/AuthForm';
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons';
 
-import { useUser, useUserActions } from '@/store';
-
 export default function LoginPage() {
   const router = useRouter();
   const { setUser } = useAuthStore();
@@ -93,7 +91,7 @@ export default function LoginPage() {
 
         <div className="mt-6 text-center">
           <p className="text-sm text-gray-600">
-            Don't have an account?{' '}
+            Don&apos;t have an account?{' '}
             <Link
               href="/signup"
               className="font-medium text-lime-600 hover:text-lime-500 transition-colors"

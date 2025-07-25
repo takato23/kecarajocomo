@@ -6,25 +6,22 @@ import {
   X, 
   Plus, 
   Calendar, 
-  MapPin, 
-  Camera, 
-  StickyNote,
-  Search,
-  Check,
+  Camera,
   Loader2,
   Package,
   Mic
 } from 'lucide-react';
+
 import { parseIngredient, categorizeIngredient } from '@/lib/pantry/parser';
 import { 
   PantryFormData, 
-  ParsedIngredientInput, 
-  IngredientSuggestion,
+  ParsedIngredientInput,
   INGREDIENT_CATEGORIES,
   COMMON_UNITS,
   UnitType
 } from '@/types/pantry';
 import { VoiceInput } from '@/components/voice/VoiceInput';
+
 import { ParsedIngredient } from '@/services/voice/smartParser';
 
 interface PantryAddFormProps {

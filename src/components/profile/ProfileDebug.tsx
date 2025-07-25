@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { useProfile } from '@/contexts/ProfileContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase';
-
-import { useUser, useUserActions } from '@/store';
+import { useUser } from '@/store';
 import { useAuthStore } from '@/features/auth';
 
 export function ProfileDebug() {

@@ -5,9 +5,8 @@ import { Camera, Upload, X, Loader2, CheckCircle, AlertCircle } from 'lucide-rea
 import { motion } from 'framer-motion';
 
 import { UnifiedAIService } from '@/services/ai';
-import type { ParsedReceipt, ReceiptItem } from '@/services/ai/types';
-
-import { useUser, usePantryActions } from '@/store';
+import type { ParsedReceipt } from '@/services/ai/types';
+import { usePantryActions } from '@/store';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 
 interface ReceiptScannerProps {

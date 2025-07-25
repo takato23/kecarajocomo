@@ -33,8 +33,7 @@ import { useNotifications } from '@/services/notifications';
 import { useAnalytics } from '@/services/analytics';
 import { getVoiceService } from '@/services/voice/UnifiedVoiceService';
 import { cn } from '@/lib/utils';
-
-import { useUser, useUserActions } from '@/store';
+import { useUser } from '@/store';
 
 // Mock data mejorado
 const mockRecipes = [

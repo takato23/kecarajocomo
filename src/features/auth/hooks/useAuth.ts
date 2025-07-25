@@ -10,14 +10,15 @@ interface UseAuthOptions {
 
 export function useAuth(options?: UseAuthOptions) {
   const router = useRouter();
-  const { user, isLoading, isInitialized, initialize } = useAuthStore();
+  const { user, isLoading } = useUser();
+  const { initialize } = useUserActions();
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
   useEffect(() => {
-    if (!isInitialized || isLoading) return;
+    if (isLoading) return;
 
     if (!user && options?.redirectTo) {
       router.push(options.redirectTo);
@@ -26,11 +27,11 @@ export function useAuth(options?: UseAuthOptions) {
     if (user && options?.redirectIfFound && options?.redirectTo) {
       router.push(options.redirectTo);
     }
-  }, [user, isLoading, isInitialized, router, options]);
+  }, [user, isLoading, router, options]);
 
   return {
     user,
-    isLoading: !isInitialized || isLoading,
+    isLoading,
     isAuthenticated: !!user,
   };
 }

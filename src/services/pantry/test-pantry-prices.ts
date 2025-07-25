@@ -3,9 +3,10 @@
  * Run with: npx tsx src/services/pantry/test-pantry-prices.ts
  */
 
-import { getPantryManager } from './PantryManager';
 import { HolisticFoodSystem } from '../core/HolisticSystem';
 import { getIngredientPriceService } from '../pricing/ingredientPriceService';
+
+import { getPantryManager } from './PantryManager';
 
 async function testPantryPrices() {
   console.log('🧪 Testing PantryManager price integration...\n');

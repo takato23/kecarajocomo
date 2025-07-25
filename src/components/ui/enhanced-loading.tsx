@@ -570,6 +570,40 @@ function getFunFact(stageId: string): string {
 }
 
 /**
+ * Simple Loading Spinner Component
+ */
+export function LoadingSpinner({ 
+  size = 'md',
+  className = '',
+  color = 'current'
+}: {
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
+  className?: string;
+  color?: 'current' | 'white' | 'blue' | 'purple';
+}) {
+  const sizeClasses = {
+    xs: 'w-3 h-3',
+    sm: 'w-4 h-4',
+    md: 'w-6 h-6',
+    lg: 'w-8 h-8',
+    xl: 'w-12 h-12'
+  };
+
+  const colorClasses = {
+    current: 'text-current',
+    white: 'text-white',
+    blue: 'text-blue-500',
+    purple: 'text-purple-500'
+  };
+
+  return (
+    <Loader2 
+      className={`animate-spin ${sizeClasses[size]} ${colorClasses[color]} ${className}`}
+    />
+  );
+}
+
+/**
  * Skeleton Loading Component
  */
 export function SkeletonLoader({ 

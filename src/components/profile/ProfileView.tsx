@@ -1,8 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Users, ChefHat, Target, Heart, AlertCircle, Save, Plus, X } from 'lucide-react';
+import { Users, ChefHat, Target, Heart, AlertCircle, Save, Plus, X, Clock, Utensils } from 'lucide-react';
 import { toast } from 'sonner';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import { getProfileManager, type UserProfile, type DietaryRestriction } from '@/services/profile/ProfileManager';
 import { getHolisticSystem } from '@/services/core/HolisticSystem';
@@ -51,6 +52,47 @@ const CUISINES = [
   'Americana'
 ];
 
+// Loading skeleton component
+const ProfileSkeleton = () => (
+  <div className="max-w-4xl mx-auto space-y-6">
+    {[...Array(6)].map((_, i) => (
+      <iOS26LiquidCard key={i} variant="medium" className="animate-pulse">
+        <div className="p-6 space-y-4">
+          <div className="h-6 bg-white/10 rounded-lg w-1/3" />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="h-12 bg-white/5 rounded-xl" />
+            <div className="h-12 bg-white/5 rounded-xl" />
+          </div>
+        </div>
+      </iOS26LiquidCard>
+    ))}
+  </div>
+);
+
+// Error boundary component
+const ProfileError = ({ onRetry }: { onRetry: () => void }) => (
+  <iOS26LiquidCard variant="medium" className="max-w-md mx-auto">
+    <div className="p-6 text-center space-y-4">
+      <div className="w-16 h-16 bg-red-500/20 rounded-full flex items-center justify-center mx-auto">
+        <AlertCircle className="w-8 h-8 text-red-400" />
+      </div>
+      <div className="space-y-2">
+        <h3 className="text-lg font-medium">Error al cargar perfil</h3>
+        <p className="text-sm text-gray-400">
+          Hubo un problema cargando tu información. Por favor, intenta nuevamente.
+        </p>
+      </div>
+      <iOS26LiquidButton 
+        variant="primary" 
+        onClick={onRetry}
+        className="w-full"
+      >
+        Reintentar
+      </iOS26LiquidButton>
+    </div>
+  </iOS26LiquidCard>
+);
+
 export function ProfileView() {
   const [profile, setProfile] = useState<Partial<UserProfile>>({
     householdSize: 2,
@@ -75,6 +117,7 @@ export function ProfileView() {
   
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [newAllergy, setNewAllergy] = useState('');
   const [newDisliked, setNewDisliked] = useState('');
   const [showAddMember, setShowAddMember] = useState(false);
@@ -89,6 +132,7 @@ export function ProfileView() {
   async function loadProfile() {
     try {
       setLoading(true);
+      setError(null);
       const userId = 'temp-user-id'; // TODO: Obtener del contexto
       const existingProfile = await profileManager.getUserProfile(userId);
       
@@ -97,6 +141,8 @@ export function ProfileView() {
       }
     } catch (error: unknown) {
       console.error('Error cargando perfil:', error);
+      setError('Error al cargar el perfil');
+      toast.error('Error al cargar el perfil');
     } finally {
       setLoading(false);
     }
@@ -169,360 +215,560 @@ export function ProfileView() {
   }
   
   if (loading) {
-    return (
-      <div className="text-center py-12">
-        <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-        <p className="text-gray-400">Cargando perfil...</p>
-      </div>
-    );
+    return <ProfileSkeleton />;
+  }
+  
+  if (error) {
+    return <ProfileError onRetry={loadProfile} />;
   }
   
   return (
-    <div className="max-w-4xl mx-auto space-y-6">
+    <motion.div 
+      className="max-w-4xl mx-auto space-y-6 p-4 sm:p-0"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+    >
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h2 className="text-2xl font-bold mb-1">Mi Perfil</h2>
-          <p className="text-gray-400">Personaliza tu experiencia culinaria</p>
+      <motion.div 
+        className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
+        <div className="space-y-1">
+          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            Mi Perfil
+          </h1>
+          <p className="text-gray-400 text-sm sm:text-base">
+            Personaliza tu experiencia culinaria
+          </p>
         </div>
         
         <iOS26LiquidButton
           variant="primary"
+          size="lg"
           onClick={saveProfile}
+          loading={saving}
           disabled={saving}
-          className="bg-gradient-to-r from-green-600 to-emerald-600 text-white"
+          glow
+          className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-emerald-600 text-white"
+          aria-label="Guardar cambios del perfil"
         >
-          {saving ? (
-            <>
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-              Guardando...
-            </>
-          ) : (
-            <>
-              <Save className="w-5 h-5 mr-2" />
-              Guardar Cambios
-            </>
-          )}
+          <Save className="w-5 h-5" />
+          {saving ? 'Guardando...' : 'Guardar Cambios'}
         </iOS26LiquidButton>
-      </div>
+      </motion.div>
       
       {/* Información del hogar */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <Users className="w-5 h-5" />
-            Información del Hogar
-          </h3>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Miembros del hogar
-              </label>
-              <input
-                type="number"
-                value={profile.householdSize || 1}
-                onChange={(e) => setProfile(prev => ({
-                  ...prev,
-                  householdSize: Number(e.target.value)
-                }))}
-                min="1"
-                max="20"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-white/30"
-              />
-            </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <iOS26LiquidCard variant="medium" shimmer>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg">
+                <Users className="w-5 h-5" />
+              </div>
+              Información del Hogar
+            </h3>
             
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Presupuesto mensual (ARS)
-              </label>
-              <input
-                type="number"
-                value={profile.monthlyBudget || 0}
-                onChange={(e) => setProfile(prev => ({
-                  ...prev,
-                  monthlyBudget: Number(e.target.value)
-                }))}
-                min="0"
-                step="1000"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-white/30"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <iOS26LiquidInput
+                  label="Miembros del hogar"
+                  type="number"
+                  value={profile.householdSize?.toString() || '1'}
+                  onChange={(e) => setProfile(prev => ({
+                    ...prev,
+                    householdSize: Number(e.target.value)
+                  }))}
+                  min="1"
+                  max="20"
+                  size="lg"
+                  variant="medium"
+                  fluid
+                  aria-label="Número de miembros del hogar"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <iOS26LiquidInput
+                  label="Presupuesto mensual (ARS)"
+                  type="number"
+                  value={profile.monthlyBudget?.toString() || '0'}
+                  onChange={(e) => setProfile(prev => ({
+                    ...prev,
+                    monthlyBudget: Number(e.target.value)
+                  }))}
+                  min="0"
+                  step="1000"
+                  size="lg"
+                  variant="medium"
+                  fluid
+                  aria-label="Presupuesto mensual en pesos argentinos"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Restricciones dietéticas */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <Heart className="w-5 h-5" />
-            Restricciones Dietéticas
-          </h3>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {DIETARY_RESTRICTIONS.map(({ value, label, icon }) => (
-              <button
-                key={value}
-                onClick={() => toggleDietaryRestriction(value)}
-                className={cn(
-                  "p-3 rounded-xl border transition-all",
-                  profile.dietaryRestrictions?.includes(value)
-                    ? "bg-gradient-to-r from-orange-500/20 to-pink-500/20 border-orange-500/30"
-                    : "bg-white/5 border-white/10 hover:border-white/20"
-                )}
-              >
-                <div className="flex items-center gap-2">
-                  <span className="text-xl">{icon}</span>
-                  <span className="text-sm">{label}</span>
-                </div>
-              </button>
-            ))}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.3 }}
+      >
+        <iOS26LiquidCard variant="medium" morph>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-pink-500 to-red-500 rounded-lg">
+                <Heart className="w-5 h-5" />
+              </div>
+              Restricciones Dietéticas
+            </h3>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              <AnimatePresence>
+                {DIETARY_RESTRICTIONS.map(({ value, label, icon }, index) => {
+                  const isSelected = profile.dietaryRestrictions?.includes(value);
+                  return (
+                    <motion.div
+                      key={value}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: index * 0.05 }}
+                    >
+                      <iOS26LiquidButton
+                        variant={isSelected ? "primary" : "secondary"}
+                        onClick={() => toggleDietaryRestriction(value)}
+                        className={cn(
+                          "w-full h-auto p-3 justify-start",
+                          isSelected && "bg-gradient-to-r from-orange-500 to-pink-500"
+                        )}
+                        pulse={isSelected}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        aria-label={`${isSelected ? 'Desactivar' : 'Activar'} restricción dietética: ${label}`}
+                      >
+                        <div className="flex items-center gap-2 w-full">
+                          <span className="text-xl flex-shrink-0">{icon}</span>
+                          <span className="text-sm font-medium text-left">{label}</span>
+                        </div>
+                      </iOS26LiquidButton>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Alergias */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <AlertCircle className="w-5 h-5 text-red-400" />
-            Alergias Alimentarias
-          </h3>
-          
-          <div className="space-y-3">
-            {/* Alergias comunes */}
-            <div className="flex flex-wrap gap-2">
-              {COMMON_ALLERGIES.map(allergy => (
-                <button
-                  key={allergy}
-                  onClick={() => profile.allergies?.includes(allergy) 
-                    ? removeAllergy(allergy) 
-                    : setProfile(prev => ({
-                        ...prev,
-                        allergies: [...(prev.allergies || []), allergy]
-                      }))}
-                  className={cn(
-                    "px-3 py-1.5 rounded-lg text-sm transition-all",
-                    profile.allergies?.includes(allergy)
-                      ? "bg-red-500/20 border border-red-500/30 text-red-400"
-                      : "bg-white/5 border border-white/10 hover:border-white/20"
-                  )}
-                >
-                  {allergy}
-                </button>
-              ))}
-            </div>
-            
-            {/* Agregar alergia personalizada */}
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newAllergy}
-                onChange={(e) => setNewAllergy(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addAllergy()}
-                placeholder="Agregar otra alergia..."
-                className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-white/30"
-              />
-              <iOS26LiquidButton
-                variant="secondary"
-                onClick={addAllergy}
-                size="small"
-              >
-                <Plus className="w-4 h-4" />
-              </iOS26LiquidButton>
-            </div>
-            
-            {/* Lista de alergias personalizadas */}
-            {profile.allergies?.filter(a => !COMMON_ALLERGIES.includes(a)).length > 0 && (
-              <div className="flex flex-wrap gap-2 pt-2">
-                {profile.allergies
-                  .filter(a => !COMMON_ALLERGIES.includes(a))
-                  .map(allergy => (
-                    <div
-                      key={allergy}
-                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 text-sm"
-                    >
-                      <span>{allergy}</span>
-                      <button
-                        onClick={() => removeAllergy(allergy)}
-                        className="ml-1 hover:text-red-300"
-                      >
-                        <X className="w-3 h-3" />
-                      </button>
-                    </div>
-                  ))}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.4 }}
+      >
+        <iOS26LiquidCard variant="medium" glow>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-red-500 to-orange-500 rounded-lg">
+                <AlertCircle className="w-5 h-5" />
               </div>
-            )}
+              Alergias Alimentarias
+            </h3>
+            
+            <div className="space-y-4">
+              {/* Alergias comunes */}
+              <div>
+                <p className="text-sm text-gray-400 mb-3">Alergias comunes:</p>
+                <div className="flex flex-wrap gap-2">
+                  <AnimatePresence>
+                    {COMMON_ALLERGIES.map((allergy, index) => {
+                      const isSelected = profile.allergies?.includes(allergy);
+                      return (
+                        <motion.div
+                          key={allergy}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.2, delay: index * 0.03 }}
+                        >
+                          <iOS26LiquidButton
+                            variant={isSelected ? "danger" : "ghost"}
+                            size="sm"
+                            onClick={() => isSelected 
+                              ? removeAllergy(allergy) 
+                              : setProfile(prev => ({
+                                  ...prev,
+                                  allergies: [...(prev.allergies || []), allergy]
+                                }))
+                            }
+                            className={cn(
+                              "transition-all duration-200",
+                              isSelected && "ring-2 ring-red-500/50"
+                            )}
+                            role="checkbox"
+                            aria-checked={isSelected}
+                            aria-label={`${isSelected ? 'Quitar' : 'Agregar'} alergia: ${allergy}`}
+                          >
+                            {allergy}
+                          </iOS26LiquidButton>
+                        </motion.div>
+                      );
+                    })}
+                  </AnimatePresence>
+                </div>
+              </div>
+              
+              {/* Agregar alergia personalizada */}
+              <div className="space-y-2">
+                <p className="text-sm text-gray-400">Agregar alergia personalizada:</p>
+                <div className="flex gap-2">
+                  <iOS26LiquidInput
+                    value={newAllergy}
+                    onChange={(e) => setNewAllergy(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && addAllergy()}
+                    placeholder="Ej: Nueces, Soja..."
+                    size="md"
+                    variant="medium"
+                    className="flex-1"
+                    showClear
+                    onClear={() => setNewAllergy('')}
+                    aria-label="Escribir nueva alergia"
+                  />
+                  <iOS26LiquidButton
+                    variant="secondary"
+                    onClick={addAllergy}
+                    disabled={!newAllergy.trim()}
+                    aria-label="Agregar nueva alergia"
+                  >
+                    <Plus className="w-4 h-4" />
+                  </iOS26LiquidButton>
+                </div>
+              </div>
+              
+              {/* Lista de alergias personalizadas */}
+              <AnimatePresence>
+                {profile.allergies?.filter(a => !COMMON_ALLERGIES.includes(a)).length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-2"
+                  >
+                    <p className="text-sm text-gray-400">Alergias personalizadas:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.allergies
+                        .filter(a => !COMMON_ALLERGIES.includes(a))
+                        .map(allergy => (
+                          <motion.div
+                            key={allergy}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.8 }}
+                            className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-red-500/20 border border-red-500/30 text-red-400 text-sm backdrop-blur-sm"
+                          >
+                            <span>{allergy}</span>
+                            <iOS26LiquidButton
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => removeAllergy(allergy)}
+                              className="!p-0 !w-5 !h-5 ml-1 hover:text-red-300"
+                              aria-label={`Quitar alergia: ${allergy}`}
+                            >
+                              <X className="w-3 h-3" />
+                            </iOS26LiquidButton>
+                          </motion.div>
+                        ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Preferencias culinarias */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <ChefHat className="w-5 h-5" />
-            Cocinas Preferidas
-          </h3>
-          
-          <div className="grid grid-cols-3 md:grid-cols-4 gap-3">
-            {CUISINES.map(cuisine => (
-              <button
-                key={cuisine}
-                onClick={() => toggleCuisine(cuisine)}
-                className={cn(
-                  "p-2 rounded-lg text-sm transition-all",
-                  profile.preferredCuisines?.includes(cuisine)
-                    ? "bg-gradient-to-r from-orange-500/20 to-pink-500/20 border border-orange-500/30"
-                    : "bg-white/5 border border-white/10 hover:border-white/20"
-                )}
-              >
-                {cuisine}
-              </button>
-            ))}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <iOS26LiquidCard variant="medium" shimmer>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-yellow-500 to-orange-500 rounded-lg">
+                <ChefHat className="w-5 h-5" />
+              </div>
+              Cocinas Preferidas
+            </h3>
+            
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+              <AnimatePresence>
+                {CUISINES.map((cuisine, index) => {
+                  const isSelected = profile.preferredCuisines?.includes(cuisine);
+                  return (
+                    <motion.div
+                      key={cuisine}
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.3, delay: index * 0.04 }}
+                    >
+                      <iOS26LiquidButton
+                        variant={isSelected ? "primary" : "secondary"}
+                        size="sm"
+                        onClick={() => toggleCuisine(cuisine)}
+                        className={cn(
+                          "w-full h-auto p-3 text-center",
+                          isSelected && "bg-gradient-to-r from-orange-500 to-pink-500"
+                        )}
+                        pulse={isSelected}
+                        role="checkbox"
+                        aria-checked={isSelected}
+                        aria-label={`${isSelected ? 'Desactivar' : 'Activar'} cocina: ${cuisine}`}
+                      >
+                        <span className="text-sm font-medium">{cuisine}</span>
+                      </iOS26LiquidButton>
+                    </motion.div>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Ingredientes no deseados */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium">
-            Ingredientes que No Te Gustan
-          </h3>
-          
-          <div className="space-y-3">
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={newDisliked}
-                onChange={(e) => setNewDisliked(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && addDislikedIngredient()}
-                placeholder="Ej: Cebolla, Ajo, Cilantro..."
-                className="flex-1 px-4 py-2 bg-white/5 border border-white/10 rounded-lg focus:outline-none focus:border-white/30"
-              />
-              <iOS26LiquidButton
-                variant="secondary"
-                onClick={addDislikedIngredient}
-                size="small"
-              >
-                <Plus className="w-4 h-4" />
-              </iOS26LiquidButton>
-            </div>
-            
-            {profile.dislikedIngredients?.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {profile.dislikedIngredients.map(ingredient => (
-                  <div
-                    key={ingredient}
-                    className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-orange-500/20 border border-orange-500/30 text-orange-400 text-sm"
-                  >
-                    <span>{ingredient}</span>
-                    <button
-                      onClick={() => removeDislikedIngredient(ingredient)}
-                      className="ml-1 hover:text-orange-300"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
-                  </div>
-                ))}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.6 }}
+      >
+        <iOS26LiquidCard variant="medium" morph>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-lg">
+                <X className="w-5 h-5" />
               </div>
-            )}
+              Ingredientes que No Te Gustan
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="flex gap-2">
+                <iOS26LiquidInput
+                  value={newDisliked}
+                  onChange={(e) => setNewDisliked(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && addDislikedIngredient()}
+                  placeholder="Ej: Cebolla, Ajo, Cilantro..."
+                  size="md"
+                  variant="medium"
+                  className="flex-1"
+                  showClear
+                  onClear={() => setNewDisliked('')}
+                  aria-label="Escribir ingrediente no deseado"
+                />
+                <iOS26LiquidButton
+                  variant="secondary"
+                  onClick={addDislikedIngredient}
+                  disabled={!newDisliked.trim()}
+                  aria-label="Agregar ingrediente no deseado"
+                >
+                  <Plus className="w-4 h-4" />
+                </iOS26LiquidButton>
+              </div>
+              
+              <AnimatePresence>
+                {profile.dislikedIngredients?.length > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="space-y-2"
+                  >
+                    <p className="text-sm text-gray-400">Ingredientes evitados:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {profile.dislikedIngredients.map(ingredient => (
+                        <motion.div
+                          key={ingredient}
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.8 }}
+                          className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-orange-500/20 border border-orange-500/30 text-orange-400 text-sm backdrop-blur-sm"
+                        >
+                          <span>{ingredient}</span>
+                          <iOS26LiquidButton
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => removeDislikedIngredient(ingredient)}
+                            className="!p-0 !w-5 !h-5 ml-1 hover:text-orange-300"
+                            aria-label={`Quitar ingrediente: ${ingredient}`}
+                          >
+                            <X className="w-3 h-3" />
+                          </iOS26LiquidButton>
+                        </motion.div>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Nivel de habilidad culinaria */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <ChefHat className="w-5 h-5" />
-            Nivel de Habilidad Culinaria
-          </h3>
-          
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm text-gray-400">
-              <span>Principiante</span>
-              <span>Chef Experto</span>
-            </div>
-            <input
-              type="range"
-              min="1"
-              max="5"
-              value={profile.cookingSkillLevel || 3}
-              onChange={(e) => setProfile(prev => ({
-                ...prev,
-                cookingSkillLevel: Number(e.target.value) as any
-              }))}
-              className="w-full"
-            />
-            <div className="flex justify-between">
-              {[1, 2, 3, 4, 5].map(level => (
-                <span
-                  key={level}
-                  className={cn(
-                    "text-xs",
-                    profile.cookingSkillLevel === level && "text-orange-400 font-medium"
-                  )}
-                >
-                  {level}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.7 }}
+      >
+        <iOS26LiquidCard variant="medium" glow>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg">
+                <ChefHat className="w-5 h-5" />
+              </div>
+              Nivel de Habilidad Culinaria
+            </h3>
+            
+            <div className="space-y-4">
+              <div className="flex justify-between text-sm text-gray-400">
+                <span className="flex items-center gap-1">
+                  <Clock className="w-4 h-4" />
+                  Principiante
                 </span>
-              ))}
+                <span className="flex items-center gap-1">
+                  Chef Experto
+                  <Utensils className="w-4 h-4" />
+                </span>
+              </div>
+              
+              <div className="relative">
+                <input
+                  type="range"
+                  min="1"
+                  max="5"
+                  value={profile.cookingSkillLevel || 3}
+                  onChange={(e) => setProfile(prev => ({
+                    ...prev,
+                    cookingSkillLevel: Number(e.target.value) as any
+                  }))}
+                  className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
+                  style={{
+                    background: `linear-gradient(to right, #f59e0b ${((profile.cookingSkillLevel || 3) - 1) * 25}%, rgba(255,255,255,0.1) ${((profile.cookingSkillLevel || 3) - 1) * 25}%)`
+                  }}
+                  aria-label="Nivel de habilidad culinaria"
+                  aria-valuemin={1}
+                  aria-valuemax={5}
+                  aria-valuenow={profile.cookingSkillLevel || 3}
+                />
+              </div>
+              
+              <div className="flex justify-between items-center">
+                {[1, 2, 3, 4, 5].map(level => {
+                  const labels = ['Básico', 'Novato', 'Intermedio', 'Avanzado', 'Experto'];
+                  const isActive = profile.cookingSkillLevel === level;
+                  return (
+                    <motion.div
+                      key={level}
+                      className="text-center flex-1"
+                      animate={{
+                        scale: isActive ? 1.1 : 1,
+                        opacity: isActive ? 1 : 0.6
+                      }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      <div className={cn(
+                        "w-8 h-8 rounded-full border-2 mx-auto mb-1 flex items-center justify-center text-xs font-bold transition-all",
+                        isActive 
+                          ? "bg-gradient-to-r from-orange-500 to-yellow-500 border-orange-400 text-white scale-110 shadow-lg" 
+                          : "border-gray-500 text-gray-400 hover:border-gray-300"
+                      )}>
+                        {level}
+                      </div>
+                      <span className={cn(
+                        "text-xs transition-all",
+                        isActive ? "text-orange-400 font-medium" : "text-gray-500"
+                      )}>
+                        {labels[level - 1]}
+                      </span>
+                    </motion.div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
+        </iOS26LiquidCard>
+      </motion.div>
       
       {/* Objetivos nutricionales */}
-      <iOS26LiquidCard variant="medium">
-        <div className="p-6 space-y-4">
-          <h3 className="text-lg font-medium flex items-center gap-2">
-            <Target className="w-5 h-5" />
-            Objetivos Nutricionales (Opcional)
-          </h3>
-          
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Calorías por día
-              </label>
-              <input
-                type="number"
-                value={profile.nutritionalGoals?.caloriesPerDay || ''}
-                onChange={(e) => setProfile(prev => ({
-                  ...prev,
-                  nutritionalGoals: {
-                    ...prev.nutritionalGoals,
-                    caloriesPerDay: e.target.value ? Number(e.target.value) : undefined
-                  }
-                }))}
-                placeholder="Ej: 2000"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-white/30"
-              />
-            </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.8 }}
+      >
+        <iOS26LiquidCard variant="medium" shimmer>
+          <div className="p-4 sm:p-6 space-y-6">
+            <h3 className="text-lg font-medium flex items-center gap-2 text-white">
+              <div className="p-2 bg-gradient-to-r from-green-500 to-blue-500 rounded-lg">
+                <Target className="w-5 h-5" />
+              </div>
+              Objetivos Nutricionales
+              <span className="text-xs bg-white/10 px-2 py-1 rounded-full text-gray-300">Opcional</span>
+            </h3>
             
-            <div>
-              <label className="block text-sm text-gray-400 mb-2">
-                Proteína (g) por día
-              </label>
-              <input
-                type="number"
-                value={profile.nutritionalGoals?.proteinPerDay || ''}
-                onChange={(e) => setProfile(prev => ({
-                  ...prev,
-                  nutritionalGoals: {
-                    ...prev.nutritionalGoals,
-                    proteinPerDay: e.target.value ? Number(e.target.value) : undefined
-                  }
-                }))}
-                placeholder="Ej: 50"
-                className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl focus:outline-none focus:border-white/30"
-              />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <iOS26LiquidInput
+                  label="Calorías por día"
+                  type="number"
+                  value={profile.nutritionalGoals?.caloriesPerDay?.toString() || ''}
+                  onChange={(e) => setProfile(prev => ({
+                    ...prev,
+                    nutritionalGoals: {
+                      ...prev.nutritionalGoals,
+                      caloriesPerDay: e.target.value ? Number(e.target.value) : undefined
+                    }
+                  }))}
+                  placeholder="Ej: 2000"
+                  size="lg"
+                  variant="medium"
+                  fluid
+                  helperText="Objetivo diario de calorías"
+                  aria-label="Objetivo de calorías por día"
+                />
+              </div>
+              
+              <div className="space-y-2">
+                <iOS26LiquidInput
+                  label="Proteína (g) por día"
+                  type="number"
+                  value={profile.nutritionalGoals?.proteinPerDay?.toString() || ''}
+                  onChange={(e) => setProfile(prev => ({
+                    ...prev,
+                    nutritionalGoals: {
+                      ...prev.nutritionalGoals,
+                      proteinPerDay: e.target.value ? Number(e.target.value) : undefined
+                    }
+                  }))}
+                  placeholder="Ej: 50"
+                  size="lg"
+                  variant="medium"
+                  fluid
+                  helperText="Objetivo diario de proteína en gramos"
+                  aria-label="Objetivo de proteína por día en gramos"
+                />
+              </div>
             </div>
           </div>
-        </div>
-      </iOS26LiquidCard>
-    </div>
+        </iOS26LiquidCard>
+      </motion.div>
+    </motion.div>
   );
 }

@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { DarkModeToggle } from '@/components/ui/DarkModeToggle';
 import { 
   Calendar,
   ChefHat,
@@ -23,13 +22,13 @@ import {
   Zap,
   Star,
   Flame,
-  TrendingDown,
   BarChart3,
   Check
 } from 'lucide-react';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 
+import { DarkModeToggle } from '@/components/ui/DarkModeToggle';
 import { GlassCard, GlassButton, GlassModal } from '@/components/ui/GlassCard';
 import { useAuth } from '@/components/auth/AuthProvider';
 import { cn } from '@/lib/utils';

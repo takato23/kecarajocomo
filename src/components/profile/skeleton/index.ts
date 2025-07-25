@@ -1,6 +1,1 @@
-export {
-  Skeleton,
-  ProfileHeaderSkeleton,
-  ProfileTabsSkeleton,
-  ProfileContentSkeleton,
-} from './ProfileSkeleton';
+export { default as ProfileSkeleton } from './ProfileSkeleton';

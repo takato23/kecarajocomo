@@ -13,394 +13,308 @@ vi.mock('framer-motion', () => ({
     button: ({ children, ...props }: any) => <button {...props}>{children}</button>,
     a: ({ children, ...props }: any) => <a {...props}>{children}</a>,
     path: ({ children, ...props }: any) => <path {...props}>{children}</path>,
-    circle: ({ children, ...props }: any) => <circle {...props}>{children}</path>,
+    circle: ({ children, ...props }: any) => <circle {...props}>{children}</circle>,
     g: ({ children, ...props }: any) => <g {...props}>{children}</g>,
     svg: ({ children, ...props }: any) => <svg {...props}>{children}</svg>,
     span: ({ children, ...props }: any) => <span {...props}>{children}</span>,
     ellipse: ({ children, ...props }: any) => <ellipse {...props}>{children}</ellipse>,
-    rect: ({ children, ...props }: any) => <rect {...props}>{children}</rect>,
-    text: ({ children, ...props }: any) => <text {...props}>{children}</text>,
-    line: ({ children, ...props }: any) => <line {...props}>{children}</line>,
-    polygon: ({ children, ...props }: any) => <polygon {...props}>{children}</polygon>
   },
-  AnimatePresence: ({ children }: any) => children,
-  useScroll: () => ({ scrollYProgress: { set: vi.fn() }, scrollY: { set: vi.fn() } }),
-  useTransform: () => ({ set: vi.fn() }),
-  useSpring: () => ({ set: vi.fn() }),
-  useMotionValue: () => ({ set: vi.fn(), get: () => 0 })
+  AnimatePresence: ({ children }: any) => <>{children}</>,
+  useInView: () => [null, true],
+  useAnimation: () => ({
+    start: vi.fn(),
+    stop: vi.fn(),
+  }),
+}));
+
+// Mock Next.js components
+vi.mock('next/link', () => ({
+  default: ({ children, href, ...props }: any) => (
+    <a href={href} {...props}>
+      {children}
+    </a>
+  ),
+}));
+
+vi.mock('next/image', () => ({
+  default: ({ src, alt, ...props }: any) => (
+    <img src={src} alt={alt} {...props} />
+  ),
+}));
+
+// Mock Next.js navigation
+const mockPush = vi.fn();
+const mockReplace = vi.fn();
+const mockPrefetch = vi.fn();
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+    replace: mockReplace,
+    prefetch: mockPrefetch,
+    back: vi.fn(),
+    forward: vi.fn(),
+  }),
+  usePathname: () => '/',
+  useSearchParams: () => new URLSearchParams(),
 }));
 
 describe('LandingPage Integration Tests', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    // Mock window dimensions for responsive tests
-    Object.defineProperty(window, 'innerWidth', { value: 1024, writable: true });
-    Object.defineProperty(window, 'innerHeight', { value: 768, writable: true });
   });
 
-  describe('Complete Page Rendering', () => {
-    it('renders all main sections', () => {
+  describe('Full Page Rendering', () => {
+    it('renders all major sections', () => {
       render(<LandingPage />);
-      
-      // Check navigation
-      expect(screen.getByText('KeCaraJoComer')).toBeInTheDocument();
-      expect(screen.getByText('Features')).toBeInTheDocument();
-      expect(screen.getByText('Pricing')).toBeInTheDocument();
-      
-      // Check hero section
-      expect(screen.getByText('Transform Your Kitchen Into a Smart Culinary Assistant')).toBeInTheDocument();
-      expect(screen.getByText('Start Cooking Smarter')).toBeInTheDocument();
-      expect(screen.getByText('Watch Demo')).toBeInTheDocument();
-      
-      // Check features section
-      expect(screen.getByText('Why Choose KeCaraJoComer?')).toBeInTheDocument();
-      expect(screen.getByText('AI Recipe Generation')).toBeInTheDocument();
-      expect(screen.getByText('Smart Meal Planning')).toBeInTheDocument();
-      
-      // Check pricing section
-      expect(screen.getByText('Choose Your Culinary Journey')).toBeInTheDocument();
-      expect(screen.getByText('Free')).toBeInTheDocument();
-      expect(screen.getByText('Pro')).toBeInTheDocument();
-      expect(screen.getByText('Family')).toBeInTheDocument();
-      
-      // Check footer
-      expect(screen.getByText('© 2024 KeCaraJoComer. All rights reserved.')).toBeInTheDocument();
+
+      // Hero section
+      expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+      expect(screen.getByText(/Transforma tu cocina/i)).toBeInTheDocument();
+
+      // Features section
+      expect(screen.getByText(/Características principales/i)).toBeInTheDocument();
+      expect(screen.getByText(/Escaneo inteligente/i)).toBeInTheDocument();
+      expect(screen.getByText(/Planificación personalizada/i)).toBeInTheDocument();
+
+      // Benefits section
+      expect(screen.getByText(/Ahorra tiempo/i)).toBeInTheDocument();
+      expect(screen.getByText(/Come mejor/i)).toBeInTheDocument();
+
+      // CTA section
+      expect(screen.getByText(/¿Listo para comenzar?/i)).toBeInTheDocument();
+
+      // Footer
+      expect(screen.getByText(/© 2024 KeCarajoComemos/i)).toBeInTheDocument();
     });
 
     it('has proper semantic structure', () => {
-      render(<LandingPage />);
-      
+      const { container } = render(<LandingPage />);
+
       // Check for proper heading hierarchy
-      const h1 = screen.getByRole('heading', { level: 1 });
+      const h1 = container.querySelector('h1');
+      const h2s = container.querySelectorAll('h2');
+      const h3s = container.querySelectorAll('h3');
+
       expect(h1).toBeInTheDocument();
-      
-      // Check for navigation
-      const navigation = screen.getByRole('navigation', { hidden: true });
-      expect(navigation).toBeInTheDocument();
-      
-      // Check for main content areas
-      const sections = screen.getAllByRole('region', { hidden: true });
-      expect(sections.length).toBeGreaterThan(0);
-    });
+      expect(h2s.length).toBeGreaterThan(0);
+      expect(h3s.length).toBeGreaterThan(0);
 
-    it('renders all interactive elements', () => {
-      render(<LandingPage />);
-      
-      // Check CTA buttons
-      const ctaButtons = screen.getAllByRole('link');
-      expect(ctaButtons.length).toBeGreaterThan(0);
-      
-      // Check navigation links
-      expect(screen.getByText('Features')).toBeInTheDocument();
-      expect(screen.getByText('Pricing')).toBeInTheDocument();
-      expect(screen.getByText('About')).toBeInTheDocument();
+      // Check for semantic sections
+      expect(container.querySelector('header')).toBeInTheDocument();
+      expect(container.querySelector('main')).toBeInTheDocument();
+      expect(container.querySelector('footer')).toBeInTheDocument();
     });
   });
 
-  describe('Navigation Functionality', () => {
-    it('has working navigation links', () => {
+  describe('Navigation Flow', () => {
+    it('navigates to sign up when clicking hero CTA', async () => {
       render(<LandingPage />);
-      
-      const featuresLink = screen.getByText('Features');
-      const pricingLink = screen.getByText('Pricing');
-      const aboutLink = screen.getByText('About');
-      
-      expect(featuresLink).toHaveAttribute('href', '#features');
-      expect(pricingLink).toHaveAttribute('href', '#pricing');
-      expect(aboutLink).toHaveAttribute('href', '#about');
-    });
 
-    it('has working CTA buttons', () => {
-      render(<LandingPage />);
-      
-      const getStartedButton = screen.getByText('Start Cooking Smarter');
-      const watchDemoButton = screen.getByText('Watch Demo');
-      
-      expect(getStartedButton.closest('a')).toHaveAttribute('href', '/signup');
-      expect(watchDemoButton.closest('a')).toHaveAttribute('href', '#demo');
-    });
+      const ctaButton = screen.getAllByText(/Comenzar gratis/i)[0];
+      fireEvent.click(ctaButton);
 
-    it('has mobile-friendly navigation', () => {
-      // Simulate mobile viewport
-      Object.defineProperty(window, 'innerWidth', { value: 375, writable: true });
-      
-      render(<LandingPage />);
-      
-      // Navigation should still be present but may be hidden on mobile
-      const navigation = screen.getByText('KeCaraJoComer');
-      expect(navigation).toBeInTheDocument();
-    });
-  });
-
-  describe('Hero Section Integration', () => {
-    it('displays hero content correctly', () => {
-      render(<LandingPage />);
-      
-      expect(screen.getByText('AI-Powered Meal Planning')).toBeInTheDocument();
-      expect(screen.getByText('Transform Your Kitchen Into a Smart Culinary Assistant')).toBeInTheDocument();
-      expect(screen.getByText(/Experience the future of cooking/)).toBeInTheDocument();
-    });
-
-    it('shows hero stats', () => {
-      render(<LandingPage />);
-      
-      expect(screen.getByText('Happy Users')).toBeInTheDocument();
-      expect(screen.getByText('Recipes Created')).toBeInTheDocument();
-      expect(screen.getByText('Time Saved')).toBeInTheDocument();
-      expect(screen.getByText('Food Waste')).toBeInTheDocument();
-    });
-
-    it('renders hero illustration', () => {
-      render(<LandingPage />);
-      
-      // The illustration should be present in the hero section
-      const heroSection = screen.getByText('Transform Your Kitchen Into a Smart Culinary Assistant').closest('section');
-      expect(heroSection).toBeInTheDocument();
-    });
-  });
-
-  describe('Features Section Integration', () => {
-    it('displays all feature cards', () => {
-      render(<LandingPage />);
-      
-      const featureCards = [
-        'AI Recipe Generation',
-        'Smart Meal Planning',
-        'Pantry Management',
-        'Shopping Optimization',
-        'Nutrition Tracking',
-        'Community Sharing'
-      ];
-      
-      featureCards.forEach(feature => {
-        expect(screen.getByText(feature)).toBeInTheDocument();
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/auth/signup');
       });
     });
 
-    it('has interactive feature cards', () => {
+    it('navigates to login when clicking header login button', async () => {
       render(<LandingPage />);
+
+      const loginButton = screen.getByText(/Iniciar sesión/i);
+      fireEvent.click(loginButton);
+
+      await waitFor(() => {
+        expect(mockPush).toHaveBeenCalledWith('/auth/login');
+      });
+    });
+
+    it('navigates to features section when clicking nav link', () => {
+      render(<LandingPage />);
+
+      const featuresLink = screen.getByText(/Características/i);
+      fireEvent.click(featuresLink);
+
+      // Check that the features section is visible
+      const featuresSection = document.getElementById('features');
+      expect(featuresSection).toBeInTheDocument();
+    });
+  });
+
+  describe('Interactive Elements', () => {
+    it('opens mobile menu when hamburger is clicked', async () => {
+      render(<LandingPage />);
+
+      // Find and click the mobile menu button
+      const mobileMenuButton = screen.getByRole('button', { name: /menu/i });
+      fireEvent.click(mobileMenuButton);
+
+      // Check that mobile menu items appear
+      await waitFor(() => {
+        const mobileNav = screen.getByRole('navigation', { name: /mobile/i });
+        expect(within(mobileNav).getByText(/Características/i)).toBeInTheDocument();
+        expect(within(mobileNav).getByText(/Cómo funciona/i)).toBeInTheDocument();
+      });
+    });
+
+    it('closes mobile menu when close button is clicked', async () => {
+      render(<LandingPage />);
+
+      // Open menu
+      const mobileMenuButton = screen.getByRole('button', { name: /menu/i });
+      fireEvent.click(mobileMenuButton);
+
+      // Close menu
+      const closeButton = screen.getByRole('button', { name: /close/i });
+      fireEvent.click(closeButton);
+
+      // Check that mobile menu is hidden
+      await waitFor(() => {
+        const mobileNav = screen.queryByRole('navigation', { name: /mobile/i });
+        expect(mobileNav).not.toBeInTheDocument();
+      });
+    });
+
+    it('shows feature details on hover', async () => {
+      render(<LandingPage />);
+
+      const scanFeature = screen.getByText(/Escaneo inteligente/i).closest('div');
       
-      const featureCard = screen.getByText('AI Recipe Generation').closest('[role]');
-      if (featureCard) {
-        fireEvent.mouseEnter(featureCard);
-        fireEvent.mouseLeave(featureCard);
-        // Should not throw errors on hover
+      if (scanFeature) {
+        fireEvent.mouseEnter(scanFeature);
+
+        // Check that additional details appear
+        await waitFor(() => {
+          expect(screen.getByText(/IA que reconoce productos/i)).toBeInTheDocument();
+        });
       }
     });
+  });
 
-    it('shows feature descriptions', () => {
+  describe('Responsive Behavior', () => {
+    it('shows appropriate elements for mobile viewport', () => {
+      // Mock mobile viewport
+      global.innerWidth = 375;
+      global.innerHeight = 667;
+
       render(<LandingPage />);
-      
-      expect(screen.getByText(/Get personalized recipes based on your preferences/)).toBeInTheDocument();
-      expect(screen.getByText(/Plan your entire week with intelligent suggestions/)).toBeInTheDocument();
+
+      // Mobile menu button should be visible
+      expect(screen.getByRole('button', { name: /menu/i })).toBeInTheDocument();
+
+      // Desktop navigation should be hidden (handled by CSS)
+      const desktopNav = screen.getByRole('navigation', { name: /main/i });
+      expect(desktopNav).toHaveClass('hidden', 'md:flex');
+    });
+
+    it('shows appropriate elements for desktop viewport', () => {
+      // Mock desktop viewport
+      global.innerWidth = 1920;
+      global.innerHeight = 1080;
+
+      render(<LandingPage />);
+
+      // Desktop navigation should be visible
+      const desktopNav = screen.getByRole('navigation', { name: /main/i });
+      expect(desktopNav).toBeInTheDocument();
     });
   });
 
-  describe('Pricing Section Integration', () => {
-    it('displays all pricing plans', () => {
+  describe('Performance and Optimization', () => {
+    it('lazy loads images', () => {
       render(<LandingPage />);
-      
-      expect(screen.getByText('Free')).toBeInTheDocument();
-      expect(screen.getByText('Pro')).toBeInTheDocument();
-      expect(screen.getByText('Family')).toBeInTheDocument();
-    });
 
-    it('shows pricing features', () => {
-      render(<LandingPage />);
-      
-      expect(screen.getByText('5 AI-generated recipes per month')).toBeInTheDocument();
-      expect(screen.getByText('Unlimited AI-generated recipes')).toBeInTheDocument();
-      expect(screen.getByText('Everything in Pro')).toBeInTheDocument();
-    });
-
-    it('has working pricing toggle', () => {
-      render(<LandingPage />);
-      
-      const monthlyText = screen.getByText('Monthly');
-      const yearlyText = screen.getByText('Yearly');
-      
-      expect(monthlyText).toBeInTheDocument();
-      expect(yearlyText).toBeInTheDocument();
-      
-      // Check for save badge
-      expect(screen.getByText('Save 20%')).toBeInTheDocument();
-    });
-
-    it('highlights popular plan', () => {
-      render(<LandingPage />);
-      
-      expect(screen.getByText('Most Popular')).toBeInTheDocument();
-    });
-  });
-
-  describe('Footer Integration', () => {
-    it('displays footer content', () => {
-      render(<LandingPage />);
-      
-      expect(screen.getByText('© 2024 KeCaraJoComer. All rights reserved.')).toBeInTheDocument();
-    });
-
-    it('has footer navigation links', () => {
-      render(<LandingPage />);
-      
-      const footerLinks = ['Features', 'Pricing', 'API', 'Mobile App', 'Blog', 'Help Center'];
-      
-      footerLinks.forEach(link => {
-        expect(screen.getByText(link)).toBeInTheDocument();
+      const images = screen.getAllByRole('img');
+      images.forEach(img => {
+        expect(img).toHaveAttribute('loading', 'lazy');
       });
     });
 
-    it('displays company information', () => {
+    it('prefetches critical navigation routes', async () => {
       render(<LandingPage />);
-      
-      expect(screen.getByText(/Transform your kitchen into a smart culinary assistant/)).toBeInTheDocument();
+
+      await waitFor(() => {
+        expect(mockPrefetch).toHaveBeenCalledWith('/auth/login');
+        expect(mockPrefetch).toHaveBeenCalledWith('/auth/signup');
+      });
     });
   });
 
-  describe('Responsive Design Integration', () => {
-    it('adapts to mobile viewport', () => {
-      // Simulate mobile viewport
-      Object.defineProperty(window, 'innerWidth', { value: 375, writable: true });
-      
+  describe('Accessibility', () => {
+    it('has proper ARIA labels for interactive elements', () => {
       render(<LandingPage />);
-      
-      // Content should still be accessible
-      expect(screen.getByText('Transform Your Kitchen Into a Smart Culinary Assistant')).toBeInTheDocument();
-      expect(screen.getByText('Start Cooking Smarter')).toBeInTheDocument();
-    });
 
-    it('adapts to tablet viewport', () => {
-      // Simulate tablet viewport
-      Object.defineProperty(window, 'innerWidth', { value: 768, writable: true });
-      
-      render(<LandingPage />);
-      
-      expect(screen.getByText('Why Choose KeCaraJoComer?')).toBeInTheDocument();
-    });
+      // Check navigation landmarks
+      expect(screen.getByRole('navigation', { name: /main/i })).toBeInTheDocument();
+      expect(screen.getByRole('banner')).toBeInTheDocument();
+      expect(screen.getByRole('contentinfo')).toBeInTheDocument();
 
-    it('works on desktop viewport', () => {
-      // Simulate desktop viewport
-      Object.defineProperty(window, 'innerWidth', { value: 1920, writable: true });
-      
-      render(<LandingPage />);
-      
-      expect(screen.getByText('Choose Your Culinary Journey')).toBeInTheDocument();
-    });
-  });
-
-  describe('Accessibility Integration', () => {
-    it('has proper ARIA landmarks', () => {
-      render(<LandingPage />);
-      
-      // Check for main content
-      const main = document.querySelector('main') || screen.getByRole('main', { hidden: true });
-      expect(main).toBeTruthy();
+      // Check button labels
+      const buttons = screen.getAllByRole('button');
+      buttons.forEach(button => {
+        expect(button).toHaveAccessibleName();
+      });
     });
 
     it('supports keyboard navigation', () => {
       render(<LandingPage />);
-      
-      const links = screen.getAllByRole('link');
-      links.forEach(link => {
-        link.focus();
-        expect(link).toHaveFocus();
-      });
+
+      // Tab through interactive elements
+      const firstButton = screen.getAllByRole('button')[0];
+      const firstLink = screen.getAllByRole('link')[0];
+
+      firstLink.focus();
+      expect(document.activeElement).toBe(firstLink);
+
+      // Simulate tab key
+      fireEvent.keyDown(document.activeElement!, { key: 'Tab' });
     });
 
-    it('has proper heading hierarchy', () => {
-      render(<LandingPage />);
-      
-      const h1Elements = screen.getAllByRole('heading', { level: 1 });
-      expect(h1Elements.length).toBeGreaterThan(0);
-      
-      const h2Elements = screen.getAllByRole('heading', { level: 2 });
-      expect(h2Elements.length).toBeGreaterThan(0);
-    });
-
-    it('provides alternative text for images', () => {
-      render(<LandingPage />);
-      
-      // SVG illustrations should have proper labeling
-      const svgElements = document.querySelectorAll('svg');
-      svgElements.forEach(svg => {
-        // SVGs should either have aria-hidden="true" or proper labeling
-        const hasAriaHidden = svg.getAttribute('aria-hidden') === 'true';
-        const hasAriaLabel = svg.hasAttribute('aria-label');
-        const hasTitle = svg.querySelector('title');
-        
-        expect(hasAriaHidden || hasAriaLabel || hasTitle).toBeTruthy();
-      });
-    });
-  });
-
-  describe('Performance Integration', () => {
-    it('renders efficiently', () => {
-      const startTime = performance.now();
-      render(<LandingPage />);
-      const endTime = performance.now();
-      
-      // Should render in reasonable time (less than 100ms in test environment)
-      expect(endTime - startTime).toBeLessThan(100);
-    });
-
-    it('handles large content gracefully', () => {
-      render(<LandingPage />);
-      
-      // Should handle all sections without performance issues
-      const allText = document.body.textContent || '';
-      expect(allText.length).toBeGreaterThan(1000); // Should have substantial content
-    });
-
-    it('has minimal DOM size', () => {
+    it('has proper contrast ratios for text', () => {
       const { container } = render(<LandingPage />);
-      
-      const allElements = container.querySelectorAll('*');
-      // Should have reasonable DOM size for a landing page
-      expect(allElements.length).toBeLessThan(500);
+
+      // Check that text elements have appropriate classes for contrast
+      const headings = container.querySelectorAll('h1, h2, h3');
+      headings.forEach(heading => {
+        expect(heading).toHaveClass(/text-(gray|blue|green)-[789]00/);
+      });
     });
   });
 
-  describe('User Journey Integration', () => {
-    it('supports complete user flow', async () => {
-      render(<LandingPage />);
-      
-      // User sees hero
-      expect(screen.getByText('Transform Your Kitchen Into a Smart Culinary Assistant')).toBeInTheDocument();
-      
-      // User scrolls to features (simulated)
-      const featuresSection = screen.getByText('Why Choose KeCaraJoComer?');
-      expect(featuresSection).toBeInTheDocument();
-      
-      // User views pricing
-      const pricingSection = screen.getByText('Choose Your Culinary Journey');
-      expect(pricingSection).toBeInTheDocument();
-      
-      // User can click CTA
-      const ctaButton = screen.getByText('Start Cooking Smarter');
-      expect(ctaButton.closest('a')).toHaveAttribute('href', '/signup');
-    });
+  describe('Error Handling', () => {
+    it('handles navigation errors gracefully', async () => {
+      // Mock navigation error
+      mockPush.mockRejectedValueOnce(new Error('Navigation failed'));
 
-    it('provides clear value proposition', () => {
       render(<LandingPage />);
-      
-      // Clear main value prop
-      expect(screen.getByText(/AI-powered meal planning/i)).toBeInTheDocument();
-      
-      // Supporting benefits
-      expect(screen.getByText(/reduce food waste/i)).toBeInTheDocument();
-      expect(screen.getByText(/save time/i)).toBeInTheDocument();
-    });
 
-    it('has clear call-to-action hierarchy', () => {
+      const ctaButton = screen.getAllByText(/Comenzar gratis/i)[0];
+      fireEvent.click(ctaButton);
+
+      // Should not crash the app
+      await waitFor(() => {
+        expect(screen.getByRole('heading', { level: 1 })).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe('Analytics and Tracking', () => {
+    it('tracks CTA clicks', async () => {
+      const trackEvent = vi.fn();
+      (window as any).gtag = trackEvent;
+
       render(<LandingPage />);
-      
-      // Primary CTA should be prominent
-      const primaryCTA = screen.getByText('Start Cooking Smarter');
-      expect(primaryCTA).toBeInTheDocument();
-      
-      // Secondary CTA should be available
-      const secondaryCTA = screen.getByText('Watch Demo');
-      expect(secondaryCTA).toBeInTheDocument();
+
+      const ctaButton = screen.getAllByText(/Comenzar gratis/i)[0];
+      fireEvent.click(ctaButton);
+
+      await waitFor(() => {
+        expect(trackEvent).toHaveBeenCalledWith('event', 'click', expect.objectContaining({
+          event_category: 'CTA',
+          event_label: 'Hero CTA',
+        }));
+      });
     });
   });
 });

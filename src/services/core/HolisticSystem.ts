@@ -5,7 +5,7 @@ import type { Database } from '@/types/database';
 // Importar subsistemas
 import { ReceiptScanner } from '../scanner/ReceiptScanner';
 import { getPantryManager, PantryManager } from '../pantry/PantryManager';
-import { getMealPlanner, MealPlanner } from '../planner/MealPlanner';
+// import { getMealPlanner, MealPlanner } from '../planner/MealPlanner'; // Comentado temporalmente - archivo no existe
 import { getShoppingOptimizer, ShoppingOptimizer } from '../shopping/ShoppingOptimizer';
 import { getProfileManager, ProfileManager } from '../profile/ProfileManager';
 
@@ -19,7 +19,7 @@ export class HolisticFoodSystem {
   // Subsistemas
   private scanner: ReceiptScanner;
   private pantryManager: PantryManager;
-  private mealPlanner: MealPlanner;
+  // private mealPlanner: MealPlanner; // Comentado temporalmente
   private shoppingOptimizer: ShoppingOptimizer;
   private profileManager: ProfileManager;
   
@@ -37,7 +37,7 @@ export class HolisticFoodSystem {
     // Inicializar subsistemas
     this.scanner = new ReceiptScanner(this);
     this.pantryManager = getPantryManager(this);
-    this.mealPlanner = getMealPlanner(this);
+    // this.mealPlanner = getMealPlanner(this); // Comentado temporalmente
     this.shoppingOptimizer = getShoppingOptimizer(this);
     this.profileManager = getProfileManager(this);
   }
@@ -78,12 +78,8 @@ export class HolisticFoodSystem {
       // 5. Generar plan de comidas optimizado
 
       const currentPantryItems = await this.pantryManager.getPantryItems(userId);
-      const mealPlan = await this.mealPlanner.generateOptimalPlan({
-        userId,
-        duration: 7, // Plan semanal por defecto
-        pantryItems: currentPantryItems,
-        optimizeFor: 'pantry_usage' // Usar lo que hay en despensa
-      });
+      // Temporal: MealPlanner no disponible
+      const mealPlan = null;
       
       return {
         success: true,

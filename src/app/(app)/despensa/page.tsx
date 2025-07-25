@@ -14,7 +14,6 @@ import {
   Milk,
   Carrot,
   Beef,
-  Fish,
   Wheat,
   Cookie,
   Coffee,
@@ -27,110 +26,73 @@ import {
   Trash2,
   BarChart3
 } from 'lucide-react';
-import { format, addDays, differenceInDays } from 'date-fns';
+import { format, differenceInDays } from 'date-fns';
 import { es } from 'date-fns/locale';
 
 import { GlassCard, GlassButton, GlassInput, GlassModal } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/features/auth/hooks/useAuth';
+import { usePantry } from '@/hooks/usePantry';
+import { IngredientCategory } from '@/types/pantry';
 
-import { useUser, useUserActions } from '@/store';
-
-// Mock data para la despensa
-const mockPantryItems = [
-  {
-    id: '1',
-    name: 'Leche',
-    category: 'dairy',
-    quantity: 2,
-    unit: 'litros',
-    location: 'refrigerator',
-    expiryDate: addDays(new Date(), 5),
-    addedDate: addDays(new Date(), -3),
-    image: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=200',
-    brand: 'La Serenísima'
-  },
-  {
-    id: '2',
-    name: 'Tomates',
-    category: 'vegetables',
-    quantity: 6,
-    unit: 'unidades',
-    location: 'refrigerator',
-    expiryDate: addDays(new Date(), 7),
-    addedDate: addDays(new Date(), -1),
-    image: 'https://images.unsplash.com/photo-1546094096-0df4bcaaa337?w=200'
-  },
-  {
-    id: '3',
-    name: 'Pasta',
-    category: 'grains',
-    quantity: 500,
-    unit: 'gramos',
-    location: 'pantry',
-    expiryDate: addDays(new Date(), 180),
-    addedDate: addDays(new Date(), -10),
-    image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=200',
-    brand: 'Barilla'
-  },
-  {
-    id: '4',
-    name: 'Pollo',
-    category: 'meat',
-    quantity: 1.5,
-    unit: 'kg',
-    location: 'freezer',
-    expiryDate: addDays(new Date(), 30),
-    addedDate: addDays(new Date(), -2),
-    image: 'https://images.unsplash.com/photo-1587593810167-a84920ea0781?w=200'
-  },
-  {
-    id: '5',
-    name: 'Manzanas',
-    category: 'fruits',
-    quantity: 8,
-    unit: 'unidades',
-    location: 'pantry',
-    expiryDate: addDays(new Date(), 10),
-    addedDate: addDays(new Date(), -4),
-    image: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=200'
-  },
-  {
-    id: '6',
-    name: 'Yogur',
-    category: 'dairy',
-    quantity: 4,
-    unit: 'unidades',
-    location: 'refrigerator',
-    expiryDate: addDays(new Date(), 3),
-    addedDate: addDays(new Date(), -5),
-    image: 'https://images.unsplash.com/photo-1488477181946-6428a0291777?w=200',
-    brand: 'Danone',
-    isExpiringSoon: true
-  }
-];
+// Category mapping for ingredient categories
+const categoryIconMap: Record<IngredientCategory, React.ComponentType> = {
+  verduras: Carrot,
+  frutas: Apple,
+  carnes: Beef,
+  lacteos: Milk,
+  granos: Wheat,
+  condimentos: Package,
+  bebidas: Coffee,
+  enlatados: Package,
+  congelados: TrendingDown,
+  panaderia: Package,
+  snacks: Cookie,
+  otros: Package
+};
 
 const categories = [
   { id: 'all', name: 'Todos', icon: Package, color: 'from-gray-400 to-gray-500' },
-  { id: 'dairy', name: 'Lácteos', icon: Milk, color: 'from-blue-400 to-blue-500' },
-  { id: 'vegetables', name: 'Vegetales', icon: Carrot, color: 'from-green-400 to-green-500' },
-  { id: 'fruits', name: 'Frutas', icon: Apple, color: 'from-orange-400 to-orange-500' },
-  { id: 'meat', name: 'Carnes', icon: Beef, color: 'from-red-400 to-red-500' },
-  { id: 'fish', name: 'Pescados', icon: Fish, color: 'from-cyan-400 to-cyan-500' },
-  { id: 'grains', name: 'Granos', icon: Wheat, color: 'from-yellow-400 to-yellow-500' },
+  { id: 'verduras', name: 'Verduras', icon: Carrot, color: 'from-green-400 to-green-500' },
+  { id: 'frutas', name: 'Frutas', icon: Apple, color: 'from-orange-400 to-orange-500' },
+  { id: 'carnes', name: 'Carnes', icon: Beef, color: 'from-red-400 to-red-500' },
+  { id: 'lacteos', name: 'Lácteos', icon: Milk, color: 'from-blue-400 to-blue-500' },
+  { id: 'granos', name: 'Granos', icon: Wheat, color: 'from-yellow-400 to-yellow-500' },
+  { id: 'condimentos', name: 'Condimentos', icon: Package, color: 'from-gray-400 to-gray-500' },
+  { id: 'bebidas', name: 'Bebidas', icon: Coffee, color: 'from-amber-400 to-amber-500' },
+  { id: 'enlatados', name: 'Enlatados', icon: Package, color: 'from-gray-400 to-gray-500' },
+  { id: 'congelados', name: 'Congelados', icon: TrendingDown, color: 'from-cyan-400 to-cyan-500' },
+  { id: 'panaderia', name: 'Panadería', icon: Package, color: 'from-orange-400 to-orange-500' },
   { id: 'snacks', name: 'Snacks', icon: Cookie, color: 'from-purple-400 to-purple-500' },
-  { id: 'beverages', name: 'Bebidas', icon: Coffee, color: 'from-amber-400 to-amber-500' }
+  { id: 'otros', name: 'Otros', icon: Package, color: 'from-gray-400 to-gray-500' }
 ];
 
 const locations = [
   { id: 'all', name: 'Todos', icon: Home },
-  { id: 'pantry', name: 'Despensa', icon: Package },
-  { id: 'refrigerator', name: 'Refrigerador', icon: Refrigerator },
-  { id: 'freezer', name: 'Congelador', icon: TrendingDown }
+  { id: 'despensa', name: 'Despensa', icon: Package },
+  { id: 'refrigerador', name: 'Refrigerador', icon: Refrigerator },
+  { id: 'congelador', name: 'Congelador', icon: TrendingDown }
 ];
 
 export default function DespensaPage() {
   const router = useRouter();
-  const user = useUser();
+  const { user, isLoading: authLoading } = useAuth();
+  
+  // Pantry hook with database integration
+  const {
+    items: pantryItems,
+    stats: pantryStats,
+    isLoading: pantryLoading,
+    error: pantryError,
+    addItemToPantry,
+    updatePantryItem: _updatePantryItem,
+    deletePantryItem,
+    isAdding,
+    isUpdatingItems: _isUpdatingItems,
+    isDeleting
+  } = usePantry(user?.id);
+  
+  // UI state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedLocation, setSelectedLocation] = useState('all');
@@ -139,17 +101,63 @@ export default function DespensaPage() {
   const [showDetailsModal, setShowDetailsModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [sortBy, setSortBy] = useState('name');
+  
+  // Add item form state
+  const [addItemForm, setAddItemForm] = useState({
+    ingredient_name: '',
+    quantity: 1,
+    unit: 'unidades',
+    expiration_date: undefined as Date | undefined,
+    location: 'despensa',
+    notes: '',
+    photo: undefined as File | undefined
+  });
 
   // Calcular días hasta vencimiento
-  const getDaysUntilExpiry = (expiryDate: Date) => {
-    return differenceInDays(expiryDate, new Date());
+  const getDaysUntilExpiry = (expiryDate: Date | string) => {
+    const expiry = typeof expiryDate === 'string' ? new Date(expiryDate) : expiryDate;
+    return differenceInDays(expiry, new Date());
   };
+  
+  // Handle loading and error states
+  if (authLoading || pantryLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-800">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
+          <p className="text-gray-600 dark:text-gray-300">Cargando despensa...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (pantryError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-orange-50 via-pink-50 to-purple-50 dark:from-gray-900 dark:via-purple-900/20 dark:to-gray-800">
+        <GlassCard variant="medium" className="p-8 max-w-md mx-auto text-center">
+          <AlertTriangle className="w-12 h-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+            Error al cargar la despensa
+          </h3>
+          <p className="text-gray-600 dark:text-gray-300 mb-4">
+            {pantryError.message || 'No se pudo conectar con la base de datos'}
+          </p>
+          <GlassButton
+            variant="primary"
+            onClick={() => window.location.reload()}
+          >
+            Reintentar
+          </GlassButton>
+        </GlassCard>
+      </div>
+    );
+  }
 
   // Filtrar items
-  const filteredItems = mockPantryItems.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.brand?.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || item.category === selectedCategory;
+  const filteredItems = pantryItems.filter(item => {
+    const matchesSearch = item.ingredient?.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         item.notes?.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || item.ingredient?.category === selectedCategory;
     const matchesLocation = selectedLocation === 'all' || item.location === selectedLocation;
     
     return matchesSearch && matchesCategory && matchesLocation;
@@ -159,29 +167,61 @@ export default function DespensaPage() {
   const sortedItems = [...filteredItems].sort((a, b) => {
     switch (sortBy) {
       case 'name':
-        return a.name.localeCompare(b.name);
+        return (a.ingredient?.name || '').localeCompare(b.ingredient?.name || '');
       case 'expiry':
-        return getDaysUntilExpiry(a.expiryDate) - getDaysUntilExpiry(b.expiryDate);
+        if (!a.expiration_date && !b.expiration_date) return 0;
+        if (!a.expiration_date) return 1;
+        if (!b.expiration_date) return -1;
+        return getDaysUntilExpiry(a.expiration_date) - getDaysUntilExpiry(b.expiration_date);
       case 'quantity':
         return b.quantity - a.quantity;
       case 'added':
-        return b.addedDate.getTime() - a.addedDate.getTime();
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
       default:
         return 0;
     }
   });
 
-  // Estadísticas
+  // Estadísticas calculadas desde la base de datos
   const stats = {
-    totalItems: mockPantryItems.length,
-    expiringSoon: mockPantryItems.filter(item => getDaysUntilExpiry(item.expiryDate) <= 3).length,
-    lowStock: mockPantryItems.filter(item => item.quantity <= 2).length,
-    categories: new Set(mockPantryItems.map(item => item.category)).size
+    totalItems: pantryStats?.total_items || 0,
+    expiringSoon: pantryStats?.expiring_soon || 0,
+    lowStock: pantryStats?.low_stock || 0,
+    categories: pantryStats?.categories || 0
   };
 
   const handleItemClick = (item: any) => {
     setSelectedItem(item);
     setShowDetailsModal(true);
+  };
+
+  const handleAddItem = async () => {
+    if (!addItemForm.ingredient_name.trim()) return;
+    
+    try {
+      await addItemToPantry(addItemForm);
+      setShowAddModal(false);
+      setAddItemForm({
+        ingredient_name: '',
+        quantity: 1,
+        unit: 'unidades',
+        expiration_date: undefined,
+        location: 'despensa',
+        notes: '',
+        photo: undefined
+      });
+    } catch (error) {
+      console.error('Error adding item:', error);
+    }
+  };
+
+  const handleDeleteItem = async (id: string) => {
+    try {
+      await deletePantryItem(id);
+      setShowDetailsModal(false);
+    } catch (error) {
+      console.error('Error deleting item:', error);
+    }
   };
 
   const getExpiryColor = (daysUntilExpiry: number) => {
@@ -214,7 +254,9 @@ export default function DespensaPage() {
                 Mi Despensa
               </h1>
               <p className="text-lg text-gray-600 dark:text-gray-300">
-                Gestiona {stats.totalItems} ingredientes y controla fechas de vencimiento
+                {stats.totalItems > 0 
+                  ? `Gestiona ${stats.totalItems} ingredientes y controla fechas de vencimiento`
+                  : 'Comienza agregando ingredientes a tu despensa'}
               </p>
             </div>
 
@@ -223,8 +265,9 @@ export default function DespensaPage() {
                 variant="primary"
                 icon={<Plus className="w-4 h-4" />}
                 onClick={() => setShowAddModal(true)}
+                disabled={isAdding}
               >
-                Añadir Item
+                {isAdding ? 'Añadiendo...' : 'Añadir Item'}
               </GlassButton>
               <GlassButton
                 variant="secondary"
@@ -416,8 +459,8 @@ export default function DespensaPage() {
               className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
             >
               {sortedItems.map((item, index) => {
-                const daysUntilExpiry = getDaysUntilExpiry(item.expiryDate);
-                const CategoryIcon = categories.find(c => c.id === item.category)?.icon || Package;
+                const daysUntilExpiry = item.expiration_date ? getDaysUntilExpiry(item.expiration_date) : null;
+                const CategoryIcon = categoryIconMap[item.ingredient?.category || 'otros'] || Package;
                 
                 return (
                   <motion.div
@@ -432,11 +475,17 @@ export default function DespensaPage() {
                     <GlassCard variant="medium" className="overflow-hidden group" interactive>
                       {/* Image */}
                       <div className="relative h-40 overflow-hidden">
-                        <img 
-                          src={item.image} 
-                          alt={item.name}
-                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                        />
+                        {item.photo_url ? (
+                          <img 
+                            src={item.photo_url} 
+                            alt={item.ingredient?.name}
+                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          />
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+                            <CategoryIcon className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                          </div>
+                        )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
                         
                         {/* Category Badge */}
@@ -447,16 +496,18 @@ export default function DespensaPage() {
                         </div>
 
                         {/* Expiry Badge */}
-                        <div className="absolute top-3 right-3">
-                          <div className={cn(
-                            "px-2 py-1 rounded-full text-xs font-medium",
-                            getExpiryColor(daysUntilExpiry)
-                          )}>
-                            {daysUntilExpiry <= 0 ? 'Vencido' : 
-                             daysUntilExpiry === 1 ? '1 día' : 
-                             `${daysUntilExpiry} días`}
+                        {daysUntilExpiry !== null && (
+                          <div className="absolute top-3 right-3">
+                            <div className={cn(
+                              "px-2 py-1 rounded-full text-xs font-medium",
+                              getExpiryColor(daysUntilExpiry)
+                            )}>
+                              {daysUntilExpiry <= 0 ? 'Vencido' : 
+                               daysUntilExpiry === 1 ? '1 día' : 
+                               `${daysUntilExpiry} días`}
+                            </div>
                           </div>
-                        </div>
+                        )}
 
                         {/* Quantity */}
                         <div className="absolute bottom-3 left-3 text-white">
@@ -468,16 +519,16 @@ export default function DespensaPage() {
 
                       {/* Content */}
                       <div className="p-4">
-                        <h3 className="font-semibold text-lg mb-1 dark:text-white">{item.name}</h3>
-                        {item.brand && (
-                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{item.brand}</p>
+                        <h3 className="font-semibold text-lg mb-1 dark:text-white">{item.ingredient?.name}</h3>
+                        {item.notes && (
+                          <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{item.notes}</p>
                         )}
                         <div className="flex items-center justify-between text-sm">
                           <span className="text-gray-500 dark:text-gray-400">
                             {locations.find(l => l.id === item.location)?.name}
                           </span>
                           <span className="text-gray-500 dark:text-gray-400">
-                            Agregado {format(item.addedDate, 'dd/MM', { locale: es })}
+                            Agregado {format(new Date(item.created_at), 'dd/MM', { locale: es })}
                           </span>
                         </div>
                       </div>
@@ -494,8 +545,8 @@ export default function DespensaPage() {
               className="space-y-3"
             >
               {sortedItems.map((item, index) => {
-                const daysUntilExpiry = getDaysUntilExpiry(item.expiryDate);
-                const CategoryIcon = categories.find(c => c.id === item.category)?.icon || Package;
+                const daysUntilExpiry = item.expiration_date ? getDaysUntilExpiry(item.expiration_date) : null;
+                const CategoryIcon = categoryIconMap[item.ingredient?.category || 'otros'] || Package;
                 
                 return (
                   <motion.div
@@ -508,28 +559,36 @@ export default function DespensaPage() {
                   >
                     <GlassCard variant="subtle" className="p-4" interactive>
                       <div className="flex items-center gap-4">
-                        <img 
-                          src={item.image} 
-                          alt={item.name}
-                          className="w-16 h-16 rounded-lg object-cover"
-                        />
+                        {item.photo_url ? (
+                          <img 
+                            src={item.photo_url} 
+                            alt={item.ingredient?.name}
+                            className="w-16 h-16 rounded-lg object-cover"
+                          />
+                        ) : (
+                          <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
+                            <CategoryIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                          </div>
+                        )}
                         
                         <div className="flex-1">
                           <div className="flex items-start justify-between">
                             <div>
-                              <h3 className="font-semibold dark:text-white">{item.name}</h3>
+                              <h3 className="font-semibold dark:text-white">{item.ingredient?.name}</h3>
                               <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {item.quantity} {item.unit} • {locations.find(l => l.id === item.location)?.name}
                               </p>
                             </div>
-                            <div className={cn(
-                              "px-2 py-1 rounded-full text-xs font-medium",
-                              getExpiryColor(daysUntilExpiry)
-                            )}>
-                              {daysUntilExpiry <= 0 ? 'Vencido' : 
-                               daysUntilExpiry === 1 ? '1 día' : 
-                               `${daysUntilExpiry} días`}
-                            </div>
+                            {daysUntilExpiry !== null && (
+                              <div className={cn(
+                                "px-2 py-1 rounded-full text-xs font-medium",
+                                getExpiryColor(daysUntilExpiry)
+                              )}>
+                                {daysUntilExpiry <= 0 ? 'Vencido' : 
+                                 daysUntilExpiry === 1 ? '1 día' : 
+                                 `${daysUntilExpiry} días`}
+                              </div>
+                            )}
                           </div>
                         </div>
 
@@ -553,17 +612,22 @@ export default function DespensaPage() {
             <GlassCard variant="subtle" className="p-8 max-w-md mx-auto">
               <Package className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                No se encontraron items
+                {searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all' 
+                  ? 'No se encontraron items'
+                  : 'Tu despensa está vacía'}
               </h3>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
-                Intenta ajustar tus filtros o añade nuevos items a tu despensa.
+                {searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all'
+                  ? 'Intenta ajustar tus filtros o añade nuevos items a tu despensa.'
+                  : 'Comienza agregando tu primer ingrediente para llevar el control de tu despensa.'}
               </p>
               <GlassButton
                 variant="primary"
                 icon={<Plus className="w-4 h-4" />}
                 onClick={() => setShowAddModal(true)}
+                disabled={isAdding}
               >
-                Añadir Primer Item
+                {isAdding ? 'Añadiendo...' : 'Añadir Primer Item'}
               </GlassButton>
             </GlassCard>
           </motion.div>
@@ -581,6 +645,8 @@ export default function DespensaPage() {
           <GlassInput
             label="Nombre del producto"
             placeholder="ej. Leche, Tomates, etc."
+            value={addItemForm.ingredient_name}
+            onChange={(e) => setAddItemForm(prev => ({ ...prev, ingredient_name: e.target.value }))}
           />
           
           <div className="grid grid-cols-2 gap-4">
@@ -588,49 +654,71 @@ export default function DespensaPage() {
               label="Cantidad"
               type="number"
               placeholder="1"
+              value={addItemForm.quantity.toString()}
+              onChange={(e) => setAddItemForm(prev => ({ ...prev, quantity: parseFloat(e.target.value) || 1 }))}
             />
-            <select className="glass-input dark:bg-gray-800 dark:text-white">
-              <option>unidades</option>
-              <option>kg</option>
-              <option>gramos</option>
-              <option>litros</option>
-              <option>ml</option>
+            <div>
+              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Unidad</label>
+              <select 
+                className="glass-input w-full dark:bg-gray-800 dark:text-white"
+                value={addItemForm.unit}
+                onChange={(e) => setAddItemForm(prev => ({ ...prev, unit: e.target.value }))}
+              >
+                <option value="unidades">unidades</option>
+                <option value="kg">kg</option>
+                <option value="gramos">gramos</option>
+                <option value="litros">litros</option>
+                <option value="ml">ml</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium mb-2 dark:text-gray-300">Ubicación</label>
+            <select 
+              className="glass-input w-full dark:bg-gray-800 dark:text-white"
+              value={addItemForm.location}
+              onChange={(e) => setAddItemForm(prev => ({ ...prev, location: e.target.value }))}
+            >
+              {locations.filter(l => l.id !== 'all').map(location => (
+                <option key={location.id} value={location.id}>
+                  {location.name}
+                </option>
+              ))}
             </select>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Categoría</label>
-              <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
-                {categories.filter(c => c.id !== 'all').map(category => (
-                  <option key={category.id} value={category.id}>
-                    {category.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Ubicación</label>
-              <select className="glass-input w-full dark:bg-gray-800 dark:text-white">
-                {locations.filter(l => l.id !== 'all').map(location => (
-                  <option key={location.id} value={location.id}>
-                    {location.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
+          <GlassInput
+            label="Fecha de vencimiento (opcional)"
+            type="date"
+            value={addItemForm.expiration_date ? addItemForm.expiration_date.toISOString().split('T')[0] : ''}
+            onChange={(e) => setAddItemForm(prev => ({ 
+              ...prev, 
+              expiration_date: e.target.value ? new Date(e.target.value) : undefined 
+            }))}
+          />
 
           <GlassInput
-            label="Fecha de vencimiento"
-            type="date"
+            label="Notas (opcional)"
+            placeholder="Marca, observaciones, etc."
+            value={addItemForm.notes}
+            onChange={(e) => setAddItemForm(prev => ({ ...prev, notes: e.target.value }))}
           />
 
           <div className="flex gap-3 pt-4">
-            <GlassButton variant="primary" className="flex-1">
-              Añadir Item
+            <GlassButton 
+              variant="primary" 
+              className="flex-1"
+              onClick={handleAddItem}
+              disabled={isAdding || !addItemForm.ingredient_name.trim()}
+            >
+              {isAdding ? 'Añadiendo...' : 'Añadir Item'}
             </GlassButton>
-            <GlassButton variant="ghost" onClick={() => setShowAddModal(false)}>
+            <GlassButton 
+              variant="ghost" 
+              onClick={() => setShowAddModal(false)}
+              disabled={isAdding}
+            >
               Cancelar
             </GlassButton>
           </div>
@@ -641,16 +729,24 @@ export default function DespensaPage() {
       <GlassModal
         isOpen={showDetailsModal}
         onClose={() => setShowDetailsModal(false)}
-        title={selectedItem?.name}
+        title={selectedItem?.ingredient?.name}
         size="lg"
       >
         {selectedItem && (
           <div className="space-y-6">
-            <img 
-              src={selectedItem.image} 
-              alt={selectedItem.name}
-              className="w-full h-48 object-cover rounded-xl"
-            />
+            {selectedItem.photo_url ? (
+              <img 
+                src={selectedItem.photo_url} 
+                alt={selectedItem.ingredient?.name}
+                className="w-full h-48 object-cover rounded-xl"
+              />
+            ) : (
+              <div className="w-full h-48 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 rounded-xl flex items-center justify-center">
+                {React.createElement(categoryIconMap[selectedItem.ingredient?.category || 'otros'] || Package, {
+                  className: "w-16 h-16 text-gray-400 dark:text-gray-500"
+                })}
+              </div>
+            )}
             
             <div className="grid grid-cols-2 gap-4">
               <div>
@@ -663,19 +759,28 @@ export default function DespensaPage() {
                   {locations.find(l => l.id === selectedItem.location)?.name}
                 </p>
               </div>
-              <div>
-                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vencimiento</p>
-                <p className="font-semibold dark:text-white">
-                  {format(selectedItem.expiryDate, "d 'de' MMMM, yyyy", { locale: es })}
-                </p>
-              </div>
+              {selectedItem.expiration_date && (
+                <div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Vencimiento</p>
+                  <p className="font-semibold dark:text-white">
+                    {format(new Date(selectedItem.expiration_date), "d 'de' MMMM, yyyy", { locale: es })}
+                  </p>
+                </div>
+              )}
               <div>
                 <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Agregado</p>
                 <p className="font-semibold dark:text-white">
-                  {format(selectedItem.addedDate, "d 'de' MMMM, yyyy", { locale: es })}
+                  {format(new Date(selectedItem.created_at), "d 'de' MMMM, yyyy", { locale: es })}
                 </p>
               </div>
             </div>
+
+            {selectedItem.notes && (
+              <div>
+                <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Notas</p>
+                <p className="font-semibold dark:text-white">{selectedItem.notes}</p>
+              </div>
+            )}
 
             <div className="flex gap-3">
               <GlassButton variant="primary" className="flex-1" icon={<Edit className="w-4 h-4" />}>
@@ -684,8 +789,13 @@ export default function DespensaPage() {
               <GlassButton variant="secondary" icon={<ShoppingCart className="w-4 h-4" />}>
                 Añadir a Lista
               </GlassButton>
-              <GlassButton variant="ghost" icon={<Trash2 className="w-4 h-4" />}>
-                Eliminar
+              <GlassButton 
+                variant="ghost" 
+                icon={<Trash2 className="w-4 h-4" />}
+                onClick={() => handleDeleteItem(selectedItem.id)}
+                disabled={isDeleting[selectedItem.id]}
+              >
+                {isDeleting[selectedItem.id] ? 'Eliminando...' : 'Eliminar'}
               </GlassButton>
             </div>
           </div>

@@ -7,6 +7,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Check, X, AlertCircle, Info } from 'lucide-react';
+
 import { GlassCard } from './GlassCard';
 
 interface StatusModalProps {

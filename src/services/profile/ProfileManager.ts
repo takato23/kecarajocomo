@@ -1,95 +1,34 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
 import type { Database } from '@/types/database';
-
 import type { HolisticFoodSystem } from '../core/HolisticSystem';
 
-export interface UserProfile {
-  id: string;
-  userId: string;
-  // Información básica
-  householdSize: number;
-  householdMembers: HouseholdMember[];
-  monthlyBudget: number;
-  
-  // Restricciones y preferencias alimentarias
-  dietaryRestrictions: DietaryRestriction[];
-  allergies: string[];
-  preferredCuisines: string[];
-  dislikedIngredients: string[];
-  
-  // Objetivos nutricionales
-  nutritionalGoals: NutritionalGoals;
-  
-  // Perfil de sabor
-  tasteProfile: TasteProfile;
-  
-  // Nivel de habilidad culinaria
-  cookingSkillLevel: 1 | 2 | 3 | 4 | 5;
-  
-  // Metadata
-  createdAt: Date;
-  updatedAt: Date;
-}
+// Import consolidated types
+import type {
+  UserProfile,
+  DietaryRestriction,
+  HouseholdMember,
+  NutritionalGoals,
+  TasteProfile,
+  TexturePreference
+} from '@/types/profile';
 
-export interface HouseholdMember {
-  id: string;
-  name: string;
-  age: number;
-  dietaryRestrictions?: DietaryRestriction[];
-  allergies?: string[];
-  preferences?: string[];
-}
+// Import utilities
+import { 
+  isIngredientCompatible as checkIngredientCompatibility,
+  getIngredientRestrictions,
+  getCuisineSuggestions
+} from '@/types/profile/utils';
 
-export type DietaryRestriction = 
-  | 'vegetarian'
-  | 'vegan'
-  | 'gluten_free'
-  | 'lactose_free'
-  | 'kosher'
-  | 'halal'
-  | 'keto'
-  | 'paleo'
-  | 'low_carb'
-  | 'low_fat'
-  | 'low_sodium'
-  | 'diabetic'
-  | 'pescatarian'
-  | 'raw_food'
-  | 'whole30';
-
-export interface NutritionalGoals {
-  caloriesPerDay?: number;
-  proteinPerDay?: number;
-  carbsPerDay?: number;
-  fatPerDay?: number;
-  fiberPerDay?: number;
-  sodiumLimit?: number;
-  sugarLimit?: number;
-  specialGoals?: string[];
-}
-
-export interface TasteProfile {
-  spicyTolerance: 'none' | 'mild' | 'medium' | 'hot' | 'very_hot';
-  sweetPreference: 'low' | 'medium' | 'high';
-  saltyPreference: 'low' | 'medium' | 'high';
-  sourPreference: 'low' | 'medium' | 'high';
-  bitterTolerance: 'low' | 'medium' | 'high';
-  umamiAppreciation: 'low' | 'medium' | 'high';
-  texturePreferences: TexturePreference[];
-}
-
-export type TexturePreference = 
-  | 'crispy'
-  | 'creamy'
-  | 'crunchy'
-  | 'soft'
-  | 'chewy'
-  | 'smooth'
-  | 'chunky';
+// Import migration utilities
+import { 
+  prepareProfileForDatabase,
+  parseProfileFromDatabase 
+} from '@/types/profile/migration';
 
 /**
  * Gestor de Perfiles de Usuario con Preferencias Dietéticas
+ * Now using consolidated profile types
  */
 export class ProfileManager {
   private supabase;
@@ -113,7 +52,7 @@ export class ProfileManager {
         return null;
       }
       
-      return this.mapDatabaseToProfile(data);
+      return parseProfileFromDatabase(data);
       
     } catch (error: unknown) {
       console.error('Error obteniendo perfil:', error);
@@ -126,7 +65,10 @@ export class ProfileManager {
    */
   async upsertProfile(userId: string, profile: Partial<UserProfile>): Promise<UserProfile> {
     try {
-      const profileData = this.mapProfileToDatabase(userId, profile);
+      const profileData = prepareProfileForDatabase({
+        ...profile,
+        userId
+      });
       
       const { data, error } = await this.supabase
         .from('profiles')
@@ -140,7 +82,7 @@ export class ProfileManager {
         
       if (error) throw error;
       
-      return this.mapDatabaseToProfile(data);
+      return parseProfileFromDatabase(data);
       
     } catch (error: unknown) {
       console.error('Error actualizando perfil:', error);
@@ -195,6 +137,7 @@ export class ProfileManager {
   
   /**
    * Verificar si un ingrediente es compatible con el perfil
+   * Now using the consolidated utility function
    */
   async isIngredientCompatible(
     userId: string,
@@ -206,7 +149,7 @@ export class ProfileManager {
         return { compatible: true };
       }
       
-      // Verificar alergias
+      // Check allergies
       const allergyMatch = profile.allergies.find(
         allergy => ingredient.toLowerCase().includes(allergy.toLowerCase())
       );
@@ -218,7 +161,7 @@ export class ProfileManager {
         };
       }
       
-      // Verificar ingredientes no deseados
+      // Check disliked ingredients
       const dislikedMatch = profile.dislikedIngredients.find(
         disliked => ingredient.toLowerCase().includes(disliked.toLowerCase())
       );
@@ -230,17 +173,8 @@ export class ProfileManager {
         };
       }
       
-      // Verificar restricciones dietéticas
-      const restriction = this.checkDietaryRestrictions(
-        ingredient,
-        profile.dietaryRestrictions
-      );
-      
-      if (!restriction.compatible) {
-        return restriction;
-      }
-      
-      return { compatible: true };
+      // Use the utility function for dietary restrictions
+      return checkIngredientCompatibility(ingredient, profile.dietaryRestrictions);
       
     } catch (error: unknown) {
       console.error('Error verificando compatibilidad:', error);
@@ -250,6 +184,7 @@ export class ProfileManager {
   
   /**
    * Obtener recomendaciones basadas en perfil
+   * Now using consolidated utility functions
    */
   async getProfileBasedRecommendations(userId: string): Promise<{
     suggestedIngredients: string[];
@@ -266,19 +201,13 @@ export class ProfileManager {
         };
       }
       
-      // Sugerir ingredientes basados en cocinas preferidas
+      // Use utility functions
       const suggestedIngredients = this.getSuggestedIngredients(
         profile.preferredCuisines
       );
       
-      // Compilar lista de ingredientes a evitar
-      const avoidIngredients = [
-        ...profile.allergies,
-        ...profile.dislikedIngredients,
-        ...this.getRestrictedIngredients(profile.dietaryRestrictions)
-      ];
+      const avoidIngredients = getIngredientRestrictions(profile);
       
-      // Determinar enfoque nutricional
       const nutritionalFocus = this.getNutritionalFocus(profile.nutritionalGoals);
       
       return {
@@ -295,120 +224,6 @@ export class ProfileManager {
         nutritionalFocus: []
       };
     }
-  }
-  
-  /**
-   * Mapear base de datos a modelo
-   */
-  private mapDatabaseToProfile(data: any): UserProfile {
-    return {
-      id: data.id,
-      userId: data.user_id,
-      householdSize: data.household_size || 1,
-      householdMembers: data.household_members || [],
-      monthlyBudget: data.monthly_budget || 0,
-      dietaryRestrictions: data.dietary_restrictions || [],
-      allergies: data.allergies || [],
-      preferredCuisines: data.preferred_cuisines || [],
-      dislikedIngredients: data.disliked_ingredients || [],
-      nutritionalGoals: data.nutritional_goals || {},
-      tasteProfile: data.taste_profile || this.getDefaultTasteProfile(),
-      cookingSkillLevel: data.cooking_skill_level || 3,
-      createdAt: new Date(data.created_at),
-      updatedAt: new Date(data.updated_at)
-    };
-  }
-  
-  /**
-   * Mapear modelo a base de datos
-   */
-  private mapProfileToDatabase(userId: string, profile: Partial<UserProfile>): any {
-    return {
-      user_id: userId,
-      household_size: profile.householdSize,
-      household_members: profile.householdMembers ? JSON.stringify(profile.householdMembers) : undefined,
-      monthly_budget: profile.monthlyBudget,
-      dietary_restrictions: profile.dietaryRestrictions ? JSON.stringify(profile.dietaryRestrictions) : undefined,
-      allergies: profile.allergies,
-      preferred_cuisines: profile.preferredCuisines,
-      disliked_ingredients: profile.dislikedIngredients,
-      nutritional_goals: profile.nutritionalGoals ? JSON.stringify(profile.nutritionalGoals) : undefined,
-      taste_profile: profile.tasteProfile ? JSON.stringify(profile.tasteProfile) : undefined,
-      cooking_skill_level: profile.cookingSkillLevel
-    };
-  }
-  
-  /**
-   * Verificar restricciones dietéticas
-   */
-  private checkDietaryRestrictions(
-    ingredient: string,
-    restrictions: DietaryRestriction[]
-  ): { compatible: boolean; reason?: string } {
-    const lower = ingredient.toLowerCase();
-    
-    for (const restriction of restrictions) {
-      switch (restriction) {
-        case 'vegetarian':
-          if (this.isMeat(lower) || this.isFish(lower)) {
-            return { compatible: false, reason: 'No apto para vegetarianos' };
-          }
-          break;
-          
-        case 'vegan':
-          if (this.isMeat(lower) || this.isFish(lower) || this.isDairy(lower) || this.isEgg(lower)) {
-            return { compatible: false, reason: 'No apto para veganos' };
-          }
-          break;
-          
-        case 'gluten_free':
-          if (this.hasGluten(lower)) {
-            return { compatible: false, reason: 'Contiene gluten' };
-          }
-          break;
-          
-        case 'lactose_free':
-          if (this.hasLactose(lower)) {
-            return { compatible: false, reason: 'Contiene lactosa' };
-          }
-          break;
-          
-        // Agregar más casos según sea necesario
-      }
-    }
-    
-    return { compatible: true };
-  }
-  
-  /**
-   * Helpers para verificar tipos de ingredientes
-   */
-  private isMeat(ingredient: string): boolean {
-    const meats = ['carne', 'pollo', 'cerdo', 'cordero', 'pavo', 'jamón', 'salchicha', 'chorizo'];
-    return meats.some(meat => ingredient.includes(meat));
-  }
-  
-  private isFish(ingredient: string): boolean {
-    const fish = ['pescado', 'atún', 'salmón', 'merluza', 'trucha', 'mariscos', 'camarones'];
-    return fish.some(f => ingredient.includes(f));
-  }
-  
-  private isDairy(ingredient: string): boolean {
-    const dairy = ['leche', 'queso', 'yogur', 'manteca', 'crema', 'nata'];
-    return dairy.some(d => ingredient.includes(d));
-  }
-  
-  private isEgg(ingredient: string): boolean {
-    return ingredient.includes('huevo');
-  }
-  
-  private hasGluten(ingredient: string): boolean {
-    const glutenItems = ['harina', 'pan', 'pasta', 'fideos', 'galletas', 'trigo', 'cebada', 'centeno'];
-    return glutenItems.some(item => ingredient.includes(item));
-  }
-  
-  private hasLactose(ingredient: string): boolean {
-    return this.isDairy(ingredient);
   }
   
   /**
@@ -433,35 +248,6 @@ export class ProfileManager {
     }
     
     return [...new Set(suggestions)]; // Eliminar duplicados
-  }
-  
-  /**
-   * Obtener ingredientes restringidos
-   */
-  private getRestrictedIngredients(restrictions: DietaryRestriction[]): string[] {
-    const restricted: string[] = [];
-    
-    for (const restriction of restrictions) {
-      switch (restriction) {
-        case 'vegetarian':
-        case 'vegan':
-          restricted.push('carne', 'pollo', 'pescado', 'mariscos');
-          if (restriction === 'vegan') {
-            restricted.push('leche', 'queso', 'huevos', 'miel');
-          }
-          break;
-          
-        case 'gluten_free':
-          restricted.push('trigo', 'harina', 'pan', 'pasta');
-          break;
-          
-        case 'lactose_free':
-          restricted.push('leche', 'queso', 'yogur', 'crema');
-          break;
-      }
-    }
-    
-    return [...new Set(restricted)];
   }
   
   /**
@@ -492,21 +278,6 @@ export class ProfileManager {
     
     return focus;
   }
-  
-  /**
-   * Obtener perfil de sabor por defecto
-   */
-  private getDefaultTasteProfile(): TasteProfile {
-    return {
-      spicyTolerance: 'medium',
-      sweetPreference: 'medium',
-      saltyPreference: 'medium',
-      sourPreference: 'medium',
-      bitterTolerance: 'medium',
-      umamiAppreciation: 'medium',
-      texturePreferences: ['crispy', 'creamy', 'soft']
-    };
-  }
 }
 
 // Singleton
@@ -518,3 +289,6 @@ export function getProfileManager(system: HolisticFoodSystem): ProfileManager {
   }
   return profileManager;
 }
+
+// Re-export the consolidated UserProfile type for backward compatibility
+export type { UserProfile, DietaryRestriction, HouseholdMember, NutritionalGoals, TasteProfile, TexturePreference };

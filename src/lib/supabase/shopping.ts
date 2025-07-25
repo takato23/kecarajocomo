@@ -2,11 +2,11 @@ import { supabase } from './client';
 import type { Database } from './database.types';
 
 type ShoppingList = Database['public']['Tables']['shopping_lists']['Row'];
-type ShoppingItem = Database['public']['Tables']['shopping_items']['Row'];
+type ShoppingItem = Database['public']['Tables']['shopping_list_items']['Row'];
 type ShoppingListInsert = Database['public']['Tables']['shopping_lists']['Insert'];
-type ShoppingItemInsert = Database['public']['Tables']['shopping_items']['Insert'];
+type ShoppingItemInsert = Database['public']['Tables']['shopping_list_items']['Insert'];
 type ShoppingListUpdate = Database['public']['Tables']['shopping_lists']['Update'];
-type ShoppingItemUpdate = Database['public']['Tables']['shopping_items']['Update'];
+type ShoppingItemUpdate = Database['public']['Tables']['shopping_list_items']['Update'];
 
 export const shoppingService = {
   // Shopping Lists
@@ -24,7 +24,7 @@ export const shoppingService = {
   async getActiveList(userId: string) {
     const { data, error } = await supabase
       .from('shopping_lists')
-      .select('*, shopping_items(*)')
+      .select('*, shopping_list_items(*)')
       .eq('user_id', userId)
       .eq('is_active', true)
       .single();
@@ -43,7 +43,7 @@ export const shoppingService = {
     const { data, error } = await supabase
       .from('shopping_lists')
       .insert({ ...list, user_id: userId })
-      .select('*, shopping_items(*)')
+      .select('*, shopping_list_items(*)')
       .single();
 
     if (error) throw error;
@@ -74,30 +74,30 @@ export const shoppingService = {
   // Shopping Items
   async getItems(listId: string) {
     const { data, error } = await supabase
-      .from('shopping_items')
+      .from('shopping_list_items')
       .select('*')
-      .eq('list_id', listId)
-      .order('position', { ascending: true });
+      .eq('shopping_list_id', listId)
+      .order('priority', { ascending: true });
 
     if (error) throw error;
     return data;
   },
 
-  async addItem(listId: string, item: Omit<ShoppingItemInsert, 'list_id'>) {
-    // Get the highest position in the list
-    const { data: maxPositionData } = await supabase
-      .from('shopping_items')
-      .select('position')
-      .eq('list_id', listId)
-      .order('position', { ascending: false })
+  async addItem(listId: string, item: Omit<ShoppingItemInsert, 'shopping_list_id'>) {
+    // Get the highest priority in the list
+    const { data: maxPriorityData } = await supabase
+      .from('shopping_list_items')
+      .select('priority')
+      .eq('shopping_list_id', listId)
+      .order('priority', { ascending: false })
       .limit(1)
       .single();
 
-    const nextPosition = (maxPositionData?.position ?? -1) + 1;
+    const nextPriority = (maxPriorityData?.priority ?? -1) + 1;
 
     const { data, error } = await supabase
-      .from('shopping_items')
-      .insert({ ...item, list_id: listId, position: nextPosition })
+      .from('shopping_list_items')
+      .insert({ ...item, shopping_list_id: listId, priority: nextPriority })
       .select()
       .single();
 
@@ -107,7 +107,7 @@ export const shoppingService = {
 
   async updateItem(itemId: string, updates: ShoppingItemUpdate) {
     const { data, error } = await supabase
-      .from('shopping_items')
+      .from('shopping_list_items')
       .update(updates)
       .eq('id', itemId)
       .select()
@@ -119,7 +119,7 @@ export const shoppingService = {
 
   async deleteItem(itemId: string) {
     const { error } = await supabase
-      .from('shopping_items')
+      .from('shopping_list_items')
       .delete()
       .eq('id', itemId);
 
@@ -129,8 +129,8 @@ export const shoppingService = {
   async toggleItem(itemId: string) {
     // First get the current state
     const { data: item, error: fetchError } = await supabase
-      .from('shopping_items')
-      .select('checked')
+      .from('shopping_list_items')
+      .select('is_purchased')
       .eq('id', itemId)
       .single();
 
@@ -138,8 +138,8 @@ export const shoppingService = {
 
     // Toggle the state
     const { data, error } = await supabase
-      .from('shopping_items')
-      .update({ checked: !item.checked })
+      .from('shopping_list_items')
+      .update({ is_purchased: !item.is_purchased })
       .eq('id', itemId)
       .select()
       .single();
@@ -148,27 +148,27 @@ export const shoppingService = {
     return data;
   },
 
-  async bulkToggleItems(listId: string, itemIds: string[], checked: boolean) {
+  async bulkToggleItems(listId: string, itemIds: string[], is_purchased: boolean) {
     const { error } = await supabase
-      .from('shopping_items')
-      .update({ checked })
+      .from('shopping_list_items')
+      .update({ is_purchased })
       .in('id', itemIds)
-      .eq('list_id', listId);
+      .eq('shopping_list_id', listId);
 
     if (error) throw error;
   },
 
   async reorderItems(listId: string, itemIds: string[]) {
-    // Update positions based on the new order
+    // Update priorities based on the new order
     const updates = itemIds.map((id, index) => ({
       id,
-      list_id: listId,
-      position: index
+      shopping_list_id: listId,
+      priority: index
     }));
 
-    // Use upsert to update positions
+    // Use upsert to update priorities
     const { error } = await supabase
-      .from('shopping_items')
+      .from('shopping_list_items')
       .upsert(updates, { onConflict: 'id' });
 
     if (error) throw error;
@@ -244,7 +244,7 @@ export const shoppingService = {
       .channel(`shopping_list:${listId}`)
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'shopping_items', filter: `list_id=eq.${listId}` },
+        { event: '*', schema: 'public', table: 'shopping_list_items', filter: `shopping_list_id=eq.${listId}` },
         callback
       )
       .subscribe();

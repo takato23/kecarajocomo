@@ -40,7 +40,6 @@ import {
 
 import { GlassCard, GlassButton, GlassInput, GlassModal } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
-
 import { useAuthStore } from '@/features/auth';
 
 // Mock data para la lista de compras

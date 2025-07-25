@@ -7,7 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useHolisticSystem } from '@/hooks/useHolisticSystem';
 import { cn } from '@/lib/utils';
 import { useAuthStore } from '@/features/auth/store/authStore';
-import { iOS26LiquidButton, iOS26LiquidCard } from '@/components/ios26';
 
 type ScanMode = 'camera' | 'upload' | 'voice';
 

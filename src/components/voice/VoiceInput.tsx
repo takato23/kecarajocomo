@@ -5,12 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Mic, 
   MicOff, 
-  Loader2, 
   AlertCircle, 
   Check,
-  Volume2,
   Square,
 } from 'lucide-react';
+
 import { useVoiceService } from '@/services/voice/hooks/useVoiceService';
 import { parseMultipleIngredients } from '@/lib/pantry/parser';
 // Define ParsedIngredient type locally to avoid import issues

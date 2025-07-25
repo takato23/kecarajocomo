@@ -1,25 +1,33 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChefHat,
-  Utensils,
+  Clock,
   Calendar,
-  Save,
-  Edit
+  Utensils,
+  DollarSign,
+  Gauge,
+  Timer,
+  Package,
+  Zap,
+  Flame,
+  Droplet,
+  Wind,
+  AlertCircle,
+  Check
 } from 'lucide-react';
-import { toast } from 'sonner';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
-import { UserPreferences } from '@/types/profile';
-
+import { Skeleton } from '@/components/ui/skeleton';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import type { UserPreferences, MealType } from '@/types/profile';
 
 interface CookingPreferencesProps {
   preferences: UserPreferences;
@@ -27,8 +35,15 @@ interface CookingPreferencesProps {
 }
 
 const COOKING_METHODS = [
-  'Hornear', 'Asar', 'Hervir', 'Freír', 'Vapor', 
-  'Plancha', 'Microondas', 'Olla de presión', 'Slow cooker'
+  { value: 'Hornear', icon: Flame, color: 'text-orange-600' },
+  { value: 'Asar', icon: Flame, color: 'text-red-600' },
+  { value: 'Hervir', icon: Droplet, color: 'text-blue-600' },
+  { value: 'Freír', icon: Zap, color: 'text-yellow-600' },
+  { value: 'Vapor', icon: Wind, color: 'text-cyan-600' },
+  { value: 'Plancha', icon: Flame, color: 'text-gray-600' },
+  { value: 'Microondas', icon: Zap, color: 'text-purple-600' },
+  { value: 'Olla de presión', icon: Gauge, color: 'text-green-600' },
+  { value: 'Slow cooker', icon: Timer, color: 'text-amber-600' }
 ];
 
 const KITCHEN_TOOLS = [
@@ -37,7 +52,7 @@ const KITCHEN_TOOLS = [
   'Tostadora', 'Slow cooker', 'Thermomix'
 ];
 
-const MEAL_TYPES = [
+const MEAL_TYPES: Array<{ value: MealType; label: string }> = [
   { value: 'breakfast', label: 'Desayuno' },
   { value: 'lunch', label: 'Almuerzo' },
   { value: 'dinner', label: 'Cena' },
@@ -45,550 +60,579 @@ const MEAL_TYPES = [
   { value: 'dessert', label: 'Postre' }
 ];
 
-export function CookingPreferences({ preferences, onUpdate }: CookingPreferencesProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedPreferences, setEditedPreferences] = useState({
-    cookingSkillLevel: preferences.cookingSkillLevel || 'intermediate',
-    cookingPreferences: {
-      timeAvailable: preferences.cookingPreferences?.timeAvailable || {
-        weekday: 30,
-        weekend: 60
-      },
-      cookingMethods: preferences.cookingPreferences?.cookingMethods || [],
-      kitchenTools: preferences.cookingPreferences?.kitchenTools || []
-    },
-    planningPreferences: {
-      planningHorizon: preferences.planningPreferences?.planningHorizon || 'weekly',
-      mealTypes: preferences.planningPreferences?.mealTypes || ['breakfast', 'lunch', 'dinner'],
-      batchCooking: preferences.planningPreferences?.batchCooking || false,
-      leftoverStrategy: preferences.planningPreferences?.leftoverStrategy || 'incorporate',
-      varietyPreference: preferences.planningPreferences?.varietyPreference || 'medium'
-    },
-    budget: preferences.budget || {
-      weekly: 0,
-      monthly: 0,
-      currency: 'USD'
-    }
-  });
+const SKILL_LEVELS = [
+  { value: 'beginner', label: 'Principiante', description: 'Recetas simples y básicas' },
+  { value: 'intermediate', label: 'Intermedio', description: 'Técnicas moderadas' },
+  { value: 'advanced', label: 'Avanzado', description: 'Platos complejos' },
+  { value: 'expert', label: 'Experto', description: 'Alta cocina' }
+];
 
-  const handleSave = async () => {
+// Loading skeleton component
+const CookingPreferencesSkeleton = () => (
+  <div className="space-y-6">
+    <Skeleton className="h-48 w-full rounded-2xl" />
+    <Skeleton className="h-32 w-full rounded-2xl" />
+    <Skeleton className="h-64 w-full rounded-2xl" />
+    <Skeleton className="h-40 w-full rounded-2xl" />
+  </div>
+);
+
+export const CookingPreferences: React.FC<CookingPreferencesProps> = ({ 
+  preferences, 
+  onUpdate 
+}) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Calculate completion percentage
+  const completionPercentage = useMemo(() => {
+    let completed = 0;
+    const total = 6;
+    
+    if (preferences.cookingSkillLevel) completed++;
+    if (preferences.cookingPreferences?.timeAvailable?.weekday) completed++;
+    if (preferences.cookingPreferences?.cookingMethods?.length > 0) completed++;
+    if (preferences.cookingPreferences?.kitchenTools?.length > 0) completed++;
+    if (preferences.planningPreferences?.mealTypes?.length > 0) completed++;
+    if (preferences.budget?.weekly > 0) completed++;
+    
+    return Math.round((completed / total) * 100);
+  }, [preferences]);
+
+  // Handle skill level update
+  const handleSkillLevelUpdate = useCallback(async (skillLevel: string) => {
+    setIsUpdating(true);
+    setError(null);
     try {
-      await onUpdate(editedPreferences);
-      setIsEditing(false);
-      toast.success('Preferencias de cocina actualizadas');
-    } catch (error: unknown) {
-      toast.error('Error al guardar las preferencias');
+      await onUpdate({ 
+        cookingSkillLevel: skillLevel as UserPreferences['cookingSkillLevel'] 
+      });
+    } catch (err) {
+      setError('Error al actualizar nivel de habilidad');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
     }
-  };
+  }, [onUpdate]);
 
-  const toggleCookingMethod = (method: string) => {
-    const current = editedPreferences.cookingPreferences.cookingMethods;
-    const updated = current.includes(method)
-      ? current.filter(m => m !== method)
-      : [...current, method];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      cookingPreferences: {
-        ...editedPreferences.cookingPreferences,
-        cookingMethods: updated
-      }
-    });
-  };
+  // Handle time available update
+  const handleTimeUpdate = useCallback(async (timeType: 'weekday' | 'weekend', minutes: number) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      await onUpdate({
+        cookingPreferences: {
+          ...preferences.cookingPreferences,
+          timeAvailable: {
+            ...preferences.cookingPreferences?.timeAvailable,
+            [timeType]: minutes
+          }
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar tiempo disponible');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.cookingPreferences, onUpdate]);
 
-  const toggleKitchenTool = (tool: string) => {
-    const current = editedPreferences.cookingPreferences.kitchenTools;
-    const updated = current.includes(tool)
-      ? current.filter(t => t !== tool)
-      : [...current, tool];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      cookingPreferences: {
-        ...editedPreferences.cookingPreferences,
-        kitchenTools: updated
-      }
-    });
-  };
+  // Toggle cooking method
+  const toggleCookingMethod = useCallback(async (method: string) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.cookingPreferences?.cookingMethods || [];
+      const updated = current.includes(method)
+        ? current.filter(m => m !== method)
+        : [...current, method];
+      
+      await onUpdate({
+        cookingPreferences: {
+          ...preferences.cookingPreferences,
+          cookingMethods: updated
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar métodos de cocina');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.cookingPreferences, onUpdate]);
 
-  const toggleMealType = (mealType: string) => {
-    const current = editedPreferences.planningPreferences.mealTypes;
-    const updated = current.includes(mealType as any)
-      ? current.filter(t => t !== mealType)
-      : [...current, mealType as any];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      planningPreferences: {
-        ...editedPreferences.planningPreferences,
-        mealTypes: updated
-      }
-    });
-  };
+  // Toggle kitchen tool
+  const toggleKitchenTool = useCallback(async (tool: string) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.cookingPreferences?.kitchenTools || [];
+      const updated = current.includes(tool)
+        ? current.filter(t => t !== tool)
+        : [...current, tool];
+      
+      await onUpdate({
+        cookingPreferences: {
+          ...preferences.cookingPreferences,
+          kitchenTools: updated
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar herramientas de cocina');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.cookingPreferences, onUpdate]);
+
+  // Toggle meal type
+  const toggleMealType = useCallback(async (mealType: MealType) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.planningPreferences?.mealTypes || [];
+      const updated = current.includes(mealType)
+        ? current.filter(m => m !== mealType)
+        : [...current, mealType];
+      
+      await onUpdate({
+        planningPreferences: {
+          ...preferences.planningPreferences,
+          mealTypes: updated
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar tipos de comida');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.planningPreferences, onUpdate]);
+
+  // Update budget
+  const handleBudgetUpdate = useCallback(async (amount: number) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      await onUpdate({
+        budget: {
+          ...preferences.budget,
+          weekly: amount,
+          monthly: amount * 4
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar presupuesto');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.budget, onUpdate]);
+
+  // Update planning preferences
+  const handlePlanningUpdate = useCallback(async (field: string, value: any) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      await onUpdate({
+        planningPreferences: {
+          ...preferences.planningPreferences,
+          [field]: value
+        }
+      });
+    } catch (err) {
+      setError('Error al actualizar preferencias de planificación');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.planningPreferences, onUpdate]);
+
+  if (isLoading) {
+    return <CookingPreferencesSkeleton />;
+  }
 
   return (
     <div className="space-y-6">
-      {/* Cooking Skill & Time */}
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <ChefHat className="h-5 w-5" />
-                Habilidades y Tiempo
-              </CardTitle>
-              <CardDescription>
-                Tu nivel de cocina y tiempo disponible
-              </CardDescription>
-            </div>
-            {!isEditing && (
-              <Button onClick={() => setIsEditing(true)} variant="outline">
-                <Edit className="w-4 h-4 mr-2" />
-                Editar
-              </Button>
-            )}
+      {/* Error Alert */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Cooking Skill Level */}
+      <iOS26LiquidCard variant="medium" glow shimmer>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <ChefHat className="w-5 h-5 text-primary" />
+            <h3 className="text-lg font-semibold">Nivel de Habilidad</h3>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {isEditing ? (
-            <>
-              <div className="space-y-2">
-                <Label>Nivel de Cocina</Label>
-                <Select
-                  value={editedPreferences.cookingSkillLevel}
-                  onValueChange={(value) => setEditedPreferences({
-                    ...editedPreferences,
-                    cookingSkillLevel: value as UserPreferences['cookingSkillLevel']
-                  })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="beginner">Principiante</SelectItem>
-                    <SelectItem value="intermediate">Intermedio</SelectItem>
-                    <SelectItem value="advanced">Avanzado</SelectItem>
-                    <SelectItem value="expert">Experto</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="space-y-4">
-                <div>
-                  <Label>Tiempo disponible entre semana</Label>
-                  <div className="flex items-center gap-4 mt-2">
-                    <Slider
-                      value={[editedPreferences.cookingPreferences.timeAvailable.weekday]}
-                      onValueChange={([value]) => setEditedPreferences({
-                        ...editedPreferences,
-                        cookingPreferences: {
-                          ...editedPreferences.cookingPreferences,
-                          timeAvailable: {
-                            ...editedPreferences.cookingPreferences.timeAvailable,
-                            weekday: value
-                          }
+          
+          <RadioGroup
+            value={preferences.cookingSkillLevel || 'intermediate'}
+            onValueChange={handleSkillLevelUpdate}
+            disabled={isUpdating}
+          >
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {SKILL_LEVELS.map(({ value, label, description }) => {
+                const isActive = preferences.cookingSkillLevel === value;
+                
+                return (
+                  <motion.div
+                    key={value}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <Label
+                      htmlFor={value}
+                      className={`
+                        block p-4 rounded-xl border-2 cursor-pointer transition-all
+                        ${isActive 
+                          ? 'border-primary bg-primary/5' 
+                          : 'border-gray-200 hover:border-gray-300 dark:border-gray-700'
                         }
-                      })}
-                      min={15}
-                      max={120}
-                      step={15}
-                      className="flex-1"
-                    />
-                    <span className="w-20 text-right font-medium">
-                      {editedPreferences.cookingPreferences.timeAvailable.weekday} min
-                    </span>
-                  </div>
-                </div>
-
-                <div>
-                  <Label>Tiempo disponible fin de semana</Label>
-                  <div className="flex items-center gap-4 mt-2">
-                    <Slider
-                      value={[editedPreferences.cookingPreferences.timeAvailable.weekend]}
-                      onValueChange={([value]) => setEditedPreferences({
-                        ...editedPreferences,
-                        cookingPreferences: {
-                          ...editedPreferences.cookingPreferences,
-                          timeAvailable: {
-                            ...editedPreferences.cookingPreferences.timeAvailable,
-                            weekend: value
-                          }
-                        }
-                      })}
-                      min={15}
-                      max={180}
-                      step={15}
-                      className="flex-1"
-                    />
-                    <span className="w-20 text-right font-medium">
-                      {editedPreferences.cookingPreferences.timeAvailable.weekend} min
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="flex gap-2">
-                <Button onClick={handleSave}>
-                  <Save className="w-4 h-4 mr-2" />
-                  Guardar
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setEditedPreferences({
-                      cookingSkillLevel: preferences.cookingSkillLevel || 'intermediate',
-                      cookingPreferences: preferences.cookingPreferences || {
-                        timeAvailable: { weekday: 30, weekend: 60 },
-                        cookingMethods: [],
-                        kitchenTools: []
-                      },
-                      planningPreferences: preferences.planningPreferences || {
-                        planningHorizon: 'weekly',
-                        mealTypes: ['breakfast', 'lunch', 'dinner'],
-                        batchCooking: false,
-                        leftoverStrategy: 'incorporate',
-                        varietyPreference: 'medium'
-                      },
-                      budget: preferences.budget || {
-                        weekly: 0,
-                        monthly: 0,
-                        currency: 'USD'
-                      }
-                    });
-                    setIsEditing(false);
-                  }}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Nivel de cocina</span>
-                <Badge>
-                  {preferences.cookingSkillLevel === 'beginner' && 'Principiante'}
-                  {preferences.cookingSkillLevel === 'intermediate' && 'Intermedio'}
-                  {preferences.cookingSkillLevel === 'advanced' && 'Avanzado'}
-                  {preferences.cookingSkillLevel === 'expert' && 'Experto'}
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Tiempo entre semana</span>
-                <span className="font-medium">{preferences.cookingPreferences?.timeAvailable?.weekday || 30} min</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Tiempo fin de semana</span>
-                <span className="font-medium">{preferences.cookingPreferences?.timeAvailable?.weekend || 60} min</span>
-              </div>
+                        ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                      `}
+                    >
+                      <div className="flex items-start gap-3">
+                        <RadioGroupItem value={value} id={value} className="mt-1" />
+                        <div className="flex-1">
+                          <div className="font-medium">{label}</div>
+                          <p className="text-sm text-muted-foreground mt-0.5">
+                            {description}
+                          </p>
+                        </div>
+                        {isActive && (
+                          <Check className="w-5 h-5 text-primary" />
+                        )}
+                      </div>
+                    </Label>
+                  </motion.div>
+                );
+              })}
             </div>
-          )}
-        </CardContent>
-      </Card>
+          </RadioGroup>
+        </div>
+      </iOS26LiquidCard>
 
-      {/* Cooking Methods & Tools */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Utensils className="h-5 w-5" />
-            Métodos y Herramientas
-          </CardTitle>
-          <CardDescription>
-            Tus métodos de cocina preferidos y herramientas disponibles
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <div className="space-y-6">
-              <div>
-                <Label>Métodos de Cocina Preferidos</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
-                  {COOKING_METHODS.map(method => (
-                    <div key={method} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={method}
-                        checked={editedPreferences.cookingPreferences.cookingMethods.includes(method)}
-                        onCheckedChange={() => toggleCookingMethod(method)}
-                      />
-                      <Label
-                        htmlFor={method}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {method}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div>
-                <Label>Herramientas de Cocina Disponibles</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
-                  {KITCHEN_TOOLS.map(tool => (
-                    <div key={tool} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={tool}
-                        checked={editedPreferences.cookingPreferences.kitchenTools.includes(tool)}
-                        onCheckedChange={() => toggleKitchenTool(tool)}
-                      />
-                      <Label
-                        htmlFor={tool}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {tool}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <div>
-                <Label className="text-sm text-muted-foreground">Métodos de cocina</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {preferences.cookingPreferences?.cookingMethods?.map(method => (
-                    <Badge key={method} variant="secondary">
-                      {method}
-                    </Badge>
-                  ))}
-                  {(!preferences.cookingPreferences?.cookingMethods || preferences.cookingPreferences.cookingMethods.length === 0) && (
-                    <p className="text-sm text-muted-foreground">No has seleccionado métodos de cocina</p>
-                  )}
-                </div>
-              </div>
-              
-              <div>
-                <Label className="text-sm text-muted-foreground">Herramientas disponibles</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {preferences.cookingPreferences?.kitchenTools?.map(tool => (
-                    <Badge key={tool} variant="outline">
-                      {tool}
-                    </Badge>
-                  ))}
-                  {(!preferences.cookingPreferences?.kitchenTools || preferences.cookingPreferences.kitchenTools.length === 0) && (
-                    <p className="text-sm text-muted-foreground">No has indicado herramientas de cocina</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Planning Preferences */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Calendar className="h-5 w-5" />
-            Preferencias de Planificación
-          </CardTitle>
-          <CardDescription>
-            Cómo prefieres planificar tus comidas
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <div className="space-y-4">
-              <div className="grid gap-2">
-                <Label>Horizonte de Planificación</Label>
-                <Select
-                  value={editedPreferences.planningPreferences.planningHorizon}
-                  onValueChange={(value) => setEditedPreferences({
-                    ...editedPreferences,
-                    planningPreferences: {
-                      ...editedPreferences.planningPreferences,
-                      planningHorizon: value as any
-                    }
-                  })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="daily">Diario</SelectItem>
-                    <SelectItem value="weekly">Semanal</SelectItem>
-                    <SelectItem value="biweekly">Quincenal</SelectItem>
-                    <SelectItem value="monthly">Mensual</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div>
-                <Label>Tipos de Comida a Planificar</Label>
-                <div className="grid grid-cols-2 gap-3 mt-3">
-                  {MEAL_TYPES.map(mealType => (
-                    <div key={mealType.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={mealType.value}
-                        checked={editedPreferences.planningPreferences.mealTypes.includes(mealType.value as any)}
-                        onCheckedChange={() => toggleMealType(mealType.value)}
-                      />
-                      <Label
-                        htmlFor={mealType.value}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {mealType.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <Checkbox
-                  id="batch-cooking"
-                  checked={editedPreferences.planningPreferences.batchCooking}
-                  onCheckedChange={(checked) => setEditedPreferences({
-                    ...editedPreferences,
-                    planningPreferences: {
-                      ...editedPreferences.planningPreferences,
-                      batchCooking: !!checked
-                    }
-                  })}
-                />
-                <Label htmlFor="batch-cooking" className="cursor-pointer">
-                  Me gusta cocinar en lotes (batch cooking)
-                </Label>
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Estrategia con Sobras</Label>
-                <Select
-                  value={editedPreferences.planningPreferences.leftoverStrategy}
-                  onValueChange={(value) => setEditedPreferences({
-                    ...editedPreferences,
-                    planningPreferences: {
-                      ...editedPreferences.planningPreferences,
-                      leftoverStrategy: value as any
-                    }
-                  })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="incorporate">Incorporar en otras comidas</SelectItem>
-                    <SelectItem value="freeze">Congelar para después</SelectItem>
-                    <SelectItem value="avoid">Evitar sobras</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-
-              <div className="grid gap-2">
-                <Label>Preferencia de Variedad</Label>
-                <Select
-                  value={editedPreferences.planningPreferences.varietyPreference}
-                  onValueChange={(value) => setEditedPreferences({
-                    ...editedPreferences,
-                    planningPreferences: {
-                      ...editedPreferences.planningPreferences,
-                      varietyPreference: value as any
-                    }
-                  })}
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="high">Alta - Me gusta probar cosas nuevas</SelectItem>
-                    <SelectItem value="medium">Media - Balance entre nuevo y conocido</SelectItem>
-                    <SelectItem value="low">Baja - Prefiero lo conocido</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Planificación</span>
-                <Badge variant="secondary">
-                  {preferences.planningPreferences?.planningHorizon === 'daily' && 'Diaria'}
-                  {preferences.planningPreferences?.planningHorizon === 'weekly' && 'Semanal'}
-                  {preferences.planningPreferences?.planningHorizon === 'biweekly' && 'Quincenal'}
-                  {preferences.planningPreferences?.planningHorizon === 'monthly' && 'Mensual'}
-                </Badge>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Batch cooking</span>
-                <span className="font-medium">
-                  {preferences.planningPreferences?.batchCooking ? 'Sí' : 'No'}
+      {/* Time Available */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Clock className="w-5 h-5 text-blue-600" />
+            <h4 className="font-medium">Tiempo Disponible para Cocinar</h4>
+          </div>
+          
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label>Entre semana</Label>
+                <span className="text-sm font-medium">
+                  {preferences.cookingPreferences?.timeAvailable?.weekday || 30} min
                 </span>
               </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Estrategia con sobras</span>
-                <Badge variant="outline">
-                  {preferences.planningPreferences?.leftoverStrategy === 'incorporate' && 'Incorporar'}
-                  {preferences.planningPreferences?.leftoverStrategy === 'freeze' && 'Congelar'}
-                  {preferences.planningPreferences?.leftoverStrategy === 'avoid' && 'Evitar'}
-                </Badge>
+              <Slider
+                value={[preferences.cookingPreferences?.timeAvailable?.weekday || 30]}
+                onValueChange={([value]) => handleTimeUpdate('weekday', value)}
+                min={15}
+                max={120}
+                step={15}
+                disabled={isUpdating}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>15 min</span>
+                <span>2 horas</span>
               </div>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            
+            <div className="space-y-2">
+              <div className="flex justify-between items-center">
+                <Label>Fin de semana</Label>
+                <span className="text-sm font-medium">
+                  {preferences.cookingPreferences?.timeAvailable?.weekend || 60} min
+                </span>
+              </div>
+              <Slider
+                value={[preferences.cookingPreferences?.timeAvailable?.weekend || 60]}
+                onValueChange={([value]) => handleTimeUpdate('weekend', value)}
+                min={15}
+                max={180}
+                step={15}
+                disabled={isUpdating}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>15 min</span>
+                <span>3 horas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Cooking Methods */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Utensils className="w-5 h-5 text-green-600" />
+            <h4 className="font-medium">Métodos de Cocina Preferidos</h4>
+          </div>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {COOKING_METHODS.map(({ value, icon: Icon, color }) => {
+              const isActive = preferences.cookingPreferences?.cookingMethods?.includes(value);
+              
+              return (
+                <motion.button
+                  key={value}
+                  onClick={() => toggleCookingMethod(value)}
+                  disabled={isUpdating}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`
+                    p-3 rounded-lg border transition-all flex items-center gap-2
+                    ${isActive 
+                      ? 'border-primary bg-primary/10' 
+                      : 'border-gray-200 hover:border-gray-300 dark:border-gray-700'
+                    }
+                    ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                  `}
+                >
+                  <Icon className={`w-4 h-4 ${isActive ? 'text-primary' : color}`} />
+                  <span className={`text-sm font-medium ${isActive ? 'text-primary' : ''}`}>
+                    {value}
+                  </span>
+                  {isActive && <Check className="w-4 h-4 text-primary ml-auto" />}
+                </motion.button>
+              );
+            })}
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Kitchen Tools */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Package className="w-5 h-5 text-purple-600" />
+            <h4 className="font-medium">Herramientas de Cocina</h4>
+          </div>
+          
+          <div className="flex flex-wrap gap-2">
+            <AnimatePresence mode="popLayout">
+              {KITCHEN_TOOLS.map((tool) => {
+                const isActive = preferences.cookingPreferences?.kitchenTools?.includes(tool);
+                
+                return (
+                  <motion.div
+                    key={tool}
+                    layout
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Badge
+                      variant={isActive ? "default" : "outline"}
+                      className={`
+                        cursor-pointer transition-all
+                        ${isActive ? 'bg-purple-500 hover:bg-purple-600' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}
+                        ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                      `}
+                      onClick={() => !isUpdating && toggleKitchenTool(tool)}
+                    >
+                      {tool}
+                      {isActive && <Check className="w-3 h-3 ml-1" />}
+                    </Badge>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        </div>
+      </iOS26LiquidCard>
 
       {/* Budget */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Presupuesto</CardTitle>
-          <CardDescription>
-            Tu presupuesto para comidas y compras
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <div className="space-y-4">
-              <div className="grid gap-2">
-                <Label>Presupuesto Semanal</Label>
-                <div className="flex gap-2">
-                  <span className="flex items-center px-3 text-sm text-muted-foreground">$</span>
-                  <Input
-                    type="number"
-                    value={editedPreferences.budget.weekly}
-                    onChange={(e) => setEditedPreferences({
-                      ...editedPreferences,
-                      budget: {
-                        ...editedPreferences.budget,
-                        weekly: parseFloat(e.target.value) || 0
-                      }
-                    })}
-                  />
-                </div>
-              </div>
-              
-              <div className="grid gap-2">
-                <Label>Presupuesto Mensual</Label>
-                <div className="flex gap-2">
-                  <span className="flex items-center px-3 text-sm text-muted-foreground">$</span>
-                  <Input
-                    type="number"
-                    value={editedPreferences.budget.monthly}
-                    onChange={(e) => setEditedPreferences({
-                      ...editedPreferences,
-                      budget: {
-                        ...editedPreferences.budget,
-                        monthly: parseFloat(e.target.value) || 0
-                      }
-                    })}
-                  />
-                </div>
-              </div>
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <DollarSign className="w-5 h-5 text-green-600" />
+            <h4 className="font-medium">Presupuesto Semanal</h4>
+          </div>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between items-center">
+              <Label>Presupuesto para comida</Label>
+              <span className="text-lg font-semibold">
+                ${preferences.budget?.weekly || 100}
+              </span>
             </div>
-          ) : (
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Presupuesto semanal</span>
-                <span className="font-medium">${preferences.budget?.weekly || 0}</span>
-              </div>
-              <div className="flex items-center justify-between">
-                <span className="text-sm text-muted-foreground">Presupuesto mensual</span>
-                <span className="font-medium">${preferences.budget?.monthly || 0}</span>
-              </div>
+            <Slider
+              value={[preferences.budget?.weekly || 100]}
+              onValueChange={([value]) => handleBudgetUpdate(value)}
+              min={50}
+              max={500}
+              step={10}
+              disabled={isUpdating}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>$50</span>
+              <span>$500</span>
             </div>
-          )}
-        </CardContent>
-      </Card>
+            <p className="text-sm text-muted-foreground mt-2">
+              Aproximadamente ${Math.round((preferences.budget?.weekly || 100) / 7)} por día
+            </p>
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Planning Preferences */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-5 h-5 text-amber-600" />
+            <h4 className="font-medium">Preferencias de Planificación</h4>
+          </div>
+          
+          {/* Planning Horizon */}
+          <div className="space-y-2">
+            <Label>Horizonte de planificación</Label>
+            <Select
+              value={preferences.planningPreferences?.planningHorizon || 'weekly'}
+              onValueChange={(value) => handlePlanningUpdate('planningHorizon', value)}
+              disabled={isUpdating}
+            >
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Diario</SelectItem>
+                <SelectItem value="weekly">Semanal</SelectItem>
+                <SelectItem value="biweekly">Quincenal</SelectItem>
+                <SelectItem value="monthly">Mensual</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+          
+          {/* Meal Types */}
+          <div className="space-y-2">
+            <Label>Tipos de comida a planificar</Label>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {MEAL_TYPES.map(({ value, label }) => {
+                const isActive = preferences.planningPreferences?.mealTypes?.includes(value);
+                
+                return (
+                  <motion.button
+                    key={value}
+                    onClick={() => toggleMealType(value)}
+                    disabled={isUpdating}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className={`
+                      p-2 rounded border text-sm transition-all
+                      ${isActive 
+                        ? 'border-amber-500 bg-amber-50 dark:bg-amber-950 text-amber-700 dark:text-amber-300' 
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700'
+                      }
+                      ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                    `}
+                  >
+                    {label}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Additional Options */}
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <div>
+                <Label htmlFor="batch">Cocina por lotes</Label>
+                <p className="text-sm text-muted-foreground">
+                  Preparar varias porciones a la vez
+                </p>
+              </div>
+              <Switch
+                id="batch"
+                checked={preferences.planningPreferences?.batchCooking || false}
+                onCheckedChange={(checked) => handlePlanningUpdate('batchCooking', checked)}
+                disabled={isUpdating}
+              />
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Estrategia para sobras</Label>
+              <Select
+                value={preferences.planningPreferences?.leftoverStrategy || 'incorporate'}
+                onValueChange={(value) => handlePlanningUpdate('leftoverStrategy', value)}
+                disabled={isUpdating}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="incorporate">Incorporar en próximas comidas</SelectItem>
+                  <SelectItem value="freeze">Congelar para después</SelectItem>
+                  <SelectItem value="avoid">Evitar sobras</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            
+            <div className="space-y-2">
+              <Label>Preferencia de variedad</Label>
+              <Select
+                value={preferences.planningPreferences?.varietyPreference || 'medium'}
+                onValueChange={(value) => handlePlanningUpdate('varietyPreference', value)}
+                disabled={isUpdating}
+              >
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="high">Alta - Muchas recetas diferentes</SelectItem>
+                  <SelectItem value="medium">Media - Balance entre variedad y repetición</SelectItem>
+                  <SelectItem value="low">Baja - Preferir repetir favoritos</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Save Indicator */}
+      <AnimatePresence>
+        {isUpdating && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
+            </motion.div>
+            Guardando cambios...
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
-}
+};
+
+CookingPreferences.displayName = 'CookingPreferences';
+

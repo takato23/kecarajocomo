@@ -591,6 +591,22 @@ export class CacheKeyGenerator {
   static temporary(key: string): string {
     return `temp:${key}`;
   }
+
+  static holisticPlan(userId: string, constraintsHash: string, optionsHash: string): string {
+    return `holistic-plan:${userId}:${constraintsHash}:${optionsHash}`;
+  }
+
+  static geminiAnalysis(analysisType: string, contextHash: string): string {
+    return `gemini:${analysisType}:${contextHash}`;
+  }
+
+  static learningInsights(userId: string, planId: string): string {
+    return `learning:insights:${userId}:${planId}`;
+  }
+
+  static externalFactors(factorType: string, date: string): string {
+    return `external:${factorType}:${date}`;
+  }
 }
 
 /**

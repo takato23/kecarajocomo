@@ -12,10 +12,6 @@ import { VoiceModal } from '@/components/voice/VoiceModal';
 import { DiscreteVoiceButton } from '@/components/voice/DiscreteVoiceButton';
 import { INGREDIENT_CATEGORIES } from '@/types/pantry';
 
-import { useShopping, useShoppingActions } from '@/store';
-import { useUser, useUserActions } from '@/store';
-import { usePantry, usePantryActions } from '@/store';
-
 // Lazy load the receipt scanner
 const ReceiptScanner = lazy(() => 
   import('@/components/pantry/ReceiptScanner').then(module => ({ default: module.ReceiptScanner }))

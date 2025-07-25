@@ -15,18 +15,15 @@ import {
   Package,
   Settings,
   LogOut,
-  Calendar,
-  Sun,
-  Moon
+  Calendar
 } from 'lucide-react';
 
 import { cn } from '@/lib/utils';
-
-import { CommandPalette } from './CommandPalette';
 import { CompactDarkModeToggle } from '@/components/ui/DarkModeToggle';
-
 import { useUser } from '@/store';
 import { useTheme } from '@/contexts/ThemeContext';
+
+import { CommandPalette } from './CommandPalette';
 
 
 interface NavItem {

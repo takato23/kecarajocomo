@@ -6,11 +6,10 @@ import {
   Mic, 
   MicOff, 
   Square, 
-  Volume2, 
   AlertCircle,
-  Check,
   Loader2
 } from 'lucide-react';
+
 import { useVoiceRecognition } from '@/hooks/useVoiceRecognition';
 import { parseMultipleIngredients } from '@/lib/pantry/parser';
 import { ParsedIngredientInput } from '@/types/pantry';

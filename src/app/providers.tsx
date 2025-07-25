@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { ProfileProvider } from "@/contexts/ProfileContext";
-import { iOS26Provider } from "@/components/ios26/iOS26Provider";
 import { ThemeProvider } from "@/contexts/ThemeContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {

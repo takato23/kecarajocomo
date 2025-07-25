@@ -53,7 +53,7 @@ export default function VoiceDemo() {
                 key={index}
                 className="px-3 py-2 bg-gray-100 rounded-lg text-sm text-gray-700"
               >
-                "{example}"
+                &quot;{example}&quot;
               </div>
             ))}
           </div>
@@ -77,7 +77,7 @@ export default function VoiceDemo() {
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
               Transcripción:
             </h3>
-            <p className="text-gray-700 italic">"{rawTranscript}"</p>
+            <p className="text-gray-700 italic">&quot;{rawTranscript}&quot;</p>
           </motion.div>
         )}
 

@@ -1,25 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Heart,
+  Apple, 
+  Cookie, 
+  Wheat, 
+  Fish, 
+  Leaf, 
   AlertCircle,
-  Plus,
   X,
-  Save,
-  Utensils,
-  Users
+  Check,
+  ChevronRight
 } from 'lucide-react';
-import { toast } from 'sonner';
 
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { UserPreferences, DietaryRestriction, Allergy, HouseholdMember } from '@/types/profile';
-
+import { Progress } from '@/components/ui/progress';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
+import type { 
+  UserPreferences, 
+  DietaryRestriction, 
+  Allergy,
+  HouseholdMember 
+} from '@/types/profile';
 
 interface DietaryPreferencesProps {
   preferences: UserPreferences;
@@ -27,395 +33,463 @@ interface DietaryPreferencesProps {
   onUpdate: (updates: Partial<UserPreferences>) => Promise<void>;
 }
 
-const DIETARY_RESTRICTIONS: { value: DietaryRestriction; label: string }[] = [
-  { value: 'vegetarian', label: 'Vegetariano' },
-  { value: 'vegan', label: 'Vegano' },
-  { value: 'gluten_free', label: 'Sin gluten' },
-  { value: 'dairy_free', label: 'Sin lácteos' },
-  { value: 'nut_free', label: 'Sin frutos secos' },
-  { value: 'shellfish_free', label: 'Sin mariscos' },
-  { value: 'egg_free', label: 'Sin huevo' },
-  { value: 'soy_free', label: 'Sin soja' },
-  { value: 'pescatarian', label: 'Pescatariano' },
-  { value: 'paleo', label: 'Paleo' },
-  { value: 'keto', label: 'Keto' },
-  { value: 'low_carb', label: 'Bajo en carbohidratos' },
-  { value: 'low_sodium', label: 'Bajo en sodio' },
-  { value: 'halal', label: 'Halal' },
-  { value: 'kosher', label: 'Kosher' }
+// Dietary restriction options with icons
+const DIETARY_OPTIONS: Array<{
+  value: DietaryRestriction;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  description: string;
+}> = [
+  { value: 'vegetarian', label: 'Vegetariano', icon: Leaf, description: 'Sin carne ni pescado' },
+  { value: 'vegan', label: 'Vegano', icon: Leaf, description: 'Sin productos animales' },
+  { value: 'gluten_free', label: 'Sin gluten', icon: Wheat, description: 'Apto para celíacos' },
+  { value: 'dairy_free', label: 'Sin lácteos', icon: Cookie, description: 'Sin leche ni derivados' },
+  { value: 'pescatarian', label: 'Pescetariano', icon: Fish, description: 'Vegetariano + pescado' },
+  { value: 'keto', label: 'Keto', icon: Apple, description: 'Baja en carbohidratos' },
+  { value: 'paleo', label: 'Paleo', icon: Apple, description: 'Dieta paleolítica' },
+  { value: 'low_carb', label: 'Bajo en carbohidratos', icon: Wheat, description: 'Reducido en carbohidratos' },
+  { value: 'low_sodium', label: 'Bajo en sodio', icon: Check, description: 'Reducido en sal' },
+  { value: 'halal', label: 'Halal', icon: Check, description: 'Certificado halal' },
+  { value: 'kosher', label: 'Kosher', icon: Check, description: 'Certificado kosher' },
 ];
 
-const COMMON_ALLERGIES: { value: Allergy; label: string }[] = [
-  { value: 'peanuts', label: 'Cacahuetes' },
-  { value: 'tree_nuts', label: 'Frutos secos' },
-  { value: 'milk', label: 'Leche' },
-  { value: 'eggs', label: 'Huevos' },
-  { value: 'wheat', label: 'Trigo' },
-  { value: 'soy', label: 'Soja' },
-  { value: 'fish', label: 'Pescado' },
-  { value: 'shellfish', label: 'Mariscos' },
-  { value: 'sesame', label: 'Sésamo' }
+// Allergy options
+const ALLERGY_OPTIONS: Array<{
+  value: Allergy;
+  label: string;
+  severity?: 'low' | 'medium' | 'high';
+}> = [
+  { value: 'peanuts', label: 'Cacahuetes', severity: 'high' },
+  { value: 'tree_nuts', label: 'Frutos secos', severity: 'high' },
+  { value: 'milk', label: 'Leche', severity: 'medium' },
+  { value: 'eggs', label: 'Huevos', severity: 'medium' },
+  { value: 'wheat', label: 'Trigo', severity: 'medium' },
+  { value: 'soy', label: 'Soja', severity: 'low' },
+  { value: 'fish', label: 'Pescado', severity: 'high' },
+  { value: 'shellfish', label: 'Mariscos', severity: 'high' },
+  { value: 'sesame', label: 'Sésamo', severity: 'low' },
 ];
 
+// Cuisine preferences
 const CUISINE_OPTIONS = [
-  'Mexicana', 'Italiana', 'China', 'Japonesa', 'India', 
-  'Mediterránea', 'Francesa', 'Tailandesa', 'Española', 
-  'Griega', 'Coreana', 'Vietnamita', 'Peruana', 'Argentina'
+  'Mediterránea', 'Italiana', 'Mexicana', 'Asiática', 'India',
+  'Japonesa', 'China', 'Tailandesa', 'Española', 'Francesa',
+  'Griega', 'Árabe', 'Peruana', 'Argentina', 'Brasileña'
 ];
 
-export function DietaryPreferences({ preferences, householdMembers, onUpdate }: DietaryPreferencesProps) {
-  const [isEditing, setIsEditing] = useState(false);
-  const [editedPreferences, setEditedPreferences] = useState({
-    dietaryRestrictions: preferences.dietaryRestrictions || [],
-    allergies: preferences.allergies || [],
-    cuisinePreferences: preferences.cuisinePreferences || [],
-    nutritionGoals: preferences.nutritionGoals || []
-  });
-  const [newGoal, setNewGoal] = useState('');
+// Loading skeleton component
+const DietaryPreferencesSkeleton = () => (
+  <div className="space-y-6">
+    <Skeleton className="h-32 w-full rounded-2xl" />
+    <Skeleton className="h-64 w-full rounded-2xl" />
+    <Skeleton className="h-48 w-full rounded-2xl" />
+    <Skeleton className="h-56 w-full rounded-2xl" />
+  </div>
+);
 
-  const handleSave = async () => {
+export const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({
+  preferences,
+  householdMembers,
+  onUpdate
+}) => {
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [showAllCuisines, setShowAllCuisines] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Calculate completion percentage
+  const completionPercentage = useMemo(() => {
+    let completed = 0;
+    const total = 4;
+    
+    if (preferences.dietaryRestrictions?.length > 0) completed++;
+    if (preferences.allergies?.length > 0) completed++;
+    if (preferences.cuisinePreferences?.length > 0) completed++;
+    if (preferences.nutritionGoals?.length > 0) completed++;
+    
+    return Math.round((completed / total) * 100);
+  }, [preferences]);
+
+  // Aggregate household dietary needs
+  const householdDietaryNeeds = useMemo(() => {
+    const allRestrictions = new Set(preferences.dietaryRestrictions || []);
+    const allAllergies = new Set(preferences.allergies || []);
+    
+    householdMembers.forEach(member => {
+      member.dietaryRestrictions?.forEach(r => allRestrictions.add(r));
+      member.allergies?.forEach(a => allAllergies.add(a));
+    });
+    
+    return {
+      restrictions: Array.from(allRestrictions),
+      allergies: Array.from(allAllergies)
+    };
+  }, [preferences, householdMembers]);
+
+  // Handle dietary restriction toggle
+  const handleRestrictionToggle = useCallback(async (restriction: DietaryRestriction) => {
+    setIsUpdating(true);
+    setError(null);
     try {
-      await onUpdate(editedPreferences);
-      setIsEditing(false);
-      toast.success('Preferencias dietéticas actualizadas');
-    } catch (error: unknown) {
-      toast.error('Error al guardar las preferencias');
+      const current = preferences.dietaryRestrictions || [];
+      const updated = current.includes(restriction)
+        ? current.filter(r => r !== restriction)
+        : [...current, restriction];
+      
+      await onUpdate({ dietaryRestrictions: updated });
+    } catch (err) {
+      setError('Error al actualizar restricciones dietéticas');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
     }
-  };
+  }, [preferences.dietaryRestrictions, onUpdate]);
 
-  const toggleDietaryRestriction = (restriction: DietaryRestriction) => {
-    const current = editedPreferences.dietaryRestrictions;
-    const updated = current.includes(restriction)
-      ? current.filter(r => r !== restriction)
-      : [...current, restriction];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      dietaryRestrictions: updated
-    });
-  };
-
-  const toggleAllergy = (allergy: Allergy) => {
-    const current = editedPreferences.allergies;
-    const updated = current.includes(allergy)
-      ? current.filter(a => a !== allergy)
-      : [...current, allergy];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      allergies: updated
-    });
-  };
-
-  const toggleCuisine = (cuisine: string) => {
-    const current = editedPreferences.cuisinePreferences;
-    const updated = current.includes(cuisine)
-      ? current.filter(c => c !== cuisine)
-      : [...current, cuisine];
-    
-    setEditedPreferences({
-      ...editedPreferences,
-      cuisinePreferences: updated
-    });
-  };
-
-  const addNutritionGoal = () => {
-    if (newGoal.trim()) {
-      setEditedPreferences({
-        ...editedPreferences,
-        nutritionGoals: [...editedPreferences.nutritionGoals, newGoal.trim()]
-      });
-      setNewGoal('');
+  // Handle allergy toggle
+  const handleAllergyToggle = useCallback(async (allergy: Allergy) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.allergies || [];
+      const updated = current.includes(allergy)
+        ? current.filter(a => a !== allergy)
+        : [...current, allergy];
+      
+      await onUpdate({ allergies: updated });
+    } catch (err) {
+      setError('Error al actualizar alergias');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
     }
-  };
+  }, [preferences.allergies, onUpdate]);
 
-  const removeNutritionGoal = (goal: string) => {
-    setEditedPreferences({
-      ...editedPreferences,
-      nutritionGoals: editedPreferences.nutritionGoals.filter(g => g !== goal)
-    });
-  };
+  // Handle cuisine preference toggle
+  const handleCuisineToggle = useCallback(async (cuisine: string) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.cuisinePreferences || [];
+      const updated = current.includes(cuisine)
+        ? current.filter(c => c !== cuisine)
+        : [...current, cuisine];
+      
+      await onUpdate({ cuisinePreferences: updated });
+    } catch (err) {
+      setError('Error al actualizar preferencias de cocina');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.cuisinePreferences, onUpdate]);
 
-  // Get all dietary restrictions including household members
-  const allDietaryRestrictions = new Set([
-    ...preferences.dietaryRestrictions,
-    ...householdMembers.flatMap(m => m.dietaryRestrictions || [])
-  ]);
+  // Handle nutrition goal toggle
+  const handleNutritionGoalToggle = useCallback(async (goal: string) => {
+    setIsUpdating(true);
+    setError(null);
+    try {
+      const current = preferences.nutritionGoals || [];
+      const updated = current.includes(goal)
+        ? current.filter(g => g !== goal)
+        : [...current, goal];
+      
+      await onUpdate({ nutritionGoals: updated });
+    } catch (err) {
+      setError('Error al actualizar objetivos nutricionales');
+      console.error(err);
+    } finally {
+      setIsUpdating(false);
+    }
+  }, [preferences.nutritionGoals, onUpdate]);
 
-  const allAllergies = new Set([
-    ...preferences.allergies,
-    ...householdMembers.flatMap(m => m.allergies || [])
-  ]);
+  if (isLoading) {
+    return <DietaryPreferencesSkeleton />;
+  }
 
   return (
     <div className="space-y-6">
-      {/* Combined Household Summary */}
-      {householdMembers.length > 0 && (
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Users className="h-5 w-5" />
-              Resumen del Hogar
-            </CardTitle>
-            <CardDescription>
-              Restricciones y alergias combinadas de todos los miembros
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label className="text-sm text-muted-foreground">Todas las restricciones dietéticas</Label>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {Array.from(allDietaryRestrictions).map(restriction => (
-                  <Badge key={restriction} variant="secondary">
-                    {DIETARY_RESTRICTIONS.find(r => r.value === restriction)?.label || restriction}
-                  </Badge>
-                ))}
-                {allDietaryRestrictions.size === 0 && (
-                  <p className="text-sm text-muted-foreground">No hay restricciones dietéticas</p>
-                )}
-              </div>
-            </div>
-            
-            <div>
-              <Label className="text-sm text-muted-foreground">Todas las alergias</Label>
-              <div className="flex flex-wrap gap-2 mt-2">
-                {Array.from(allAllergies).map(allergy => (
-                  <Badge key={allergy} variant="destructive" className="flex items-center gap-1">
-                    <AlertCircle className="h-3 w-3" />
-                    {COMMON_ALLERGIES.find(a => a.value === allergy)?.label || allergy}
-                  </Badge>
-                ))}
-                {allAllergies.size === 0 && (
-                  <p className="text-sm text-muted-foreground">No hay alergias registradas</p>
-                )}
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      )}
+      {/* Error Alert */}
+      <AnimatePresence>
+        {error && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+          >
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Personal Dietary Preferences */}
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="flex items-center gap-2">
-                <Heart className="h-5 w-5" />
-                Preferencias Dietéticas Personales
-              </CardTitle>
-              <CardDescription>
-                Tus restricciones dietéticas y alergias personales
-              </CardDescription>
-            </div>
-            {!isEditing && (
-              <Button onClick={() => setIsEditing(true)} variant="outline">
-                Editar
-              </Button>
-            )}
+      {/* Progress Overview */}
+      <iOS26LiquidCard variant="medium" glow shimmer>
+        <div className="space-y-4">
+          <div>
+            <h3 className="text-lg font-semibold">Preferencias Dietéticas</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Personaliza tu experiencia culinaria según tus necesidades
+            </p>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {isEditing ? (
-            <>
-              {/* Dietary Restrictions */}
-              <div>
-                <Label>Restricciones Dietéticas</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
-                  {DIETARY_RESTRICTIONS.map(restriction => (
-                    <div key={restriction.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={restriction.value}
-                        checked={editedPreferences.dietaryRestrictions.includes(restriction.value)}
-                        onCheckedChange={() => toggleDietaryRestriction(restriction.value)}
-                      />
-                      <Label
-                        htmlFor={restriction.value}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {restriction.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
+          
+          <div className="space-y-2">
+            <div className="flex justify-between text-sm">
+              <span>Completado</span>
+              <span className="font-medium">{completionPercentage}%</span>
+            </div>
+            <Progress value={completionPercentage} className="h-2" />
+          </div>
 
-              {/* Allergies */}
-              <div>
-                <Label>Alergias</Label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-3">
-                  {COMMON_ALLERGIES.map(allergy => (
-                    <div key={allergy.value} className="flex items-center space-x-2">
-                      <Checkbox
-                        id={allergy.value}
-                        checked={editedPreferences.allergies.includes(allergy.value)}
-                        onCheckedChange={() => toggleAllergy(allergy.value)}
-                      />
-                      <Label
-                        htmlFor={allergy.value}
-                        className="text-sm font-normal cursor-pointer"
-                      >
-                        {allergy.label}
-                      </Label>
-                    </div>
-                  ))}
-                </div>
-              </div>
-
-              {/* Save/Cancel buttons */}
-              <div className="flex gap-2">
-                <Button onClick={handleSave}>
-                  <Save className="w-4 h-4 mr-2" />
-                  Guardar
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setEditedPreferences({
-                      dietaryRestrictions: preferences.dietaryRestrictions || [],
-                      allergies: preferences.allergies || [],
-                      cuisinePreferences: preferences.cuisinePreferences || [],
-                      nutritionGoals: preferences.nutritionGoals || []
-                    });
-                    setIsEditing(false);
-                  }}
-                >
-                  Cancelar
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              {/* Display current preferences */}
-              <div>
-                <Label className="text-sm text-muted-foreground">Restricciones Dietéticas</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {preferences.dietaryRestrictions.map(restriction => (
-                    <Badge key={restriction} variant="secondary">
-                      {DIETARY_RESTRICTIONS.find(r => r.value === restriction)?.label || restriction}
-                    </Badge>
-                  ))}
-                  {preferences.dietaryRestrictions.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No tienes restricciones dietéticas</p>
-                  )}
-                </div>
-              </div>
-
-              <div>
-                <Label className="text-sm text-muted-foreground">Alergias</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {preferences.allergies.map(allergy => (
-                    <Badge key={allergy} variant="destructive" className="flex items-center gap-1">
-                      <AlertCircle className="h-3 w-3" />
-                      {COMMON_ALLERGIES.find(a => a.value === allergy)?.label || allergy}
-                    </Badge>
-                  ))}
-                  {preferences.allergies.length === 0 && (
-                    <p className="text-sm text-muted-foreground">No tienes alergias registradas</p>
-                  )}
-                </div>
-              </div>
-            </>
+          {householdDietaryNeeds.restrictions.length > 0 && (
+            <Alert>
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                Tu hogar tiene {householdDietaryNeeds.restrictions.length} restricciones dietéticas
+                y {householdDietaryNeeds.allergies.length} alergias combinadas.
+              </AlertDescription>
+            </Alert>
           )}
-        </CardContent>
-      </Card>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Dietary Restrictions */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <h4 className="font-medium flex items-center gap-2">
+            <Leaf className="w-5 h-5 text-green-600" />
+            Restricciones Dietéticas
+          </h4>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {DIETARY_OPTIONS.map(({ value, label, icon: Icon, description }) => {
+              const isActive = preferences.dietaryRestrictions?.includes(value);
+              const isHouseholdNeed = householdDietaryNeeds.restrictions.includes(value);
+              
+              return (
+                <motion.div
+                  key={value}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <button
+                    onClick={() => handleRestrictionToggle(value)}
+                    disabled={isUpdating}
+                    className={`
+                      w-full p-4 rounded-xl border-2 transition-all
+                      ${isActive 
+                        ? 'border-green-500 bg-green-50 dark:bg-green-950' 
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700'
+                      }
+                      ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                    `}
+                  >
+                    <div className="flex items-start gap-3">
+                      <Icon className={`w-5 h-5 mt-0.5 ${isActive ? 'text-green-600' : 'text-gray-500'}`} />
+                      <div className="flex-1 text-left">
+                        <div className="font-medium flex items-center gap-2">
+                          {label}
+                          {isHouseholdNeed && !isActive && (
+                            <Badge variant="outline" className="text-xs">
+                              Familiar
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          {description}
+                        </p>
+                      </div>
+                      {isActive && (
+                        <Check className="w-5 h-5 text-green-600" />
+                      )}
+                    </div>
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Allergies */}
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <h4 className="font-medium flex items-center gap-2">
+            <AlertCircle className="w-5 h-5 text-red-600" />
+            Alergias
+          </h4>
+          
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+            {ALLERGY_OPTIONS.map(({ value, label, severity }) => {
+              const isActive = preferences.allergies?.includes(value);
+              const isHouseholdNeed = householdDietaryNeeds.allergies.includes(value);
+              
+              return (
+                <motion.div
+                  key={value}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <button
+                    onClick={() => handleAllergyToggle(value)}
+                    disabled={isUpdating}
+                    className={`
+                      w-full p-3 rounded-lg border transition-all
+                      ${isActive 
+                        ? 'border-red-500 bg-red-50 dark:bg-red-950' 
+                        : 'border-gray-200 hover:border-gray-300 dark:border-gray-700'
+                      }
+                      ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                    `}
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className={`text-sm font-medium ${isActive ? 'text-red-700 dark:text-red-300' : ''}`}>
+                        {label}
+                      </span>
+                      {(isActive || isHouseholdNeed) && (
+                        <Badge 
+                          variant={isActive ? "destructive" : "outline"} 
+                          className="text-xs"
+                        >
+                          {isActive ? '✓' : 'Familiar'}
+                        </Badge>
+                      )}
+                    </div>
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </iOS26LiquidCard>
 
       {/* Cuisine Preferences */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Utensils className="h-5 w-5" />
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <h4 className="font-medium flex items-center gap-2">
+            <Cookie className="w-5 h-5 text-orange-600" />
             Cocinas Favoritas
-          </CardTitle>
-          <CardDescription>
-            Selecciona tus tipos de cocina preferidos
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <div className="space-y-4">
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {CUISINE_OPTIONS.map(cuisine => (
-                  <div key={cuisine} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={cuisine}
-                      checked={editedPreferences.cuisinePreferences.includes(cuisine)}
-                      onCheckedChange={() => toggleCuisine(cuisine)}
-                    />
-                    <Label
-                      htmlFor={cuisine}
-                      className="text-sm font-normal cursor-pointer"
+          </h4>
+          
+          <div className="flex flex-wrap gap-2">
+            <AnimatePresence mode="popLayout">
+              {(showAllCuisines ? CUISINE_OPTIONS : CUISINE_OPTIONS.slice(0, 8)).map((cuisine) => {
+                const isActive = preferences.cuisinePreferences?.includes(cuisine);
+                
+                return (
+                  <motion.div
+                    key={cuisine}
+                    layout
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.8 }}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Badge
+                      variant={isActive ? "default" : "outline"}
+                      className={`
+                        cursor-pointer transition-all
+                        ${isActive ? 'bg-orange-500 hover:bg-orange-600' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}
+                        ${isUpdating ? 'opacity-50 cursor-not-allowed' : ''}
+                      `}
+                      onClick={() => !isUpdating && handleCuisineToggle(cuisine)}
                     >
                       {cuisine}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              {preferences.cuisinePreferences.map(cuisine => (
-                <Badge key={cuisine} variant="outline">
-                  {cuisine}
+                      {isActive && <X className="w-3 h-3 ml-1" />}
+                    </Badge>
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
+            
+            {!showAllCuisines && CUISINE_OPTIONS.length > 8 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.1 }}
+              >
+                <Badge
+                  variant="outline"
+                  className="cursor-pointer hover:bg-gray-100 dark:hover:bg-gray-800"
+                  onClick={() => setShowAllCuisines(true)}
+                >
+                  +{CUISINE_OPTIONS.length - 8} más
+                  <ChevronRight className="w-3 h-3 ml-1" />
                 </Badge>
-              ))}
-              {preferences.cuisinePreferences.length === 0 && (
-                <p className="text-sm text-muted-foreground">No has seleccionado cocinas favoritas</p>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+              </motion.div>
+            )}
+          </div>
+        </div>
+      </iOS26LiquidCard>
 
       {/* Nutrition Goals */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Objetivos Nutricionales</CardTitle>
-          <CardDescription>
-            Define tus objetivos de salud y nutrición
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isEditing ? (
-            <div className="space-y-4">
-              <div className="flex flex-wrap gap-2">
-                {editedPreferences.nutritionGoals.map(goal => (
-                  <Badge key={goal} variant="secondary" className="flex items-center gap-1">
-                    {goal}
-                    <button
-                      onClick={() => removeNutritionGoal(goal)}
-                      className="ml-1 hover:text-destructive"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                ))}
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  placeholder="Agregar objetivo nutricional..."
-                  value={newGoal}
-                  onChange={(e) => setNewGoal(e.target.value)}
-                  onKeyPress={(e) => e.key === 'Enter' && addNutritionGoal()}
-                />
-                <Button onClick={addNutritionGoal} size="icon">
-                  <Plus className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          ) : (
-            <div className="flex flex-wrap gap-2">
-              {preferences.nutritionGoals?.map(goal => (
-                <Badge key={goal} variant="secondary">
-                  {goal}
-                </Badge>
-              ))}
-              {(!preferences.nutritionGoals || preferences.nutritionGoals.length === 0) && (
-                <p className="text-sm text-muted-foreground">No has definido objetivos nutricionales</p>
-              )}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <iOS26LiquidCard variant="subtle" morph>
+        <div className="space-y-4">
+          <h4 className="font-medium flex items-center gap-2">
+            <Apple className="w-5 h-5 text-purple-600" />
+            Objetivos Nutricionales
+          </h4>
+          
+          <div className="space-y-3">
+            {[
+              { id: 'high_protein', label: 'Alto en proteína', description: 'Para desarrollo muscular' },
+              { id: 'low_calorie', label: 'Bajo en calorías', description: 'Control de peso' },
+              { id: 'high_fiber', label: 'Alto en fibra', description: 'Salud digestiva' },
+              { id: 'balanced', label: 'Balanceado', description: 'Nutrición equilibrada' },
+              { id: 'heart_healthy', label: 'Saludable para el corazón', description: 'Bajo en grasas saturadas' },
+            ].map(({ id, label, description }) => {
+              const isActive = preferences.nutritionGoals?.includes(id);
+              
+              return (
+                <motion.div 
+                  key={id}
+                  whileHover={{ x: 4 }}
+                  className="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors"
+                >
+                  <div className="flex-1">
+                    <Label htmlFor={id} className="font-medium cursor-pointer">
+                      {label}
+                    </Label>
+                    <p className="text-sm text-muted-foreground">
+                      {description}
+                    </p>
+                  </div>
+                  <Switch
+                    id={id}
+                    checked={isActive}
+                    onCheckedChange={() => handleNutritionGoalToggle(id)}
+                    disabled={isUpdating}
+                  />
+                </motion.div>
+              );
+            })}
+          </div>
+        </div>
+      </iOS26LiquidCard>
+
+      {/* Save Indicator */}
+      <AnimatePresence>
+        {isUpdating && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            className="fixed bottom-4 right-4 bg-primary text-primary-foreground px-4 py-2 rounded-lg shadow-lg flex items-center gap-2"
+          >
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+            >
+              <div className="w-4 h-4 border-2 border-primary-foreground border-t-transparent rounded-full" />
+            </motion.div>
+            Guardando cambios...
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
-}
+};
+
+DietaryPreferences.displayName = 'DietaryPreferences';

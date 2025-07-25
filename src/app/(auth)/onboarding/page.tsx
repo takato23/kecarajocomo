@@ -7,8 +7,6 @@ import { motion } from 'framer-motion';
 import { supabase } from '@/lib/supabase/client';
 import { OnboardingStep } from '@/features/auth/components/OnboardingStep';
 
-import { useUser, useUserActions } from '@/store';
-
 const ONBOARDING_STEPS = [
   {
     id: 'profile',

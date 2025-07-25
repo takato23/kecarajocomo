@@ -107,26 +107,26 @@ export const navigationItems: NavigationItem[] = [
   {
     id: 'planner',
     label: 'Planificador',
-    href: '/planificador',
+    href: '/meal-planning',
     icon: Calendar,
     subItems: [
       {
         id: 'planner-week',
         label: 'Vista Semanal',
-        href: '/planificador',
+        href: '/meal-planning',
         icon: Calendar,
       },
       {
         id: 'planner-month',
         label: 'Vista Mensual',
-        href: '/planificador/monthly',
+        href: '/meal-planning/monthly',
         icon: Calendar,
         isPremium: true,
       },
       {
         id: 'planner-history',
         label: 'Historial',
-        href: '/planificador/history',
+        href: '/meal-planning/history',
         icon: Clock,
       },
     ],

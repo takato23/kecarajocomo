@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
-import { useUser, useUserActions } from '@/store';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const { initialize, isInitialized, user } = useAuthStore();

@@ -8,18 +8,13 @@ import {
   Plus,
   Search,
   Store,
-  Sparkles,
-  Download,
-  Share2,
   Edit2,
   Trash2,
   Package,
   AlertCircle,
   ShoppingBag,
-  Receipt,
   TrendingDown,
   DollarSign,
-  MapPin,
   ChevronRight,
   ChevronDown,
   Grid3X3,
@@ -34,20 +29,27 @@ import {
   CheckCircle2,
   Circle,
   RefreshCw,
-  Copy,
-  Zap,
   Loader2
 } from 'lucide-react';
 
 import { GlassCard, GlassButton, GlassInput, GlassModal } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/features/auth';
+import { useUser } from '@/store';
 import { useShoppingList } from '@/hooks/useShoppingList';
 import { PriceSearchComponent } from '@/components/price-scraper/PriceSearchComponent';
 import { useEnhancedPriceScraper } from '@/hooks/useEnhancedPriceScraper';
 import type { Database } from '@/lib/supabase/database.types';
 
-type ShoppingItem = Database['public']['Tables']['shopping_items']['Row'];
+type ShoppingItem = Database['public']['Tables']['shopping_list_items']['Row'];
+
+// Helper to map database fields to UI fields
+const mapShoppingItem = (item: ShoppingItem) => ({
+  ...item,
+  name: item.custom_name || 'Sin nombre',
+  checked: item.is_purchased || false,
+  price: item.estimated_cost || 0,
+  store: item.source || null
+});
 
 const categoryIcons = {
   dairy: { icon: Milk, color: 'from-blue-400 to-blue-500' },
@@ -70,7 +72,7 @@ const stores = [
 
 export default function ListaComprasPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
+  const { user } = useUser();
   const {
     lists,
     activeList,
@@ -108,7 +110,7 @@ export default function ListaComprasPage() {
 
   // Calculate statistics
   const calculateStats = () => {
-    if (!activeList?.shopping_items) {
+    if (!activeList?.shopping_list_items) {
       return {
         totalItems: 0,
         checkedItems: 0,
@@ -124,12 +126,13 @@ export default function ListaComprasPage() {
     let totalPrice = 0;
     let checkedPrice = 0;
 
-    activeList.shopping_items.forEach(item => {
+    activeList.shopping_list_items.forEach(item => {
+      const mappedItem = mapShoppingItem(item);
       totalItems++;
-      totalPrice += item.price || 0;
-      if (item.checked) {
+      totalPrice += mappedItem.price || 0;
+      if (mappedItem.checked) {
         checkedItems++;
-        checkedPrice += item.price || 0;
+        checkedPrice += mappedItem.price || 0;
       }
     });
 
@@ -156,11 +159,12 @@ export default function ListaComprasPage() {
 
   // Filter items based on search and store
   const getFilteredItems = () => {
-    if (!activeList?.shopping_items) return {};
+    if (!activeList?.shopping_list_items) return {};
 
-    const filtered = activeList.shopping_items.filter(item => {
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase());
-      const matchesStore = selectedStore === 'all' || item.store?.toLowerCase() === selectedStore;
+    const filtered = activeList.shopping_list_items.filter(item => {
+      const mappedItem = mapShoppingItem(item);
+      const matchesSearch = mappedItem.name.toLowerCase().includes(searchQuery.toLowerCase());
+      const matchesStore = selectedStore === 'all' || mappedItem.store?.toLowerCase() === selectedStore;
       return matchesSearch && matchesStore;
     });
 
@@ -182,13 +186,13 @@ export default function ListaComprasPage() {
     if (!newItemName.trim()) return;
 
     await addItem({
-      name: newItemName,
+      custom_name: newItemName,
       quantity: newItemQuantity,
       unit: newItemUnit,
       category: newItemCategory,
-      checked: false,
-      price: null,
-      store: null,
+      is_purchased: false,
+      estimated_cost: null,
+      source: null,
       notes: null
     });
 
@@ -209,11 +213,11 @@ export default function ListaComprasPage() {
 
   // Handle price search for all items
   const handleSearchAllPrices = async () => {
-    if (!activeList?.shopping_items) return;
+    if (!activeList?.shopping_list_items) return;
 
-    const uncheckedItems = activeList.shopping_items
-      .filter(item => !item.checked)
-      .map(item => item.name);
+    const uncheckedItems = activeList.shopping_list_items
+      .filter(item => !item.is_purchased)
+      .map(item => mapShoppingItem(item).name);
 
     if (uncheckedItems.length === 0) {
       return;
@@ -507,7 +511,8 @@ export default function ListaComprasPage() {
                 const CategoryIcon = categoryIcons[category as keyof typeof categoryIcons]?.icon || Package;
                 const categoryColor = categoryIcons[category as keyof typeof categoryIcons]?.color || 'from-gray-400 to-gray-500';
                 const isExpanded = expandedCategories.includes(category);
-                const completedCount = items.filter(item => item.checked).length;
+                const mappedItems = items.map(mapShoppingItem);
+                const completedCount = mappedItems.filter(item => item.checked).length;
 
                 return (
                   <motion.div
@@ -534,14 +539,14 @@ export default function ListaComprasPage() {
                             <div>
                               <h3 className="font-semibold text-lg dark:text-white capitalize">{category}</h3>
                               <p className="text-sm text-gray-600 dark:text-gray-300">
-                                {completedCount} de {items.length} items
+                                {completedCount} de {mappedItems.length} items
                               </p>
                             </div>
                           </div>
                           <div className="flex items-center gap-3">
                             <div className="text-right">
                               <p className="font-semibold dark:text-white">
-                                ${items.reduce((sum, item) => sum + (item.price || 0), 0).toFixed(2)}
+                                ${mappedItems.reduce((sum, item) => sum + (item.price || 0), 0).toFixed(2)}
                               </p>
                               <p className="text-xs text-gray-500 dark:text-gray-400">Total</p>
                             </div>
@@ -560,7 +565,7 @@ export default function ListaComprasPage() {
                             className="border-t border-gray-200 dark:border-gray-700"
                           >
                             <div className="p-4 space-y-2">
-                              {items.map((item, itemIndex) => (
+                              {mappedItems.map((item, itemIndex) => (
                                 <motion.div
                                   key={item.id}
                                   initial={{ opacity: 0, x: -20 }}
@@ -647,7 +652,8 @@ export default function ListaComprasPage() {
               <GlassCard variant="medium" className="p-6">
                 <div className="space-y-3">
                   {Object.values(filteredAndGroupedItems).flat().map(item => {
-                    const categoryKey = item.category || 'otros';
+                    const mappedItem = mapShoppingItem(item);
+                    const categoryKey = mappedItem.category || 'otros';
                     const CategoryIcon = categoryIcons[categoryKey as keyof typeof categoryIcons]?.icon || Package;
                     return (
                       <motion.div
@@ -657,7 +663,7 @@ export default function ListaComprasPage() {
                         whileHover={{ x: 5 }}
                         className={cn(
                           "flex items-center gap-3 p-3 rounded-lg transition-all",
-                          item.checked 
+                          mappedItem.checked 
                             ? "bg-gray-100 dark:bg-gray-800 opacity-60" 
                             : "hover:bg-white/50 dark:hover:bg-gray-800/50"
                         )}
@@ -666,7 +672,7 @@ export default function ListaComprasPage() {
                           onClick={() => toggleItem(item.id)}
                           className="flex-shrink-0"
                         >
-                          {item.checked ? (
+                          {mappedItem.checked ? (
                             <CheckCircle2 className="w-6 h-6 text-green-500" />
                           ) : (
                             <Circle className="w-6 h-6 text-gray-400" />
@@ -680,18 +686,18 @@ export default function ListaComprasPage() {
                             <div>
                               <p className={cn(
                                 "font-medium dark:text-white",
-                                item.checked && "line-through text-gray-500 dark:text-gray-400"
+                                mappedItem.checked && "line-through text-gray-500 dark:text-gray-400"
                               )}>
-                                {item.name}
+                                {mappedItem.name}
                               </p>
                               <p className="text-sm text-gray-600 dark:text-gray-300">
-                                {item.quantity} {item.unit} • {item.category}
-                                {item.store && ` • ${item.store}`}
+                                {mappedItem.quantity} {mappedItem.unit} • {mappedItem.category}
+                                {mappedItem.store && ` • ${mappedItem.store}`}
                               </p>
                             </div>
                             <div className="text-right">
                               <p className="font-medium dark:text-white">
-                                ${item.price?.toFixed(2) || '0.00'}
+                                ${mappedItem.price?.toFixed(2) || '0.00'}
                               </p>
                             </div>
                           </div>
@@ -706,7 +712,7 @@ export default function ListaComprasPage() {
         </AnimatePresence>
 
         {/* Empty State */}
-        {activeList && activeList.shopping_items?.length === 0 && (
+        {activeList && activeList.shopping_list_items?.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

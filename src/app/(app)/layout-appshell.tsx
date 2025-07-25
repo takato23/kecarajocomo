@@ -7,8 +7,6 @@ import { AppShell } from '@/features/app-shell';
 import { defaultNavigationConfig } from '@/features/app-shell/config/routes';
 import { Toaster } from '@/services/notifications';
 
-import { useUser, useUserActions } from '@/store';
-
 export default function AppLayout({
   children,
 }: {

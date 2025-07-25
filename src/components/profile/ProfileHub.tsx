@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState, useMemo, useCallback, lazy, Suspense } from 'react';
 import { 
   User, 
   Settings, 
@@ -15,14 +15,64 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
 import { ProfileHeader } from './ProfileHeader';
-import { ProfileOverview } from './ProfileOverview';
-import { DietaryPreferences } from './DietaryPreferences';
-import { HouseholdManager } from './HouseholdManager';
-import { CookingPreferences } from './CookingPreferences';
-import { ProfileSettings } from './ProfileSettings';
 
+// Lazy load tab content components for better initial load performance
+const ProfileOverview = lazy(() => import('./ProfileOverview').then(module => ({ default: module.ProfileOverview })));
+const DietaryPreferences = lazy(() => import('./DietaryPreferences').then(module => ({ default: module.DietaryPreferences })));
+const HouseholdManager = lazy(() => import('./HouseholdManager').then(module => ({ default: module.HouseholdManager })));
+const CookingPreferences = lazy(() => import('./CookingPreferences').then(module => ({ default: module.CookingPreferences })));
+const ProfileSettings = lazy(() => import('./ProfileSettings').then(module => ({ default: module.ProfileSettings })));
 
-export function ProfileHub() {
+// Loading fallback component
+const TabContentSkeleton = React.memo(() => (
+  <div className="space-y-6 animate-pulse">
+    <div className="h-32 bg-gray-200 rounded-md"></div>
+    <div className="h-24 bg-gray-200 rounded-md"></div>
+    <div className="h-16 bg-gray-200 rounded-md"></div>
+  </div>
+));
+
+// Stats card component for better memoization
+const StatsCard = React.memo(({ 
+  value, 
+  label, 
+  prefix = '' 
+}: { 
+  value: number | string; 
+  label: string; 
+  prefix?: string;
+}) => (
+  <Card>
+    <CardContent className="p-4">
+      <div className="text-2xl font-bold">{prefix}{value}</div>
+      <p className="text-sm text-muted-foreground">{label}</p>
+    </CardContent>
+  </Card>
+));
+
+// Tab trigger component for better memoization
+const ProfileTabTrigger = React.memo(({ 
+  value, 
+  icon: Icon, 
+  label 
+}: { 
+  value: string; 
+  icon: React.ComponentType<{ className?: string }>; 
+  label: string;
+}) => (
+  <TabsTrigger value={value} className="flex items-center gap-2">
+    <Icon className="w-4 h-4" />
+    <span className="hidden md:inline">{label}</span>
+  </TabsTrigger>
+));
+
+// Comparison function for React.memo
+const ProfileHubComparison = (prevProps: {}, nextProps: {}) => {
+  // Since this component has no props, it should only re-render when internal state changes
+  return true;
+};
+
+export const ProfileHub = React.memo(() => {
   const { 
     profile, 
     preferences, 
@@ -37,8 +87,8 @@ export function ProfileHub() {
   
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Calculate profile completion
-  const calculateCompletion = () => {
+  // Memoize expensive calculations
+  const completionPercentage = useMemo(() => {
     if (!profile || !preferences) return 0;
     
     let completed = 0;
@@ -59,10 +109,30 @@ export function ProfileHub() {
     if (householdMembers.length > 0 || preferences.householdSize > 1) completed++;
     
     return Math.round((completed / total) * 100);
-  };
+  }, [profile, preferences, householdMembers]);
 
-  const completionPercentage = calculateCompletion();
+  // Memoize derived stats data
+  const statsData = useMemo(() => {
+    if (!preferences) return null;
+    
+    return {
+      householdSize: getHouseholdSize(),
+      dietaryRestrictions: getDietaryRestrictions().length,
+      cuisinePreferences: preferences.cuisinePreferences?.length || 0,
+      weeklyBudget: preferences.budget?.weekly || 0
+    };
+  }, [preferences, householdMembers, getHouseholdSize, getDietaryRestrictions]);
 
+  // Memoize event handlers
+  const handleTabChange = useCallback((value: string) => {
+    setActiveTab(value);
+  }, []);
+
+  const handleDietaryUpdate = useCallback((updates: any) => {
+    updatePreferences(updates);
+  }, [updatePreferences]);
+
+  // Early return for loading state
   if (!profile || !preferences) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -83,100 +153,90 @@ export function ProfileHub() {
         onUpdateProfile={updateProfile}
       />
 
-      {/* Quick Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold">{getHouseholdSize()}</div>
-            <p className="text-sm text-muted-foreground">Personas en el hogar</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold">{getDietaryRestrictions().length}</div>
-            <p className="text-sm text-muted-foreground">Restricciones dietéticas</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold">{preferences.cuisinePreferences?.length || 0}</div>
-            <p className="text-sm text-muted-foreground">Cocinas favoritas</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <div className="text-2xl font-bold">${preferences.budget?.weekly || 0}</div>
-            <p className="text-sm text-muted-foreground">Presupuesto semanal</p>
-          </CardContent>
-        </Card>
-      </div>
+      {/* Quick Stats - Memoized */}
+      {statsData && (
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+          <StatsCard 
+            value={statsData.householdSize}
+            label="Personas en el hogar"
+          />
+          <StatsCard 
+            value={statsData.dietaryRestrictions}
+            label="Restricciones dietéticas"
+          />
+          <StatsCard 
+            value={statsData.cuisinePreferences}
+            label="Cocinas favoritas"
+          />
+          <StatsCard 
+            value={statsData.weeklyBudget}
+            label="Presupuesto semanal"
+            prefix="$"
+          />
+        </div>
+      )}
 
       {/* Profile Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2">
-          <TabsTrigger value="overview" className="flex items-center gap-2">
-            <User className="w-4 h-4" />
-            <span className="hidden md:inline">Resumen</span>
-          </TabsTrigger>
-          <TabsTrigger value="dietary" className="flex items-center gap-2">
-            <Utensils className="w-4 h-4" />
-            <span className="hidden md:inline">Dieta</span>
-          </TabsTrigger>
-          <TabsTrigger value="household" className="flex items-center gap-2">
-            <Home className="w-4 h-4" />
-            <span className="hidden md:inline">Hogar</span>
-          </TabsTrigger>
-          <TabsTrigger value="preferences" className="flex items-center gap-2">
-            <Settings className="w-4 h-4" />
-            <span className="hidden md:inline">Preferencias</span>
-          </TabsTrigger>
-          <TabsTrigger value="settings" className="flex items-center gap-2">
-            <Bell className="w-4 h-4" />
-            <span className="hidden md:inline">Configuración</span>
-          </TabsTrigger>
+          <ProfileTabTrigger value="overview" icon={User} label="Resumen" />
+          <ProfileTabTrigger value="dietary" icon={Utensils} label="Dieta" />
+          <ProfileTabTrigger value="household" icon={Home} label="Hogar" />
+          <ProfileTabTrigger value="preferences" icon={Settings} label="Preferencias" />
+          <ProfileTabTrigger value="settings" icon={Bell} label="Configuración" />
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <ProfileOverview 
-            profile={profile} 
-            preferences={preferences}
-            stats={profile.stats}
-            householdSize={getHouseholdSize()}
-          />
+          <Suspense fallback={<TabContentSkeleton />}>
+            <ProfileOverview 
+              profile={profile} 
+              preferences={preferences}
+              stats={profile.stats}
+              householdSize={statsData?.householdSize || 0}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="dietary" className="space-y-6">
-          <DietaryPreferences 
-            preferences={preferences}
-            householdMembers={householdMembers}
-            onUpdate={(updates) => updatePreferences(updates)}
-          />
+          <Suspense fallback={<TabContentSkeleton />}>
+            <DietaryPreferences 
+              preferences={preferences}
+              householdMembers={householdMembers}
+              onUpdate={handleDietaryUpdate}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="household" className="space-y-6">
-          <HouseholdManager 
-            householdMembers={householdMembers}
-            preferences={preferences}
-            onUpdatePreferences={updatePreferences}
-          />
+          <Suspense fallback={<TabContentSkeleton />}>
+            <HouseholdManager 
+              householdMembers={householdMembers}
+              preferences={preferences}
+              onUpdatePreferences={updatePreferences}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="preferences" className="space-y-6">
-          <CookingPreferences 
-            preferences={preferences}
-            onUpdate={updatePreferences}
-          />
+          <Suspense fallback={<TabContentSkeleton />}>
+            <CookingPreferences 
+              preferences={preferences}
+              onUpdate={updatePreferences}
+            />
+          </Suspense>
         </TabsContent>
 
         <TabsContent value="settings" className="space-y-6">
-          <ProfileSettings 
-            profile={profile}
-            preferences={preferences}
-            onUpdateProfile={updateProfile}
-            onUpdatePreferences={updatePreferences}
-          />
+          <Suspense fallback={<TabContentSkeleton />}>
+            <ProfileSettings 
+              profile={profile}
+              preferences={preferences}
+              onUpdateProfile={updateProfile}
+              onUpdatePreferences={updatePreferences}
+            />
+          </Suspense>
         </TabsContent>
       </Tabs>
     </div>
   );
-}
+}, ProfileHubComparison);
