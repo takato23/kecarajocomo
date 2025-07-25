@@ -91,7 +91,6 @@
     "posthog-js": "^1.96.1",
     "prisma": "^6.12.0",
     "react": "^18.2.0",
-    "react-aria-live": "^2.0.5",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.3.8",
     "react-error-boundary": "^6.0.0",
