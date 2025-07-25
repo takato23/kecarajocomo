@@ -1,19 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { X, ChevronRight, ChevronLeft, Sparkles } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronRight, ChevronLeft, Sparkles, Check } from 'lucide-react';
 
-
+import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
+import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
 
 export interface WizardData {
   dietaryPreferences: string[];
-  cookingSkill: 'beginner' | 'intermediate' | 'advanced';
-  maxCookingTime: number;
-  mealsPerDay: number;
   allergies: string[];
   cuisinePreferences: string[];
+  cookingSkill: 'beginner' | 'intermediate' | 'advanced';
   budgetLevel: 'low' | 'medium' | 'high';
+  maxCookingTime: number;
 }
 
 interface MealPlannerWizardProps {
@@ -21,377 +21,234 @@ interface MealPlannerWizardProps {
   onSkip: () => void;
 }
 
+const steps = [
+  { id: 'welcome', title: 'Bienvenido', description: 'Personaliza tu experiencia' },
+  { id: 'dietary', title: 'Preferencias', description: 'Dieta y restricciones' },
+  { id: 'cooking', title: 'Cocina', description: 'Tiempo y habilidad' },
+  { id: 'summary', title: 'Resumen', description: 'Confirma tus datos' }
+];
+
 export function MealPlannerWizard({ onComplete, onSkip }: MealPlannerWizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
-  const [formData, setFormData] = useState<WizardData>({
+  const [data, setData] = useState<WizardData>({
     dietaryPreferences: [],
-    cookingSkill: 'intermediate',
-    maxCookingTime: 30,
-    mealsPerDay: 3,
     allergies: [],
     cuisinePreferences: [],
-    budgetLevel: 'medium'
+    cookingSkill: 'intermediate',
+    budgetLevel: 'medium',
+    maxCookingTime: 60
   });
-
-  const steps = [
-    {
-      title: 'Preferencias Dietéticas',
-      description: 'Selecciona tus restricciones alimentarias',
-      component: DietaryPreferencesStep
-    },
-    {
-      title: 'Habilidad Culinaria',
-      description: 'Cuéntanos sobre tu experiencia cocinando',
-      component: CookingSkillStep
-    },
-    {
-      title: 'Tiempo y Comidas',
-      description: 'Configura tu disponibilidad',
-      component: TimeAndMealsStep
-    },
-    {
-      title: 'Alergias y Cocinas',
-      description: 'Personaliza tus preferencias',
-      component: AllergiesAndCuisineStep
-    },
-    {
-      title: 'Presupuesto',
-      description: 'Establece tu rango de presupuesto',
-      component: BudgetStep
-    }
-  ];
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      handleComplete();
+      onComplete(data);
     }
   };
 
-  const handlePrevious = () => {
+  const handlePrev = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
     }
   };
 
-  const handleComplete = () => {
-    onComplete(formData);
-  };
-
-  const handleSkip = () => {
-    onSkip();
-  };
-
-  const updateFormData = (updates: Partial<WizardData>) => {
-    setFormData(prev => ({ ...prev, ...updates }));
-  };
-
-  const StepComponent = steps[currentStep].component;
-
   return (
-    <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-hidden"
-      >
-        {/* Header */}
-        <div className="p-6 border-b border-white/10">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="p-2 bg-orange-500/20 rounded-xl">
-                <Sparkles className="w-6 h-6 text-orange-400" />
+    <div className="fixed inset-0 bg-gradient-to-br from-gray-900 via-black to-gray-900 z-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        <iOS26EnhancedCard
+          variant="aurora"
+          elevation="floating"
+          className="overflow-hidden"
+        >
+          {/* Header with progress */}
+          <div className="px-6 py-4 border-b border-white/10">
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    {steps[currentStep].title}
+                  </h2>
+                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                    {steps[currentStep].description}
+                  </p>
+                </div>
               </div>
-              <div>
-                <h2 className="text-xl font-bold text-white">
-                  Configuración Inicial
-                </h2>
-                <p className="text-white/60 text-sm">
-                  Paso {currentStep + 1} de {steps.length}
-                </p>
-              </div>
-            </div>
-            <button
-              onClick={handleSkip}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-            >
-              <X className="w-5 h-5 text-white" />
-            </button>
-          </div>
-
-          {/* Progress bar */}
-          <div className="mb-4">
-            <div className="flex justify-between mb-2">
-              <span className="text-sm font-medium text-white">
-                {steps[currentStep].title}
-              </span>
-              <span className="text-sm text-white/60">
-                {Math.round(((currentStep + 1) / steps.length) * 100)}%
-              </span>
-            </div>
-            <div className="w-full bg-white/10 rounded-full h-2">
-              <motion.div
-                className="h-2 bg-gradient-to-r from-orange-500 to-pink-500 rounded-full"
-                initial={{ width: 0 }}
-                animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          </div>
-
-          <p className="text-white/60 text-sm">
-            {steps[currentStep].description}
-          </p>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-96">
-          <StepComponent
-            formData={formData}
-            updateFormData={updateFormData}
-          />
-        </div>
-
-        {/* Footer */}
-        <div className="p-6 border-t border-white/10">
-          <div className="flex justify-between">
-            <button
-              onClick={handlePrevious}
-              disabled={currentStep === 0}
-              className="flex items-center gap-2 px-4 py-2 text-white/60 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              <ChevronLeft className="w-4 h-4" />
-              Anterior
-            </button>
-
-            <div className="flex gap-3">
               <button
-                onClick={handleSkip}
-                className="px-4 py-2 text-white/60 hover:text-white transition-colors"
+                onClick={onSkip}
+                className="text-sm text-gray-500 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
               >
                 Omitir
               </button>
-              <button
-                onClick={handleNext}
-                className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-xl hover:from-orange-600 hover:to-pink-600"
-              >
-                {currentStep === steps.length - 1 ? 'Finalizar' : 'Siguiente'}
-                <ChevronRight className="w-4 h-4" />
-              </button>
+            </div>
+            
+            {/* Progress bar */}
+            <div className="flex gap-2">
+              {steps.map((step, index) => (
+                <div
+                  key={step.id}
+                  className={`flex-1 h-2 rounded-full transition-all duration-300 ${
+                    index <= currentStep 
+                      ? 'bg-gradient-to-r from-purple-500 to-pink-500' 
+                      : 'bg-gray-200 dark:bg-gray-700'
+                  }`}
+                />
+              ))}
             </div>
           </div>
-        </div>
-      </motion.div>
-    </div>
-  );
-}
 
-// Step Components
-function DietaryPreferencesStep({ formData, updateFormData }: any) {
-  const options = ['vegetarian', 'vegan', 'keto', 'paleo', 'glutenFree', 'dairyFree'];
-  
-  const handleToggle = (option: string) => {
-    const current = formData.dietaryPreferences;
-    const updated = current.includes(option)
-      ? current.filter((p: string) => p !== option)
-      : [...current, option];
-    updateFormData({ dietaryPreferences: updated });
-  };
+          {/* Content */}
+          <div className="px-6 py-8 min-h-[400px]">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {currentStep === 0 && (
+                  <div className="text-center">
+                    <div className="w-24 h-24 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                      <Sparkles className="w-12 h-12 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                      ¡Bienvenido al Planificador AI!
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-8">
+                      Vamos a personalizar tu experiencia de planificación de comidas 
+                      con inteligencia artificial para crear planes perfectos para ti.
+                    </p>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                      <div className="p-4 bg-white/5 rounded-xl">
+                        <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <p className="font-medium text-gray-900 dark:text-white">Personalizado</p>
+                        <p className="text-gray-600 dark:text-gray-400">Planes únicos para ti</p>
+                      </div>
+                      <div className="p-4 bg-white/5 rounded-xl">
+                        <div className="w-8 h-8 bg-green-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <p className="font-medium text-gray-900 dark:text-white">Inteligente</p>
+                        <p className="text-gray-600 dark:text-gray-400">IA avanzada</p>
+                      </div>
+                      <div className="p-4 bg-white/5 rounded-xl">
+                        <div className="w-8 h-8 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-2">
+                          <Check className="w-4 h-4 text-white" />
+                        </div>
+                        <p className="font-medium text-gray-900 dark:text-white">Fácil</p>
+                        <p className="text-gray-600 dark:text-gray-400">Solo unos clics</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-  return (
-    <div className="space-y-4">
-      <p className="text-white/80 text-sm">
-        Selecciona las restricciones dietéticas que apliquen a ti:
-      </p>
-      <div className="grid grid-cols-2 gap-3">
-        {options.map((option) => (
-          <button
-            key={option}
-            onClick={() => handleToggle(option)}
-            className={`p-3 rounded-xl text-sm font-medium transition-colors ${
-              formData.dietaryPreferences.includes(option)
-                ? 'bg-orange-500 text-white'
-                : 'bg-white/10 text-white/70 hover:bg-white/20'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
+                {currentStep === 1 && (
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+                      Preferencias alimentarias
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-white/5 rounded-xl">
+                        <p className="font-medium text-gray-900 dark:text-white mb-2">Tipo de dieta</p>
+                        <div className="grid grid-cols-2 gap-2">
+                          {['Omnívora', 'Vegetariana', 'Vegana', 'Pescetariana'].map((diet) => (
+                            <button
+                              key={diet}
+                              className="p-3 text-left bg-white/10 hover:bg-white/20 rounded-lg transition-colors text-gray-900 dark:text-white"
+                            >
+                              {diet}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-function CookingSkillStep({ formData, updateFormData }: any) {
-  const options = [
-    { value: 'beginner', label: 'Principiante', description: 'Recetas simples y rápidas' },
-    { value: 'intermediate', label: 'Intermedio', description: 'Recetas moderadamente complejas' },
-    { value: 'advanced', label: 'Avanzado', description: 'Recetas de cualquier complejidad' }
-  ];
+                {currentStep === 2 && (
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6">
+                      Tiempo y habilidad
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="p-4 bg-white/5 rounded-xl">
+                        <p className="font-medium text-gray-900 dark:text-white mb-2">Nivel de cocina</p>
+                        <div className="grid grid-cols-3 gap-2">
+                          {[
+                            { key: 'beginner', label: 'Principiante' },
+                            { key: 'intermediate', label: 'Intermedio' },
+                            { key: 'advanced', label: 'Avanzado' }
+                          ].map((level) => (
+                            <button
+                              key={level.key}
+                              onClick={() => setData(prev => ({ ...prev, cookingSkill: level.key as any }))}
+                              className={`p-3 text-center rounded-lg transition-colors ${
+                                data.cookingSkill === level.key
+                                  ? 'bg-purple-500 text-white'
+                                  : 'bg-white/10 hover:bg-white/20 text-gray-900 dark:text-white'
+                              }`}
+                            >
+                              {level.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
-  return (
-    <div className="space-y-4">
-      <p className="text-white/80 text-sm">
-        ¿Cuál es tu nivel de habilidad culinaria?
-      </p>
-      <div className="space-y-3">
-        {options.map((option) => (
-          <button
-            key={option.value}
-            onClick={() => updateFormData({ cookingSkill: option.value })}
-            className={`w-full p-4 rounded-xl text-left transition-colors ${
-              formData.cookingSkill === option.value
-                ? 'bg-orange-500 text-white'
-                : 'bg-white/10 text-white/70 hover:bg-white/20'
-            }`}
-          >
-            <div className="font-medium">{option.label}</div>
-            <div className="text-sm opacity-80">{option.description}</div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
+                {currentStep === 3 && (
+                  <div className="text-center">
+                    <div className="w-16 h-16 bg-green-500 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                      <Check className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                      ¡Todo listo!
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-8">
+                      Hemos configurado tu perfil. Ahora generaremos tu primer plan de comidas personalizado.
+                    </p>
+                    <div className="p-4 bg-white/5 rounded-xl text-left">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">Resumen:</p>
+                      <ul className="space-y-1 text-sm text-gray-900 dark:text-white">
+                        <li>• Nivel: {data.cookingSkill}</li>
+                        <li>• Presupuesto: {data.budgetLevel}</li>
+                        <li>• Tiempo máximo: {data.maxCookingTime} min</li>
+                      </ul>
+                    </div>
+                  </div>
+                )}
+              </motion.div>
+            </AnimatePresence>
+          </div>
 
-function TimeAndMealsStep({ formData, updateFormData }: any) {
-  return (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-white/80 text-sm mb-3">
-          Tiempo máximo de cocina (minutos)
-        </label>
-        <div className="flex items-center gap-4">
-          <input
-            type="range"
-            min="15"
-            max="120"
-            step="15"
-            value={formData.maxCookingTime}
-            onChange={(e) => updateFormData({ maxCookingTime: parseInt(e.target.value) })}
-            className="flex-1"
-          />
-          <span className="text-white font-medium min-w-[3rem]">
-            {formData.maxCookingTime}m
-          </span>
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-white/80 text-sm mb-3">
-          Comidas por día
-        </label>
-        <div className="flex gap-3">
-          {[2, 3, 4, 5].map((num) => (
-            <button
-              key={num}
-              onClick={() => updateFormData({ mealsPerDay: num })}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                formData.mealsPerDay === num
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20'
-              }`}
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-white/10 flex justify-between">
+            <iOS26LiquidButton
+              variant="glass"
+              leftIcon={<ChevronLeft className="w-4 h-4" />}
+              onClick={handlePrev}
+              disabled={currentStep === 0}
             >
-              {num}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
+              Anterior
+            </iOS26LiquidButton>
 
-function AllergiesAndCuisineStep({ formData, updateFormData }: any) {
-  const allergies = ['nuts', 'shellfish', 'eggs', 'dairy', 'soy', 'fish'];
-  const cuisines = ['italiana', 'mexicana', 'asiática', 'mediterránea', 'argentina', 'francesa'];
-
-  const handleAllergyToggle = (allergy: string) => {
-    const current = formData.allergies;
-    const updated = current.includes(allergy)
-      ? current.filter((a: string) => a !== allergy)
-      : [...current, allergy];
-    updateFormData({ allergies: updated });
-  };
-
-  const handleCuisineToggle = (cuisine: string) => {
-    const current = formData.cuisinePreferences;
-    const updated = current.includes(cuisine)
-      ? current.filter((c: string) => c !== cuisine)
-      : [...current, cuisine];
-    updateFormData({ cuisinePreferences: updated });
-  };
-
-  return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-white/80 text-sm mb-3">Alergias alimentarias:</p>
-        <div className="grid grid-cols-2 gap-2">
-          {allergies.map((allergy) => (
-            <button
-              key={allergy}
-              onClick={() => handleAllergyToggle(allergy)}
-              className={`p-2 rounded-lg text-sm transition-colors ${
-                formData.allergies.includes(allergy)
-                  ? 'bg-red-500 text-white'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20'
-              }`}
+            <iOS26LiquidButton
+              variant="solid"
+              rightIcon={currentStep === steps.length - 1 ? <Check className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+              onClick={handleNext}
+              className="bg-gradient-to-r from-purple-500 to-pink-500"
             >
-              {allergy}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        <p className="text-white/80 text-sm mb-3">Cocinas preferidas:</p>
-        <div className="grid grid-cols-2 gap-2">
-          {cuisines.map((cuisine) => (
-            <button
-              key={cuisine}
-              onClick={() => handleCuisineToggle(cuisine)}
-              className={`p-2 rounded-lg text-sm capitalize transition-colors ${
-                formData.cuisinePreferences.includes(cuisine)
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-white/10 text-white/70 hover:bg-white/20'
-              }`}
-            >
-              {cuisine}
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function BudgetStep({ formData, updateFormData }: any) {
-  const budgets = [
-    { value: 'low', label: 'Económico', description: 'Hasta $15,000/mes' },
-    { value: 'medium', label: 'Moderado', description: '$15,000 - $30,000/mes' },
-    { value: 'high', label: 'Premium', description: 'Más de $30,000/mes' }
-  ];
-
-  return (
-    <div className="space-y-4">
-      <p className="text-white/80 text-sm">
-        ¿Cuál es tu presupuesto mensual para alimentación?
-      </p>
-      <div className="space-y-3">
-        {budgets.map((budget) => (
-          <button
-            key={budget.value}
-            onClick={() => updateFormData({ budgetLevel: budget.value })}
-            className={`w-full p-4 rounded-xl text-left transition-colors ${
-              formData.budgetLevel === budget.value
-                ? 'bg-orange-500 text-white'
-                : 'bg-white/10 text-white/70 hover:bg-white/20'
-            }`}
-          >
-            <div className="font-medium">{budget.label}</div>
-            <div className="text-sm opacity-80">{budget.description}</div>
-          </button>
-        ))}
+              {currentStep === steps.length - 1 ? 'Completar' : 'Siguiente'}
+            </iOS26LiquidButton>
+          </div>
+        </iOS26EnhancedCard>
       </div>
     </div>
   );

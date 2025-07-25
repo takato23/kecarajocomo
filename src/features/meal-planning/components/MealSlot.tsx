@@ -1,224 +1,354 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Plus,
-  Clock,
-  Heart,
-  Users,
-  Edit2,
-  X,
   Lock,
   Unlock,
   Sparkles,
-  Flame,
-  Star
+  MoreVertical,
+  X,
+  RefreshCw,
+  Clock,
+  Users,
+  ChefHat,
+  Star,
+  AlertCircle
 } from 'lucide-react';
+import { toast } from 'sonner';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 import { cn } from '@/lib/utils';
-import { useTheme } from '@/contexts/ThemeContext';
+import { LoadingSpinner } from '@/components/ui/enhanced-loading';
+import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
 
-import type { MealSlotProps } from '../types';
+import type { MealSlot as MealSlotType, MealType, Recipe } from '../types';
+import { MEAL_CONFIG } from '../types';
+import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
+
+interface MealSlotProps {
+  slot?: MealSlotType;
+  dayOfWeek: number;
+  mealType: MealType;
+  isToday?: boolean;
+  isSelected?: boolean;
+  isHovered?: boolean;
+  onSlotClick?: (slot: MealSlotType) => void;
+  onRecipeSelect?: () => void;
+  onSlotClear?: (slot: MealSlotType) => void;
+  onSlotLock?: (slot: MealSlotType, locked: boolean) => void;
+  onAIGenerate?: () => void;
+}
 
 export function MealSlot({
   slot,
   dayOfWeek,
   mealType,
-  isToday,
-  isSelected,
-  isHovered,
+  isToday = false,
+  isSelected = false,
+  isHovered = false,
   onSlotClick,
   onRecipeSelect,
   onSlotClear,
   onSlotLock,
   onAIGenerate
 }: MealSlotProps) {
-  const { effectiveTheme } = useTheme();
-  const isDarkMode = effectiveTheme === 'dark';
+  const [showMenu, setShowMenu] = useState(false);
+  const [isRegenerating, setIsRegenerating] = useState(false);
+  const { regenerateWithFeedback } = useGeminiMealPlanner();
+  
+  const config = MEAL_CONFIG[mealType];
+  const hasRecipe = !!slot?.recipe;
+  const isLocked = slot?.isLocked || false;
+  const isCompleted = slot?.isCompleted || false;
 
-  const recipe = slot?.recipe;
-  const hasRecipe = Boolean(recipe);
+  const handleRegenerate = async () => {
+    if (!slot || !slot.recipe) return;
+    
+    setIsRegenerating(true);
+    setShowMenu(false);
+    
+    try {
+      const feedback = `Please suggest a different ${mealType} recipe for ${dayOfWeek}`;
+      const result = await regenerateWithFeedback(feedback, {
+        id: slot.id,
+        userId: slot.id,
+        weekStartDate: slot.date,
+        weekEndDate: slot.date,
+        preferences: {},
+        constraints: {},
+        meals: []
+      } as any);
+      
+      if (result.success) {
+        toast.success('Receta regenerada exitosamente');
+      } else {
+        toast.error('Error al regenerar la receta');
+      }
+    } catch (error) {
+      console.error('Failed to regenerate:', error);
+      toast.error('Error al regenerar la receta');
+    } finally {
+      setIsRegenerating(false);
+    }
+  };
 
-  if (!hasRecipe) {
-    // Empty slot
-    return (
+  const handleLockToggle = () => {
+    if (slot && onSlotLock) {
+      onSlotLock(slot, !isLocked);
+      setShowMenu(false);
+    }
+  };
+
+  const handleClear = () => {
+    if (slot && onSlotClear) {
+      onSlotClear(slot);
+      setShowMenu(false);
+    }
+  };
+
+  return (
+    <TooltipProvider>
       <motion.div
-        className={cn(
-          "relative group h-24 md:h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300",
-          isToday && "ring-2 ring-blue-400/50"
-        )}
+        layout
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
-        onClick={() => onAIGenerate?.({ dayOfWeek, mealType })}
+        className="relative"
       >
-        {/* Glass effect background */}
-        <div className="absolute inset-0 bg-gradient-to-br from-white/15 to-white/5 backdrop-blur-xl" />
-        <div className="absolute inset-[1px] bg-gradient-to-br from-black/40 to-black/60 backdrop-blur-sm rounded-[15px]" />
-        
-        {/* Hover effect */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 via-pink-500/10 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity" />
-        
-        {/* Content */}
-        <div className="relative h-full flex flex-col items-center justify-center text-center p-3">
-          <motion.div
-            className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center mb-2 group-hover:bg-white/20 transition-colors"
-            whileHover={{ rotate: 90 }}
-          >
-            <Plus className="w-4 h-4 text-white/60" />
-          </motion.div>
-          <p className="text-xs text-white/40 group-hover:text-white/60 transition-colors">
-            Agregar comida
-          </p>
-        </div>
-      </motion.div>
-    );
-  }
-
-  // Filled slot
-  return (
-    <motion.div
-      className={cn(
-        "relative group h-24 md:h-28 rounded-2xl overflow-hidden cursor-pointer transition-all duration-300",
-        isToday && "ring-2 ring-blue-400/50",
-        isSelected && "ring-2 ring-purple-400/70 scale-105",
-        slot?.isLocked && "ring-2 ring-yellow-400/50"
-      )}
-      whileHover={{ scale: isSelected ? 1.05 : 1.02 }}
-      whileTap={{ scale: 0.98 }}
-      onClick={() => onSlotClick?.(slot)}
-    >
-      {/* Background image or gradient */}
-      {recipe.image ? (
-        <div className="absolute inset-0">
-          <img
-            src={recipe.image}
-            alt={recipe.name}
-            className="w-full h-full object-cover"
+        <iOS26EnhancedCard
+          variant={isToday ? 'aurora' : 'glass'}
+          elevation={isSelected ? 'high' : 'medium'}
+          glowEffect={isToday}
+          interactive
+          className={cn(
+            "relative h-32 cursor-pointer transition-all duration-300",
+            "hover:shadow-lg",
+            "md:h-32 h-36", // Taller on mobile for better touch targets
+            isToday && "ring-2 ring-blue-400/50",
+            isSelected && "ring-2 ring-purple-400",
+            isCompleted && "opacity-75"
+          )}
+          onClick={() => {
+            if (hasRecipe && slot && onSlotClick) {
+              onSlotClick(slot);
+            } else if (!hasRecipe && onRecipeSelect) {
+              onRecipeSelect();
+            }
+          }}
+        >
+          {/* Background gradient */}
+          <div
+            className={cn(
+              "absolute inset-0 opacity-10 rounded-3xl",
+              "bg-gradient-to-br",
+              config.gradient
+            )}
+            style={{
+              boxShadow: isHovered ? `0 0 20px ${config.glowColor}` : undefined
+            }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
-        </div>
-      ) : (
-        <div className="absolute inset-0 bg-gradient-to-br from-gray-500/80 via-gray-600/60 to-gray-700/80" />
-      )}
 
-      {/* Glass overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm" />
+          {/* Lock indicator */}
+          {isLocked && (
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              className="absolute top-2 left-2 z-10"
+            >
+              <div className="w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
+                <Lock className="w-3 h-3 text-white" />
+              </div>
+            </motion.div>
+          )}
 
-      {/* Lock indicator */}
-      {slot?.isLocked && (
-        <div className="absolute top-2 left-2 p-1 bg-yellow-500/20 backdrop-blur-sm rounded-lg">
-          <Lock className="w-3 h-3 text-yellow-400" />
-        </div>
-      )}
-
-      {/* AI Generated indicator */}
-      {recipe.isAiGenerated && (
-        <div className="absolute top-2 right-2 p-1 bg-purple-500/20 backdrop-blur-sm rounded-lg">
-          <Sparkles className="w-3 h-3 text-purple-400" />
-        </div>
-      )}
-
-      {/* Content */}
-      <div className="relative h-full p-3 flex flex-col justify-between">
-        {/* Top section - Title and rating */}
-        <div>
-          <h4 className="text-sm font-semibold text-white line-clamp-2 mb-1">
-            {recipe.name}
-          </h4>
-          {recipe.rating && (
-            <div className="flex items-center gap-1">
-              <Star className="w-3 h-3 text-yellow-400 fill-current" />
-              <span className="text-xs text-white/80">{recipe.rating}</span>
+          {/* Menu button */}
+          {hasRecipe && (
+            <div className="absolute top-2 right-2 z-10">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowMenu(!showMenu);
+                }}
+                className="w-6 h-6 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              >
+                <MoreVertical className="w-3 h-3 text-white" />
+              </motion.button>
             </div>
           )}
-        </div>
 
-        {/* Bottom section - Stats and actions */}
-        <div className="flex items-end justify-between">
-          <div className="flex items-center gap-2 text-xs text-white/70">
-            {recipe.nutrition?.calories && (
-              <div className="flex items-center gap-1">
-                <Flame className="w-3 h-3" />
-                <span>{recipe.nutrition.calories}</span>
-              </div>
-            )}
-            {recipe.prepTime && (
-              <div className="flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                <span>{recipe.prepTime}m</span>
-              </div>
-            )}
-            {recipe.servings && (
-              <div className="flex items-center gap-1">
-                <Users className="w-3 h-3" />
-                <span>{recipe.servings}</span>
+          {/* Content */}
+          <div className="h-full flex flex-col p-3">
+            {hasRecipe && slot?.recipe ? (
+              <>
+                {/* Recipe image */}
+                {slot.recipe.image && (
+                  <div className="absolute inset-0 opacity-20">
+                    <img
+                      src={slot.recipe.image}
+                      alt={slot.recipe.name}
+                      className="w-full h-full object-cover rounded-3xl"
+                    />
+                  </div>
+                )}
+
+                {/* Recipe details */}
+                <div className="relative z-10 flex-1">
+                  <h4 className="font-semibold text-sm text-gray-900 dark:text-white line-clamp-2">
+                    {slot.recipe.name}
+                  </h4>
+                  
+                  {/* Recipe meta */}
+                  <div className="flex items-center gap-2 mt-1">
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300">
+                          <Clock className="w-3 h-3" />
+                          <span>{slot.recipe.prepTime + slot.recipe.cookTime}m</span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Tiempo total de preparación</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <div className="flex items-center gap-1 text-xs text-gray-600 dark:text-gray-300">
+                          <Users className="w-3 h-3" />
+                          <span>{slot.servings}</span>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p>Porciones</p>
+                      </TooltipContent>
+                    </Tooltip>
+
+                    {slot.recipe.isAiGenerated && (
+                      <Tooltip>
+                        <TooltipTrigger>
+                          <div className="flex items-center gap-1 text-xs text-purple-600 dark:text-purple-400">
+                            <Sparkles className="w-3 h-3" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Generado por IA</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    )}
+                  </div>
+
+                  {/* Difficulty badge */}
+                  <div className="flex items-center gap-1 mt-2">
+                    <ChefHat className="w-3 h-3 text-gray-500" />
+                    <span className={cn(
+                      "text-xs font-medium px-2 py-0.5 rounded-full",
+                      slot.recipe.difficulty === 'easy' && "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
+                      slot.recipe.difficulty === 'medium' && "bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400",
+                      slot.recipe.difficulty === 'hard' && "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400"
+                    )}>
+                      {slot.recipe.difficulty === 'easy' && 'Fácil'}
+                      {slot.recipe.difficulty === 'medium' && 'Media'}
+                      {slot.recipe.difficulty === 'hard' && 'Difícil'}
+                    </span>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <div className="h-full flex flex-col items-center justify-center">
+                <motion.div
+                  whileHover={{ rotate: 180 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-2"
+                >
+                  <Plus className="w-5 h-5 text-white" />
+                </motion.div>
+                <p className="text-xs text-gray-600 dark:text-gray-400">
+                  Agregar comida
+                </p>
               </div>
             )}
           </div>
 
-          {/* Action buttons - show on hover */}
-          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                onRecipeSelect?.(slot);
-              }}
-              className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors"
+          {/* Loading overlay */}
+          {isRegenerating && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl flex items-center justify-center z-20"
             >
-              <Edit2 className="w-3 h-3 text-white" />
-            </motion.button>
+              <LoadingSpinner size="sm" />
+            </motion.div>
+          )}
+        </iOS26EnhancedCard>
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSlotLock?.(slot, !slot?.isLocked);
-              }}
-              className="p-1.5 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors"
+        {/* Dropdown menu */}
+        <AnimatePresence>
+          {showMenu && hasRecipe && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9, y: -10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.9, y: -10 }}
+              className="absolute top-10 right-0 z-50 w-48 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden"
             >
-              {slot?.isLocked ? (
-                <Unlock className="w-3 h-3 text-white" />
-              ) : (
-                <Lock className="w-3 h-3 text-white" />
-              )}
-            </motion.button>
+              <div className="py-1">
+                <button
+                  onClick={handleRegenerate}
+                  disabled={isRegenerating}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Regenerar con IA
+                </button>
+                
+                <button
+                  onClick={handleLockToggle}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2"
+                >
+                  {isLocked ? (
+                    <>
+                      <Unlock className="w-4 h-4" />
+                      Desbloquear
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-4 h-4" />
+                      Bloquear
+                    </>
+                  )}
+                </button>
+                
+                <button
+                  onClick={handleClear}
+                  className="w-full px-4 py-2 text-left text-sm hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors flex items-center gap-2 text-red-600 dark:text-red-400"
+                >
+                  <X className="w-4 h-4" />
+                  Quitar
+                </button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={(e) => {
-                e.stopPropagation();
-                onSlotClear?.(slot);
-              }}
-              className="p-1.5 bg-red-500/20 backdrop-blur-sm rounded-lg hover:bg-red-500/30 transition-colors"
-            >
-              <X className="w-3 h-3 text-white" />
-            </motion.button>
-          </div>
-        </div>
-      </div>
-
-      {/* Favorite indicator */}
-      {recipe.isFavorite && (
-        <div className="absolute bottom-2 left-2 p-1 bg-red-500/20 backdrop-blur-sm rounded-lg">
-          <Heart className="w-3 h-3 text-red-400 fill-current" />
-        </div>
-      )}
-
-      {/* Completion indicator */}
-      {slot?.isCompleted && (
-        <div className="absolute inset-0 bg-green-500/20 backdrop-blur-sm">
-          <div className="absolute bottom-2 right-2 w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
-            <svg className="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-            </svg>
-          </div>
-        </div>
-      )}
-    </motion.div>
+        {/* Error tooltip */}
+        {slot && !slot.recipe && slot.customMealName && (
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="absolute top-2 right-2">
+                <AlertCircle className="w-4 h-4 text-yellow-500" />
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Comida personalizada sin receta</p>
+            </TooltipContent>
+          </Tooltip>
+        )}
+      </motion.div>
+    </TooltipProvider>
   );
 }

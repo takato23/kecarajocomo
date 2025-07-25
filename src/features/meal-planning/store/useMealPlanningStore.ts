@@ -109,6 +109,61 @@ const mockUserPreferences: UserPreferences = {
   considerPantryItems: true
 };
 
+// Cache management
+const CACHE_KEY_PREFIX = 'meal-plan-cache-';
+const CACHE_DURATION = 1000 * 60 * 60; // 1 hour
+
+interface CachedWeekPlan {
+  data: WeekPlan;
+  timestamp: number;
+}
+
+const getCachedWeekPlan = (startDate: string): WeekPlan | null => {
+  try {
+    const cached = localStorage.getItem(`${CACHE_KEY_PREFIX}${startDate}`);
+    if (!cached) return null;
+    
+    const { data, timestamp }: CachedWeekPlan = JSON.parse(cached);
+    const now = Date.now();
+    
+    // Check if cache is still valid
+    if (now - timestamp > CACHE_DURATION) {
+      localStorage.removeItem(`${CACHE_KEY_PREFIX}${startDate}`);
+      return null;
+    }
+    
+    return data;
+  } catch (error) {
+    console.error('Error reading cache:', error);
+    return null;
+  }
+};
+
+const setCachedWeekPlan = (startDate: string, data: WeekPlan) => {
+  try {
+    const cacheData: CachedWeekPlan = {
+      data,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(`${CACHE_KEY_PREFIX}${startDate}`, JSON.stringify(cacheData));
+  } catch (error) {
+    console.error('Error writing cache:', error);
+  }
+};
+
+const clearCache = () => {
+  try {
+    const keys = Object.keys(localStorage);
+    keys.forEach(key => {
+      if (key.startsWith(CACHE_KEY_PREFIX)) {
+        localStorage.removeItem(key);
+      }
+    });
+  } catch (error) {
+    console.error('Error clearing cache:', error);
+  }
+};
+
 export const useMealPlanningStore = create<MealPlanningStore>()(
   devtools(
     (set, get) => ({
@@ -132,6 +187,13 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
       loadWeekPlan: async (startDate: string) => {
         set({ isLoading: true, error: null });
         try {
+          // Check cache first
+          const cached = getCachedWeekPlan(startDate);
+          if (cached) {
+            set({ currentWeekPlan: cached, isLoading: false });
+            return;
+          }
+
           // Mock API call - in production, this would fetch from backend
           const endDate = format(addDays(new Date(startDate), 6), 'yyyy-MM-dd');
           
@@ -169,6 +231,9 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             });
           }
 
+          // Cache the week plan
+          setCachedWeekPlan(startDate, weekPlan);
+          
           set({ currentWeekPlan: weekPlan, isLoading: false });
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to load week plan', isLoading: false });
@@ -181,11 +246,16 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
           // Mock API call - in production, this would save to backend
           await new Promise(resolve => setTimeout(resolve, 500));
           
+          const updatedWeekPlan = { 
+            ...weekPlan, 
+            updatedAt: new Date().toISOString() 
+          };
+          
+          // Update cache
+          setCachedWeekPlan(weekPlan.startDate, updatedWeekPlan);
+          
           set({ 
-            currentWeekPlan: { 
-              ...weekPlan, 
-              updatedAt: new Date().toISOString() 
-            }, 
+            currentWeekPlan: updatedWeekPlan, 
             isLoading: false 
           });
         } catch (error) {
@@ -370,6 +440,9 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             updatedAt: new Date().toISOString()
           };
 
+          // Clear cache for this week
+          localStorage.removeItem(`${CACHE_KEY_PREFIX}${currentWeekPlan.startDate}`);
+          
           set({ currentWeekPlan: updatedWeekPlan });
           await get().saveWeekPlan(updatedWeekPlan);
         } catch (error) {

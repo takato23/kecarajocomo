@@ -161,7 +161,7 @@ export function useGeminiMealPlanner(options?: UseMealPlannerOptions) {
     if (!mealPlan?.shoppingList) return;
 
     // TODO: Implementar optimización de lista de compras
-    console.log('Optimizing shopping list with budget:', budget);
+    // Budget optimization logic would go here
   };
 
   return {

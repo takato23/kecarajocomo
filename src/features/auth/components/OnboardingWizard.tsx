@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { useOnboardingStore } from '../store/onboardingStore';
-import { useAuthStore, selectIsAuthenticated } from '../store/authStore';
+import { useAppStore } from '@/store';
 import { OnboardingStep } from '../types';
 
 // Import step components
@@ -19,7 +19,7 @@ import { CompletionStep } from './onboarding/CompletionStep';
 
 export function OnboardingWizard() {
   const router = useRouter();
-  const isAuthenticated = useAuthStore(selectIsAuthenticated);
+  const isAuthenticated = useAppStore((state) => state.user.isAuthenticated);
   const { currentStep, nextStep, previousStep, isLoading } = useOnboardingStore();
 
   useEffect(() => {

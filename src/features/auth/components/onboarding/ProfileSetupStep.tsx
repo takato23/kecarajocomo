@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Camera, User } from 'lucide-react';
 
 import { useOnboardingStore } from '../../store/onboardingStore';
-import { useAuthStore } from '../../store/authStore';
+import { useAppStore } from '@/store';
 
 interface ProfileSetupStepProps {
   onNext: () => void;
@@ -12,7 +12,7 @@ interface ProfileSetupStepProps {
 }
 
 export function ProfileSetupStep({ onNext, onBack }: ProfileSetupStepProps) {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const { data, updateData, saveProfile } = useOnboardingStore();
   
   const [formData, setFormData] = useState({

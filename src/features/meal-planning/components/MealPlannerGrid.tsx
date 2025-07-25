@@ -21,12 +21,16 @@ import { toast } from 'sonner';
 import { cn } from '@/lib/utils';
 import { useTheme } from '@/contexts/ThemeContext';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
+import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
+import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
 
 import { useMealPlanningStore } from '../store/useMealPlanningStore';
 import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
 import type { MealType } from '../types';
 
 import { MealSlot } from './MealSlot';
+import { MealPlannerSkeleton } from './MealPlannerSkeleton';
+import { MealPlannerError } from './MealPlannerError';
 
 const MEAL_TYPES: MealType[] = ['desayuno', 'almuerzo', 'merienda', 'cena'];
 
@@ -171,26 +175,12 @@ export default function MealPlannerGrid({
     return date.toDateString() === today.toDateString();
   }, [getCurrentDate]);
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+  if (isLoading && !currentWeekPlan) {
+    return <MealPlannerSkeleton />;
   }
 
   if (error) {
-    return (
-      <div className="text-center text-red-500 p-8">
-        <p>Error: {error}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
-        >
-          Reload
-        </button>
-      </div>
-    );
+    return <MealPlannerError error={error} />;
   }
 
   return (

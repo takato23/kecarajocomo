@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { useAppStore } from '@/store';
 
 export default function AppLayout({
   children,
@@ -10,21 +11,17 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user, isLoading, isInitialized, initialize } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
+  const isAuthenticated = useAppStore((state) => state.user.isAuthenticated);
+  const isLoading = useAppStore((state) => state.user.isLoading);
 
   useEffect(() => {
-    initialize();
-  }, [initialize]);
-
-  useEffect(() => {
-    if (!isInitialized || isLoading) return;
-
-    if (!user) {
+    if (!isLoading && !isAuthenticated) {
       router.push('/login');
     }
-  }, [user, isLoading, isInitialized, router]);
+  }, [isAuthenticated, isLoading, router]);
 
-  if (!isInitialized || isLoading || !user) {
+  if (isLoading || !isAuthenticated || !user) {
     return <div>Loading...</div>;
   }
 

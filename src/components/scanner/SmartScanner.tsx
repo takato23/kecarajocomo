@@ -6,7 +6,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 import { useHolisticSystem } from '@/hooks/useHolisticSystem';
 import { cn } from '@/lib/utils';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAppStore } from '@/store';
+import { iOS26LiquidButton, iOS26LiquidCard } from '@/components/ui/ios26-components';
 
 type ScanMode = 'camera' | 'upload' | 'voice';
 
@@ -30,7 +31,7 @@ export function SmartScanner() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   
   const { processReceipt, progress } = useHolisticSystem();
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   
   const handleFileSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

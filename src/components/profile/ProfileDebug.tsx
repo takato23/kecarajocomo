@@ -6,10 +6,10 @@ import { useProfile } from '@/contexts/ProfileContext';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { supabase } from '@/lib/supabase';
 import { useUser } from '@/store';
-import { useAuthStore } from '@/features/auth';
+import { useAppStore } from '@/store';
 
 export function ProfileDebug() {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const userStore = useUser();
   const { profile, preferences, isLoading, error } = userStore || {};
   const profileContext = useProfile();

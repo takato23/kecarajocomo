@@ -4,12 +4,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Loader2, Mail, Lock } from 'lucide-react';
 
-import { useAuthStore, selectIsAuthenticated } from '../store/authStore';
+import { useAppStore } from '@/store';
 import { SignInFormData } from '../types';
 
 export function SignInForm() {
   const router = useRouter();
-  const { signIn, isLoading, error, clearError } = useAuthStore();
+  const isLoading = useAppStore((state) => state.user.isLoading);
+  const setAuthLoading = useAppStore((state) => state.setAuthLoading);
+  const setUser = useAppStore((state) => state.setUser);
+  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState<SignInFormData>({
     email: '',
@@ -19,57 +22,41 @@ export function SignInForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearError();
-
-    // Persistent logging
-    const log = (message: string, data?: any) => {
-      const timestamp = new Date().toISOString();
-      const logEntry = `[${timestamp}] ${message}`;
-
-      // Store in localStorage for persistence
-      const logs = JSON.parse(localStorage.getItem('debug-logs') || '[]');
-      logs.push({ timestamp, message, data });
-      if (logs.length > 50) logs.shift(); // Keep only last 50 logs
-      localStorage.setItem('debug-logs', JSON.stringify(logs));
-    };
-
-    log('🔥 FORM SUBMITTED', { 
-      email: formData.email, 
-      hasPassword: !!formData.password,
-      formValid: !!(formData.email && formData.password)
-    });
+    setError(null);
 
     if (!formData.email || !formData.password) {
-      log('❌ Missing email or password');
+      setError('Please enter both email and password');
       return;
     }
 
     try {
-      log('🚀 Starting signIn process...');
-      await signIn(formData);
-      log('✅ SignIn completed successfully');
+      setAuthLoading(true);
       
-      const authState = {
-        isAuthenticated: selectIsAuthenticated(useAuthStore.getState()),
-        user: useAuthStore.getState().user,
-        session: useAuthStore.getState().session 
+      // Here you would typically call your auth service
+      // For now, simulating a login with mock user data
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      
+      // Mock successful authentication
+      const mockUser = {
+        id: '1',
+        email: formData.email,
+        name: formData.email.split('@')[0],
+        avatar: '',
+        createdAt: new Date(),
+        lastLogin: new Date()
       };
-      log('📊 Auth state after sign in:', authState);
       
-      // Force a small delay to ensure state is updated
-      await new Promise(resolve => setTimeout(resolve, 100));
-      
-      log('🔄 Redirecting to dashboard...');
-      // Use Next.js router for state preservation
-      router.push('/dashboard');
+      setUser(mockUser);
+      router.push('/app');
     } catch (error: unknown) {
-      log('❌ Sign in failed:', error);
-      // Error is handled by the store
+      setError(error instanceof Error ? error.message : 'Sign in failed');
+    } finally {
+      setAuthLoading(false);
     }
   };
 
   const handleOAuthSignIn = async (provider: 'google' | 'github') => {
-    clearError();
+    setError(null);
     // OAuth sign in will be handled by the auth service
     window.location.href = `/api/auth/oauth/${provider}`;
   };

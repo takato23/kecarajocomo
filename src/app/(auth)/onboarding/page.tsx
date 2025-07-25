@@ -1,11 +1,15 @@
 'use client';
 
+// Force dynamic rendering  
+export const dynamic = 'force-dynamic';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 
 import { supabase } from '@/lib/supabase/client';
 import { OnboardingStep } from '@/features/auth/components/OnboardingStep';
+import { useAppStore } from '@/store';
 
 const ONBOARDING_STEPS = [
   {
@@ -27,7 +31,7 @@ const ONBOARDING_STEPS = [
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const [currentStep, setCurrentStep] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

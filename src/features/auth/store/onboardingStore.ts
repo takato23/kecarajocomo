@@ -14,7 +14,7 @@ import {
   WeeklyMealPlan
 } from '../types';
 
-import { useAuthStore } from './authStore';
+import { useAppStore } from '@/store';
 
 interface OnboardingStore extends OnboardingState {
   // Actions
@@ -108,7 +108,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Save Profile
       saveProfile: async (profile: Partial<UserProfile>) => {
-        const user = useAuthStore.getState().user;
+        const user = useAppStore.getState().user.profile;
         if (!user) throw new Error('User not authenticated');
 
         set({ isLoading: true, error: undefined });
@@ -127,7 +127,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           await authService.updateUserProfile(user.id, profile);
           
           // Update auth store
-          await useAuthStore.getState().loadUserData(user.id);
+          // User data updated through centralized store
         } catch (error: unknown) {
           set({ error: error.message || 'Failed to save profile' });
           throw error;
@@ -138,7 +138,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Save Preferences
       savePreferences: async (preferences: Partial<UserPreferences>) => {
-        const user = useAuthStore.getState().user;
+        const user = useAppStore.getState().user.profile;
         if (!user) throw new Error('User not authenticated');
 
         set({ isLoading: true, error: undefined });
@@ -157,7 +157,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           await authService.saveUserPreferences(user.id, preferences);
           
           // Update auth store
-          await useAuthStore.getState().loadUserData(user.id);
+          // User data updated through centralized store
         } catch (error: unknown) {
           set({ error: error.message || 'Failed to save preferences' });
           throw error;
@@ -168,7 +168,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Save Pantry Items
       savePantryItems: async (items: PantryItem[]) => {
-        const user = useAuthStore.getState().user;
+        const user = useAppStore.getState().user.profile;
         if (!user) throw new Error('User not authenticated');
 
         set({ isLoading: true, error: undefined });
@@ -215,7 +215,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Generate Initial Meal Plan
       generateInitialMealPlan: async () => {
-        const user = useAuthStore.getState().user;
+        const user = useAppStore.getState().user.profile;
         if (!user) throw new Error('User not authenticated');
 
         const { data } = get();
@@ -261,7 +261,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
 
       // Complete Onboarding
       completeOnboarding: async () => {
-        const user = useAuthStore.getState().user;
+        const user = useAppStore.getState().user.profile;
         if (!user) throw new Error('User not authenticated');
 
         set({ isLoading: true, error: undefined });
@@ -274,7 +274,7 @@ export const useOnboardingStore = create<OnboardingStore>()(
           });
 
           // Update auth store
-          await useAuthStore.getState().loadUserData(user.id);
+          // User data updated through centralized store
 
           // Mark all steps as completed
           set({

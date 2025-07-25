@@ -8,10 +8,11 @@ import { motion } from 'framer-motion';
 import { signIn, signInWithGoogle, signInWithGitHub } from '@/lib/supabase/client';
 import { AuthForm } from '@/features/auth/components/AuthForm';
 import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons';
+import { useAppStore } from '@/store';
 
 export default function LoginPage() {
   const router = useRouter();
-  const { setUser } = useAuthStore();
+  const setUser = useAppStore((state) => state.setUser);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,10 +23,16 @@ export default function LoginPage() {
     try {
       const { user } = await signIn(email, password);
       if (user) {
-        setUser(user);
+        setUser({
+          id: user.id,
+          email: user.email!,
+          name: user.user_metadata?.name || user.email!.split('@')[0],
+          createdAt: new Date(user.created_at),
+          lastLogin: new Date()
+        });
         router.push('/app');
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message || 'Failed to sign in');
     } finally {
       setIsLoading(false);
@@ -42,7 +49,7 @@ export default function LoginPage() {
       } else {
         await signInWithGitHub();
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message || `Failed to sign in with ${provider}`);
       setIsLoading(false);
     }

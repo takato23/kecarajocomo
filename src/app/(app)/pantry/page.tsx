@@ -1,5 +1,8 @@
 'use client';
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic';
+
 import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
@@ -11,6 +14,8 @@ import { PantrySuggestions } from '@/features/ai/components/PantrySuggestions';
 import { VoiceModal } from '@/components/voice/VoiceModal';
 import { DiscreteVoiceButton } from '@/components/voice/DiscreteVoiceButton';
 import { INGREDIENT_CATEGORIES } from '@/types/pantry';
+import { useAppStore, useShoppingActions, usePantryActions } from '@/store';
+import { usePantry } from '@/hooks/usePantry';
 
 // Lazy load the receipt scanner
 const ReceiptScanner = lazy(() => 
@@ -19,22 +24,19 @@ const ReceiptScanner = lazy(() =>
 
 export default function PantryPage() {
   const router = useRouter();
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const {
     items,
-    categories,
-    filters,
+    stats,
     isLoading,
-    fetchPantryItems,
-    addItem,
-    updateItem,
-    deleteItem,
-    checkExpiring,
-    checkLowStock,
-    suggestRestocking,
-    setFilters,
-  } = usePantryStore();
-  const { createList, addMultipleItems } = useShoppingStore();
+    isAdding,
+    error,
+    addItemToPantry,
+    updatePantryItem: updatePantryItemLocal,
+    deletePantryItem: deletePantryItemLocal,
+    fetchItems
+  } = usePantry(user?.id);
+  const { addShoppingList } = useShoppingActions();
 
   const [showAddModal, setShowAddModal] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -42,16 +44,14 @@ export default function PantryPage() {
   const [showVoiceModal, setShowVoiceModal] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [searchQuery, setSearchQuery] = useState('');
-
-  useEffect(() => {
-    if (user) {
-      fetchPantryItems(user.id);
-    }
-  }, [user]);
+  const [filters, setFilters] = useState({
+    lowStock: false,
+    expiringSoon: false
+  });
 
   const handleAddItem = async (item: any) => {
     if (user) {
-      await addItem(user.id, item);
+      await addItemToPantry(item);
     }
   };
 
@@ -93,22 +93,53 @@ export default function PantryPage() {
     }
   }, [handleAddItem]);
 
+  // Helper functions for filtering
+  const checkExpiring = useCallback(() => {
+    const threeDaysFromNow = new Date();
+    threeDaysFromNow.setDate(threeDaysFromNow.getDate() + 3);
+    return items.filter(item => {
+      if (!item.expiration_date) return false;
+      return new Date(item.expiration_date) <= threeDaysFromNow;
+    });
+  }, [items]);
+
+  const checkLowStock = useCallback(() => {
+    return items.filter(item => {
+      const minStock = item.low_stock_threshold || 1;
+      return item.quantity <= minStock;
+    });
+  }, [items]);
+
+  const suggestRestocking = useCallback(() => {
+    return items.filter(item => {
+      const minStock = item.min_quantity || 1;
+      return item.quantity <= minStock;
+    });
+  }, [items]);
+
   const handleAddToShoppingList = async () => {
     if (!user) return;
 
     const itemsToRestock = suggestRestocking();
     if (itemsToRestock.length === 0) return;
 
-    const list = await createList(user.id, 'Pantry Restock');
-    if (list) {
-      const shoppingItems = itemsToRestock.map(item => ({
-        ingredient_id: item.ingredient_id,
-        quantity: (item.min_quantity || 1) - item.quantity,
-        unit: item.unit,
-        is_checked: false,
-      }));
-      await addMultipleItems(list.id, shoppingItems);
-    }
+    // Create a simple shopping list from pantry items
+    const shoppingItems = itemsToRestock.map(item => ({
+      name: item.ingredient?.name || 'Unknown item',
+      quantity: (item.min_quantity || 1) - item.quantity,
+      unit: item.unit,
+      completed: false,
+      category: item.ingredient?.category || 'otros'
+    }));
+
+    const newList = {
+      name: 'Restock from Pantry',
+      items: shoppingItems,
+      createdAt: new Date(),
+      totalEstimatedPrice: 0
+    };
+
+    addShoppingList(newList);
   };
 
   // Filter items
@@ -212,7 +243,7 @@ export default function PantryPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm text-gray-600">Categorías</p>
-                <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
+                <p className="text-2xl font-bold text-gray-900">{Object.keys(INGREDIENT_CATEGORIES).length}</p>
               </div>
               <span className="text-2xl">🏷️</span>
             </div>
@@ -366,8 +397,8 @@ export default function PantryPage() {
                 <PantryItemCard
                   key={item.id}
                   item={item}
-                  onUpdate={updateItem}
-                  onDelete={deleteItem}
+                  onUpdate={updatePantryItemLocal}
+                  onDelete={deletePantryItemLocal}
                 />
               ))}
             </AnimatePresence>

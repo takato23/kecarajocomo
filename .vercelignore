@@ -1,0 +1,45 @@
+# Dependencies
+node_modules
+.pnpm-store
+
+# Build outputs
+.next
+out
+dist
+
+# Development
+.env.local
+
+# Testing
+coverage
+*.log
+*.tgz
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Large files
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+training-data/
+docs/
+*.pdf
+coverage/
+screenshot.png
+tests/
+playwright-report/
+test-results/
+
+# Documentation
+COMPREHENSIVE_TEST_REPORT.md
+MEAL_PLANNER_CONSOLIDATION_SUMMARY.md
+QUICK_ACTION_ITEMS.md
+DEPLOYMENT_CHECKLIST.md

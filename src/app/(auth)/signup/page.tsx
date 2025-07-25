@@ -31,7 +31,7 @@ export default function SignUpPage() {
         // If email confirmation is disabled, redirect to profile setup
         router.push('/onboarding');
       }
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message || 'Failed to create account');
     } finally {
       setIsLoading(false);
@@ -49,7 +49,7 @@ export default function SignUpPage() {
         await signInWithGitHub();
       }
       // OAuth providers handle the redirect
-    } catch (err: unknown) {
+    } catch (err: any) {
       setError(err.message || `Failed to sign up with ${provider}`);
       setIsLoading(false);
     }

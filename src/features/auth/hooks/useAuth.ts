@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 
-import { useUser, useUserActions } from '@/store';
+import { useAppStore } from '@/store';
 
 interface UseAuthOptions {
   redirectTo?: string;
@@ -10,12 +11,51 @@ interface UseAuthOptions {
 
 export function useAuth(options?: UseAuthOptions) {
   const router = useRouter();
-  const { user, isLoading } = useUser();
-  const { initialize } = useUserActions();
+  const supabase = createClientComponentClient();
+  const { user, isLoading } = useAppStore((state) => state.user);
+  const setUser = useAppStore((state) => state.setUser);
+  const setAuthLoading = useAppStore((state) => state.setAuthLoading);
 
   useEffect(() => {
-    initialize();
-  }, [initialize]);
+    const checkUser = async () => {
+      setAuthLoading(true);
+      try {
+        const { data: { user: authUser } } = await supabase.auth.getUser();
+        if (authUser) {
+          setUser({
+            id: authUser.id,
+            email: authUser.email!,
+            name: authUser.user_metadata?.name || authUser.email!.split('@')[0],
+            createdAt: new Date(authUser.created_at),
+            lastLogin: new Date()
+          });
+        }
+      } catch (error) {
+        console.error('Error checking auth:', error);
+      } finally {
+        setAuthLoading(false);
+      }
+    };
+
+    checkUser();
+
+    // Subscribe to auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email!,
+          name: session.user.user_metadata?.name || session.user.email!.split('@')[0],
+          createdAt: new Date(session.user.created_at),
+          lastLogin: new Date()
+        });
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, [supabase, setUser, setAuthLoading]);
 
   useEffect(() => {
     if (isLoading) return;

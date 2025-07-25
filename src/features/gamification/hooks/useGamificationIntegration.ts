@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 
-import { useAuthStore } from '../../auth/store/authStore';
+import { useAppStore } from '@/store';
 import { useXPSystem } from '../store/gamificationStore';
 import { XPEventType } from '../types';
 import { progressTrackingService } from '../services/progressTrackingService';
@@ -29,7 +29,7 @@ interface GamificationIntegrationHook {
 }
 
 export function useGamificationIntegration(): GamificationIntegrationHook {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const { awardXP } = useXPSystem();
 
   // Helper function to track events

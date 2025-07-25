@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { toast } from 'sonner';
 
 import { shoppingService } from '@/lib/supabase/shopping';
-import { useAuthStore } from '@/features/auth';
+import { useAppStore } from '@/store';
 import type { Database } from '@/lib/supabase/database.types';
 
 type ShoppingList = Database['public']['Tables']['shopping_lists']['Row'] & {
@@ -11,7 +11,7 @@ type ShoppingList = Database['public']['Tables']['shopping_lists']['Row'] & {
 type ShoppingItem = Database['public']['Tables']['shopping_items']['Row'];
 
 export function useShoppingList() {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const [lists, setLists] = useState<ShoppingList[]>([]);
   const [activeList, setActiveList] = useState<ShoppingList | null>(null);
   const [isLoading, setIsLoading] = useState(true);

@@ -6,15 +6,24 @@ import {
   Settings, 
   Home, 
   Utensils, 
-  Bell
+  Bell,
+  Trophy,
+  Target,
+  Flame,
+  Users
 } from 'lucide-react';
 
 import { useProfile } from '@/contexts/ProfileContext';
+import { useProfileGamification } from '@/hooks/useProfileGamification';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 
 import { ProfileHeader } from './ProfileHeader';
+import { ProfileProgress } from './gamification/ProfileProgress';
+import { ProfileAchievements } from './gamification/ProfileAchievements';
+import { ProfileStreaks } from './gamification/ProfileStreaks';
+import { ProfileLeaderboard } from './gamification/ProfileLeaderboard';
 
 // Lazy load tab content components for better initial load performance
 const ProfileOverview = lazy(() => import('./ProfileOverview').then(module => ({ default: module.ProfileOverview })));
@@ -85,31 +94,18 @@ export const ProfileHub = React.memo(() => {
     getHouseholdSize
   } = useProfile();
   
+  const { 
+    metrics, 
+    suggestions, 
+    celebrateCompletion 
+  } = useProfileGamification();
+  
   const [activeTab, setActiveTab] = useState('overview');
 
-  // Memoize expensive calculations
+  // Use gamification metrics instead of custom calculation
   const completionPercentage = useMemo(() => {
-    if (!profile || !preferences) return 0;
-    
-    let completed = 0;
-    const total = 10;
-    
-    // Basic profile
-    if (profile.fullName) completed++;
-    if (profile.bio) completed++;
-    if (profile.avatarUrl) completed++;
-    
-    // Preferences
-    if (preferences.dietaryRestrictions?.length > 0) completed++;
-    if (preferences.cuisinePreferences?.length > 0) completed++;
-    if (preferences.cookingSkillLevel) completed++;
-    if (preferences.budget?.weekly > 0) completed++;
-    if (preferences.cookingPreferences?.timeAvailable) completed++;
-    if (preferences.mealSchedule) completed++;
-    if (householdMembers.length > 0 || preferences.householdSize > 1) completed++;
-    
-    return Math.round((completed / total) * 100);
-  }, [profile, preferences, householdMembers]);
+    return metrics?.overall || 0;
+  }, [metrics]);
 
   // Memoize derived stats data
   const statsData = useMemo(() => {
@@ -131,6 +127,24 @@ export const ProfileHub = React.memo(() => {
   const handleDietaryUpdate = useCallback((updates: any) => {
     updatePreferences(updates);
   }, [updatePreferences]);
+
+  const handleSectionClick = useCallback((section: string) => {
+    // Navigate to relevant tab based on section
+    const sectionToTab: Record<string, string> = {
+      basicInfo: 'overview',
+      preferences: 'preferences',
+      household: 'household',
+      dietary: 'dietary',
+      cooking: 'preferences',
+      planning: 'preferences',
+      social: 'settings',
+      financial: 'preferences',
+    };
+    
+    const targetTab = sectionToTab[section] || 'overview';
+    setActiveTab(targetTab);
+    celebrateCompletion(section);
+  }, [celebrateCompletion]);
 
   // Early return for loading state
   if (!profile || !preferences) {
@@ -178,8 +192,12 @@ export const ProfileHub = React.memo(() => {
 
       {/* Profile Tabs */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 gap-2">
+        <TabsList className="grid w-full grid-cols-3 md:grid-cols-9 gap-1 text-xs">
           <ProfileTabTrigger value="overview" icon={User} label="Resumen" />
+          <ProfileTabTrigger value="progress" icon={Target} label="Progreso" />
+          <ProfileTabTrigger value="achievements" icon={Trophy} label="Logros" />
+          <ProfileTabTrigger value="streaks" icon={Flame} label="Rachas" />
+          <ProfileTabTrigger value="leaderboard" icon={Users} label="Ranking" />
           <ProfileTabTrigger value="dietary" icon={Utensils} label="Dieta" />
           <ProfileTabTrigger value="household" icon={Home} label="Hogar" />
           <ProfileTabTrigger value="preferences" icon={Settings} label="Preferencias" />
@@ -195,6 +213,40 @@ export const ProfileHub = React.memo(() => {
               householdSize={statsData?.householdSize || 0}
             />
           </Suspense>
+        </TabsContent>
+
+        <TabsContent value="progress" className="space-y-6">
+          {metrics && (
+            <ProfileProgress 
+              metrics={metrics}
+              suggestions={suggestions}
+              onSectionClick={handleSectionClick}
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="achievements" className="space-y-6">
+          {metrics && (
+            <ProfileAchievements 
+              achievements={metrics.achievements}
+              totalPoints={metrics.totalPoints}
+              level={metrics.level}
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="streaks" className="space-y-6">
+          {metrics && (
+            <ProfileStreaks 
+              currentStreak={metrics.currentStreak}
+              longestStreak={metrics.longestStreak}
+              lastActiveDate={metrics.lastActiveDate}
+            />
+          )}
+        </TabsContent>
+
+        <TabsContent value="leaderboard" className="space-y-6">
+          <ProfileLeaderboard currentUserId={profile?.id} />
         </TabsContent>
 
         <TabsContent value="dietary" className="space-y-6">

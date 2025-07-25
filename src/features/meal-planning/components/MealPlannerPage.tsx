@@ -30,6 +30,7 @@ import MealPlannerGrid from './MealPlannerGrid';
 import { RecipeSelectionModal } from './RecipeSelectionModal';
 import { UserPreferencesModal } from './UserPreferencesModal';
 import { ShoppingListModal } from './ShoppingListModal';
+import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
 
 
 

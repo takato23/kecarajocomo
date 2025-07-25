@@ -4,12 +4,15 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Eye, EyeOff, Loader2, Mail, Lock, User, Check } from 'lucide-react';
 
-import { useAuthStore } from '../store/authStore';
+import { useAppStore } from '@/store';
 import { SignUpFormData } from '../types';
 
 export function SignUpForm() {
   const router = useRouter();
-  const { signUp, isLoading, error, clearError } = useAuthStore();
+  const isLoading = useAppStore((state) => state.user.isLoading);
+  const setAuthLoading = useAppStore((state) => state.setAuthLoading);
+  const setUser = useAppStore((state) => state.setUser);
+  const [error, setError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState<SignUpFormData>({
@@ -49,18 +52,42 @@ export function SignUpForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearError();
+    setError(null);
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
+    if (!formData.acceptTerms) {
+      setError('Please accept the terms and conditions');
       return;
     }
 
     try {
-      await signUp(formData);
+      setAuthLoading(true);
+      
+      // Here you would typically call your auth service
+      // For now, simulating a signup with mock user data
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API call
+      
+      // Mock successful authentication
+      const mockUser = {
+        id: Date.now().toString(),
+        email: formData.email,
+        name: formData.name,
+        avatar: '',
+        createdAt: new Date(),
+        lastLogin: new Date()
+      };
+      
+      setUser(mockUser);
       router.push('/onboarding');
     } catch (error: unknown) {
-      // Error is handled by the store
+      setError(error instanceof Error ? error.message : 'Sign up failed');
+    } finally {
+      setAuthLoading(false);
     }
   };
 

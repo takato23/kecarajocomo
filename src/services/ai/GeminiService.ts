@@ -23,7 +23,7 @@ export class GeminiService {
         this.genAI = new GoogleGenerativeAI(apiKey);
         this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
         this.isAvailable = true;
-        console.log('[GeminiService] Initialized successfully');
+        // GeminiService initialized successfully
       } catch (error) {
         console.warn('[GeminiService] Failed to initialize:', error);
         this.isAvailable = false;

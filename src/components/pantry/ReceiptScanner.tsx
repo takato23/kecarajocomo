@@ -125,7 +125,7 @@ export const ReceiptScanner = React.memo<ReceiptScannerProps>(({
     } finally {
       setIsScanning(false);
     }
-  }, [scannedData, selectedItems, user, addItem, onClose]);
+  }, [scannedData, selectedItems, user, addPantryItem, onClose]);
 
   const handleReset = useCallback(() => {
     setScannedData(null);

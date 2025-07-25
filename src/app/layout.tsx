@@ -73,7 +73,19 @@ export default function RootLayout({
         }} />
         <script
           dangerouslySetInnerHTML={{
-            __html: "(function() { try { var theme = localStorage.getItem('ui-theme') || 'system'; var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches); if (isDark) { document.documentElement.classList.add('dark'); } } catch (e) {} })();"
+            __html: `
+              (function() { 
+                try { 
+                  var theme = localStorage.getItem('ui-theme') || 'system'; 
+                  var isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches); 
+                  if (isDark) { 
+                    document.documentElement.classList.add('dark'); 
+                  } else {
+                    document.documentElement.classList.remove('dark');
+                  }
+                } catch (e) {} 
+              })();
+            `
           }}
         />
       </head>

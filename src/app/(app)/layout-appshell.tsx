@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 import { AppShell } from '@/features/app-shell';
 import { defaultNavigationConfig } from '@/features/app-shell/config/routes';
 import { Toaster } from '@/services/notifications';
+import { useAppStore } from '@/store';
 
 export default function AppLayout({
   children,
@@ -13,21 +14,17 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  const { user, isLoading, isInitialized, initialize } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
+  const isAuthenticated = useAppStore((state) => state.user.isAuthenticated);
+  const isLoading = useAppStore((state) => state.user.isLoading);
 
   useEffect(() => {
-    initialize();
-  }, [initialize]);
-
-  useEffect(() => {
-    if (!isInitialized || isLoading) return;
-
-    if (!user) {
+    if (!isLoading && !isAuthenticated) {
       router.push('/login');
     }
-  }, [user, isLoading, isInitialized, router]);
+  }, [isAuthenticated, isLoading, router]);
 
-  if (!isInitialized || isLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-lime-50 to-purple-50">
         <div className="text-center">
@@ -40,7 +37,7 @@ export default function AppLayout({
     );
   }
 
-  if (!user) {
+  if (!isAuthenticated || !user) {
     return null;
   }
 

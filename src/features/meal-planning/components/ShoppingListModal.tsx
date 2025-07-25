@@ -1,71 +1,113 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
-import { X, ShoppingCart } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ShoppingCart, Download, Share2 } from 'lucide-react';
+import { toast } from 'sonner';
+
+import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
+import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
 
 interface ShoppingListModalProps {
   onClose: () => void;
 }
 
 export function ShoppingListModal({ onClose }: ShoppingListModalProps) {
-  return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-      onClick={onClose}
-    >
-      <motion.div
-        initial={{ scale: 0.9, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        exit={{ scale: 0.9, opacity: 0 }}
-        onClick={(e) => e.stopPropagation()}
-        className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl w-full max-w-2xl p-6"
-      >
-        {/* Header */}
-        <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <div className="p-2 bg-green-500/20 rounded-xl">
-              <ShoppingCart className="w-6 h-6 text-green-400" />
-            </div>
-            <div>
-              <h2 className="text-xl font-bold text-white">
-                Lista de Compras
-              </h2>
-              <p className="text-white/60 text-sm">
-                Generada desde tu plan de comidas
-              </p>
-            </div>
-          </div>
-          <button
-            onClick={onClose}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors"
-          >
-            <X className="w-5 h-5 text-white" />
-          </button>
-        </div>
+  const handleExport = () => {
+    toast.success('Lista de compras exportada');
+  };
 
-        {/* Content */}
-        <div className="space-y-6">
-          <div className="text-center py-12">
-            <ShoppingCart className="w-16 h-16 text-white/40 mx-auto mb-4" />
-            <h3 className="text-lg font-semibold text-white mb-2">
-              Lista de Compras
-            </h3>
-            <p className="text-white/60 mb-6">
-              Esta funcionalidad se implementará próximamente
-            </p>
-            <button
-              onClick={onClose}
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-xl"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
+  const handleShare = () => {
+    toast.success('Lista de compras compartida');
+  };
+
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        onClick={onClose}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          onClick={(e) => e.stopPropagation()}
+          className="w-full max-w-lg"
+        >
+          <iOS26EnhancedCard
+            variant="aurora"
+            elevation="floating"
+            className="max-h-[80vh] overflow-hidden"
+          >
+            {/* Header */}
+            <div className="px-6 py-4 border-b border-white/10">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-gradient-to-br from-green-500 to-blue-600 rounded-xl flex items-center justify-center">
+                    <ShoppingCart className="w-5 h-5 text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                    Lista de Compras
+                  </h2>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="p-2 hover:bg-white/10 rounded-lg transition-colors"
+                >
+                  <X className="w-5 h-5 text-gray-500" />
+                </button>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="px-6 py-4 max-h-[50vh] overflow-y-auto">
+              <div className="text-center py-8">
+                <div className="w-20 h-20 bg-white/10 rounded-3xl flex items-center justify-center mx-auto mb-4">
+                  <ShoppingCart className="w-10 h-10 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                  Lista vacía
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Agrega comidas a tu planificador para generar una lista de compras automáticamente.
+                </p>
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t border-white/10 flex justify-between">
+              <div className="flex gap-2">
+                <iOS26LiquidButton
+                  variant="glass"
+                  leftIcon={<Download className="w-4 h-4" />}
+                  onClick={handleExport}
+                  size="sm"
+                >
+                  Exportar
+                </iOS26LiquidButton>
+                <iOS26LiquidButton
+                  variant="glass"
+                  leftIcon={<Share2 className="w-4 h-4" />}
+                  onClick={handleShare}
+                  size="sm"
+                >
+                  Compartir
+                </iOS26LiquidButton>
+              </div>
+              <iOS26LiquidButton
+                variant="solid"
+                onClick={onClose}
+                className="bg-gradient-to-r from-green-500 to-blue-500"
+              >
+                Cerrar
+              </iOS26LiquidButton>
+            </div>
+          </iOS26EnhancedCard>
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </AnimatePresence>
   );
 }

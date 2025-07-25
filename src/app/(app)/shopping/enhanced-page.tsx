@@ -20,9 +20,10 @@ import { INGREDIENT_CATEGORIES } from '@/types/pantry';
 import { ShoppingVoiceButton } from '@/components/shopping/ShoppingVoiceButton';
 import { SupermarketMode } from '@/components/shopping/SupermarketMode';
 import { CategoryBadge } from '@/components/shopping/CategoryBadge';
+import { useAppStore } from '@/store';
 
 export default function ShoppingListPage() {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const { toast } = useToast();
   const { 
     activeList, 

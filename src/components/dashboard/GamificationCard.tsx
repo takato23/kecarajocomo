@@ -7,7 +7,7 @@ import { Trophy, Flame, Target, Star, ChevronRight } from 'lucide-react';
 import { GlassCard } from '@/components/ui/GlassCard';
 import { cn } from '@/lib/utils';
 import { useGamificationProfile, useAchievements } from '@/features/gamification/store/gamificationStore';
-import { useAuthStore } from '@/features/auth/store/authStore';
+import { useAppStore } from '@/store';
 import { useGamificationIntegration } from '@/features/gamification/hooks/useGamificationIntegration';
 
 interface Achievement {
@@ -56,7 +56,7 @@ export function GamificationCard({
   streak,
   achievements
 }: GamificationCardProps) {
-  const { user } = useAuthStore();
+  const user = useAppStore((state) => state.user.profile);
   const { profile, loadProfile } = useGamificationProfile();
   const { achievements: userAchievements, loadAchievements } = useAchievements();
   const { trackDailyLogin } = useGamificationIntegration();

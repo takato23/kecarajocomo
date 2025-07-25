@@ -6,9 +6,14 @@ export * from './types';
 // Services
 export { AuthService } from './services/authService';
 
-// Stores
-export { useAuthStore, selectIsAuthenticated, selectIsOnboarded, selectNeedsOnboarding } from './store/authStore';
+// Stores - Using centralized store now
+export { useAppStore, useUser, useUserActions } from '@/store';
 export { useOnboardingStore, selectIsStepCompleted, selectCanNavigateToStep, selectOnboardingProgress } from './store/onboardingStore';
+
+// Backward compatibility selectors
+export const selectIsAuthenticated = (state: any) => state.user?.isAuthenticated || false;
+export const selectIsOnboarded = (state: any) => !!state.user?.profile;
+export const selectNeedsOnboarding = (state: any) => !state.user?.profile && state.user?.isAuthenticated;
 
 // Components
 export { SignInForm } from './components/SignInForm';

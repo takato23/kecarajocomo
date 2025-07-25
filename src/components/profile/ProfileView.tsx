@@ -1,12 +1,17 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Users, ChefHat, Target, Heart, AlertCircle, Save, Plus, X, Clock, Utensils } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
 
 import { getProfileManager, type UserProfile, type DietaryRestriction } from '@/services/profile/ProfileManager';
 import { getHolisticSystem } from '@/services/core/HolisticSystem';
+import { useAutoSave } from '@/hooks/useAutoSave';
+import { AutoSaveIndicator, AutoSaveHeader } from '@/components/profile/AutoSaveIndicator';
+import { iOS26LiquidCard } from '@/components/ios26/iOS26LiquidCard';
+import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
+import { iOS26LiquidInput } from '@/components/ios26/iOS26LiquidInput';
 import { cn } from '@/lib/utils';
 
 
@@ -94,7 +99,7 @@ const ProfileError = ({ onRetry }: { onRetry: () => void }) => (
 );
 
 export function ProfileView() {
-  const [profile, setProfile] = useState<Partial<UserProfile>>({
+  const [initialProfile] = useState<Partial<UserProfile>>({
     householdSize: 2,
     householdMembers: [],
     monthlyBudget: 50000,
@@ -115,19 +120,92 @@ export function ProfileView() {
     }
   });
   
+  const [profile, setProfile] = useState<Partial<UserProfile>>(initialProfile);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [newAllergy, setNewAllergy] = useState('');
   const [newDisliked, setNewDisliked] = useState('');
   const [showAddMember, setShowAddMember] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const [recoveryData, setRecoveryData] = useState<Partial<UserProfile> | null>(null);
   
   const profileManager = getProfileManager(getHolisticSystem());
+
+  // Auto-save configuration
+  const handleSave = useCallback(async (data: Partial<UserProfile>) => {
+    const userId = 'temp-user-id'; // TODO: Obtener del contexto
+    await profileManager.upsertProfile(userId, data);
+    setLastSaved(new Date());
+  }, [profileManager]);
+
+  const handleValidation = useCallback((data: Partial<UserProfile>): boolean | string => {
+    // Basic validation
+    if (data.householdSize && (data.householdSize < 1 || data.householdSize > 20)) {
+      return 'El número de miembros del hogar debe estar entre 1 y 20';
+    }
+    
+    if (data.monthlyBudget && data.monthlyBudget < 0) {
+      return 'El presupuesto mensual no puede ser negativo';
+    }
+    
+    return true;
+  }, []);
+
+  const handleConflictResolution = useCallback(async (
+    localData: Partial<UserProfile>, 
+    serverData: Partial<UserProfile>
+  ): Promise<Partial<UserProfile>> => {
+    // Simple merge strategy - prefer local changes for user input fields
+    // and server data for system-generated fields
+    return {
+      ...serverData,
+      ...localData,
+      // Always use server timestamp if available
+      updatedAt: serverData.updatedAt || localData.updatedAt
+    };
+  }, []);
+
+  // Initialize auto-save
+  const autoSave = useAutoSave(profile, {
+    onSave: handleSave,
+    onValidate: handleValidation,
+    onConflict: handleConflictResolution,
+    config: {
+      debounceMs: 2000, // 2 seconds debounce
+      maxRetries: 3,
+      retryDelayMs: 1000,
+      enableLocalStorage: true,
+      enableConflictDetection: true
+    },
+    enableOffline: true,
+    storageKey: 'profile-autosave',
+    onStateChange: (state) => {
+      if (state === 'error') {
+        // Check for recovery data on error
+        const recovery = autoSave.getRecoveryData();
+        if (recovery) {
+          setRecoveryData(recovery);
+        }
+      }
+    }
+  });
   
   // Cargar perfil
   useEffect(() => {
     loadProfile();
   }, []);
+
+  // Cleanup auto-save on unmount
+  useEffect(() => {
+    return () => {
+      // Force save any pending changes before unmounting
+      if (autoSave.hasPendingChanges) {
+        autoSave.forceSave().catch(error => {
+          console.error('Error al guardar cambios pendientes:', error);
+        });
+      }
+    };
+  }, [autoSave]);
   
   async function loadProfile() {
     try {
@@ -138,80 +216,126 @@ export function ProfileView() {
       
       if (existingProfile) {
         setProfile(existingProfile);
+        // Update auto-save with loaded data
+        autoSave.updateData(existingProfile);
+        autoSave.clearPendingChanges();
+      } else {
+        // Check for recovery data
+        const recovery = autoSave.getRecoveryData();
+        if (recovery) {
+          setRecoveryData(recovery);
+        }
       }
     } catch (error: unknown) {
       console.error('Error cargando perfil:', error);
       setError('Error al cargar el perfil');
       toast.error('Error al cargar el perfil');
+      
+      // Check for recovery data on error
+      const recovery = autoSave.getRecoveryData();
+      if (recovery) {
+        setRecoveryData(recovery);
+      }
     } finally {
       setLoading(false);
     }
   }
   
-  async function saveProfile() {
+  // Manual save function
+  const manualSave = useCallback(async () => {
     try {
-      setSaving(true);
-      const userId = 'temp-user-id'; // TODO: Obtener del contexto
-      await profileManager.upsertProfile(userId, profile);
-      toast.success('Perfil guardado exitosamente');
-    } catch (error: unknown) {
-      console.error('Error guardando perfil:', error);
-      toast.error('Error al guardar perfil');
-    } finally {
-      setSaving(false);
+      await autoSave.manualSave();
+    } catch (error) {
+      console.error('Error en guardado manual:', error);
     }
-  }
+  }, [autoSave]);
+
+  // Force save function
+  const forceSave = useCallback(async () => {
+    try {
+      await autoSave.forceSave();
+    } catch (error) {
+      console.error('Error en guardado forzado:', error);
+    }
+  }, [autoSave]);
+
+  // Recovery functions
+  const acceptRecovery = useCallback(() => {
+    if (recoveryData) {
+      setProfile(recoveryData);
+      autoSave.updateData(recoveryData);
+      setRecoveryData(null);
+      toast.success('Datos recuperados exitosamente');
+    }
+  }, [recoveryData, autoSave]);
+
+  const discardRecovery = useCallback(() => {
+    setRecoveryData(null);
+    toast.info('Datos de recuperación descartados');
+  }, []);
   
   function toggleDietaryRestriction(restriction: DietaryRestriction) {
-    setProfile(prev => ({
-      ...prev,
-      dietaryRestrictions: prev.dietaryRestrictions?.includes(restriction)
-        ? prev.dietaryRestrictions.filter(r => r !== restriction)
-        : [...(prev.dietaryRestrictions || []), restriction]
-    }));
+    const updatedProfile = {
+      ...profile,
+      dietaryRestrictions: profile.dietaryRestrictions?.includes(restriction)
+        ? profile.dietaryRestrictions.filter(r => r !== restriction)
+        : [...(profile.dietaryRestrictions || []), restriction]
+    };
+    setProfile(updatedProfile);
+    autoSave.updateData(updatedProfile);
   }
   
   function toggleCuisine(cuisine: string) {
-    setProfile(prev => ({
-      ...prev,
-      preferredCuisines: prev.preferredCuisines?.includes(cuisine)
-        ? prev.preferredCuisines.filter(c => c !== cuisine)
-        : [...(prev.preferredCuisines || []), cuisine]
-    }));
+    const updatedProfile = {
+      ...profile,
+      preferredCuisines: profile.preferredCuisines?.includes(cuisine)
+        ? profile.preferredCuisines.filter(c => c !== cuisine)
+        : [...(profile.preferredCuisines || []), cuisine]
+    };
+    setProfile(updatedProfile);
+    autoSave.updateData(updatedProfile);
   }
   
   function addAllergy() {
     if (newAllergy.trim() && !profile.allergies?.includes(newAllergy)) {
-      setProfile(prev => ({
-        ...prev,
-        allergies: [...(prev.allergies || []), newAllergy.trim()]
-      }));
+      const updatedProfile = {
+        ...profile,
+        allergies: [...(profile.allergies || []), newAllergy.trim()]
+      };
+      setProfile(updatedProfile);
+      autoSave.updateData(updatedProfile);
       setNewAllergy('');
     }
   }
   
   function removeAllergy(allergy: string) {
-    setProfile(prev => ({
-      ...prev,
-      allergies: prev.allergies?.filter(a => a !== allergy) || []
-    }));
+    const updatedProfile = {
+      ...profile,
+      allergies: profile.allergies?.filter(a => a !== allergy) || []
+    };
+    setProfile(updatedProfile);
+    autoSave.updateData(updatedProfile);
   }
   
   function addDislikedIngredient() {
     if (newDisliked.trim() && !profile.dislikedIngredients?.includes(newDisliked)) {
-      setProfile(prev => ({
-        ...prev,
-        dislikedIngredients: [...(prev.dislikedIngredients || []), newDisliked.trim()]
-      }));
+      const updatedProfile = {
+        ...profile,
+        dislikedIngredients: [...(profile.dislikedIngredients || []), newDisliked.trim()]
+      };
+      setProfile(updatedProfile);
+      autoSave.updateData(updatedProfile);
       setNewDisliked('');
     }
   }
   
   function removeDislikedIngredient(ingredient: string) {
-    setProfile(prev => ({
-      ...prev,
-      dislikedIngredients: prev.dislikedIngredients?.filter(i => i !== ingredient) || []
-    }));
+    const updatedProfile = {
+      ...profile,
+      dislikedIngredients: profile.dislikedIngredients?.filter(i => i !== ingredient) || []
+    };
+    setProfile(updatedProfile);
+    autoSave.updateData(updatedProfile);
   }
   
   if (loading) {
@@ -229,36 +353,104 @@ export function ProfileView() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
     >
-      {/* Header */}
+      {/* Header with Auto-save */}
       <motion.div 
-        className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8"
+        className="space-y-4 mb-8"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4, delay: 0.1 }}
       >
-        <div className="space-y-1">
-          <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
-            Mi Perfil
-          </h1>
-          <p className="text-gray-400 text-sm sm:text-base">
-            Personaliza tu experiencia culinaria
-          </p>
-        </div>
+        <AutoSaveHeader
+          state={autoSave.saveState}
+          lastSaved={lastSaved}
+          onRetry={autoSave.retryFailedSaves}
+          onResolveConflict={forceSave}
+        />
         
-        <iOS26LiquidButton
-          variant="primary"
-          size="lg"
-          onClick={saveProfile}
-          loading={saving}
-          disabled={saving}
-          glow
-          className="w-full sm:w-auto bg-gradient-to-r from-green-600 to-emerald-600 text-white"
-          aria-label="Guardar cambios del perfil"
-        >
-          <Save className="w-5 h-5" />
-          {saving ? 'Guardando...' : 'Guardar Cambios'}
-        </iOS26LiquidButton>
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+          <div className="space-y-1">
+            <p className="text-gray-400 text-sm sm:text-base">
+              Personaliza tu experiencia culinaria
+            </p>
+            {autoSave.hasPendingChanges && (
+              <div className="flex items-center gap-2 text-xs text-yellow-400">
+                <Clock className="w-3 h-3" />
+                <span>Cambios pendientes...</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="flex items-center gap-3">
+            <AutoSaveIndicator
+              state={autoSave.saveState}
+              lastSaved={lastSaved}
+              onRetry={autoSave.retryFailedSaves}
+              onResolveConflict={forceSave}
+              size="md"
+            />
+            
+            <iOS26LiquidButton
+              variant="secondary"
+              size="lg"
+              onClick={manualSave}
+              disabled={autoSave.saveState === 'saving'}
+              className="w-full sm:w-auto"
+              aria-label="Guardar cambios manualmente"
+            >
+              <Save className="w-5 h-5" />
+              Guardar Ahora
+            </iOS26LiquidButton>
+          </div>
+        </div>
       </motion.div>
+
+      {/* Recovery Data Alert */}
+      <AnimatePresence>
+        {recoveryData && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            className="mb-6"
+          >
+            <iOS26LiquidCard variant="medium" className="border-2 border-orange-500/30 bg-orange-500/5">
+              <div className="p-4 space-y-4">
+                <div className="flex items-start gap-3">
+                  <div className="p-2 bg-orange-500/20 rounded-lg">
+                    <AlertCircle className="w-5 h-5 text-orange-400" />
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <h3 className="text-lg font-medium text-orange-300">
+                      Datos de Recuperación Disponibles
+                    </h3>
+                    <p className="text-sm text-gray-300">
+                      Se encontraron cambios guardados localmente que no se sincronizaron. 
+                      ¿Deseas recuperar estos datos?
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex gap-3">
+                  <iOS26LiquidButton
+                    variant="primary"
+                    onClick={acceptRecovery}
+                    className="bg-gradient-to-r from-orange-500 to-amber-500"
+                  >
+                    Recuperar Datos
+                  </iOS26LiquidButton>
+                  
+                  <iOS26LiquidButton
+                    variant="ghost"
+                    onClick={discardRecovery}
+                  >
+                    Descartar
+                  </iOS26LiquidButton>
+                </div>
+              </div>
+            </iOS26LiquidCard>
+          </motion.div>
+        )}
+      </AnimatePresence>
       
       {/* Información del hogar */}
       <motion.div
@@ -281,10 +473,14 @@ export function ProfileView() {
                   label="Miembros del hogar"
                   type="number"
                   value={profile.householdSize?.toString() || '1'}
-                  onChange={(e) => setProfile(prev => ({
-                    ...prev,
-                    householdSize: Number(e.target.value)
-                  }))}
+                  onChange={(e) => {
+                    const updatedProfile = {
+                      ...profile,
+                      householdSize: Number(e.target.value)
+                    };
+                    setProfile(updatedProfile);
+                    autoSave.updateData(updatedProfile);
+                  }}
                   min="1"
                   max="20"
                   size="lg"
@@ -299,10 +495,14 @@ export function ProfileView() {
                   label="Presupuesto mensual (ARS)"
                   type="number"
                   value={profile.monthlyBudget?.toString() || '0'}
-                  onChange={(e) => setProfile(prev => ({
-                    ...prev,
-                    monthlyBudget: Number(e.target.value)
-                  }))}
+                  onChange={(e) => {
+                    const updatedProfile = {
+                      ...profile,
+                      monthlyBudget: Number(e.target.value)
+                    };
+                    setProfile(updatedProfile);
+                    autoSave.updateData(updatedProfile);
+                  }}
                   min="0"
                   step="1000"
                   size="lg"
@@ -401,13 +601,18 @@ export function ProfileView() {
                           <iOS26LiquidButton
                             variant={isSelected ? "danger" : "ghost"}
                             size="sm"
-                            onClick={() => isSelected 
-                              ? removeAllergy(allergy) 
-                              : setProfile(prev => ({
-                                  ...prev,
-                                  allergies: [...(prev.allergies || []), allergy]
-                                }))
-                            }
+                            onClick={() => {
+                              if (isSelected) {
+                                removeAllergy(allergy);
+                              } else {
+                                const updatedProfile = {
+                                  ...profile,
+                                  allergies: [...(profile.allergies || []), allergy]
+                                };
+                                setProfile(updatedProfile);
+                                autoSave.updateData(updatedProfile);
+                              }
+                            }}
                             className={cn(
                               "transition-all duration-200",
                               isSelected && "ring-2 ring-red-500/50"
@@ -655,10 +860,14 @@ export function ProfileView() {
                   min="1"
                   max="5"
                   value={profile.cookingSkillLevel || 3}
-                  onChange={(e) => setProfile(prev => ({
-                    ...prev,
-                    cookingSkillLevel: Number(e.target.value) as any
-                  }))}
+                  onChange={(e) => {
+                    const updatedProfile = {
+                      ...profile,
+                      cookingSkillLevel: Number(e.target.value) as any
+                    };
+                    setProfile(updatedProfile);
+                    autoSave.updateData(updatedProfile);
+                  }}
                   className="w-full h-2 bg-white/10 rounded-lg appearance-none cursor-pointer slider"
                   style={{
                     background: `linear-gradient(to right, #f59e0b ${((profile.cookingSkillLevel || 3) - 1) * 25}%, rgba(255,255,255,0.1) ${((profile.cookingSkillLevel || 3) - 1) * 25}%)`
@@ -729,13 +938,17 @@ export function ProfileView() {
                   label="Calorías por día"
                   type="number"
                   value={profile.nutritionalGoals?.caloriesPerDay?.toString() || ''}
-                  onChange={(e) => setProfile(prev => ({
-                    ...prev,
-                    nutritionalGoals: {
-                      ...prev.nutritionalGoals,
-                      caloriesPerDay: e.target.value ? Number(e.target.value) : undefined
-                    }
-                  }))}
+                  onChange={(e) => {
+                    const updatedProfile = {
+                      ...profile,
+                      nutritionalGoals: {
+                        ...profile.nutritionalGoals,
+                        caloriesPerDay: e.target.value ? Number(e.target.value) : undefined
+                      }
+                    };
+                    setProfile(updatedProfile);
+                    autoSave.updateData(updatedProfile);
+                  }}
                   placeholder="Ej: 2000"
                   size="lg"
                   variant="medium"
@@ -750,13 +963,17 @@ export function ProfileView() {
                   label="Proteína (g) por día"
                   type="number"
                   value={profile.nutritionalGoals?.proteinPerDay?.toString() || ''}
-                  onChange={(e) => setProfile(prev => ({
-                    ...prev,
-                    nutritionalGoals: {
-                      ...prev.nutritionalGoals,
-                      proteinPerDay: e.target.value ? Number(e.target.value) : undefined
-                    }
-                  }))}
+                  onChange={(e) => {
+                    const updatedProfile = {
+                      ...profile,
+                      nutritionalGoals: {
+                        ...profile.nutritionalGoals,
+                        proteinPerDay: e.target.value ? Number(e.target.value) : undefined
+                      }
+                    };
+                    setProfile(updatedProfile);
+                    autoSave.updateData(updatedProfile);
+                  }}
                   placeholder="Ej: 50"
                   size="lg"
                   variant="medium"
