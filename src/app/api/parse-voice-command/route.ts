@@ -3,9 +3,8 @@ import geminiConfig from '@/lib/config/gemini.config';;
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logger } from '@/lib/logger';
 
-const genAI = 
-  const featureConfig = geminiConfig.getFeatureConfig('voiceCommands');
-  new GoogleGenerativeAI(featureConfig.apiKey) || '');
+const featureConfig = geminiConfig.getFeatureConfig('voiceCommands');
+const genAI = new GoogleGenerativeAI(featureConfig.apiKey || '');
 
 export interface VoiceCommand {
   action: 'add' | 'remove' | 'complete' | 'update_quantity' | 'clear_list' | 'unknown';

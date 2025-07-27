@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
       model: 'gemini-1.5-pro-latest',
       generationConfig: {
         temperature: 0.8,
-        maxOutputTokens: 2048
+        maxOutputTokens: 2048,
         responseMimeType: 'application/json'
       }
     });

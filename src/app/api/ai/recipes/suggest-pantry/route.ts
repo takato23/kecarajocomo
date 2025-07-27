@@ -156,7 +156,7 @@ async function callGeminiAPI(systemPrompt: string, userPrompt: string): Promise<
       model: geminiConfig.default.model,
       generationConfig: {
         temperature: 0.7,
-        maxOutputTokens: 2048
+        maxOutputTokens: 2048,
         topP: 0.8,
         topK: 40
       }
@@ -337,19 +337,22 @@ function getMockPantrySuggestions(): any {
               tags: ["ensalada", "pollo", "saludable", "ligero", "proteína"],
               reasoning: "Excelente para usar verduras frescas antes de que se marchiten, el pollo aporta proteína y es muy versátil."
             }
-          ],
-          pantry_usage_summary: {
-            total_ingredients_available: 8,
-            ingredients_used: 7,
-            waste_reduction_score: 0.85
-          })
+          ]
+        }
+      ],
+      pantry_usage_summary: {
+        total_ingredients_available: 8,
+        ingredients_used: 7,
+        waste_reduction_score: 0.85
+      },
+      usage: {
+        input_tokens: 800,
+        output_tokens: 1200
       }
-    ],
-    usage: {
-      input_tokens: 800,
-      output_tokens: 1200
+    })
     }
-  };
+  ]
+};
 }
 
 async function parseAndValidateSuggestionsResponse(aiResponse: string): Promise<any> {

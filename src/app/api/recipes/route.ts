@@ -50,8 +50,8 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
     const [recipes, total] = await Promise.all([
       prisma.recipe.findMany({
         where,
-        // includes handled by Supabase service
-          },
+        include: {
+          // includes handled by Supabase service
           ingredients: {
             // includes handled by Supabase service
           },
@@ -80,7 +80,8 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
   } catch (error: unknown) {
     logger.error("Error fetching recipes:", 'API:route', error);
     throw new Error("Failed to fetch recipes");
-  });
+  }
+});
 
 export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
   try {

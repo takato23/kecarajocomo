@@ -36,10 +36,10 @@ export async function GET(req: Request) {
     const pantryItems = await db.getPantryItems(user.id, {
       where,
       // includes handled by Supabase service,
-        },
       orderBy: {
         createdAt: "desc",
-      });
+      }
+    });
 
     let filteredItems = pantryItems;
 
@@ -83,29 +83,30 @@ export async function POST(req: Request) {
       update: {},
       create: {
         name: ingredientName.toLowerCase(),
-        unit: unit || "un",
-      });
+        unit: unit || "un"
+      }
+    });
 
     // Check if user already has this ingredient in pantry
     const existingItem = await prisma.pantryItem.findUnique({
       where: {
         userId_ingredientId: {
           userId: user.id,
-          ingredientId: ingredient.id,
+          ingredientId: ingredient.id
         }
-      });
+      }
+    });
 
     if (existingItem) {
       // Update existing item by adding quantities
       const updatedItem = await db.updatePantryItem(existingItem.id, {
         quantity: existingItem.quantity + quantity,
-          location: location || existingItem.location,
-          expiryDate: expiryDate ? new Date(expiryDate) : existingItem.expiryDate,
-          notes: notes || existingItem.notes,
-          updatedAt: new Date(),
-        },
-        // includes handled by Supabase service,
-          });
+        location: location || existingItem.location,
+        expiryDate: expiryDate ? new Date(expiryDate) : existingItem.expiryDate,
+        notes: notes || existingItem.notes,
+        updatedAt: new Date()
+        // includes handled by Supabase service
+      });
 
       // Update extended info if provided
       if (purchasePrice || purchaseDate || barcode) {
@@ -120,8 +121,9 @@ export async function POST(req: Request) {
             pantryItemId: updatedItem.id,
             purchasePrice: purchasePrice ? new Decimal(purchasePrice) : null,
             purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
-            scannedBarcode: barcode || null,
-          });
+            scannedBarcode: barcode || null
+          }
+        });
       }
 
       return NextResponse.json(updatedItem, { status: 200 });
@@ -135,9 +137,9 @@ export async function POST(req: Request) {
           expiryDate: expiryDate ? new Date(expiryDate) : null,
           notes: notes || null,
           purchaseDate: purchaseDate ? new Date(purchaseDate) : new Date(),
-        },
-        // includes handled by Supabase service,
-          });
+        }
+        // includes handled by Supabase service
+      });
 
       // Create extended info if provided
       if (purchasePrice || purchaseDate || barcode) {

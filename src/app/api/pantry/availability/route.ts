@@ -230,8 +230,9 @@ export async function POST(request: NextRequest) {
         missing_ingredients: availability.filter(a => !a.sufficient).length,
         availability_percentage: Math.round(
           (availability.filter(a => a.sufficient).length / availability.length) * 100
-        ),
-      };
+        )
+      }
+    };
 
     if (shoppingList) {
       responseData.shopping_list = shoppingList;

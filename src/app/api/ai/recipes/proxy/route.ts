@@ -203,7 +203,8 @@ async function generateRecipeWithGemini(prompt: string) {
           topK: 40,
           topP: 0.95,
           maxOutputTokens: 2048
-        }),
+        }
+      }),
     }
   );
 

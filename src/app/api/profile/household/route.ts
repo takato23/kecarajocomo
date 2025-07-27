@@ -55,7 +55,8 @@ export async function POST(request: NextRequest) {
         age: body.age || null,
         dietary_restrictions: body.dietaryRestrictions || [],
         allergies: body.allergies || [],
-        preferences: body.preferences || {})
+        preferences: body.preferences || {}
+      })
       .select()
       .single();
     

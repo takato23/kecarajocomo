@@ -62,6 +62,7 @@ Disallow: /`;
   return new NextResponse(robotsTxt, {
     headers: {
       'Content-Type': 'text/plain',
-      'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-    });
+      'Cache-Control': 'public, max-age=3600, s-maxage=3600'
+    }
+  });
 }

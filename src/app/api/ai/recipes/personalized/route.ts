@@ -189,7 +189,7 @@ async function callGeminiAPI(systemPrompt: string, userPrompt: string): Promise<
       model: geminiConfig.default.model,
       generationConfig: {
         temperature: 0.8,
-        maxOutputTokens: 2048
+        maxOutputTokens: 2048,
         topP: 0.9,
         topK: 40
       }

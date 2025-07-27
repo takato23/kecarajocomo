@@ -19,13 +19,13 @@ export async function POST(req: Request) {
     }
 
     // Check if user has available AI generations (implement limits later)
-    const user = await db.getUserProfile({
-      user.id ,
+    const user = await db.getUserProfile(user.id, {
       select: { 
         id: true,
         name: true,
         preferences: true 
-      });
+      }
+    });
 
     if (!user) {
       return NextResponse.json(
@@ -56,7 +56,8 @@ export async function POST(req: Request) {
         create: { 
           name: ing.name.toLowerCase(),
           unit: ing.unit || "g"
-        });
+        }
+      });
       return {
         ingredientId: ingredient.id,
         quantity: parseFloat(ing.quantity) || 0,
@@ -69,7 +70,7 @@ export async function POST(req: Request) {
 
     // Create the recipe
     const recipe = await db.createRecipe({
-      , { title: generatedRecipe.title,
+      title: generatedRecipe.title,
         description: generatedRecipe.description,
         instructions: generatedRecipe.instructions,
         prepTimeMinutes: generatedRecipe.prepTimeMinutes,

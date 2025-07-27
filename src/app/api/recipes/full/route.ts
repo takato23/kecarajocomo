@@ -28,8 +28,9 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(recipes, {
       headers: {
-        'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
-      });
+        'Cache-Control': 'public, max-age=3600' // Cache for 1 hour
+      }
+    });
 
   } catch (error: unknown) {
     logger.error('Error serving recipes file:', 'API:route', error);

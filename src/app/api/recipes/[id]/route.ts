@@ -29,16 +29,14 @@ export async function GET(
     }
 
     // Fetch recipe with ingredients and instructions
-    const recipe = await db.getRecipeById({
-      params.id ,
+    const recipe = await db.getRecipeById(params.id, {
       // includes handled by Supabase service
-        },
-        instructions: {
-          orderBy: {
-            stepNumber: 'asc'
-          }
+      instructions: {
+        orderBy: {
+          stepNumber: 'asc'
         }
-      });
+      }
+    });
 
     if (!recipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
@@ -82,9 +80,9 @@ export async function PUT(
     }
 
     // Check ownership
-    const existingRecipe = await db.getRecipeById({
-      params.id ,
-      select: { userId: true });
+    const existingRecipe = await db.getRecipeById(params.id, {
+      select: { userId: true }
+    });
 
     if (!existingRecipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
@@ -97,12 +95,13 @@ export async function PUT(
     const body = await request.json();
     
     // Update recipe with transaction
-    const updatedRecipe = // TODO: Convert transaction to Supabase
-    // await prisma.$transaction(async (tx) => {
+    // TODO: Convert transaction to Supabase
+    const updatedRecipe = null; // Placeholder
+    /* await prisma.$transaction(async (tx) => {
       // Update recipe
       const recipe = await tx.recipe.update({
-        params.id ,
-        { title: body.title,
+        where: { id: params.id },
+        data: { title: body.title,
           description: body.description,
           prepTimeMinutes: body.prepTimeMinutes,
           cookTimeMinutes: body.cookTimeMinutes,
@@ -111,7 +110,8 @@ export async function PUT(
           imageUrl: body.imageUrl,
           isPublic: body.isPublic,
           updatedAt: new Date()
-        });
+        }
+      });
 
       // Update ingredients if provided
       if (body.ingredients) {
@@ -174,7 +174,7 @@ export async function PUT(
       }
 
       return recipe;
-    });
+    }); */
 
     // Invalidate cache
     await enhancedCache.invalidatePattern(`recipe:${params.id}:*`);
@@ -209,9 +209,9 @@ export async function DELETE(
     }
 
     // Check ownership
-    const recipe = await db.getRecipeById({
-      params.id ,
-      select: { userId: true, title: true });
+    const recipe = await db.getRecipeById(params.id, {
+      select: { userId: true, title: true }
+    });
 
     if (!recipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
@@ -221,24 +221,30 @@ export async function DELETE(
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
+    // TODO: Convert transaction to Supabase  
     // Delete recipe with transaction (cascade will handle related records)
-    // TODO: Convert transaction to Supabase
-    // await prisma.$transaction(async (tx) => {
+    /* await prisma.$transaction(async (tx) => {
       // Delete related records first
       await tx.recipeIngredient.deleteMany({
-        where: { recipeId: params.id });
+        where: { recipeId: params.id }
+      });
 
       await tx.recipeInstruction.deleteMany({
-        where: { recipeId: params.id });
+        where: { recipeId: params.id }
+      });
 
       await tx.favoriteRecipe.deleteMany({
-        where: { recipeId: params.id });
+        where: { recipeId: params.id }
+      });
 
       // Delete the recipe itself
       await tx.recipe.delete({
-        params.id 
+        where: { id: params.id }
       });
-    });
+    }); */
+    
+    // Placeholder - implement Supabase version
+    await db.deleteRecipe(params.id);
 
     // Invalidate cache
     await enhancedCache.invalidatePattern(`recipe:${params.id}:*`);
