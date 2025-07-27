@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { Camera } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 
@@ -65,7 +66,7 @@ export function ProfileAvatar({
       toast.success('Avatar updated successfully');
     } catch (error: unknown) {
       toast.error('Failed to upload avatar');
-      console.error('Avatar upload error:', error);
+      logger.error('Avatar upload error:', 'ProfileAvatar', error);
     } finally {
       setIsUploading(false);
     }

@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Session, User } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import { supabase } from '@/lib/supabase';
 
@@ -66,7 +67,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
 
       // Si el error no es de "perfil no encontrado", es un error real
       if (fetchError && fetchError.code !== 'PGRST116') {
-        console.error('[SupabaseAuthProvider] Error fetching profile:', fetchError);
+        logger.error('[SupabaseAuthProvider] Error fetching profile:', 'SupabaseAuthProvider', fetchError);
         throw fetchError;
       }
 
@@ -85,13 +86,13 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
         .single();
 
       if (createError) {
-        console.error('[SupabaseAuthProvider] Error creating profile:', createError);
+        logger.error('[SupabaseAuthProvider] Error creating profile:', 'SupabaseAuthProvider', createError);
         throw createError;
       }
 
       return newProfile;
     } catch (error: unknown) {
-      console.error('[SupabaseAuthProvider] Profile error:', error);
+      logger.error('[SupabaseAuthProvider] Profile error:', 'SupabaseAuthProvider', error);
       throw error;
     }
   };
@@ -144,7 +145,7 @@ export const SupabaseAuthProvider: React.FC<{ children: React.ReactNode }> = ({ 
       setProfile(null);
       setError(null);
     } catch (error: unknown) {
-      console.error('[SupabaseAuthProvider] Error signing out:', error);
+      logger.error('[SupabaseAuthProvider] Error signing out:', 'SupabaseAuthProvider', error);
       setError(error instanceof Error ? error.message : 'Error al cerrar sesión');
     }
   };

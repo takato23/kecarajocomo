@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryItem, UpdatePantryItemForm, PantryAPIResponse } from '@/features/pantry/types';
 
@@ -44,7 +45,7 @@ export async function GET(
           { status: 404 }
         );
       }
-      console.error('Error fetching pantry item:', error);
+      logger.error('Error fetching pantry item:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry item' },
         { status: 500 }
@@ -75,7 +76,7 @@ export async function GET(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/items/[id]:', error);
+    logger.error('Unexpected error in GET /api/pantry/items/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -150,7 +151,7 @@ export async function PUT(
           { status: 404 }
         );
       }
-      console.error('Error updating pantry item:', error);
+      logger.error('Error updating pantry item:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to update pantry item' },
         { status: 500 }
@@ -182,7 +183,7 @@ export async function PUT(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in PUT /api/pantry/items/[id]:', error);
+    logger.error('Unexpected error in PUT /api/pantry/items/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -213,7 +214,7 @@ export async function DELETE(
       .eq('user_id', user.id);
 
     if (error) {
-      console.error('Error deleting pantry item:', error);
+      logger.error('Error deleting pantry item:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to delete pantry item' },
         { status: 500 }
@@ -228,7 +229,7 @@ export async function DELETE(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in DELETE /api/pantry/items/[id]:', error);
+    logger.error('Unexpected error in DELETE /api/pantry/items/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

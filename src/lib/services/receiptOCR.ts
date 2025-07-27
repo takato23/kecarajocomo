@@ -1,4 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/services/logger';
 
 import { parserUtils } from '../parser/parserUtils';
 
@@ -38,13 +40,13 @@ export class ReceiptOCR {
   private readonly CACHE_TTL = 60 * 60 * 1000; // 1 hour
 
   constructor() {
-    const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    const apiKey = geminiConfig.getApiKey() || geminiConfig.getApiKey();
     if (!apiKey) {
       throw new Error('GOOGLE_AI_API_KEY or NEXT_PUBLIC_GEMINI_API_KEY is required for receipt OCR');
     }
     
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+    this.model = this.genAI.getGenerativeModel({ model: geminiConfig.default.model });
   }
 
   async processReceipt(imageFile: File): Promise<OCRResult> {
@@ -85,7 +87,7 @@ export class ReceiptOCR {
       };
 
     } catch (error: unknown) {
-      console.error('Receipt OCR error:', error);
+      logger.error('Receipt OCR error:', 'receiptOCR', error);
       return {
         success: false,
         error: 'Error procesando el ticket'
@@ -181,7 +183,7 @@ export class ReceiptOCR {
         };
 
       } catch (parseError: unknown) {
-        console.error('JSON parsing error:', parseError);
+        logger.error('JSON parsing error:', 'receiptOCR', parseError);
         return {
           success: false,
           error: 'Error procesando la respuesta del OCR'
@@ -189,7 +191,7 @@ export class ReceiptOCR {
       }
 
     } catch (error: unknown) {
-      console.error('OCR extraction error:', error);
+      logger.error('OCR extraction error:', 'receiptOCR', error);
       return {
         success: false,
         error: 'Error extrayendo texto del ticket'

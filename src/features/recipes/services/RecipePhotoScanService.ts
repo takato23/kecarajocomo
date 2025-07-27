@@ -6,6 +6,7 @@
 
 import { UnifiedAIService } from '@/services/ai';
 import { NotificationManager } from '@/services/notifications';
+import { logger } from '@/services/logger';
 
 import type { Recipe } from '../types';
 
@@ -85,7 +86,7 @@ export class RecipePhotoScanService {
       return result;
 
     } catch (error: unknown) {
-      console.error('Error scanning recipe from photo:', error);
+      logger.error('Error scanning recipe from photo:', 'RecipePhotoScanService', error);
 
       await this.notificationService.notify({
         type: 'error',
@@ -152,7 +153,7 @@ export class RecipePhotoScanService {
       return this.scanRecipeFromPhoto(file, options);
 
     } catch (error: unknown) {
-      console.error('Error scanning from camera:', error);
+      logger.error('Error scanning from camera:', 'RecipePhotoScanService', error);
 
       await this.notificationService.notify({
         type: 'error',
@@ -188,7 +189,7 @@ export class RecipePhotoScanService {
       };
 
     } catch (error: unknown) {
-      console.error('Error reprocessing text:', error);
+      logger.error('Error reprocessing text:', 'RecipePhotoScanService', error);
       throw error;
     }
   }
@@ -279,7 +280,7 @@ export class RecipePhotoScanService {
       return extractedText;
 
     } catch (error: unknown) {
-      console.error('Error extracting text from image:', error);
+      logger.error('Error extracting text from image:', 'RecipePhotoScanService', error);
       throw new Error('Error en el reconocimiento de texto');
     }
   }
@@ -399,7 +400,7 @@ Si el texto no parece ser una receta, indica confidence: 0.0
       };
 
     } catch (error: unknown) {
-      console.error('Error parsing recipe from text:', error);
+      logger.error('Error parsing recipe from text:', 'RecipePhotoScanService', error);
       throw new Error('No se pudo procesar el texto de la receta');
     }
   }

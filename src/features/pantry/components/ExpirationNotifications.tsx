@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { logger } from '@/services/logger';
 import { 
   AlertTriangle, 
   Clock, 
@@ -66,7 +67,7 @@ export function ExpirationNotifications({
     try {
       await dismissAlert(alertId);
     } catch (error: unknown) {
-      console.error('Error dismissing alert:', error);
+      logger.error('Error dismissing alert:', 'ExpirationNotifications', error);
     }
   };
 

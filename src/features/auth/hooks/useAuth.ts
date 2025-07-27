@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseInstance } from '@/lib/supabase/singleton';
+import { logger } from '@/services/logger';
 
 import { useAppStore } from '@/store';
 
@@ -11,8 +12,8 @@ interface UseAuthOptions {
 
 export function useAuth(options?: UseAuthOptions) {
   const router = useRouter();
-  const supabase = createClientComponentClient();
-  const { user, isLoading } = useAppStore((state) => state.user);
+  const supabase = getSupabaseInstance();
+  const { profile: user, isLoading } = useAppStore((state) => state.user);
   const setUser = useAppStore((state) => state.setUser);
   const setAuthLoading = useAppStore((state) => state.setAuthLoading);
 
@@ -31,7 +32,7 @@ export function useAuth(options?: UseAuthOptions) {
           });
         }
       } catch (error) {
-        console.error('Error checking auth:', error);
+        logger.error('Error checking auth:', 'useAuth', error);
       } finally {
         setAuthLoading(false);
       }

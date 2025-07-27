@@ -5,6 +5,7 @@
 
 import { performanceMonitor } from '../analytics/performance';
 import { analytics } from '../analytics/growth';
+import { logger } from '@/services/logger';
 
 export interface ScalabilityConfig {
   autoScaling: {
@@ -144,7 +145,7 @@ class ScalabilityOptimizer {
         errorRate: metrics.errorRate,
       });
     } catch (error: unknown) {
-      console.error('Failed to collect resource metrics:', error);
+      logger.error('Failed to collect resource metrics:', 'Lib:optimization', error);
     }
   }
 
@@ -298,7 +299,7 @@ class ScalabilityOptimizer {
         await this.sendScalingNotification(decision);
       }
     } catch (error: unknown) {
-      console.error('Failed to execute scaling decision:', error);
+      logger.error('Failed to execute scaling decision:', 'Lib:optimization', error);
       
       analytics.track('scaling_error', {
         action: decision.action,

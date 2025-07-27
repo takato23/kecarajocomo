@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 import { useAppStore } from '@/store';
 import { useXPSystem } from '../store/gamificationStore';
@@ -43,7 +44,7 @@ export function useGamificationIntegration(): GamificationIntegrationHook {
       // Track progress
       await progressTrackingService.trackEvent(user.id, eventType, metadata);
     } catch (error: unknown) {
-      console.error('Failed to track gamification event:', error);
+      logger.error('Failed to track gamification event:', 'useGamificationIntegration', error);
     }
   }, [user?.id, awardXP]);
 

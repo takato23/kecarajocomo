@@ -11,6 +11,7 @@ import {
 } from '../types';
 
 import { StorageProviderInterface } from './StorageProviderInterface';
+import { logger } from '@/services/logger';
 
 interface LocalStorageConfig {
   prefix?: string;
@@ -66,7 +67,7 @@ export class LocalStorageProvider extends StorageProviderInterface {
 
       return stored.value;
     } catch (error: unknown) {
-      console.error('LocalStorage get error:', error);
+      logger.error('LocalStorage get error:', 'LocalStorageProvider', error);
       return null;
     }
   }
@@ -144,7 +145,7 @@ export class LocalStorageProvider extends StorageProviderInterface {
           items.push(item);
         }
       } catch (error: unknown) {
-        console.error(`Error reading key ${key}:`, error);
+        logger.error(`Error reading key ${key}:`, 'LocalStorageProvider', error);
       }
     }
 
@@ -277,7 +278,7 @@ export class LocalStorageProvider extends StorageProviderInterface {
 
       return this.deserialize(data);
     } catch (error: unknown) {
-      console.error('LocalStorage getWithMetadata error:', error);
+      logger.error('LocalStorage getWithMetadata error:', 'LocalStorageProvider', error);
       return null;
     }
   }

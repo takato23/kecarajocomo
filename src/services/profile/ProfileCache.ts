@@ -1,6 +1,7 @@
 import { CacheManager } from '@/lib/cache/CacheManager';
 import { createClient } from '@/lib/supabase/client';
 import type { Database } from '@/types/supabase';
+import { logger } from '@/services/logger';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 type ProfilePreferences = Database['public']['Tables']['profile_preferences']['Row'];
@@ -303,7 +304,7 @@ export class ProfileCache {
         lastFetched: Date.now(),
       };
     } catch (error) {
-      console.error('Error fetching profile:', error);
+      logger.error('Error fetching profile:', 'ProfileCache', error);
       return null;
     }
   }
@@ -315,33 +316,33 @@ export class ProfileCache {
         await this.prefetchProfile(user.id);
       }
     } catch (error) {
-      console.error('Error warming up profile cache:', error);
+      logger.error('Error warming up profile cache:', 'ProfileCache', error);
     }
   }
 
   private setupEventListeners(): void {
     // Log cache events for monitoring
     this.cache.on('cache:hit', ({ key }) => {
-      console.debug(`Profile cache hit: ${key}`);
+      logger.debug(`Profile cache hit: ${key}`);
     });
 
     this.cache.on('cache:miss', ({ key }) => {
-      console.debug(`Profile cache miss: ${key}`);
+      logger.debug(`Profile cache miss: ${key}`);
     });
 
     this.cache.on('cache:evict', ({ key, reason }) => {
-      console.debug(`Profile cache evict: ${key} (${reason})`);
+      logger.debug(`Profile cache evict: ${key} (${reason})`);
     });
 
     this.cache.on('cache:revalidated', ({ key }) => {
-      console.debug(`Profile cache revalidated: ${key}`);
+      logger.debug(`Profile cache revalidated: ${key}`);
     });
 
     // Monitor performance
     setInterval(() => {
       const stats = this.getStats();
       if (stats.cacheStats.entries > 0) {
-        console.debug('Profile cache stats:', {
+        logger.debug('Profile cache stats:', {
           hitRate: `${(stats.cacheStats.hitRate * 100).toFixed(2)}%`,
           entries: stats.cacheStats.entries,
           size: `${(stats.cacheStats.size / 1024).toFixed(2)}KB`,

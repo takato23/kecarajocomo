@@ -6,7 +6,7 @@ import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
-import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
+import { KeButton } from '@/components/ui';
 
 interface MealPlannerErrorProps {
   error: string;
@@ -46,22 +46,21 @@ export function MealPlannerError({ error, onRetry }: MealPlannerErrorProps) {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <iOS26LiquidButton
-              variant="solid"
+            <KeButton
+              variant="primary"
               leftIcon={<RefreshCw className="w-4 h-4" />}
               onClick={onRetry || (() => window.location.reload())}
-              className="bg-gradient-to-r from-blue-500 to-purple-500"
             >
               Reintentar
-            </iOS26LiquidButton>
+            </KeButton>
             
-            <iOS26LiquidButton
-              variant="glass"
+            <KeButton
+              variant="outline"
               leftIcon={<Home className="w-4 h-4" />}
-              onClick={() => router.push('/dashboard')}
+              onClick={() => router.push('/')}
             >
               Ir al inicio
-            </iOS26LiquidButton>
+            </KeButton>
           </div>
 
           <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800/50 rounded-xl">

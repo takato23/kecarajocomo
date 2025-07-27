@@ -1,4 +1,5 @@
 import { supabase, handleSupabaseError } from '../supabase/client';
+import { logger } from '@/services/logger';
 import type {
   Recipe,
   RecipeIngredient,
@@ -151,7 +152,7 @@ export class RecipeService {
         hasMore: offset + limit < filteredRecipes.length
       };
     } catch (error: unknown) {
-      console.error('Error in getRecipes:', error);
+      logger.error('Error in getRecipes:', 'recipe.service', error);
       throw new Error('Error al cargar recetas');
     }
   }

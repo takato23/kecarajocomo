@@ -28,19 +28,20 @@ const iOS26EnhancedCard = forwardRef<HTMLDivElement, iOS26EnhancedCardProps>(
     interactive = false,
     gradient = false,
     children,
-    // Filter out custom props before spreading
     ...restProps 
   }, ref) => {
-    // Remove custom props that shouldn't be passed to DOM
-    const domProps = Object.entries(restProps).reduce((acc, [key, value]) => {
-      // Only include standard HTML attributes
-      if (!['variant', 'elevation', 'liquidEffect', 'glowEffect', 'morphEffect', 'floatEffect', 'interactive', 'gradient'].includes(key)) {
-        acc[key] = value;
-      }
-      return acc;
-    }, {} as HTMLAttributes<HTMLDivElement>);
+    // Remove all custom props that shouldn't be passed to DOM
     const [isHovered, setIsHovered] = useState(false);
     const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+    
+    // Filter out custom props before passing to DOM
+    const domProps = Object.keys(restProps).reduce((acc, key) => {
+      // Only pass through standard HTML attributes
+      if (!['liquidEffect', 'glowEffect', 'morphEffect', 'floatEffect', 'interactive', 'gradient', 'variant', 'elevation'].includes(key)) {
+        acc[key] = restProps[key];
+      }
+      return acc;
+    }, {} as any);
 
     const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
       if (!interactive) return;

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { logger } from '@/services/logger';
 import { 
   ArrowLeft,
   Sparkles, 
@@ -109,7 +110,7 @@ export default function GenerateRecipePage() {
       const recipe = await response.json();
       router.push(`/recipes/${recipe.id}`);
     } catch (error: unknown) {
-      console.error("Error generating recipe:", error);
+      logger.error("Error generating recipe:", 'Page:page', error);
       alert("Failed to generate recipe. Please try again.");
     } finally {
       setLoading(false);

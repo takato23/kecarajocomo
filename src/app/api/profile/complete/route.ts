@@ -1,6 +1,7 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function GET() {
   try {
@@ -48,7 +49,7 @@ export async function GET() {
       household: householdResult.data || []
     });
   } catch (error: unknown) {
-    console.error('Error fetching complete profile:', error);
+    logger.error('Error fetching complete profile:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to fetch profile data' },
       { status: 500 }

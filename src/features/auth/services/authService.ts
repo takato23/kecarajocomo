@@ -1,6 +1,7 @@
 // Auth Service with Supabase Integration
 
 import { createClient, SupabaseClient, Session as SupabaseSession, User } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import { 
   AuthUser, 
@@ -106,7 +107,7 @@ export class AuthService {
       });
 
       if (error) {
-        console.error('Supabase signup error details:', {
+        logger.error('Supabase signup error details:', 'authService', {
           message: error.message,
           code: error.code,
           status: error.status,
@@ -116,13 +117,13 @@ export class AuthService {
       }
       
       if (!data.user) {
-        console.error('No user in response data:', data);
+        logger.error('No user in response data:', 'authService', data);
         throw new AuthError('No user returned from sign up', 'SIGNUP_ERROR', 500);
       }
 
       return this.mapUser(data.user);
     } catch (error: unknown) {
-      console.error('Signup failed with error:', error);
+      logger.error('Signup failed with error:', 'authService', error);
       if (error instanceof AuthError) throw error;
       throw new AuthError('Failed to sign up', 'SIGNUP_ERROR', 500);
     }
@@ -180,7 +181,7 @@ export class AuthService {
       
       return this.mapSession(session);
     } catch (error: unknown) {
-      console.error('Failed to get session:', error);
+      logger.error('Failed to get session:', 'authService', error);
       return null;
     }
   }
@@ -200,7 +201,7 @@ export class AuthService {
       
       return null;
     } catch (error: unknown) {
-      console.error('Failed to get current user:', error);
+      logger.error('Failed to get current user:', 'authService', error);
       return null;
     }
   }
@@ -215,7 +216,7 @@ export class AuthService {
       await this.setSecureSession(session);
       return this.mapSession(session);
     } catch (error: unknown) {
-      console.error('Failed to refresh session:', error);
+      logger.error('Failed to refresh session:', 'authService', error);
       return null;
     }
   }
@@ -232,7 +233,7 @@ export class AuthService {
       if (error) throw error;
       return data;
     } catch (error: unknown) {
-      console.error('Failed to get user profile:', error);
+      logger.error('Failed to get user profile:', 'authService', error);
       return null;
     }
   }
@@ -284,7 +285,7 @@ export class AuthService {
       if (error && error.code !== 'PGRST116') throw error; // Ignore not found error
       return data;
     } catch (error: unknown) {
-      console.error('Failed to get user preferences:', error);
+      logger.error('Failed to get user preferences:', 'authService', error);
       return null;
     }
   }
@@ -329,7 +330,7 @@ export class AuthService {
         return data;
       }
     } catch (error: unknown) {
-      console.error('SaveUserPreferences error details:', error);
+      logger.error('SaveUserPreferences error details:', 'authService', error);
       throw new AuthError('Failed to save user preferences', 'PREFERENCES_SAVE_ERROR', 500);
     }
   }
@@ -360,7 +361,7 @@ export class AuthService {
           credentials: 'include',
         });
       } catch (error: unknown) {
-        console.error('Failed to clear secure session:', error);
+        logger.error('Failed to clear secure session:', 'authService', error);
       }
     }
   }

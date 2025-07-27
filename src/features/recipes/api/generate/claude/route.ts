@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
+import { logger } from '@/services/logger';
 
 import { AIRecipeRequest, AIRecipeResponse } from '../../../types';
 
@@ -35,14 +36,14 @@ Assistant: I'll generate creative, delicious, and practical recipes based on you
       const aiResponse: AIRecipeResponse = JSON.parse(jsonMatch[0]);
       return NextResponse.json(aiResponse);
     } catch (parseError: unknown) {
-      console.error('Failed to parse Claude response:', parseError);
+      logger.error('Failed to parse Claude response:', 'recipes:route', parseError);
       return NextResponse.json(
         { error: 'Failed to parse AI response' },
         { status: 500 }
       );
     }
   } catch (error: unknown) {
-    console.error('Error calling Claude API:', error);
+    logger.error('Error calling Claude API:', 'recipes:route', error);
     return NextResponse.json(
       { error: 'Failed to generate recipe' },
       { status: 500 }

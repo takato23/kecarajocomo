@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { X, Calendar, MapPin, DollarSign, FileText } from 'lucide-react';
+import { logger } from '@/services/logger';
 
 import { Button } from '@/components/design-system/Button';
 import { Input } from '@/components/design-system/Input';
@@ -137,7 +138,7 @@ export function PantryItemForm({ item, onClose, onSuccess }: PantryItemFormProps
       onSuccess?.();
       onClose();
     } catch (error: unknown) {
-      console.error('Error saving pantry item:', error);
+      logger.error('Error saving pantry item:', 'PantryItemForm', error);
     }
   };
 

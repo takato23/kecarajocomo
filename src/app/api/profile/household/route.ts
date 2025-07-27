@@ -1,6 +1,7 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function GET() {
   try {
@@ -21,7 +22,7 @@ export async function GET() {
     
     return NextResponse.json(data || []);
   } catch (error: unknown) {
-    console.error('Error fetching household members:', error);
+    logger.error('Error fetching household members:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to fetch household members' },
       { status: 500 }
@@ -54,8 +55,7 @@ export async function POST(request: NextRequest) {
         age: body.age || null,
         dietary_restrictions: body.dietaryRestrictions || [],
         allergies: body.allergies || [],
-        preferences: body.preferences || {}
-      })
+        preferences: body.preferences || {})
       .select()
       .single();
     
@@ -63,7 +63,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(data);
   } catch (error: unknown) {
-    console.error('Error adding household member:', error);
+    logger.error('Error adding household member:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to add household member' },
       { status: 500 }
@@ -114,7 +114,7 @@ export async function PUT(request: NextRequest) {
     
     return NextResponse.json(data);
   } catch (error: unknown) {
-    console.error('Error updating household member:', error);
+    logger.error('Error updating household member:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to update household member' },
       { status: 500 }
@@ -148,7 +148,7 @@ export async function DELETE(request: NextRequest) {
     
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error('Error deleting household member:', error);
+    logger.error('Error deleting household member:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to delete household member' },
       { status: 500 }

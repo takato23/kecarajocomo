@@ -1,4 +1,5 @@
 import { parserUtils } from '@/lib/parser/parserUtils';
+import { logger } from '@/services/logger';
 
 export interface StoreProduct {
   id: string;
@@ -52,7 +53,7 @@ export class StoreScraper {
       this.saveToCache(cacheKey, products);
       return products;
     } catch (error: unknown) {
-      console.error('Store scraping error:', error);
+      logger.error('Store scraping error:', 'storeScraper', error);
       return this.getMockProducts(normalizedQuery);
     }
   }
@@ -84,7 +85,7 @@ export class StoreScraper {
           await new Promise(resolve => setTimeout(resolve, 100));
         }
       } catch (error: unknown) {
-        console.error(`Error searching for ${query}:`, error);
+        logger.error(`Error searching for ${query}:`, 'storeScraper', error);
         results.set(query, []);
       }
     }
@@ -94,7 +95,7 @@ export class StoreScraper {
 
   private normalizeProducts(data: any): StoreProduct[] {
     if (!Array.isArray(data)) {
-      console.warn('Invalid API response format');
+      logger.warn('Invalid API response format', 'storeScraper');
       return [];
     }
     

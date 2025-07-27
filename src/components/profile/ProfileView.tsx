@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Users, ChefHat, Target, Heart, AlertCircle, Save, Plus, X, Clock, Utensils } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { getProfileManager, type UserProfile, type DietaryRestriction } from '@/services/profile/ProfileManager';
 import { getHolisticSystem } from '@/services/core/HolisticSystem';
@@ -13,6 +14,7 @@ import { iOS26LiquidCard } from '@/components/ios26/iOS26LiquidCard';
 import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
 import { iOS26LiquidInput } from '@/components/ios26/iOS26LiquidInput';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/components/auth/AuthProvider';
 
 
 const DIETARY_RESTRICTIONS: { value: DietaryRestriction; label: string; icon: string }[] = [
@@ -99,6 +101,8 @@ const ProfileError = ({ onRetry }: { onRetry: () => void }) => (
 );
 
 export function ProfileView() {
+  const { user } = useAuth();
+  
   const [initialProfile] = useState<Partial<UserProfile>>({
     householdSize: 2,
     householdMembers: [],
@@ -133,10 +137,13 @@ export function ProfileView() {
 
   // Auto-save configuration
   const handleSave = useCallback(async (data: Partial<UserProfile>) => {
-    const userId = 'temp-user-id'; // TODO: Obtener del contexto
-    await profileManager.upsertProfile(userId, data);
+    if (!user?.id) {
+      setError('No se pudo identificar al usuario');
+      return;
+    }
+    await profileManager.upsertProfile(user.id, data);
     setLastSaved(new Date());
-  }, [profileManager]);
+  }, [profileManager, user?.id]);
 
   const handleValidation = useCallback((data: Partial<UserProfile>): boolean | string => {
     // Basic validation
@@ -190,10 +197,12 @@ export function ProfileView() {
     }
   });
   
-  // Cargar perfil
+  // Cargar perfil cuando el usuario cambie
   useEffect(() => {
-    loadProfile();
-  }, []);
+    if (user?.id) {
+      loadProfile();
+    }
+  }, [user?.id]);
 
   // Cleanup auto-save on unmount
   useEffect(() => {
@@ -201,7 +210,7 @@ export function ProfileView() {
       // Force save any pending changes before unmounting
       if (autoSave.hasPendingChanges) {
         autoSave.forceSave().catch(error => {
-          console.error('Error al guardar cambios pendientes:', error);
+          logger.error('Error al guardar cambios pendientes:', 'ProfileView', error);
         });
       }
     };
@@ -211,8 +220,13 @@ export function ProfileView() {
     try {
       setLoading(true);
       setError(null);
-      const userId = 'temp-user-id'; // TODO: Obtener del contexto
-      const existingProfile = await profileManager.getUserProfile(userId);
+      
+      if (!user?.id) {
+        setError('No se pudo identificar al usuario');
+        return;
+      }
+      
+      const existingProfile = await profileManager.getUserProfile(user.id);
       
       if (existingProfile) {
         setProfile(existingProfile);
@@ -227,7 +241,7 @@ export function ProfileView() {
         }
       }
     } catch (error: unknown) {
-      console.error('Error cargando perfil:', error);
+      logger.error('Error cargando perfil:', 'ProfileView', error);
       setError('Error al cargar el perfil');
       toast.error('Error al cargar el perfil');
       
@@ -246,7 +260,7 @@ export function ProfileView() {
     try {
       await autoSave.manualSave();
     } catch (error) {
-      console.error('Error en guardado manual:', error);
+      logger.error('Error en guardado manual:', 'ProfileView', error);
     }
   }, [autoSave]);
 
@@ -255,7 +269,7 @@ export function ProfileView() {
     try {
       await autoSave.forceSave();
     } catch (error) {
-      console.error('Error en guardado forzado:', error);
+      logger.error('Error en guardado forzado:', 'ProfileView', error);
     }
   }, [autoSave]);
 
@@ -338,7 +352,7 @@ export function ProfileView() {
     autoSave.updateData(updatedProfile);
   }
   
-  if (loading) {
+  if (loading || !user) {
     return <ProfileSkeleton />;
   }
   

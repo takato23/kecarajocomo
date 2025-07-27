@@ -1,13 +1,20 @@
 // =============================================
 // MEAL PLANNING TYPE DEFINITIONS
-// Consolidated from planning-v2 with improvements
+// Hybrid implementation: Enhanced with Summit's Argentine-specific features
 // =============================================
 
 export type MealType = 'desayuno' | 'almuerzo' | 'merienda' | 'cena';
+export type MealSlotType = 'breakfast' | 'lunch' | 'snack' | 'dinner'; // API compatibility
 export type DietaryPreference = 'omnivore' | 'vegetarian' | 'vegan' | 'pescatarian' | 'keto' | 'paleo' | 'glutenFree' | 'dairyFree';
 export type DietProfile = 'balanced' | 'protein-rich' | 'low-carb' | 'mediterranean' | 'low-fat';
 export type BudgetLevel = 'low' | 'medium' | 'high';
 export type Difficulty = 'easy' | 'medium' | 'hard';
+
+// Argentine-specific types from Summit
+export type ArgentineRegion = 'NOA' | 'NEA' | 'CABA' | 'PBA' | 'Cuyo' | 'Patagonia';
+export type ModeType = 'normal' | 'economico' | 'fiesta' | 'dieta';
+export type ShoppingAisle = 'verduleria' | 'carniceria' | 'almacen' | 'panaderia' | 'fiambreria' | 'pescaderia' | 'otros';
+export type ArgentineSeason = 'verano' | 'otoño' | 'invierno' | 'primavera';
 
 // =============================================
 // CORE DOMAIN TYPES
@@ -34,13 +41,16 @@ export interface Recipe {
 }
 
 export interface Ingredient {
-  id: string;
+  id?: string;
   name: string;
-  amount: number;
-  unit: string;
-  category: IngredientCategory;
+  amount?: number;
+  unit?: string;
+  category?: IngredientCategory;
+  aisle?: ShoppingAisle; // Argentine-specific shopping location
   notes?: string;
   isOptional?: boolean;
+  substitution?: string;
+  regionAvailability?: ArgentineRegion[]; // Regional availability
 }
 
 export interface NutritionInfo {
@@ -224,10 +234,19 @@ export interface MealPlanningStore {
   error: string | null;
   selectedSlots: string[];
   draggedSlot: MealSlot | null;
+  isOnline: boolean;
+  isSyncing: boolean;
+  lastSyncedAt: string | null;
   
   // Modal State
   activeModal: 'recipe-select' | 'ai-planner' | 'preferences' | 'shopping-list' | 'recipe-detail' | null;
   selectedMeal: MealSlot | null;
+  
+  // Offline queue
+  offlineQueue: Array<() => Promise<void>>;
+  
+  // Real-time state
+  realtimeStatus: 'connecting' | 'connected' | 'disconnected' | 'error';
   
   // Actions - Data Management
   loadWeekPlan: (startDate: string) => Promise<void>;
@@ -255,6 +274,23 @@ export interface MealPlanningStore {
   getWeekSummary: () => WeekSummary;
   getDayPlan: (dayOfWeek: number) => DayPlan;
   getShoppingList: () => Promise<ShoppingList>;
+  
+  // Export functionality
+  exportWeekPlanAsJSON: () => String;
+  exportWeekPlanAsCSV: () => String;
+  exportWeekPlanAsPDF: () => Promise<Blob>;
+  downloadWeekPlan: (format: 'json' | 'csv' | 'pdf') => void;
+  
+  // Real-time sync methods
+  setupRealtimeSync: () => Promise<void>;
+  cleanupRealtimeSync: () => Promise<void>;
+  
+  // Offline support methods
+  syncOfflineChanges: () => Promise<void>;
+  setOnlineStatus: (isOnline: boolean) => void;
+  
+  // Batch operations
+  batchUpdateSlots: (updates: Array<{ slotId: string; changes: Partial<MealSlot> }>) => Promise<void>;
 }
 
 // =============================================
@@ -342,4 +378,69 @@ export interface ServiceResponse<T> {
 export interface LoadingState {
   isLoading: boolean;
   error?: string;
+}
+
+// =============================================
+// SUMMIT ENHANCED TYPES - Argentine specific
+// =============================================
+
+export interface PlannedMeal {
+  slot: MealSlotType;
+  time: string;
+  recipe: Recipe;
+  aiGenerated: boolean;
+}
+
+export interface MealPlan {
+  id: string;
+  userId: string;
+  weekStart: string;
+  weekEnd: string;
+  days: Array<{
+    date: string;
+    label: string;
+    meals: {
+      breakfast: PlannedMeal;
+      lunch: PlannedMeal;
+      snack: PlannedMeal;
+      dinner: PlannedMeal;
+    };
+  }>;
+  metadata: {
+    season: ArgentineSeason;
+    region: ArgentineRegion;
+    mode: ModeType;
+    createdAt: string;
+  };
+  updatedAt?: string;
+}
+
+export interface SummitUserPreferences {
+  dietary_restrictions: string[];
+  favorite_dishes: string[];
+  disliked_ingredients: string[];
+  household_size: number;
+  budget_weekly: number;
+  region?: ArgentineRegion;
+}
+
+// Utility functions for type conversion
+export function mealTypeToSlot(mealType: MealType): MealSlotType {
+  const mapping: Record<MealType, MealSlotType> = {
+    'desayuno': 'breakfast',
+    'almuerzo': 'lunch',
+    'merienda': 'snack',
+    'cena': 'dinner'
+  };
+  return mapping[mealType];
+}
+
+export function slotToMealType(slot: MealSlotType): MealType {
+  const mapping: Record<MealSlotType, MealType> = {
+    'breakfast': 'desayuno',
+    'lunch': 'almuerzo',
+    'snack': 'merienda',
+    'dinner': 'cena'
+  };
+  return mapping[slot];
 }

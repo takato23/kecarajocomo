@@ -1,4 +1,5 @@
 import { MeasurementConversion } from '../types';
+import { logger } from '@/services/logger';
 
 // Conversion factors to grams/milliliters
 const VOLUME_CONVERSIONS = {
@@ -610,7 +611,7 @@ export const convertBetweenSystems = (
       }
     }
   } catch (error: unknown) {
-    console.warn('Conversion failed:', error);
+    logger.warn('Conversion failed:', 'measurementService', error);
     return null;
   }
   

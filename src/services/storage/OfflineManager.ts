@@ -4,6 +4,7 @@
  */
 
 import { OfflineQueue, QueuedOperation } from './types';
+import { logger } from '@/services/logger';
 
 export class OfflineManager {
   private queue: OfflineQueue = {
@@ -83,7 +84,7 @@ export class OfflineManager {
         this.queue.retryCount = new Map(parsed.retryCount);
       }
     } catch (error: unknown) {
-      console.error('Failed to load offline queue:', error);
+      logger.error('Failed to load offline queue:', 'OfflineManager', error);
     }
   }
 
@@ -97,7 +98,7 @@ export class OfflineManager {
       };
       localStorage.setItem(this.storageKey, JSON.stringify(toStore));
     } catch (error: unknown) {
-      console.error('Failed to save offline queue:', error);
+      logger.error('Failed to save offline queue:', 'OfflineManager', error);
     }
   }
 

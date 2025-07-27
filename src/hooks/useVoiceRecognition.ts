@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { SmartParser, type ParsedIngredient } from '@/services/voice';
 
@@ -123,7 +124,7 @@ export const useVoiceRecognition = ({
           
           onResult?.(voiceResult);
         } catch (err: unknown) {
-          console.error('Error parsing ingredients:', err);
+          logger.error('Error parsing ingredients:', 'useVoiceRecognition', err);
         } finally {
           setIsProcessing(false);
         }
@@ -138,7 +139,7 @@ export const useVoiceRecognition = ({
     };
     
     recognition.onerror = (event) => {
-      console.error('Speech recognition error:', event.error);
+      logger.error('Speech recognition error:', 'useVoiceRecognition', event.error);
       
       let errorMessage = '';
       switch (event.error) {
@@ -202,7 +203,7 @@ export const useVoiceRecognition = ({
           try {
             recognitionRef.current.start();
           } catch (err: unknown) {
-            console.error('Error restarting recognition:', err);
+            logger.error('Error restarting recognition:', 'useVoiceRecognition', err);
           }
         }
       }, delay);
@@ -258,7 +259,7 @@ export const useVoiceRecognition = ({
       
       updateLevel();
     } catch (err: unknown) {
-      console.error('Error accessing microphone:', err);
+      logger.error('Error accessing microphone:', 'useVoiceRecognition', err);
       setError('No se pudo acceder al micrófono. Verifica los permisos.');
     }
   }, []);
@@ -298,7 +299,7 @@ export const useVoiceRecognition = ({
         recognitionRef.current.start();
         startAudioAnalysis();
       } catch (err: unknown) {
-        console.error('Error starting recognition:', err);
+        logger.error('Error starting recognition:', 'useVoiceRecognition', err);
         if (err instanceof Error && err.message.includes('already started')) {
           // Recognition is already started, just update state
           setIsListening(true);
@@ -315,7 +316,7 @@ export const useVoiceRecognition = ({
       try {
         recognitionRef.current.stop();
       } catch (err: unknown) {
-        console.error('Error stopping recognition:', err);
+        logger.error('Error stopping recognition:', 'useVoiceRecognition', err);
       }
       stopAudioAnalysis();
     }

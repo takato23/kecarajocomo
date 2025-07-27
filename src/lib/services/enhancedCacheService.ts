@@ -4,7 +4,7 @@
  */
 
 import { Redis } from 'ioredis';
-import LRUCache from 'lru-cache';
+import { logger } from '@/lib/logger';
 
 export interface CacheConfig {
   readonly redis?: {
@@ -62,9 +62,19 @@ export interface CachePattern {
 /**
  * Enhanced Cache Service with multi-layered architecture
  */
+/**
+ * Simple in-memory cache implementation
+ */
+interface InMemoryCacheItem<T> {
+  data: T;
+  expiry: number;
+}
+
 export class EnhancedCacheService {
   private readonly redis: Redis | null = null;
-  private readonly memoryCache: LRUCache<string, CacheItem<any>>;
+  private readonly memoryCache: Map<string, InMemoryCacheItem<any>> = new Map();
+  private readonly maxSize: number;
+  private readonly ttl: number;
   private readonly metrics: CacheMetrics;
   private readonly compressionEnabled: boolean;
   private readonly compressionThreshold: number;
@@ -84,7 +94,7 @@ export class EnhancedCacheService {
         });
 
         this.redis.on('error', (error) => {
-          console.warn('Redis connection error:', error);
+          logger.warn('Redis connection error:', 'enhancedCacheService', error);
           this.metrics.errors++;
         });
 
@@ -92,17 +102,13 @@ export class EnhancedCacheService {
 
         });
       } catch (error: unknown) {
-        console.warn('Failed to initialize Redis:', error);
+        logger.warn('Failed to initialize Redis:', 'enhancedCacheService', error);
       }
     }
 
     // Initialize memory cache
-    this.memoryCache = new LRUCache({
-      max: config.memory?.maxSize || 1000,
-      ttl: config.memory?.ttl || 1000 * 60 * 15, // 15 minutes
-      updateAgeOnGet: true,
-      updateAgeOnHas: true
-    });
+    this.maxSize = config.memory?.maxSize || 1000;
+    this.ttl = config.memory?.ttl || 1000 * 60 * 15; // 15 minutes
 
     // Initialize compression
     this.compressionEnabled = config.compression?.enabled || true;
@@ -139,10 +145,13 @@ export class EnhancedCacheService {
       // L1: Memory cache (fastest)
       if (!options?.skipMemory) {
         const memoryResult = this.memoryCache.get(key);
-        if (memoryResult) {
+        if (memoryResult && memoryResult.expiry > Date.now()) {
           this.metrics.hits++;
           this.updateMetrics(Date.now() - startTime);
           return memoryResult.data;
+        } else if (memoryResult) {
+          // Expired, remove it
+          this.memoryCache.delete(key);
         }
       }
 
@@ -169,7 +178,7 @@ export class EnhancedCacheService {
       
     } catch (error: unknown) {
       this.metrics.errors++;
-      console.error('Cache get error:', error);
+      logger.error('Cache get error:', 'enhancedCacheService', error);
       return null;
     }
   }
@@ -197,7 +206,7 @@ export class EnhancedCacheService {
       
     } catch (error: unknown) {
       this.metrics.errors++;
-      console.error('Cache set error:', error);
+      logger.error('Cache set error:', 'enhancedCacheService', error);
     }
   }
 
@@ -221,7 +230,7 @@ export class EnhancedCacheService {
       
     } catch (error: unknown) {
       this.metrics.errors++;
-      console.error('Cache delete error:', error);
+      logger.error('Cache delete error:', 'enhancedCacheService', error);
     }
   }
 
@@ -258,7 +267,7 @@ export class EnhancedCacheService {
           }
         }
       } catch (error: unknown) {
-        console.error('Redis mget error:', error);
+        logger.error('Redis mget error:', 'enhancedCacheService', error);
       }
     }
     
@@ -282,8 +291,7 @@ export class EnhancedCacheService {
   async invalidatePattern(pattern: string): Promise<void> {
     try {
       // Clear memory cache entries matching pattern
-      const memoryKeys = Array.from(this.memoryCache.keys());
-      for (const key of memoryKeys) {
+      for (const key of this.memoryCache.keys()) {
         if (this.matchesPattern(key, pattern)) {
           this.memoryCache.delete(key);
         }
@@ -298,7 +306,7 @@ export class EnhancedCacheService {
       }
       
     } catch (error: unknown) {
-      console.error('Cache invalidate pattern error:', error);
+      logger.error('Cache invalidate pattern error:', 'enhancedCacheService', error);
     }
   }
 
@@ -339,7 +347,7 @@ export class EnhancedCacheService {
       }
 
     } catch (error: unknown) {
-      console.error('Cache clear error:', error);
+      logger.error('Cache clear error:', 'enhancedCacheService', error);
     }
   }
 
@@ -357,7 +365,7 @@ export class EnhancedCacheService {
       }
 
     } catch (error: unknown) {
-      console.error('Cache shutdown error:', error);
+      logger.error('Cache shutdown error:', 'enhancedCacheService', error);
     }
   }
 
@@ -426,20 +434,19 @@ export class EnhancedCacheService {
    * Set item in memory cache
    */
   private setMemoryCache<T>(key: string, data: T, ttl: number): void {
-    const item: CacheItem<T> = {
-      data,
-      metadata: {
-        key,
-        createdAt: new Date(),
-        expiresAt: new Date(Date.now() + ttl),
-        accessCount: 0,
-        lastAccessed: new Date(),
-        size: this.calculateDataSize(data),
-        compressed: false
+    // Clean up if we're at max size
+    if (this.memoryCache.size >= this.maxSize) {
+      // Remove oldest entry
+      const firstKey = this.memoryCache.keys().next().value;
+      if (firstKey) {
+        this.memoryCache.delete(firstKey);
       }
-    };
+    }
     
-    this.memoryCache.set(key, item, { ttl });
+    this.memoryCache.set(key, {
+      data,
+      expiry: Date.now() + ttl
+    });
   }
 
   /**
@@ -525,6 +532,39 @@ export class EnhancedCacheService {
       this.metrics.errors = 0;
       
     }, interval);
+  }
+
+  /**
+   * Get current metrics
+   */
+  getMetrics(): CacheMetrics {
+    return {
+      ...this.metrics,
+      memoryUsage: this.memoryCache.size,
+      redisConnected: this.redis?.status === 'ready' || false
+    };
+  }
+
+  /**
+   * Clear all cache
+   */
+  async clear(): Promise<void> {
+    this.memoryCache.clear();
+    if (this.redis) {
+      await this.redis.flushdb();
+    }
+  }
+
+  /**
+   * Cleanup and close connections
+   */
+  async cleanup(): Promise<void> {
+    if (this.metricsInterval) {
+      clearInterval(this.metricsInterval);
+    }
+    if (this.redis) {
+      await this.redis.quit();
+    }
   }
 }
 

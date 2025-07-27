@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { logger } from '@/services/logger';
 
 import { getVoiceService, VoiceCommand, VoiceServiceOptions } from '@/services/voice';
 
@@ -121,7 +122,7 @@ export function useVoiceService(options: UseVoiceServiceOptions = {}): UseVoiceS
     try {
       await voiceService.current.speak(text);
     } catch (err: unknown) {
-      console.error('Speech synthesis error:', err);
+      logger.error('Speech synthesis error:', 'useVoiceService', err);
     }
   }, []);
 

@@ -1,108 +1,102 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { z } from 'zod';
-
-import { authOptions } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 import { geminiPlannerService } from '@/lib/services/geminiPlannerService';
-import {
-  UserPreferencesSchema,
-  PlanningConstraintsSchema
+import { 
+  UserPreferences, 
+  PlanningConstraints 
 } from '@/lib/types/mealPlanning';
 import { GeminiPlannerOptions } from '@/lib/services/geminiPlannerService';
 
-// Request validation schema
-const GeneratePlanRequestSchema = z.object({
-  preferences: UserPreferencesSchema,
-  constraints: PlanningConstraintsSchema,
-  options: z.object({
-    useHolisticAnalysis: z.boolean().default(true),
-    includeExternalFactors: z.boolean().default(true),
-    optimizeResources: z.boolean().default(true),
-    enableLearning: z.boolean().default(true),
-    analysisDepth: z.enum(['surface', 'comprehensive', 'deep_dive']).default('comprehensive')
-  }).optional()
-});
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
       return NextResponse.json(
-        { error: 'No autorizado' },
+        { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
-    
-    // Validate request
-    const validationResult = GeneratePlanRequestSchema.safeParse(body);
-    if (!validationResult.success) {
+    const body = await req.json();
+    const { preferences, constraints, options } = body;
+
+    // Validate required fields
+    if (!preferences || !constraints) {
       return NextResponse.json(
-        { 
-          error: 'Datos de solicitud inválidos', 
-          details: validationResult.error.errors 
-        },
+        { error: 'Missing required fields: preferences and constraints' },
         { status: 400 }
       );
     }
 
-    const { preferences, constraints, options } = validationResult.data;
+    // Ensure user ID is set
+    const userPreferences: UserPreferences = {
+      ...preferences,
+      userId: user.id
+    };
 
-    // Ensure user ID matches session
-    if (preferences.userId !== session.user.id) {
-      return NextResponse.json(
-        { error: 'ID de usuario no coincide' },
-        { status: 403 }
-      );
-    }
+    const planningConstraints: PlanningConstraints = {
+      ...constraints,
+      startDate: new Date(constraints.startDate),
+      endDate: new Date(constraints.endDate)
+    };
 
-    // Generate plan with Gemini
+    const plannerOptions: GeminiPlannerOptions = {
+      useHolisticAnalysis: true,
+      includeExternalFactors: true, 
+      optimizeResources: true,
+      enableLearning: true,
+      analysisDepth: 'comprehensive',
+      ...options
+    };
+
+    logger.info('Generating weekly meal plan', 'meal-planning/generate', {
+      userId: user.id,
+      dateRange: `${planningConstraints.startDate} - ${planningConstraints.endDate}`,
+      options: plannerOptions
+    });
+
     const result = await geminiPlannerService.generateHolisticPlan(
-      preferences,
-      constraints,
-      options as GeminiPlannerOptions
+      userPreferences,
+      planningConstraints,
+      plannerOptions
     );
 
     if (!result.success) {
+      logger.error('Failed to generate meal plan', 'meal-planning/generate', result.error);
       return NextResponse.json(
         { 
-          error: result.error || 'Error al generar el plan',
-          success: false 
+          success: false,
+          error: result.error || 'Failed to generate meal plan'
         },
         { status: 500 }
       );
     }
 
-    // Return successful result
-    return NextResponse.json(result);
+    logger.info('Successfully generated meal plan', 'meal-planning/generate', {
+      userId: user.id,
+      confidence: result.metadata.confidenceScore,
+      processingTime: result.metadata.processingTime
+    });
+
+    return NextResponse.json({
+      success: true,
+      plan: result.plan,
+      insights: result.insights,
+      metadata: result.metadata
+    });
 
   } catch (error) {
-    console.error('Error in meal planning generation:', error);
+    logger.error('Error in meal plan generation endpoint', 'meal-planning/generate', error);
     
-    // Handle specific errors
-    if (error instanceof Error) {
-      if (error.message.includes('GOOGLE_AI_API_KEY')) {
-        return NextResponse.json(
-          { error: 'Servicio de IA no configurado correctamente' },
-          { status: 503 }
-        );
-      }
-      
-      if (error.message.includes('timeout')) {
-        return NextResponse.json(
-          { error: 'La generación del plan tomó demasiado tiempo. Por favor, intenta de nuevo.' },
-          { status: 504 }
-        );
-      }
-    }
-
     return NextResponse.json(
       { 
-        error: 'Error interno del servidor',
-        success: false 
+        success: false,
+        error: error instanceof Error ? error.message : 'Internal server error'
       },
       { status: 500 }
     );

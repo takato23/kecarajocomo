@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { logger } from '@/services/logger';
 
 import { 
   AnalyticsEvent, 
@@ -302,7 +303,7 @@ export const useGrowthStore = create<GrowthStore>()(
             
             return variant;
           } catch (error: unknown) {
-            console.error('Failed to get experiment assignment:', error);
+            logger.error('Failed to get experiment assignment:', 'growth-stack:growthStore', error);
             return null;
           }
         },
@@ -354,7 +355,7 @@ export const useGrowthStore = create<GrowthStore>()(
               }
             }));
           } catch (error: unknown) {
-            console.error('Failed to load experiment results:', error);
+            logger.error('Failed to load experiment results:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -382,7 +383,7 @@ export const useGrowthStore = create<GrowthStore>()(
               userEngagement: engagement
             }));
           } catch (error: unknown) {
-            console.error('Failed to load user engagement:', error);
+            logger.error('Failed to load user engagement:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -399,7 +400,7 @@ export const useGrowthStore = create<GrowthStore>()(
               }
             }));
           } catch (error: unknown) {
-            console.error('Failed to load engagement metrics:', error);
+            logger.error('Failed to load engagement metrics:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -413,7 +414,7 @@ export const useGrowthStore = create<GrowthStore>()(
               userSegments: segments
             }));
           } catch (error: unknown) {
-            console.error('Failed to load user segments:', error);
+            logger.error('Failed to load user segments:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -432,7 +433,7 @@ export const useGrowthStore = create<GrowthStore>()(
               }));
             }
           } catch (error: unknown) {
-            console.error('Failed to load funnel analysis:', error);
+            logger.error('Failed to load funnel analysis:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -446,7 +447,7 @@ export const useGrowthStore = create<GrowthStore>()(
               cohortAnalyses: analyses
             }));
           } catch (error: unknown) {
-            console.error('Failed to load cohort analysis:', error);
+            logger.error('Failed to load cohort analysis:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -463,7 +464,7 @@ export const useGrowthStore = create<GrowthStore>()(
               growthMetrics: metrics
             }));
           } catch (error: unknown) {
-            console.error('Failed to load growth metrics:', error);
+            logger.error('Failed to load growth metrics:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -477,7 +478,7 @@ export const useGrowthStore = create<GrowthStore>()(
               growthInsights: insights
             }));
           } catch (error: unknown) {
-            console.error('Failed to load growth insights:', error);
+            logger.error('Failed to load growth insights:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -494,7 +495,7 @@ export const useGrowthStore = create<GrowthStore>()(
               featureFlags: flags
             }));
           } catch (error: unknown) {
-            console.error('Failed to load feature flags:', error);
+            logger.error('Failed to load feature flags:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -529,7 +530,7 @@ export const useGrowthStore = create<GrowthStore>()(
               )
             }));
           } catch (error: unknown) {
-            console.error('Failed to update feature flag:', error);
+            logger.error('Failed to update feature flag:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -551,7 +552,7 @@ export const useGrowthStore = create<GrowthStore>()(
               retentionCampaigns: [...state.retentionCampaigns, newCampaign]
             }));
           } catch (error: unknown) {
-            console.error('Failed to create retention campaign:', error);
+            logger.error('Failed to create retention campaign:', 'growth-stack:growthStore', error);
           }
         },
         
@@ -567,7 +568,7 @@ export const useGrowthStore = create<GrowthStore>()(
               retentionCampaigns: campaigns
             }));
           } catch (error: unknown) {
-            console.error('Failed to load retention campaigns:', error);
+            logger.error('Failed to load retention campaigns:', 'growth-stack:growthStore', error);
           }
         },
         

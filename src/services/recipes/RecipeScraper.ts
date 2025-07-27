@@ -1,5 +1,6 @@
 import { getGeminiService } from '../ai/GeminiService';
 import type { Recipe } from '../planner/MealPlanner';
+import { logger } from '@/services/logger';
 
 export interface RecipeSource {
   url: string;
@@ -54,7 +55,7 @@ export class RecipeScraper {
       return recipes;
       
     } catch (error: unknown) {
-      console.error('Error buscando recetas:', error);
+      logger.error('Error buscando recetas:', 'RecipeScraper', error);
       return [];
     }
   }
@@ -72,7 +73,7 @@ export class RecipeScraper {
       return mockRecipe;
       
     } catch (error: unknown) {
-      console.error('Error scrapeando receta:', error);
+      logger.error('Error scrapeando receta:', 'RecipeScraper', error);
       return null;
     }
   }
@@ -110,7 +111,7 @@ export class RecipeScraper {
       return recipe;
       
     } catch (error: unknown) {
-      console.error('Error adaptando receta:', error);
+      logger.error('Error adaptando receta:', 'RecipeScraper', error);
       return recipe;
     }
   }
@@ -148,7 +149,7 @@ export class RecipeScraper {
       return this.getMockRecipes(ingredients);
       
     } catch (error: unknown) {
-      console.error('Error generando recetas con IA:', error);
+      logger.error('Error generando recetas con IA:', 'RecipeScraper', error);
       return this.getMockRecipes(ingredients);
     }
   }

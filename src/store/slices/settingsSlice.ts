@@ -3,6 +3,7 @@
  */
 
 import { StateCreator } from 'zustand';
+import { logger } from '@/services/logger';
 
 export interface AppSettings {
   version: number;
@@ -301,7 +302,7 @@ export const createSettingsSlice: StateCreator<SettingsSlice> = (set, get) => ({
       
       return true;
     } catch (error: unknown) {
-      console.error('Failed to import settings:', error);
+      logger.error('Failed to import settings:', 'Store:settingsSlice', error);
       return false;
     }
   },

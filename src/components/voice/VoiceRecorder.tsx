@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Mic, MicOff, X, Check, AlertCircle, Volume2 } from 'lucide-react';
+import { logger } from '@/services/logger';
 
 import { Button } from '@/components/design-system/Button';
 import { Text } from '@/components/design-system/Typography';
@@ -95,7 +96,7 @@ export function VoiceRecorder({
       
       drawVisualizer();
     } catch (error: unknown) {
-      console.error('Error setting up audio visualizer:', error);
+      logger.error('Error setting up audio visualizer:', 'VoiceRecorder', error);
     }
   };
 

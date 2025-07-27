@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * Offline Queue Manager
  * Handles queuing of failed operations when offline and processes them when back online
@@ -183,7 +185,7 @@ export class OfflineQueue {
       try {
         await this.processItem(item);
       } catch (error) {
-        console.error('Error processing queue item:', error);
+        logger.error('Error processing queue item:', 'Lib:OfflineQueue', error);
         // Continue with next item
       }
     }
@@ -199,7 +201,7 @@ export class OfflineQueue {
     // Find appropriate processor
     const processor = this.findProcessor(item.key);
     if (!processor) {
-      console.warn(`No processor found for queue item with key: ${item.key}`);
+      logger.warn(`No processor found for queue item with key: ${item.key}`, 'Lib:OfflineQueue');
       await this.updateItemStatus(item.id, 'failed', 'No processor found');
       return;
     }
@@ -229,7 +231,7 @@ export class OfflineQueue {
       
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      console.error(`Error processing queue item ${item.id}:`, error);
+      logger.error(`Error processing queue item ${item.id}:`, 'Lib:OfflineQueue', error);
       
       // Update attempts
       item.attempts++;
@@ -295,7 +297,7 @@ export class OfflineQueue {
       const parsed = JSON.parse(queueData);
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
-      console.error('Error loading queue from storage:', error);
+      logger.error('Error loading queue from storage:', 'Lib:OfflineQueue', error);
       return [];
     }
   }
@@ -311,7 +313,7 @@ export class OfflineQueue {
     try {
       localStorage.setItem(this.getStorageKey(), JSON.stringify(queue));
     } catch (error) {
-      console.error('Error saving queue to storage:', error);
+      logger.error('Error saving queue to storage:', 'Lib:OfflineQueue', error);
       throw error;
     }
   }

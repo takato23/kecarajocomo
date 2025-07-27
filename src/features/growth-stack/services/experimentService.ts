@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@/services/logger';
 
 import {
   Experiment,
@@ -76,7 +77,7 @@ class ExperimentService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to initialize experiment service:', error);
+      logger.error('Failed to initialize experiment service:', 'experimentService', error);
       throw error;
     }
   }
@@ -303,7 +304,7 @@ class ExperimentService {
       this.results.set(experimentId, results);
       return results;
     } catch (error: unknown) {
-      console.error('Failed to fetch experiment results:', error);
+      logger.error('Failed to fetch experiment results:', 'experimentService', error);
       return [];
     }
   }
@@ -482,7 +483,7 @@ class ExperimentService {
         this.experiments.set(experiment.id, experiment);
       }
     } catch (error: unknown) {
-      console.error('Failed to load active experiments:', error);
+      logger.error('Failed to load active experiments:', 'experimentService', error);
     }
   }
 
@@ -505,7 +506,7 @@ class ExperimentService {
         this.assignments.get(assignment.user_id)!.push(assignment);
       }
     } catch (error: unknown) {
-      console.error('Failed to load user assignments:', error);
+      logger.error('Failed to load user assignments:', 'experimentService', error);
     }
   }
 
@@ -526,7 +527,7 @@ class ExperimentService {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
     } catch (error: unknown) {
-      console.error('Failed to save experiment:', error);
+      logger.error('Failed to save experiment:', 'experimentService', error);
       throw error;
     }
   }
@@ -548,7 +549,7 @@ class ExperimentService {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
     } catch (error: unknown) {
-      console.error('Failed to save assignment:', error);
+      logger.error('Failed to save assignment:', 'experimentService', error);
       throw error;
     }
   }

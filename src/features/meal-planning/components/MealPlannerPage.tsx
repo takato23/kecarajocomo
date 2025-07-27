@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Calendar,
   Settings,
@@ -25,7 +26,6 @@ import { useMealPlanningStore } from '../store/useMealPlanningStore';
 import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
 import type { MealType } from '../types';
 
-import { MealPlannerWizard, type WizardData } from './MealPlannerWizard';
 import MealPlannerGrid from './MealPlannerGrid';
 import { RecipeSelectionModal } from './RecipeSelectionModal';
 import { UserPreferencesModal } from './UserPreferencesModal';
@@ -59,80 +59,18 @@ export default function MealPlannerPage() {
   } = useGeminiMealPlanner();
   
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
-  const [showWizard, setShowWizard] = useState(false);
-  const [hasCompletedWizard, setHasCompletedWizard] = useState(false);
+  const [hasCompletedWizard, setHasCompletedWizard] = useState(true); // Always true since wizard is handled in /planificador
   const [selectedSlot, setSelectedSlot] = useState<{ dayOfWeek: number; mealType: MealType } | null>(null);
 
-  // Initialize
+  // Initialize - always load the current week plan since wizard is handled in /planificador
   useEffect(() => {
     if (user) {
-      // Check if user has completed wizard
-      const wizardCompleted = localStorage.getItem(`meal-wizard-completed-${user.id}`);
-      
-      if (!wizardCompleted) {
-        setShowWizard(true);
-      } else {
-        setHasCompletedWizard(true);
-        // Load current week plan
-        const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-        loadWeekPlan(startDate);
-      }
+      // Load current week plan
+      const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+      loadWeekPlan(startDate);
     }
   }, [user, loadWeekPlan]);
 
-  const handleWizardComplete = async (data: WizardData) => {
-    if (user) {
-      localStorage.setItem(`meal-wizard-completed-${user.id}`, 'true');
-      localStorage.setItem(`meal-preferences-${user.id}`, JSON.stringify(data));
-    }
-    setHasCompletedWizard(true);
-    setShowWizard(false);
-    
-    // Load current week plan after completing wizard
-    const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-    await loadWeekPlan(startDate);
-
-    // Convert wizard data to UserPreferences format
-    const preferences: Partial<UserPreferences> = {
-      userId: user?.id || '',
-      dietaryRestrictions: data.dietaryPreferences as any[],
-      allergies: data.allergies as any[],
-      favoriteCuisines: data.cuisinePreferences as any[],
-      cookingSkillLevel: data.cookingSkill,
-      householdSize: 2, // Default value
-      weeklyBudget: data.budgetLevel === 'low' ? 300 : data.budgetLevel === 'medium' ? 500 : 800,
-      maxPrepTimePerMeal: data.maxCookingTime,
-      preferredMealTypes: ['breakfast', 'lunch', 'dinner']
-    };
-
-    // Generate initial meal plan with AI
-    toast.promise(
-      generateWeeklyPlan(preferences),
-      {
-        loading: 'Generando tu plan de comidas personalizado con IA...',
-        success: async (result) => {
-          if (result.success && result.data) {
-            await applyGeneratedPlan(result.data);
-            return 'Plan de comidas generado exitosamente!';
-          }
-          throw new Error('No se pudo generar el plan');
-        },
-        error: 'Error al generar el plan de comidas'
-      }
-    );
-  };
-
-  const handleWizardSkip = () => {
-    if (user) {
-      localStorage.setItem(`meal-wizard-completed-${user.id}`, 'skipped');
-    }
-    setHasCompletedWizard(true);
-    setShowWizard(false);
-    
-    // Load current week plan after skipping wizard
-    const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-    loadWeekPlan(startDate);
-  };
 
   const handleWeekNavigation = (direction: 'prev' | 'next' | 'today') => {
     let newDate: Date;
@@ -161,7 +99,7 @@ export default function MealPlannerPage() {
 
   const handleExportWeek = async () => {
     // TODO: Implement week export functionality
-    console.log('Export week');
+    logger.info('Export week', 'MealPlannerPage');
   };
 
   const views = [
@@ -209,30 +147,6 @@ export default function MealPlannerPage() {
     );
   }
 
-  // Show wizard if not completed
-  if (!hasCompletedWizard && !showWizard) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="text-6xl mb-4">📅</div>
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Welcome to Meal Planning!
-          </h3>
-          <p className="text-white/60 mb-6">
-            Let's personalize your meal planning experience
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowWizard(true)}
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-lg rounded-xl hover:from-orange-600 hover:to-pink-600 shadow-lg"
-          >
-            Get Started
-          </motion.button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
@@ -442,13 +356,6 @@ export default function MealPlannerPage() {
         )}
       </AnimatePresence>
 
-      {/* Meal Planner Wizard */}
-      {showWizard && (
-        <MealPlannerWizard
-          onComplete={handleWizardComplete}
-          onSkip={handleWizardSkip}
-        />
-      )}
     </div>
   );
 }

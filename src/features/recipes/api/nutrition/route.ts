@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/services/logger';
 
 import { NutritionAnalysisRequest, NutritionAnalysisResponse } from '../../types';
 
@@ -139,7 +140,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Error analyzing nutrition:', error);
+    logger.error('Error analyzing nutrition:', 'recipes:route', error);
     return NextResponse.json(
       { error: 'Failed to analyze nutrition' },
       { status: 500 }

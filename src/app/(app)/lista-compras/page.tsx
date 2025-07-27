@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/services/logger';
 import { 
   ShoppingCart,
   Plus,
@@ -104,6 +105,15 @@ export default function ListaComprasPage() {
   const [newItemCategory, setNewItemCategory] = useState('otros');
   const [newListName, setNewListName] = useState('');
   const [showNewListModal, setShowNewListModal] = useState(false);
+  
+  // Edit states
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+  const [editItemName, setEditItemName] = useState('');
+  const [editItemQuantity, setEditItemQuantity] = useState(1);
+  const [editItemUnit, setEditItemUnit] = useState('unidades');
+  const [editItemCategory, setEditItemCategory] = useState('otros');
+  const [editItemPrice, setEditItemPrice] = useState<number | null>(null);
 
   // Price scraping for all items
   const { searchMultipleProducts, isLoading: isPriceLoading } = useEnhancedPriceScraper();
@@ -211,6 +221,33 @@ export default function ListaComprasPage() {
     setShowNewListModal(false);
   };
 
+  // Handle edit item
+  const handleEditItem = (item: ShoppingItem) => {
+    setEditingItem(item);
+    setEditItemName(item.custom_name || '');
+    setEditItemQuantity(item.quantity || 1);
+    setEditItemUnit(item.unit || 'unidades');
+    setEditItemCategory(item.category || 'otros');
+    setEditItemPrice(item.estimated_cost);
+    setShowEditModal(true);
+  };
+
+  // Handle update item
+  const handleUpdateItem = async () => {
+    if (!editingItem || !editItemName.trim()) return;
+
+    await updateItem(editingItem.id, {
+      custom_name: editItemName,
+      quantity: editItemQuantity,
+      unit: editItemUnit,
+      category: editItemCategory,
+      estimated_cost: editItemPrice
+    });
+
+    setShowEditModal(false);
+    setEditingItem(null);
+  };
+
   // Handle price search for all items
   const handleSearchAllPrices = async () => {
     if (!activeList?.shopping_list_items) return;
@@ -225,9 +262,34 @@ export default function ListaComprasPage() {
 
     try {
       const results = await searchMultipleProducts(uncheckedItems);
-      // Could update item prices here if desired
+      
+      // Update item prices with lowest found price
+      for (const [query, products] of results.entries()) {
+        if (products.length > 0) {
+          const lowestPrice = Math.min(...products.map(p => p.price));
+          const bestStore = products.find(p => p.price === lowestPrice)?.store;
+          
+          // Find matching item in shopping list
+          const matchingItem = activeList.shopping_list_items.find(item => {
+            const mappedItem = mapShoppingItem(item);
+            return mappedItem.name.toLowerCase().includes(query.toLowerCase());
+          });
+          
+          if (matchingItem) {
+            await updateItem(matchingItem.id, {
+              estimated_cost: lowestPrice,
+              source: bestStore
+            });
+          }
+        }
+      }
+      
+      logger.info('Updated prices for shopping list items', 'ListaComprasPage', { 
+        itemsSearched: uncheckedItems.length 
+      });
+      
     } catch (error) {
-      console.error('Error searching prices:', error);
+      logger.error('Error searching prices:', 'ListaComprasPage', error);
     }
   };
 
@@ -300,9 +362,18 @@ export default function ListaComprasPage() {
               <GlassButton
                 variant="secondary"
                 icon={<DollarSign className="w-4 h-4" />}
+                onClick={handleSearchAllPrices}
+                disabled={isPriceLoading || !activeList?.shopping_list_items?.length}
+                loading={isPriceLoading}
+              >
+                {isPriceLoading ? 'Actualizando Precios...' : 'Actualizar Precios'}
+              </GlassButton>
+              <GlassButton
+                variant="ghost"
+                icon={<Search className="w-4 h-4" />}
                 onClick={() => setShowPriceSearch(true)}
               >
-                Buscar Precios
+                Comparar Precios
               </GlassButton>
               <GlassButton
                 variant="ghost"
@@ -617,9 +688,7 @@ export default function ListaComprasPage() {
                                       variant="ghost"
                                       size="sm"
                                       className="p-1.5"
-                                      onClick={() => {
-                                        // TODO: Implement edit
-                                      }}
+                                      onClick={() => handleEditItem(item)}
                                     >
                                       <Edit2 className="w-3.5 h-3.5" />
                                     </GlassButton>
@@ -811,6 +880,89 @@ export default function ListaComprasPage() {
         </div>
       </GlassModal>
 
+      {/* Edit Item Modal */}
+      <GlassModal
+        isOpen={showEditModal}
+        onClose={() => setShowEditModal(false)}
+        title="Editar Item"
+        size="lg"
+      >
+        <div className="space-y-4">
+          <GlassInput
+            label="Nombre del producto"
+            placeholder="ej. Leche, Pan, etc."
+            value={editItemName}
+            onChange={(e) => setEditItemName(e.target.value)}
+          />
+          
+          <div className="grid grid-cols-2 gap-4">
+            <GlassInput
+              label="Cantidad"
+              type="number"
+              placeholder="1"
+              value={editItemQuantity}
+              onChange={(e) => setEditItemQuantity(Number(e.target.value))}
+            />
+            <div>
+              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Unidad</label>
+              <select 
+                className="glass-input w-full dark:bg-gray-800 dark:text-white"
+                value={editItemUnit}
+                onChange={(e) => setEditItemUnit(e.target.value)}
+              >
+                <option value="unidades">unidades</option>
+                <option value="kg">kg</option>
+                <option value="gramos">gramos</option>
+                <option value="litros">litros</option>
+                <option value="ml">ml</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium mb-2 dark:text-gray-300">Categoría</label>
+              <select 
+                className="glass-input w-full dark:bg-gray-800 dark:text-white"
+                value={editItemCategory}
+                onChange={(e) => setEditItemCategory(e.target.value)}
+              >
+                <option value="dairy">Lácteos</option>
+                <option value="vegetables">Vegetales</option>
+                <option value="fruits">Frutas</option>
+                <option value="grains">Granos</option>
+                <option value="proteins">Proteínas</option>
+                <option value="beverages">Bebidas</option>
+                <option value="snacks">Snacks</option>
+                <option value="otros">Otros</option>
+              </select>
+            </div>
+            <GlassInput
+              label="Precio estimado (opcional)"
+              type="number"
+              step="0.01"
+              placeholder="0.00"
+              value={editItemPrice || ''}
+              onChange={(e) => setEditItemPrice(e.target.value ? Number(e.target.value) : null)}
+            />
+          </div>
+
+          <div className="flex gap-3 pt-4">
+            <GlassButton 
+              variant="primary" 
+              className="flex-1"
+              onClick={handleUpdateItem}
+              disabled={!editItemName.trim()}
+            >
+              Actualizar Item
+            </GlassButton>
+            <GlassButton variant="ghost" onClick={() => setShowEditModal(false)}>
+              Cancelar
+            </GlassButton>
+          </div>
+        </div>
+      </GlassModal>
+
       {/* New List Modal */}
       <GlassModal
         isOpen={showNewListModal}
@@ -846,15 +998,26 @@ export default function ListaComprasPage() {
       <GlassModal
         isOpen={showPriceSearch}
         onClose={() => setShowPriceSearch(false)}
-        title="Buscar Precios"
+        title="Buscar Precios en Supermercados"
         size="xl"
       >
-        <PriceSearchComponent
-          onProductSelect={(product) => {
-            // Could update item price here
-            console.log('Selected product:', product);
-          }}
-        />
+        <div className="space-y-4">
+          <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+            <p className="text-sm text-blue-700 dark:text-blue-300">
+              💡 <strong>Busca productos</strong> y compara precios en tiempo real de supermercados argentinos como Carrefour, Jumbo, Coto y Día.
+            </p>
+          </div>
+          <PriceSearchComponent
+            onProductSelect={(product) => {
+              logger.info('Selected product from price search:', 'ListaComprasPage', { 
+                product: product.name, 
+                price: product.price, 
+                store: product.store 
+              });
+              // Future enhancement: Could auto-add to shopping list or update existing item price
+            }}
+          />
+        </div>
       </GlassModal>
     </div>
   );

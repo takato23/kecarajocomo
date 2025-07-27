@@ -13,6 +13,7 @@ export function MealPlannerSkeleton() {
       variant="aurora"
       elevation="high"
       className="relative overflow-hidden"
+      data-testid="meal-planner-skeleton"
     >
       {/* Header skeleton */}
       <div className="px-4 md:px-6 py-4 md:py-5 border-b border-white/10">

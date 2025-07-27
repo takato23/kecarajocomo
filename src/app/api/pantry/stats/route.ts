@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryStats, PantryAPIResponse } from '@/features/pantry/types';
 
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id);
 
     if (countError) {
-      console.error('Error counting pantry items:', countError);
+      logger.error('Error counting pantry items:', 'API:route', countError);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry stats' },
         { status: 500 }
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id);
 
     if (categoryError) {
-      console.error('Error fetching category data:', categoryError);
+      logger.error('Error fetching category data:', 'API:route', categoryError);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch category stats' },
         { status: 500 }
@@ -65,7 +66,7 @@ export async function GET(request: NextRequest) {
       .lte('expiration_date', oneWeekFromNow.toISOString());
 
     if (expiringError) {
-      console.error('Error counting expiring items:', expiringError);
+      logger.error('Error counting expiring items:', 'API:route', expiringError);
     }
 
     // Expired items
@@ -76,7 +77,7 @@ export async function GET(request: NextRequest) {
       .lt('expiration_date', now.toISOString());
 
     if (expiredError) {
-      console.error('Error counting expired items:', expiredError);
+      logger.error('Error counting expired items:', 'API:route', expiredError);
     }
 
     // Calculate total value if cost data is available
@@ -106,7 +107,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/stats:', error);
+    logger.error('Unexpected error in GET /api/pantry/stats:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

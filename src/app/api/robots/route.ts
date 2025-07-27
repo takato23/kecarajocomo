@@ -63,6 +63,5 @@ Disallow: /`;
     headers: {
       'Content-Type': 'text/plain',
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-    },
-  });
+    });
 }

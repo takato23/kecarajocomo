@@ -2,6 +2,7 @@
 
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { logger } from '@/services/logger';
 
 import { AuthService } from '../services/authService';
 import { 
@@ -92,7 +93,7 @@ export const useAuthStore = create<AuthState>()(
               set({ isInitialized: true });
             }
           } catch (error: unknown) {
-            console.error('Auth initialization error:', error);
+            logger.error('Auth initialization error:', 'auth:authStore', error);
             set({ 
               error: 'Failed to initialize authentication',
               isInitialized: true 
@@ -195,7 +196,7 @@ export const useAuthStore = create<AuthState>()(
               get().signOut();
             }
           } catch (error: unknown) {
-            console.error('Failed to refresh session:', error);
+            logger.error('Failed to refresh session:', 'auth:authStore', error);
             get().signOut();
           }
         },
@@ -210,7 +211,7 @@ export const useAuthStore = create<AuthState>()(
 
             set({ profile, preferences });
           } catch (error: unknown) {
-            console.error('Failed to load user data:', error);
+            logger.error('Failed to load user data:', 'auth:authStore', error);
           }
         },
 

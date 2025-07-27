@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
+import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
 import { z } from 'zod';
-
-import { authOptions } from '@/lib/auth';
+import { logger } from '@/lib/logger';
 import { geminiPlannerService } from '@/lib/services/geminiPlannerService';
 import {
   WeeklyPlan,
@@ -23,8 +23,11 @@ const OptimizeDailyRequestSchema = z.object({
 export async function POST(request: NextRequest) {
   try {
     // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
       return NextResponse.json(
         { error: 'No autorizado' },
         { status: 401 }
@@ -49,7 +52,7 @@ export async function POST(request: NextRequest) {
     const { preferences, currentPlan, focusDay } = validationResult.data;
 
     // Ensure user ID matches session
-    if (preferences.userId !== session.user.id) {
+    if (preferences.userId !== user.id) {
       return NextResponse.json(
         { error: 'ID de usuario no coincide' },
         { status: 403 }
@@ -80,7 +83,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
 
   } catch (error) {
-    console.error('Error in daily optimization:', error);
+    logger.error('Error in daily optimization:', 'API:route', error);
     
     // Handle specific errors
     if (error instanceof Error) {

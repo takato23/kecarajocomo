@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Users, ChefHat, Target, Heart, AlertCircle, Save, Plus, X, Clock, Utensils } from 'lucide-react';
 import { toast } from 'sonner';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { getProfileManager, type UserProfile, type DietaryRestriction } from '@/services/profile/ProfileManager';
 import { getHolisticSystem } from '@/services/core/HolisticSystem';
@@ -13,6 +14,7 @@ import { iOS26LiquidCard } from '@/components/ios26/iOS26LiquidCard';
 import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
 import { iOS26LiquidInput } from '@/components/ios26/iOS26LiquidInput';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/components/auth/AuthProvider';
 
 // Import new error handling components
 import { 
@@ -172,6 +174,8 @@ const ProfileErrorRecovery = ({
 );
 
 export function ProfileViewEnhanced() {
+  const { user } = useAuth();
+  
   const [initialProfile] = useState<Partial<UserProfile>>({
     householdSize: 2,
     householdMembers: [],
@@ -205,8 +209,10 @@ export function ProfileViewEnhanced() {
 
   // Initialize error recovery hooks
   const loadRecovery = useProfileLoadRecovery(async () => {
-    const userId = 'temp-user-id'; // TODO: Get from auth context
-    const existingProfile = await profileManager.getUserProfile(userId);
+    if (!user?.id) {
+      throw new Error('No se pudo identificar al usuario');
+    }
+    const existingProfile = await profileManager.getUserProfile(user.id);
     
     if (existingProfile) {
       setProfile(existingProfile);
@@ -222,8 +228,10 @@ export function ProfileViewEnhanced() {
   });
 
   const saveRecovery = useProfileSaveRecovery(async () => {
-    const userId = 'temp-user-id'; // TODO: Get from auth context
-    await profileManager.upsertProfile(userId, profile);
+    if (!user?.id) {
+      throw new Error('No se pudo identificar al usuario');
+    }
+    await profileManager.upsertProfile(user.id, profile);
     setLastSaved(new Date());
   });
 
@@ -234,10 +242,10 @@ export function ProfileViewEnhanced() {
     autoRetry: true,
     component: 'ProfileView',
     onError: (error) => {
-      console.error('Profile error:', error);
+      logger.error('Profile error:', 'ProfileViewEnhanced', error);
     },
     onRecovery: () => {
-      console.log('Profile recovered successfully');
+      logger.info('Profile recovered successfully', 'ProfileViewEnhanced');
     }
   });
 
@@ -367,17 +375,19 @@ export function ProfileViewEnhanced() {
     }
   }, [loadRecovery, generalErrorRecovery]);
 
-  // Load profile on mount
+  // Load profile when user is available
   useEffect(() => {
-    loadProfile();
-  }, [loadProfile]);
+    if (user?.id) {
+      loadProfile();
+    }
+  }, [user?.id, loadProfile]);
 
   // Cleanup auto-save on unmount
   useEffect(() => {
     return () => {
       if (autoSave.hasPendingChanges) {
         autoSave.forceSave().catch(error => {
-          console.error('Error al guardar cambios pendientes:', error);
+          logger.error('Error al guardar cambios pendientes:', 'ProfileViewEnhanced', error);
         });
       }
     };
@@ -390,7 +400,7 @@ export function ProfileViewEnhanced() {
       toast.success('Perfil guardado exitosamente');
     } catch (error) {
       // Error is already handled by saveRecovery
-      console.error('Manual save failed:', error);
+      logger.error('Manual save failed:', 'ProfileViewEnhanced', error);
     }
   }, [saveRecovery]);
 
@@ -480,7 +490,7 @@ export function ProfileViewEnhanced() {
   }, [profile.dislikedIngredients, updateProfile]);
   
   // Show loading with error recovery option
-  if (loading) {
+  if (loading || !user) {
     return (
       <ProfileSkeleton 
         hasError={loadRecovery.hasError} 

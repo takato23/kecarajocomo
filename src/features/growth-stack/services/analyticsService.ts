@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@/services/logger';
 
 import { 
   AnalyticsEvent, 
@@ -99,7 +100,7 @@ class AnalyticsService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to initialize analytics service:', error);
+      logger.error('Failed to initialize analytics service:', 'analyticsService', error);
       throw error;
     }
   }
@@ -176,7 +177,7 @@ class AnalyticsService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to track event:', error);
+      logger.error('Failed to track event:', 'analyticsService', error);
     }
   }
 
@@ -275,7 +276,7 @@ class AnalyticsService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to flush events:', error);
+      logger.error('Failed to flush events:', 'analyticsService', error);
       
       // Put events back in queue for retry
       this.eventQueue.unshift(...events);
@@ -475,7 +476,7 @@ class AnalyticsService {
     try {
       localStorage.setItem('analytics_session', JSON.stringify(this.currentSession));
     } catch (error: unknown) {
-      console.warn('Failed to save session to localStorage:', error);
+      logger.warn('Failed to save session to localStorage:', 'analyticsService', error);
     }
   }
 
@@ -501,7 +502,7 @@ class AnalyticsService {
         localStorage.removeItem('analytics_session');
       }
     } catch (error: unknown) {
-      console.warn('Failed to restore session from localStorage:', error);
+      logger.warn('Failed to restore session from localStorage:', 'analyticsService', error);
       localStorage.removeItem('analytics_session');
     }
   }

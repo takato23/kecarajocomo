@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth/next";
+import { getUser } from '@/lib/auth/supabase-auth';
 import { Decimal } from "@prisma/client/runtime/library";
-
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+import { logger } from '@/lib/logger';
+import { db } from '@/lib/supabase/database.service';
 
 export async function GET(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const user = await getUser();
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -18,7 +17,7 @@ export async function GET(req: Request) {
     const lowStock = searchParams.get("lowStock");
 
     const where: any = {
-      userId: session.user.id,
+      userId: user.id,
     };
 
     if (location && location !== "all") {
@@ -34,20 +33,13 @@ export async function GET(req: Request) {
       };
     }
 
-    const pantryItems = await prisma.pantryItem.findMany({
+    const pantryItems = await db.getPantryItems(user.id, {
       where,
-      include: {
-        ingredient: true,
-        extended: {
-          include: {
-            product: true,
-          },
+      // includes handled by Supabase service,
         },
-      },
       orderBy: {
         createdAt: "desc",
-      },
-    });
+      });
 
     let filteredItems = pantryItems;
 
@@ -57,7 +49,7 @@ export async function GET(req: Request) {
 
     return NextResponse.json(filteredItems);
   } catch (error: unknown) {
-    console.error("Error fetching pantry items:", error);
+    logger.error("Error fetching pantry items:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to fetch pantry items" },
       { status: 500 }
@@ -67,8 +59,8 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const user = await getUser();
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -92,39 +84,28 @@ export async function POST(req: Request) {
       create: {
         name: ingredientName.toLowerCase(),
         unit: unit || "un",
-      },
-    });
+      });
 
     // Check if user already has this ingredient in pantry
     const existingItem = await prisma.pantryItem.findUnique({
       where: {
         userId_ingredientId: {
-          userId: session.user.id,
+          userId: user.id,
           ingredientId: ingredient.id,
-        },
-      },
-    });
+        }
+      });
 
     if (existingItem) {
       // Update existing item by adding quantities
-      const updatedItem = await prisma.pantryItem.update({
-        where: { id: existingItem.id },
-        data: {
-          quantity: existingItem.quantity + quantity,
+      const updatedItem = await db.updatePantryItem(existingItem.id, {
+        quantity: existingItem.quantity + quantity,
           location: location || existingItem.location,
           expiryDate: expiryDate ? new Date(expiryDate) : existingItem.expiryDate,
           notes: notes || existingItem.notes,
           updatedAt: new Date(),
         },
-        include: {
-          ingredient: true,
-          extended: {
-            include: {
-              product: true,
-            },
-          },
-        },
-      });
+        // includes handled by Supabase service,
+          });
 
       // Update extended info if provided
       if (purchasePrice || purchaseDate || barcode) {
@@ -140,16 +121,13 @@ export async function POST(req: Request) {
             purchasePrice: purchasePrice ? new Decimal(purchasePrice) : null,
             purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
             scannedBarcode: barcode || null,
-          },
-        });
+          });
       }
 
       return NextResponse.json(updatedItem, { status: 200 });
     } else {
       // Create new pantry item
-      const newItem = await prisma.pantryItem.create({
-        data: {
-          userId: session.user.id,
+      const newItem = await db.addPantryItem(user.id, {
           ingredientId: ingredient.id,
           quantity,
           unit: unit || "un",
@@ -158,32 +136,22 @@ export async function POST(req: Request) {
           notes: notes || null,
           purchaseDate: purchaseDate ? new Date(purchaseDate) : new Date(),
         },
-        include: {
-          ingredient: true,
-          extended: {
-            include: {
-              product: true,
-            },
-          },
-        },
-      });
+        // includes handled by Supabase service,
+          });
 
       // Create extended info if provided
       if (purchasePrice || purchaseDate || barcode) {
-        await prisma.pantryItemExtended.create({
-          data: {
-            pantryItemId: newItem.id,
+        await prisma.pantryItemExtended.create({ pantryItemId: newItem.id,
             purchasePrice: purchasePrice ? new Decimal(purchasePrice) : null,
             purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
             scannedBarcode: barcode || null,
-          },
-        });
+          });
       }
 
       return NextResponse.json(newItem, { status: 201 });
     }
   } catch (error: unknown) {
-    console.error("Error creating pantry item:", error);
+    logger.error("Error creating pantry item:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to create pantry item" },
       { status: 500 }
@@ -193,8 +161,8 @@ export async function POST(req: Request) {
 
 export async function DELETE(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const user = await getUser();
+    if (!user?.id) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
@@ -211,10 +179,10 @@ export async function DELETE(req: Request) {
     // Verify ownership
     const item = await prisma.pantryItem.findUnique({
       where: { id },
-      select: { userId: true },
+      select: { userId: true }
     });
 
-    if (!item || item.userId !== session.user.id) {
+    if (!item || item.userId !== user.id) {
       return NextResponse.json(
         { error: "Item not found or unauthorized" },
         { status: 404 }
@@ -222,13 +190,11 @@ export async function DELETE(req: Request) {
     }
 
     // Delete the item (cascade will handle extended info)
-    await prisma.pantryItem.delete({
-      where: { id },
-    });
+    await db.deletePantryItem(id, user.id);
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error("Error deleting pantry item:", error);
+    logger.error("Error deleting pantry item:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to delete pantry item" },
       { status: 500 }

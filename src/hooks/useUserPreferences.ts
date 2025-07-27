@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 import { supabase } from '@/lib/supabase/client';
 import { useAuth } from '@/providers/SupabaseAuthProvider';
@@ -119,7 +120,7 @@ export const useUserPreferences = () => {
           setPreferences(userPreferences);
         }
       } catch (err) {
-        console.error('Error fetching user preferences:', err);
+        logger.error('Error fetching user preferences:', 'useUserPreferences', err);
         setError(err instanceof Error ? err.message : 'Failed to load preferences');
       } finally {
         setIsLoading(false);
@@ -208,7 +209,7 @@ export const useUserPreferences = () => {
       // Update local state
       setPreferences(prev => prev ? { ...prev, ...updates } : null);
     } catch (err) {
-      console.error('Error updating user preferences:', err);
+      logger.error('Error updating user preferences:', 'useUserPreferences', err);
       setError(err instanceof Error ? err.message : 'Failed to update preferences');
     } finally {
       setIsLoading(false);

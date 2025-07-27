@@ -5,9 +5,10 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
+import { logger } from '@/lib/logger';
 
-import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+// authOptions removed - using Supabase Auth;
+import { db } from '@/lib/supabase/database.service';
 import { 
   MealPlanningError, 
   MealPlanningErrorCodes 
@@ -19,7 +20,7 @@ import { enhancedCache, CacheKeyGenerator } from '@/lib/services/enhancedCacheSe
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -29,15 +30,15 @@ export async function GET(request: NextRequest) {
     }
 
     // Get user profile with caching
-    const cacheKey = CacheKeyGenerator.userProfile(session.user.id);
+    const cacheKey = CacheKeyGenerator.userProfile(user.id);
     const cached = await enhancedCache.get(cacheKey);
     
     if (cached) {
       return NextResponse.json(cached);
     }
 
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const user = await db.getUserProfile({
+      user.id ,
       select: {
         id: true,
         name: true,
@@ -63,8 +64,7 @@ export async function GET(request: NextRequest) {
         thirdPartyIntegrations: true,
         createdAt: true,
         updatedAt: true
-      }
-    });
+      });
 
     if (!user) {
       return NextResponse.json(
@@ -79,7 +79,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(user);
 
   } catch (error: unknown) {
-    console.error('Error fetching user profile:', error);
+    logger.error('Error fetching user profile:', 'API:route', error);
     
     if (error instanceof MealPlanningError) {
       return NextResponse.json(
@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -123,7 +123,7 @@ export async function PUT(request: NextRequest) {
         updateData = await validateAndPrepareGeneralData(data);
         break;
       case 'preferences':
-        updateData = await validateAndPreparePreferencesData(data, session.user.id);
+        updateData = await validateAndPreparePreferencesData(data, user.id);
         break;
       case 'notifications':
         updateData = await validateAndPrepareNotificationsData(data);
@@ -141,10 +141,8 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update user in database
-    const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
-      data: {
-        ...updateData,
+    const updatedUser = await db.updateUserProfile(user.id , {
+      { ...updateData,
         updatedAt: new Date()
       },
       select: {
@@ -171,12 +169,11 @@ export async function PUT(request: NextRequest) {
         analytics: true,
         thirdPartyIntegrations: true,
         updatedAt: true
-      }
-    });
+      });
 
     // Invalidate related caches
-    await enhancedCache.invalidatePattern(`user:${session.user.id}:*`);
-    await enhancedCache.invalidatePattern(`meal-plan:${session.user.id}:*`);
+    await enhancedCache.invalidatePattern(`user:${user.id}:*`);
+    await enhancedCache.invalidatePattern(`meal-plan:${user.id}:*`);
 
     return NextResponse.json({
       message: 'Profile updated successfully',
@@ -184,7 +181,7 @@ export async function PUT(request: NextRequest) {
     });
 
   } catch (error: unknown) {
-    console.error('Error updating user profile:', error);
+    logger.error('Error updating user profile:', 'API:route', error);
     
     if (error instanceof MealPlanningError) {
       return NextResponse.json(

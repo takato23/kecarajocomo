@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import { logger } from '@/lib/logger';
 
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -28,11 +29,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(recipes, {
       headers: {
         'Cache-Control': 'public, max-age=3600', // Cache for 1 hour
-      },
-    });
+      });
 
   } catch (error: unknown) {
-    console.error('Error serving recipes file:', error);
+    logger.error('Error serving recipes file:', 'API:route', error);
     
     if (error instanceof Error && error.message.includes('ENOENT')) {
       return NextResponse.json(
@@ -59,7 +59,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(recipes);
 
   } catch (error: unknown) {
-    console.error('Error serving recipes file (public):', error);
+    logger.error('Error serving recipes file (public):', 'API:route', error);
     return NextResponse.json(
       { error: 'No se pudo cargar el archivo de recetas' },
       { status: 500 }

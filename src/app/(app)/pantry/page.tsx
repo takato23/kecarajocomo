@@ -7,6 +7,7 @@ import { useState, useEffect, lazy, Suspense, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { Plus, Search, Filter, AlertTriangle, ShoppingCart, Sparkles, Receipt, Loader2, X } from 'lucide-react';
+import { logger } from '@/services/logger';
 
 import { PantryItemCard } from '@/features/pantry/components/PantryItemCard';
 import { AddPantryItemModal } from '@/features/pantry/components/AddPantryItemModal';
@@ -89,7 +90,7 @@ export default function PantryPage() {
         await new Promise(resolve => setTimeout(resolve, 100));
       }
     } catch (error: unknown) {
-      console.error('Error adding voice items:', error);
+      logger.error('Error adding voice items:', 'page', error);
     }
   }, [handleAddItem]);
 

@@ -114,7 +114,7 @@ export function usePantry(userId?: string) {
         } catch (photoError: unknown) {
           logger.error('Error uploading photo', 'usePantry', photoError);
           // Don't fail the entire operation if photo upload fails
-          console.warn('Photo upload failed, continuing without photo:', photoError);
+          logger.warn('Photo upload failed, continuing without photo:', 'usePantry', photoError);
         }
       }
 

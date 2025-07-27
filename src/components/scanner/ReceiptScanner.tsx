@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { X, AlertCircle, Receipt, Loader2 } from "lucide-react";
+import { logger } from '@/services/logger';
 
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -50,7 +51,7 @@ export default function ReceiptScanner({ isOpen, onClose, onItemsConfirmed }: Re
         setCurrentStep('error');
       }
     } catch (error: unknown) {
-      console.error('Receipt processing error:', error);
+      logger.error('Receipt processing error:', 'ReceiptScanner', error);
       setError('Error inesperado procesando el ticket');
       setCurrentStep('error');
     } finally {
@@ -71,7 +72,7 @@ export default function ReceiptScanner({ isOpen, onClose, onItemsConfirmed }: Re
       onItemsConfirmed(items);
       resetScanner();
     } catch (error: unknown) {
-      console.error('Error confirming items:', error);
+      logger.error('Error confirming items:', 'ReceiptScanner', error);
       setError('Error agregando items a la despensa');
       setCurrentStep('error');
     } finally {

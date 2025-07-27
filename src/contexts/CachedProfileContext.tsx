@@ -212,7 +212,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
     } catch (err: unknown) {
       // Revert optimistic update
       setHouseholdMembers(prev => prev.filter(m => m.id !== tempId));
-      console.error('Error al agregar miembro del hogar');
+      logger.error('Error al agregar miembro del hogar', 'CachedProfileContext');
       throw err;
     }
   }, [user?.id]);
@@ -237,7 +237,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
     } catch (err: unknown) {
       // Revert optimistic update
       await loadHouseholdMembers();
-      console.error('Error al actualizar miembro');
+      logger.error('Error al actualizar miembro', 'CachedProfileContext');
       throw err;
     }
   }, [loadHouseholdMembers]);
@@ -265,7 +265,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
       if (memberToRemove) {
         setHouseholdMembers(prev => [...prev, memberToRemove]);
       }
-      console.error('Error al eliminar miembro');
+      logger.error('Error al eliminar miembro', 'CachedProfileContext');
       throw err;
     }
   }, [householdMembers]);
@@ -311,7 +311,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       await cacheUpdateProfile(updates);
       success('Perfil actualizado correctamente');
     } catch (err: unknown) {
-      console.error('Error al actualizar el perfil');
+      logger.error('Error al actualizar el perfil', 'CachedProfileContext');
       throw err;
     }
   }, [user?.id, profile, cacheUpdateProfile]);
@@ -323,7 +323,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       await cacheUpdatePreferences(updates);
       success('Preferencias actualizadas');
     } catch (err: unknown) {
-      console.error('Error al actualizar las preferencias');
+      logger.error('Error al actualizar las preferencias', 'CachedProfileContext');
       throw err;
     }
   }, [user?.id, cacheUpdatePreferences]);
@@ -353,7 +353,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
 
       return data.publicUrl;
     } catch (err: unknown) {
-      console.error('Error al subir la imagen');
+      logger.error('Error al subir la imagen', 'CachedProfileContext');
       throw err;
     }
   }, [user?.id, updateProfile]);
@@ -365,7 +365,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       await refetch();
       success('Perfil actualizado');
     } catch (err: unknown) {
-      console.error('Error al actualizar el perfil');
+      logger.error('Error al actualizar el perfil', 'CachedProfileContext');
       throw err;
     }
   }, [user?.id, refetch]);

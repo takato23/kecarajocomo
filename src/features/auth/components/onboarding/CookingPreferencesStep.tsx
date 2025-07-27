@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Clock, ChefHat, Users, Check } from 'lucide-react';
+import { Clock, ChefHat, Users, Check, ArrowLeft, ArrowRight, Sparkles, Plus, Minus } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { CookingSkillLevel, CookingTimePreference, CuisineType } from '../../types';
+import { GlassCard, GlassButton } from './shared/GlassCard';
 
 interface CookingPreferencesStepProps {
   onNext: () => void;
@@ -14,64 +17,71 @@ interface CookingPreferencesStepProps {
 const SKILL_LEVELS = [
   {
     value: CookingSkillLevel.BEGINNER,
-    label: 'Beginner',
-    description: 'I can follow simple recipes',
-    icon: '👶'
+    label: 'Principiante',
+    description: 'Puedo seguir recetas simples',
+    icon: '👶',
+    color: 'from-green-400 to-emerald-400'
   },
   {
     value: CookingSkillLevel.INTERMEDIATE,
-    label: 'Intermediate',
-    description: 'I\'m comfortable with most recipes',
-    icon: '👨‍🍳'
+    label: 'Intermedio',
+    description: 'Me siento cómodo con la mayoría de recetas',
+    icon: '👨‍🍳',
+    color: 'from-blue-400 to-cyan-400'
   },
   {
     value: CookingSkillLevel.ADVANCED,
-    label: 'Advanced',
-    description: 'I enjoy complex cooking techniques',
-    icon: '👨‍🍳'
+    label: 'Avanzado',
+    description: 'Disfruto técnicas de cocina complejas',
+    icon: '🧑‍🍳',
+    color: 'from-purple-400 to-pink-400'
   },
   {
     value: CookingSkillLevel.EXPERT,
-    label: 'Expert',
-    description: 'I can improvise and create recipes',
-    icon: '⭐'
+    label: 'Experto',
+    description: 'Puedo improvisar y crear recetas',
+    icon: '⭐',
+    color: 'from-yellow-400 to-orange-400'
   }
 ];
 
 const TIME_PREFERENCES = [
   {
     value: CookingTimePreference.QUICK,
-    label: 'Quick & Easy',
-    description: 'Under 30 minutes',
-    icon: '⚡'
+    label: 'Rápido y Fácil',
+    description: 'Menos de 30 minutos',
+    icon: '⚡',
+    color: 'from-yellow-400 to-orange-400'
   },
   {
     value: CookingTimePreference.MODERATE,
-    label: 'Moderate',
-    description: '30-60 minutes',
-    icon: '⏱️'
+    label: 'Moderado',
+    description: '30-60 minutos',
+    icon: '⏱️',
+    color: 'from-blue-400 to-cyan-400'
   },
   {
     value: CookingTimePreference.LEISURELY,
-    label: 'Leisurely',
-    description: 'I enjoy spending time cooking',
-    icon: '🍲'
+    label: 'Sin Prisa',
+    description: 'Disfruto pasar tiempo cocinando',
+    icon: '🍲',
+    color: 'from-purple-400 to-pink-400'
   }
 ];
 
 const CUISINE_OPTIONS = [
-  { value: CuisineType.ITALIAN, label: 'Italian', icon: '🇮🇹' },
-  { value: CuisineType.MEXICAN, label: 'Mexican', icon: '🇲🇽' },
-  { value: CuisineType.CHINESE, label: 'Chinese', icon: '🇨🇳' },
-  { value: CuisineType.JAPANESE, label: 'Japanese', icon: '🇯🇵' },
-  { value: CuisineType.INDIAN, label: 'Indian', icon: '🇮🇳' },
-  { value: CuisineType.THAI, label: 'Thai', icon: '🇹🇭' },
-  { value: CuisineType.GREEK, label: 'Greek', icon: '🇬🇷' },
-  { value: CuisineType.AMERICAN, label: 'American', icon: '🇺🇸' },
-  { value: CuisineType.MEDITERRANEAN, label: 'Mediterranean', icon: '🌊' },
-  { value: CuisineType.FRENCH, label: 'French', icon: '🇫🇷' },
-  { value: CuisineType.KOREAN, label: 'Korean', icon: '🇰🇷' },
-  { value: CuisineType.VIETNAMESE, label: 'Vietnamese', icon: '🇻🇳' }
+  { value: CuisineType.ITALIAN, label: 'Italiana', icon: '🇮🇹' },
+  { value: CuisineType.MEXICAN, label: 'Mexicana', icon: '🇲🇽' },
+  { value: CuisineType.CHINESE, label: 'China', icon: '🇨🇳' },
+  { value: CuisineType.JAPANESE, label: 'Japonesa', icon: '🇯🇵' },
+  { value: CuisineType.INDIAN, label: 'India', icon: '🇮🇳' },
+  { value: CuisineType.THAI, label: 'Tailandesa', icon: '🇹🇭' },
+  { value: CuisineType.GREEK, label: 'Griega', icon: '🇬🇷' },
+  { value: CuisineType.AMERICAN, label: 'Americana', icon: '🇺🇸' },
+  { value: CuisineType.MEDITERRANEAN, label: 'Mediterránea', icon: '🌊' },
+  { value: CuisineType.FRENCH, label: 'Francesa', icon: '🇫🇷' },
+  { value: CuisineType.KOREAN, label: 'Coreana', icon: '🇰🇷' },
+  { value: CuisineType.VIETNAMESE, label: 'Vietnamita', icon: '🇻🇳' }
 ];
 
 export function CookingPreferencesStep({ onNext, onBack }: CookingPreferencesStepProps) {
@@ -112,7 +122,7 @@ export function CookingPreferencesStep({ onNext, onBack }: CookingPreferencesSte
       });
       onNext();
     } catch (error: unknown) {
-      console.error('Failed to save preferences:', error);
+      logger.error('Failed to save preferences:', 'CookingPreferencesStep', error);
     } finally {
       setIsLoading(false);
     }
@@ -120,162 +130,207 @@ export function CookingPreferencesStep({ onNext, onBack }: CookingPreferencesSte
 
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Cooking Preferences
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-8"
+      >
+        <h2 className="text-3xl font-bold text-white mb-2">
+          Preferencias de Cocina
         </h2>
-        <p className="text-gray-600">
-          Help us understand your cooking style and preferences
+        <p className="text-white/60">
+          Ayúdanos a entender tu estilo y preferencias en la cocina
         </p>
-      </div>
+      </motion.div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Skill Level */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <ChefHat className="h-5 w-5" />
-            Cooking Skill Level
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <ChefHat className="h-5 w-5 text-purple-400" />
+            Nivel de Habilidad Culinaria
           </h3>
           <div className="grid sm:grid-cols-2 gap-3">
-            {SKILL_LEVELS.map((level) => (
-              <button
+            {SKILL_LEVELS.map((level, index) => (
+              <motion.button
                 key={level.value}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.05 * index }}
                 type="button"
                 onClick={() => setSkillLevel(level.value)}
-                className={`p-4 rounded-lg border-2 transition-all text-left ${
+                className={`p-4 rounded-xl border-2 transition-all text-left backdrop-blur-xl ${
                   skillLevel === level.value
-                    ? 'border-indigo-600 bg-indigo-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-purple-400 bg-purple-500/20'
+                    : 'border-white/20 bg-white/5 hover:bg-white/10'
                 }`}
               >
                 <div className="flex items-start gap-3">
-                  <span className="text-2xl">{level.icon}</span>
+                  <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${level.color} flex items-center justify-center text-2xl`}>
+                    {level.icon}
+                  </div>
                   <div className="flex-1">
-                    <div className="font-medium text-gray-900 flex items-center gap-2">
+                    <div className="font-medium text-white flex items-center gap-2">
                       {level.label}
                       {skillLevel === level.value && (
-                        <Check className="h-4 w-4 text-indigo-600" />
+                        <Check className="h-4 w-4 text-purple-400" />
                       )}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">
+                    <div className="text-sm text-white/60 mt-1">
                       {level.description}
                     </div>
                   </div>
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
 
         {/* Time Preference */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Clock className="h-5 w-5" />
-            Cooking Time Preference
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Clock className="h-5 w-5 text-purple-400" />
+            Preferencia de Tiempo de Cocina
           </h3>
           <div className="grid sm:grid-cols-3 gap-3">
-            {TIME_PREFERENCES.map((pref) => (
-              <button
+            {TIME_PREFERENCES.map((pref, index) => (
+              <motion.button
                 key={pref.value}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.05 * index }}
                 type="button"
                 onClick={() => setTimePreference(pref.value)}
-                className={`p-4 rounded-lg border-2 transition-all text-center ${
+                className={`p-4 rounded-xl border-2 transition-all text-center backdrop-blur-xl ${
                   timePreference === pref.value
-                    ? 'border-indigo-600 bg-indigo-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-purple-400 bg-purple-500/20'
+                    : 'border-white/20 bg-white/5 hover:bg-white/10'
                 }`}
               >
-                <span className="text-2xl mb-2 block">{pref.icon}</span>
-                <div className="font-medium text-gray-900">
+                <div className={`w-12 h-12 rounded-lg bg-gradient-to-br ${pref.color} flex items-center justify-center text-2xl mx-auto mb-3`}>
+                  {pref.icon}
+                </div>
+                <div className="font-medium text-white">
                   {pref.label}
                 </div>
-                <div className="text-sm text-gray-500 mt-1">
+                <div className="text-sm text-white/60 mt-1">
                   {pref.description}
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
 
         {/* Household Size */}
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-            <Users className="h-5 w-5" />
-            Household Size
+        <GlassCard>
+          <h3 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+            <Users className="h-5 w-5 text-purple-400" />
+            Tamaño del Hogar
           </h3>
-          <div className="flex items-center gap-4">
-            <button
+          <div className="flex items-center justify-center gap-6">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               type="button"
               onClick={() => setHouseholdSize(Math.max(1, householdSize - 1))}
-              className="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center"
+              className="w-12 h-12 rounded-full bg-white/10 border-2 border-white/20 hover:border-purple-400 hover:bg-purple-500/20 flex items-center justify-center text-white transition-all"
             >
-              -
-            </button>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-gray-900">{householdSize}</div>
-              <div className="text-sm text-gray-500">
-                {householdSize === 1 ? 'person' : 'people'}
+              <Minus className="w-5 h-5" />
+            </motion.button>
+            <motion.div 
+              key={householdSize}
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              className="text-center"
+            >
+              <div className="text-4xl font-bold text-white bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                {householdSize}
               </div>
-            </div>
-            <button
+              <div className="text-sm text-white/60">
+                {householdSize === 1 ? 'persona' : 'personas'}
+              </div>
+            </motion.div>
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
               type="button"
               onClick={() => setHouseholdSize(householdSize + 1)}
-              className="w-10 h-10 rounded-full border-2 border-gray-300 hover:border-gray-400 flex items-center justify-center"
+              className="w-12 h-12 rounded-full bg-white/10 border-2 border-white/20 hover:border-purple-400 hover:bg-purple-500/20 flex items-center justify-center text-white transition-all"
             >
-              +
-            </button>
+              <Plus className="w-5 h-5" />
+            </motion.button>
           </div>
-          <p className="text-sm text-gray-600 mt-2">
-            We'll adjust portion sizes based on your household
+          <p className="text-sm text-white/60 mt-4 text-center">
+            Ajustaremos el tamaño de las porciones según tu hogar
           </p>
-        </div>
+        </GlassCard>
 
         {/* Cuisine Preferences */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Favorite Cuisines
+          <h3 className="text-lg font-semibold text-white mb-2">
+            Cocinas Favoritas
           </h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Select all that appeal to you (we'll mix it up!)
+          <p className="text-sm text-white/60 mb-4">
+            Selecciona todas las que te gusten (¡las mezclaremos!)
           </p>
-          <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
-            {CUISINE_OPTIONS.map((cuisine) => (
-              <button
+          <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-3">
+            {CUISINE_OPTIONS.map((cuisine, index) => (
+              <motion.button
                 key={cuisine.value}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.3, delay: 0.02 * index }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={() => toggleCuisine(cuisine.value)}
-                className={`p-3 rounded-lg border-2 transition-all text-center ${
+                className={`p-3 rounded-xl border-2 transition-all text-center backdrop-blur-xl ${
                   cuisinePreferences.includes(cuisine.value)
-                    ? 'border-indigo-600 bg-indigo-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-purple-400 bg-purple-500/20'
+                    : 'border-white/20 bg-white/5 hover:bg-white/10'
                 }`}
               >
                 <span className="text-2xl mb-1 block">{cuisine.icon}</span>
-                <div className="text-sm font-medium text-gray-900">
+                <div className="text-xs font-medium text-white">
                   {cuisine.label}
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
+          {cuisinePreferences.length > 0 && (
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="mt-4 flex items-center gap-2"
+            >
+              <Sparkles className="w-4 h-4 text-purple-400" />
+              <p className="text-sm text-purple-300">
+                {cuisinePreferences.length} cocina{cuisinePreferences.length !== 1 ? 's' : ''} seleccionada{cuisinePreferences.length !== 1 ? 's' : ''}
+              </p>
+            </motion.div>
+          )}
         </div>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between pt-6">
-          <button
-            type="button"
+          <GlassButton
             onClick={onBack}
-            className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+            variant="secondary"
+            className="flex items-center gap-2"
           >
-            Back
-          </button>
+            <ArrowLeft className="w-4 h-4" />
+            Atrás
+          </GlassButton>
           
-          <button
+          <GlassButton
             type="submit"
             disabled={isLoading || cuisinePreferences.length === 0}
-            className="px-6 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            variant="primary"
+            className="flex items-center gap-2"
           >
-            {isLoading ? 'Saving...' : 'Continue'}
-          </button>
+            {isLoading ? 'Guardando...' : 'Continuar'}
+            <ArrowRight className="w-4 h-4" />
+          </GlassButton>
         </div>
       </form>
     </div>

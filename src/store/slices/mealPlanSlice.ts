@@ -1,332 +1,527 @@
 /**
- * Meal Plan Slice - Meal planning state management
+ * Argentine Meal Plan Slice - Zustand store for meal planning with cultural specifics
+ * Handles state persistence with localStorage and Supabase sync
  */
 
 import { StateCreator } from 'zustand';
+import { persist, subscribeWithSelector } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
+import { z } from 'zod';
+import { supabase } from '@/lib/supabase/client';
+import { logger } from '@/lib/logger';
 
-import { Recipe } from './recipeSlice';
+// ============================================================================
+// TYPES - Argentine-specific meal planning types
+// ============================================================================
 
-export interface PlannedMeal {
+export type MealType = 'desayuno' | 'almuerzo' | 'merienda' | 'cena';
+export type ModeType = 'normal' | 'economico' | 'fiesta' | 'dieta';
+export type RegionType = 'pampa' | 'patagonia' | 'norte' | 'cuyo' | 'centro' | 'litoral';
+export type SeasonType = 'verano' | 'otono' | 'invierno' | 'primavera';
+
+export interface Recipe {
   id: string;
-  recipe?: Recipe;
-  customMeal?: {
-    name: string;
-    description?: string;
-    image?: string;
+  name: string;
+  description?: string;
+  image?: string;
+  ingredients: Ingredient[];
+  instructions: string[];
+  nutrition: NutritionInfo;
+  prepTime: number; // minutes
+  cookTime: number; // minutes
+  servings: number;
+  difficulty: 'facil' | 'medio' | 'dificil';
+  tags: string[];
+  region?: RegionType;
+  season?: SeasonType;
+  cultural: {
+    isTraditional: boolean;
+    occasion?: 'domingo' | 'feriado' | 'dia29' | 'invierno' | 'verano';
+    significance?: string;
   };
+  cost: {
+    total: number;
+    perServing: number;
+    currency: 'ARS';
+  };
+  locked?: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface Ingredient {
+  id: string;
+  name: string;
+  amount: number;
+  unit: string;
+  category: 'carnes' | 'verduras' | 'frutas' | 'lacteos' | 'cereales' | 'condimentos' | 'bebidas' | 'otros';
+  isOptional?: boolean;
+  notes?: string;
+}
+
+export interface NutritionInfo {
+  calories: number;
+  protein: number; // g
+  carbs: number; // g
+  fat: number; // g
+  fiber?: number; // g
+  sodium?: number; // mg
+}
+
+export interface ArgentineMeal {
+  recipe: Recipe;
   servings: number;
   notes?: string;
-  isCooked: boolean;
-  cookedAt?: Date;
+  locked?: boolean;
+  alternatives?: Recipe[];
+  cost: number;
+  nutrition: NutritionInfo;
 }
 
-export interface DayMeals {
-  breakfast: PlannedMeal[];
-  lunch: PlannedMeal[];
-  dinner: PlannedMeal[];
-  snacks: PlannedMeal[];
-}
-
-export interface MealPlanSlice {
-  mealPlan: {
-    weeklyPlan: Record<string, DayMeals>; // date string -> meals
-    currentWeek: Date;
-    preferences: {
-      mealsPerDay: number;
-      cookingDays: string[]; // days of week when user prefers to cook
-      prepDay?: string; // meal prep day
-      repetitionLimit: number; // max times same recipe can appear in a week
-      balanceNutrition: boolean;
-      considerPantry: boolean;
-      budgetLimit?: number;
-    };
-    templates: {
-      id: string;
-      name: string;
-      description?: string;
-      weekPlan: Record<string, DayMeals>;
-      createdAt: Date;
-    }[];
-    shoppingLists: {
-      weekOf: string;
-      items: {
-        name: string;
-        quantity: number;
-        unit: string;
-        category: string;
-        obtained: boolean;
-      }[];
-      generatedAt: Date;
-    }[];
-    isLoading: boolean;
-    lastGenerated?: Date;
+export interface ArgentineDayPlan {
+  date: string; // YYYY-MM-DD
+  dayOfWeek: number; // 0 = Sunday, 1 = Monday...
+  dayName: string;
+  desayuno: ArgentineMeal | null;
+  almuerzo: ArgentineMeal | null;
+  merienda: ArgentineMeal | null;
+  cena: ArgentineMeal | null;
+  cultural: {
+    isSpecialDay: boolean;
+    occasion?: string;
+    notes?: string;
   };
-  
-  // Actions
-  updateMealPlan: (date: string, meals: Partial<DayMeals>) => void;
-  addMealToDate: (date: string, mealType: keyof DayMeals, meal: PlannedMeal) => void;
-  removeMealFromDate: (date: string, mealType: keyof DayMeals, mealId: string) => void;
-  markMealAsCooked: (date: string, mealType: keyof DayMeals, mealId: string) => void;
-  generateWeeklyPlan: (startDate: Date, preferences?: any) => void;
-  duplicateWeek: (sourceWeek: Date, targetWeek: Date) => void;
-  savePlanAsTemplate: (name: string, description?: string) => void;
-  applyTemplate: (templateId: string, startDate: Date) => void;
-  deleteTemplate: (templateId: string) => void;
-  generateShoppingList: (weekOf: Date) => void;
-  updateMealPlanPreferences: (preferences: Partial<typeof mealPlan.preferences>) => void;
-  clearWeek: (weekOf: Date) => void;
-  setCurrentWeek: (date: Date) => void;
-  setMealPlanLoading: (loading: boolean) => void;
+  dailyNutrition: NutritionInfo;
+  dailyCost: number;
 }
 
-const defaultPreferences = {
-  mealsPerDay: 3,
-  cookingDays: ['monday', 'wednesday', 'friday', 'sunday'],
-  prepDay: 'sunday',
-  repetitionLimit: 2,
-  balanceNutrition: true,
-  considerPantry: true,
-  budgetLimit: undefined
-};
+export interface ArgentineWeeklyPlan {
+  planId: string;
+  userId: string;
+  weekStart: string; // YYYY-MM-DD (Monday)
+  weekEnd: string; // YYYY-MM-DD (Sunday)
+  days: ArgentineDayPlan[];
+  weeklyNutrition: NutritionInfo;
+  weeklyCost: number;
+  generatedAt: string;
+  lastModified: string;
+  mode: ModeType;
+  region: RegionType;
+  season: SeasonType;
+  cultural: {
+    hasAsado: boolean;
+    hasMate: boolean;
+    hasNoquis29: boolean;
+    specialOccasions: string[];
+  };
+}
 
-const emptyDayMeals = (): DayMeals => ({
-  breakfast: [],
-  lunch: [],
-  dinner: [],
-  snacks: []
-});
+export interface UserPreferences {
+  dietary: {
+    restrictions: string[]; // ['vegetarian', 'gluten-free', etc.]
+    allergies: string[];
+    dislikes: string[];
+    favorites: string[];
+  };
+  cooking: {
+    skill: 'principiante' | 'intermedio' | 'avanzado';
+    timeAvailable: number; // max minutes per meal
+    equipment: string[];
+    preferredTechniques: string[];
+  };
+  cultural: {
+    region: RegionType;
+    traditionLevel: 'baja' | 'media' | 'alta'; // how much traditional food
+    mateFrequency: 'nunca' | 'ocasional' | 'diario';
+    asadoFrequency: 'nunca' | 'mensual' | 'quincenal' | 'semanal';
+  };
+  family: {
+    householdSize: number;
+    hasChildren: boolean;
+    ageRanges: string[];
+    specialNeeds: string[];
+  };
+  budget: {
+    weekly: number;
+    currency: 'ARS';
+    flexibility: 'estricto' | 'flexible' | 'sin_limite';
+  };
+  shopping: {
+    preferredStores: string[];
+    buysBulk: boolean;
+    prefersLocal: boolean;
+    hasGarden: boolean;
+  };
+}
 
-const getWeekKey = (date: Date): string => {
-  const startOfWeek = new Date(date);
-  startOfWeek.setDate(date.getDate() - date.getDay());
-  return startOfWeek.toISOString().split('T')[0];
-};
+export interface PantryItem {
+  id: string;
+  name: string;
+  category: string;
+  amount: number;
+  unit: string;
+  expiryDate?: string;
+  cost?: number;
+  lastUsed?: string;
+  frequency: 'alta' | 'media' | 'baja';
+}
 
-const getDateKey = (date: Date): string => {
-  return date.toISOString().split('T')[0];
-};
+export interface ShoppingListItem {
+  id: string;
+  name: string;
+  category: string;
+  amount: number;
+  unit: string;
+  estimatedCost: number;
+  priority: 'alta' | 'media' | 'baja';
+  inPantry: boolean;
+  recipes: string[]; // recipe names that use this ingredient
+  checked: boolean;
+}
 
-export const createMealPlanSlice: StateCreator<MealPlanSlice> = (set, get) => ({
-  mealPlan: {
-    weeklyPlan: {},
-    currentWeek: new Date(),
-    preferences: defaultPreferences,
-    templates: [],
-    shoppingLists: [],
-    isLoading: false,
-    lastGenerated: undefined
+export interface ShoppingList {
+  id: string;
+  weekPlanId: string;
+  items: ShoppingListItem[];
+  totalCost: number;
+  generatedAt: string;
+  categories: {
+    name: string;
+    items: ShoppingListItem[];
+    subtotal: number;
+  }[];
+}
+
+export interface WeeklyNutritionSummary {
+  daily: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+  weekly: {
+    calories: number;
+    protein: number;
+    carbs: number;
+    fat: number;
+  };
+  balance: {
+    varietyScore: number; // 0-10
+    nutritionScore: number; // 0-10
+    culturalScore: number; // 0-10
+  };
+  recommendations: string[];
+}
+
+export interface MealPlanRecord {
+  id: string;
+  user_id: string;
+  week_start: string;
+  week_end: string;
+  plan_data: ArgentineWeeklyPlan;
+  created_at: string;
+  updated_at: string;
+}
+
+// ============================================================================
+// ZUSTAND STORE STATE & ACTIONS
+// ============================================================================
+
+export interface MealPlanState {
+  // Core state
+  weeklyPlan: ArgentineWeeklyPlan | null;
+  preferences: UserPreferences;
+  pantry: PantryItem[];
+  mode: ModeType;
+  weekKey: string; // userId:weekStart for uniqueness
+  isDirty: boolean; // has unsaved changes
+  
+  // UI state
+  isLoading: boolean;
+  isSaving: boolean;
+  error: string | null;
+  
+  // Sync state
+  lastSyncedAt: string | null;
+  syncInProgress: boolean;
+  offlineChanges: any[];
+}
+
+export interface MealPlanActions {
+  // Core actions
+  setWeeklyPlan: (plan: ArgentineWeeklyPlan | null) => void;
+  setPreferences: (preferences: Partial<UserPreferences>) => void;
+  setMode: (mode: ModeType) => void;
+  setWeekKey: (key: string) => void;
+  setDirty: (dirty: boolean) => void;
+  
+  // Pantry management
+  upsertPantryItem: (item: PantryItem) => void;
+  removePantryItem: (itemId: string) => void;
+  updatePantryItem: (itemId: string, updates: Partial<PantryItem>) => void;
+  
+  // Preferences
+  addFavoriteDish: (dish: string) => void;
+  addDislikedIngredient: (ingredient: string) => void;
+  updateCulturalPreferences: (cultural: Partial<UserPreferences['cultural']>) => void;
+  updateBudgetPreferences: (budget: Partial<UserPreferences['budget']>) => void;
+  
+  // Utilities
+  clearError: () => void;
+  resetState: () => void;
+}
+
+export type MealPlanSlice = MealPlanState & MealPlanActions;
+
+// ============================================================================
+// DEFAULT VALUES
+// ============================================================================
+
+const DEFAULT_PREFERENCES: UserPreferences = {
+  dietary: {
+    restrictions: [],
+    allergies: [],
+    dislikes: [],
+    favorites: ['asado', 'empanadas', 'milanesas', 'pasta']
   },
-  
-  updateMealPlan: (date, meals) => set((state) => {
-    if (!state.mealPlan.weeklyPlan[date]) {
-      state.mealPlan.weeklyPlan[date] = emptyDayMeals();
+  cooking: {
+    skill: 'intermedio',
+    timeAvailable: 60,
+    equipment: ['horno', 'estufa', 'microondas'],
+    preferredTechniques: ['plancha', 'horno', 'hervor']
+  },
+  cultural: {
+    region: 'pampa',
+    traditionLevel: 'media',
+    mateFrequency: 'diario',
+    asadoFrequency: 'quincenal'
+  },
+  family: {
+    householdSize: 2,
+    hasChildren: false,
+    ageRanges: ['adulto'],
+    specialNeeds: []
+  },
+  budget: {
+    weekly: 15000,
+    currency: 'ARS',
+    flexibility: 'flexible'
+  },
+  shopping: {
+    preferredStores: ['supermercado'],
+    buysBulk: false,
+    prefersLocal: true,
+    hasGarden: false
+  }
+};
+
+const DEFAULT_PANTRY: PantryItem[] = [
+  {
+    id: 'sal',
+    name: 'Sal',
+    category: 'condimentos',
+    amount: 1,
+    unit: 'kg',
+    frequency: 'alta'
+  },
+  {
+    id: 'aceite',
+    name: 'Aceite',
+    category: 'condimentos', 
+    amount: 1,
+    unit: 'litro',
+    frequency: 'alta'
+  },
+  {
+    id: 'yerba',
+    name: 'Yerba mate',
+    category: 'bebidas',
+    amount: 500,
+    unit: 'g',
+    frequency: 'alta'
+  }
+];
+
+// ============================================================================
+// ZUSTAND STORE IMPLEMENTATION
+// ============================================================================
+
+export const createMealPlanSlice: StateCreator<
+  MealPlanSlice,
+  [['zustand/subscribeWithSelector', never], ['zustand/persist', unknown], ['zustand/immer', never]],
+  [],
+  MealPlanSlice
+> = (set, get) => ({
+  // Initial state
+  weeklyPlan: null,
+  preferences: DEFAULT_PREFERENCES,
+  pantry: DEFAULT_PANTRY,
+  mode: 'normal',
+  weekKey: '',
+  isDirty: false,
+  isLoading: false,
+  isSaving: false,
+  error: null,
+  lastSyncedAt: null,
+  syncInProgress: false,
+  offlineChanges: [],
+
+  // Core actions
+  setWeeklyPlan: (plan) => set((state) => {
+    state.weeklyPlan = plan;
+    if (plan) {
+      state.isDirty = true;
+      state.error = null;
     }
-    Object.assign(state.mealPlan.weeklyPlan[date], meals);
   }),
-  
-  addMealToDate: (date, mealType, meal) => set((state) => {
-    if (!state.mealPlan.weeklyPlan[date]) {
-      state.mealPlan.weeklyPlan[date] = emptyDayMeals();
+
+  setPreferences: (preferences) => set((state) => {
+    state.preferences = { ...state.preferences, ...preferences };
+    state.isDirty = true;
+  }),
+
+  setMode: (mode) => set((state) => {
+    state.mode = mode;
+    state.isDirty = true;
+  }),
+
+  setWeekKey: (key) => set((state) => {
+    state.weekKey = key;
+  }),
+
+  setDirty: (dirty) => set((state) => {
+    state.isDirty = dirty;
+  }),
+
+  // Pantry management
+  upsertPantryItem: (item) => set((state) => {
+    const existingIndex = state.pantry.findIndex(p => p.id === item.id);
+    if (existingIndex >= 0) {
+      state.pantry[existingIndex] = item;
+    } else {
+      state.pantry.push(item);
     }
-    state.mealPlan.weeklyPlan[date][mealType].push(meal);
+    state.isDirty = true;
   }),
-  
-  removeMealFromDate: (date, mealType, mealId) => set((state) => {
-    if (state.mealPlan.weeklyPlan[date]) {
-      state.mealPlan.weeklyPlan[date][mealType] = state.mealPlan.weeklyPlan[date][mealType]
-        .filter(meal => meal.id !== mealId);
+
+  removePantryItem: (itemId) => set((state) => {
+    state.pantry = state.pantry.filter(item => item.id !== itemId);
+    state.isDirty = true;
+  }),
+
+  updatePantryItem: (itemId, updates) => set((state) => {
+    const item = state.pantry.find(p => p.id === itemId);
+    if (item) {
+      Object.assign(item, updates);
+      state.isDirty = true;
     }
   }),
-  
-  markMealAsCooked: (date, mealType, mealId) => set((state) => {
-    if (state.mealPlan.weeklyPlan[date]) {
-      const meal = state.mealPlan.weeklyPlan[date][mealType]
-        .find(meal => meal.id === mealId);
-      if (meal) {
-        meal.isCooked = true;
-        meal.cookedAt = new Date();
-      }
+
+  // Preferences management
+  addFavoriteDish: (dish) => set((state) => {
+    if (!state.preferences.dietary.favorites.includes(dish)) {
+      state.preferences.dietary.favorites.push(dish);
+      state.isDirty = true;
     }
   }),
-  
-  generateWeeklyPlan: (startDate, preferences) => set((state) => {
-    // This would integrate with the AI service to generate a meal plan
-    // For now, we'll create a placeholder implementation
-    
-    state.mealPlan.isLoading = true;
-    
-    // Generate 7 days of meals starting from startDate
-    for (let i = 0; i < 7; i++) {
-      const currentDate = new Date(startDate);
-      currentDate.setDate(startDate.getDate() + i);
-      const dateKey = getDateKey(currentDate);
-      
-      state.mealPlan.weeklyPlan[dateKey] = emptyDayMeals();
-      
-      // This would be replaced with actual AI-generated meal planning
-      // For now, just create placeholder meals
+
+  addDislikedIngredient: (ingredient) => set((state) => {
+    if (!state.preferences.dietary.dislikes.includes(ingredient)) {
+      state.preferences.dietary.dislikes.push(ingredient);
+      state.isDirty = true;
     }
-    
-    state.mealPlan.lastGenerated = new Date();
-    state.mealPlan.isLoading = false;
   }),
-  
-  duplicateWeek: (sourceWeek, targetWeek) => set((state) => {
-    const sourceWeekKey = getWeekKey(sourceWeek);
-    const targetWeekKey = getWeekKey(targetWeek);
-    
-    // Copy all meals from source week to target week
-    Object.entries(state.mealPlan.weeklyPlan).forEach(([date, meals]) => {
-      const mealDate = new Date(date);
-      const weekKey = getWeekKey(mealDate);
-      
-      if (weekKey === sourceWeekKey) {
-        // Calculate the corresponding date in target week
-        const daysDiff = Math.floor((mealDate.getTime() - sourceWeek.getTime()) / (1000 * 60 * 60 * 24));
-        const targetDate = new Date(targetWeek);
-        targetDate.setDate(targetWeek.getDate() + daysDiff);
-        const targetDateKey = getDateKey(targetDate);
-        
-        // Deep copy the meals with new IDs
-        state.mealPlan.weeklyPlan[targetDateKey] = {
-          breakfast: meals.breakfast.map(meal => ({ ...meal, id: Date.now().toString() + Math.random() })),
-          lunch: meals.lunch.map(meal => ({ ...meal, id: Date.now().toString() + Math.random() })),
-          dinner: meals.dinner.map(meal => ({ ...meal, id: Date.now().toString() + Math.random() })),
-          snacks: meals.snacks.map(meal => ({ ...meal, id: Date.now().toString() + Math.random() }))
-        };
-      }
-    });
+
+  updateCulturalPreferences: (cultural) => set((state) => {
+    state.preferences.cultural = { ...state.preferences.cultural, ...cultural };
+    state.isDirty = true;
   }),
-  
-  savePlanAsTemplate: (name, description) => set((state) => {
-    const currentWeekKey = getWeekKey(state.mealPlan.currentWeek);
-    const weekPlan: Record<string, DayMeals> = {};
-    
-    // Get all meals for current week
-    Object.entries(state.mealPlan.weeklyPlan).forEach(([date, meals]) => {
-      const mealDate = new Date(date);
-      const weekKey = getWeekKey(mealDate);
-      
-      if (weekKey === currentWeekKey) {
-        weekPlan[date] = meals;
-      }
-    });
-    
-    const template = {
-      id: Date.now().toString(),
-      name,
-      description,
-      weekPlan,
-      createdAt: new Date()
-    };
-    
-    state.mealPlan.templates.push(template);
+
+  updateBudgetPreferences: (budget) => set((state) => {
+    state.preferences.budget = { ...state.preferences.budget, ...budget };
+    state.isDirty = true;
   }),
-  
-  applyTemplate: (templateId, startDate) => set((state) => {
-    const template = state.mealPlan.templates.find(t => t.id === templateId);
-    if (!template) return;
-    
-    // Apply template to the week starting from startDate
-    const templateDates = Object.keys(template.weekPlan).sort();
-    const templateStartDate = new Date(templateDates[0]);
-    
-    templateDates.forEach(templateDate => {
-      const templateMealDate = new Date(templateDate);
-      const daysDiff = Math.floor((templateMealDate.getTime() - templateStartDate.getTime()) / (1000 * 60 * 60 * 24));
-      
-      const targetDate = new Date(startDate);
-      targetDate.setDate(startDate.getDate() + daysDiff);
-      const targetDateKey = getDateKey(targetDate);
-      
-      const meals = template.weekPlan[templateDate];
-      state.mealPlan.weeklyPlan[targetDateKey] = {
-        breakfast: meals.breakfast.map(meal => ({ ...meal, id: Date.now().toString() + Math.random(), isCooked: false, cookedAt: undefined })),
-        lunch: meals.lunch.map(meal => ({ ...meal, id: Date.now().toString() + Math.random(), isCooked: false, cookedAt: undefined })),
-        dinner: meals.dinner.map(meal => ({ ...meal, id: Date.now().toString() + Math.random(), isCooked: false, cookedAt: undefined })),
-        snacks: meals.snacks.map(meal => ({ ...meal, id: Date.now().toString() + Math.random(), isCooked: false, cookedAt: undefined }))
-      };
-    });
+
+  // Utilities
+  clearError: () => set((state) => {
+    state.error = null;
   }),
-  
-  deleteTemplate: (templateId) => set((state) => {
-    state.mealPlan.templates = state.mealPlan.templates.filter(t => t.id !== templateId);
-  }),
-  
-  generateShoppingList: (weekOf) => set((state) => {
-    const weekKey = getWeekKey(weekOf);
-    const ingredients = new Map<string, { quantity: number; unit: string; category: string }>();
-    
-    // Collect all ingredients from the week's meals
-    Object.entries(state.mealPlan.weeklyPlan).forEach(([date, meals]) => {
-      const mealDate = new Date(date);
-      const mealWeekKey = getWeekKey(mealDate);
-      
-      if (mealWeekKey === weekKey) {
-        const allMeals = [...meals.breakfast, ...meals.lunch, ...meals.dinner, ...meals.snacks];
-        
-        allMeals.forEach(meal => {
-          if (meal.recipe) {
-            meal.recipe.ingredients.forEach(ingredient => {
-              const key = ingredient.name.toLowerCase();
-              const existing = ingredients.get(key);
-              
-              if (existing) {
-                existing.quantity += ingredient.quantity * meal.servings;
-              } else {
-                ingredients.set(key, {
-                  quantity: ingredient.quantity * meal.servings,
-                  unit: ingredient.unit,
-                  category: ingredient.category || 'otros'
-                });
-              }
-            });
-          }
-        });
-      }
-    });
-    
-    // Create shopping list
-    const shoppingList = {
-      weekOf: weekKey,
-      items: Array.from(ingredients.entries()).map(([name, details]) => ({
-        name,
-        quantity: details.quantity,
-        unit: details.unit,
-        category: details.category,
-        obtained: false
-      })),
-      generatedAt: new Date()
-    };
-    
-    // Remove existing shopping list for this week and add new one
-    state.mealPlan.shoppingLists = state.mealPlan.shoppingLists.filter(list => list.weekOf !== weekKey);
-    state.mealPlan.shoppingLists.push(shoppingList);
-  }),
-  
-  updateMealPlanPreferences: (preferences) => set((state) => {
-    Object.assign(state.mealPlan.preferences, preferences);
-  }),
-  
-  clearWeek: (weekOf) => set((state) => {
-    const weekKey = getWeekKey(weekOf);
-    
-    // Remove all meals for this week
-    Object.keys(state.mealPlan.weeklyPlan).forEach(date => {
-      const mealDate = new Date(date);
-      const mealWeekKey = getWeekKey(mealDate);
-      
-      if (mealWeekKey === weekKey) {
-        delete state.mealPlan.weeklyPlan[date];
-      }
-    });
-  }),
-  
-  setCurrentWeek: (date) => set((state) => {
-    state.mealPlan.currentWeek = date;
-  }),
-  
-  setMealPlanLoading: (loading) => set((state) => {
-    state.mealPlan.isLoading = loading;
+
+  resetState: () => set((state) => {
+    state.weeklyPlan = null;
+    state.preferences = DEFAULT_PREFERENCES;
+    state.pantry = DEFAULT_PANTRY;
+    state.mode = 'normal';
+    state.weekKey = '';
+    state.isDirty = false;
+    state.isLoading = false;
+    state.isSaving = false;
+    state.error = null;
+    state.lastSyncedAt = null;
+    state.syncInProgress = false;
+    state.offlineChanges = [];
   })
 });
+
+// ============================================================================
+// PERSISTENCE CONFIG
+// ============================================================================
+
+export const mealPlanPersistConfig = {
+  name: 'kecarajocomer-meal-plan',
+  version: 1,
+  partialize: (state: MealPlanSlice) => ({
+    preferences: state.preferences,
+    pantry: state.pantry,
+    mode: state.mode,
+    lastSyncedAt: state.lastSyncedAt,
+    // Don't persist weeklyPlan - it should be loaded fresh from server
+  }),
+  onRehydrateStorage: () => (state?: MealPlanSlice) => {
+    if (state) {
+      logger.info('Meal plan state rehydrated from localStorage', 'MealPlanSlice');
+      // Could trigger a background sync here
+    }
+  },
+};
+
+// ============================================================================
+// VALIDATION SCHEMAS
+// ============================================================================
+
+export const MealTypeSchema = z.enum(['desayuno', 'almuerzo', 'merienda', 'cena']);
+export const ModeTypeSchema = z.enum(['normal', 'economico', 'fiesta', 'dieta']);
+export const RegionTypeSchema = z.enum(['pampa', 'patagonia', 'norte', 'cuyo', 'centro', 'litoral']);
+
+export const ArgentineMealSchema = z.object({
+  recipe: z.any(), // Recipe schema would be defined separately
+  servings: z.number().min(1).max(20),
+  notes: z.string().optional(),
+  locked: z.boolean().optional(),
+  alternatives: z.array(z.any()).optional(),
+  cost: z.number().min(0),
+  nutrition: z.object({
+    calories: z.number().min(0),
+    protein: z.number().min(0),
+    carbs: z.number().min(0),
+    fat: z.number().min(0),
+  })
+});
+
+export const ArgentineWeeklyPlanSchema = z.object({
+  planId: z.string(),
+  userId: z.string(),
+  weekStart: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  weekEnd: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+  days: z.array(z.any()), // ArgentineDayPlan schema
+  mode: ModeTypeSchema,
+  region: RegionTypeSchema,
+  generatedAt: z.string(),
+  lastModified: z.string(),
+});
+
+// ============================================================================
+// EXPORTS
+// ============================================================================
+
+export type { MealPlanSlice as default };

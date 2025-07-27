@@ -1,10 +1,13 @@
 'use client';
 
-import { useState } from 'react';
-import { Check, Info, Plus, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { Check, Info, Plus, X, AlertCircle, Sparkles, ArrowLeft, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { useOnboardingStore } from '../../store/onboardingStore';
 import { DietaryRestriction } from '../../types';
+import { GlassCard, GlassButton } from './shared/GlassCard';
 
 interface DietaryPreferencesStepProps {
   onNext: () => void;
@@ -14,71 +17,97 @@ interface DietaryPreferencesStepProps {
 const DIETARY_OPTIONS = [
   {
     value: DietaryRestriction.VEGETARIAN,
-    label: 'Vegetarian',
-    description: 'No meat or fish',
+    label: 'Vegetariano',
+    description: 'Sin carne ni pescado',
     icon: '🥗'
   },
   {
     value: DietaryRestriction.VEGAN,
-    label: 'Vegan',
-    description: 'No animal products',
+    label: 'Vegano',
+    description: 'Sin productos animales',
     icon: '🌱'
   },
   {
     value: DietaryRestriction.GLUTEN_FREE,
-    label: 'Gluten-Free',
-    description: 'No wheat, barley, or rye',
+    label: 'Sin Gluten',
+    description: 'Sin trigo, cebada o centeno',
     icon: '🌾'
   },
   {
     value: DietaryRestriction.DAIRY_FREE,
-    label: 'Dairy-Free',
-    description: 'No milk products',
+    label: 'Sin Lácteos',
+    description: 'Sin productos lácteos',
     icon: '🥛'
   },
   {
     value: DietaryRestriction.NUT_FREE,
-    label: 'Nut-Free',
-    description: 'No tree nuts or peanuts',
+    label: 'Sin Frutos Secos',
+    description: 'Sin nueces ni cacahuetes',
     icon: '🥜'
   },
   {
     value: DietaryRestriction.KOSHER,
     label: 'Kosher',
-    description: 'Following Jewish dietary laws',
+    description: 'Siguiendo leyes dietéticas judías',
     icon: '✡️'
   },
   {
     value: DietaryRestriction.HALAL,
     label: 'Halal',
-    description: 'Following Islamic dietary laws',
+    description: 'Siguiendo leyes dietéticas islámicas',
     icon: '☪️'
   },
   {
     value: DietaryRestriction.LOW_CARB,
-    label: 'Low-Carb',
-    description: 'Reduced carbohydrates',
+    label: 'Bajo en Carbohidratos',
+    description: 'Carbohidratos reducidos',
     icon: '🍞'
   },
   {
     value: DietaryRestriction.KETO,
     label: 'Keto',
-    description: 'Very low-carb, high-fat',
+    description: 'Muy bajo en carbohidratos, alto en grasas',
     icon: '🥑'
   },
   {
     value: DietaryRestriction.PALEO,
     label: 'Paleo',
-    description: 'Whole foods, no grains',
+    description: 'Alimentos integrales, sin granos',
     icon: '🥩'
   },
   {
     value: DietaryRestriction.PESCATARIAN,
-    label: 'Pescatarian',
-    description: 'Vegetarian plus fish',
+    label: 'Pescetariano',
+    description: 'Vegetariano más pescado',
     icon: '🐟'
   }
 ];
+
+const COMMON_ALLERGENS = [
+  'Huevos', 'Leche', 'Soja', 'Mariscos', 'Pescado', 
+  'Cacahuetes', 'Nueces', 'Trigo', 'Apio', 'Mostaza'
+];
+
+// Compatibilidad y advertencias
+const COMPATIBILITY_WARNINGS = {
+  [DietaryRestriction.VEGAN]: {
+    incompatible: [DietaryRestriction.PESCATARIAN],
+    includes: [DietaryRestriction.VEGETARIAN, DietaryRestriction.DAIRY_FREE],
+    message: 'El veganismo ya incluye vegetariano y sin lácteos'
+  },
+  [DietaryRestriction.VEGETARIAN]: {
+    incompatible: [DietaryRestriction.PESCATARIAN, DietaryRestriction.PALEO],
+    message: 'Vegetariano es incompatible con dietas que incluyen carne'
+  },
+  [DietaryRestriction.KETO]: {
+    incompatible: [DietaryRestriction.LOW_CARB],
+    message: 'Keto es una versión más estricta de bajo en carbohidratos'
+  },
+  [DietaryRestriction.KOSHER]: {
+    incompatible: [DietaryRestriction.HALAL],
+    message: 'Usualmente se sigue una u otra práctica religiosa'
+  }
+};
 
 export function DietaryPreferencesStep({ onNext, onBack }: DietaryPreferencesStepProps) {
   const { data, savePreferences } = useOnboardingStore();
@@ -91,24 +120,72 @@ export function DietaryPreferencesStep({ onNext, onBack }: DietaryPreferencesSte
   );
   const [newAllergy, setNewAllergy] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [compatibilityWarning, setCompatibilityWarning] = useState<string | null>(null);
+  const [showAllergenSuggestions, setShowAllergenSuggestions] = useState(false);
+
+  // Check compatibility when restrictions change
+  useEffect(() => {
+    checkCompatibility();
+  }, [selectedRestrictions]);
+
+  const checkCompatibility = () => {
+    for (const restriction of selectedRestrictions) {
+      const warning = COMPATIBILITY_WARNINGS[restriction];
+      if (warning) {
+        // Check for incompatible selections
+        const hasIncompatible = warning.incompatible?.some(inc => 
+          selectedRestrictions.includes(inc)
+        );
+        
+        // Check if includes other restrictions
+        const hasIncluded = warning.includes?.some(inc => 
+          selectedRestrictions.includes(inc)
+        );
+        
+        if (hasIncompatible || hasIncluded) {
+          setCompatibilityWarning(warning.message);
+          return;
+        }
+      }
+    }
+    setCompatibilityWarning(null);
+  };
 
   const toggleRestriction = (restriction: DietaryRestriction) => {
-    setSelectedRestrictions(prev =>
-      prev.includes(restriction)
+    setSelectedRestrictions(prev => {
+      const newRestrictions = prev.includes(restriction)
         ? prev.filter(r => r !== restriction)
-        : [...prev, restriction]
-    );
+        : [...prev, restriction];
+      
+      // Auto-manage related restrictions
+      if (!prev.includes(restriction)) {
+        const warning = COMPATIBILITY_WARNINGS[restriction];
+        if (warning?.includes) {
+          // Auto-select included restrictions
+          return [...new Set([...newRestrictions, ...warning.includes])];
+        }
+      }
+      
+      return newRestrictions;
+    });
   };
 
   const addAllergy = () => {
     if (newAllergy.trim() && !allergies.includes(newAllergy.trim())) {
       setAllergies([...allergies, newAllergy.trim()]);
       setNewAllergy('');
+      setShowAllergenSuggestions(false);
     }
   };
 
   const removeAllergy = (allergy: string) => {
     setAllergies(allergies.filter(a => a !== allergy));
+  };
+
+  const addCommonAllergen = (allergen: string) => {
+    if (!allergies.includes(allergen)) {
+      setAllergies([...allergies, allergen]);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -122,71 +199,145 @@ export function DietaryPreferencesStep({ onNext, onBack }: DietaryPreferencesSte
       });
       onNext();
     } catch (error: unknown) {
-      console.error('Failed to save preferences:', error);
-      // Log error but don't show modal - user can continue
+      logger.error('Failed to save preferences:', 'DietaryPreferencesStep', error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const getRecommendedRecipeCount = () => {
+    const restrictionCount = selectedRestrictions.length;
+    const allergyCount = allergies.length;
+    const total = restrictionCount + allergyCount;
+    
+    if (total === 0) return "miles de";
+    if (total <= 2) return "cientos de";
+    if (total <= 4) return "decenas de";
+    return "varias";
+  };
+
   return (
     <div className="max-w-3xl mx-auto">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Dietary Preferences & Restrictions
+      <motion.div 
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center mb-8"
+      >
+        <h2 className="text-3xl font-bold text-white mb-2">
+          Preferencias y Restricciones Dietéticas
         </h2>
-        <p className="text-gray-600">
-          Select any dietary preferences or restrictions you follow
+        <p className="text-white/60">
+          Selecciona cualquier preferencia o restricción dietética que sigas
         </p>
-      </div>
+      </motion.div>
 
       <form onSubmit={handleSubmit} className="space-y-8">
         {/* Dietary Restrictions */}
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-4">
-            Dietary Restrictions
+          <h3 className="text-lg font-semibold text-white mb-4">
+            Restricciones Dietéticas
           </h3>
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {DIETARY_OPTIONS.map((option) => (
-              <button
+            {DIETARY_OPTIONS.map((option, index) => (
+              <motion.button
                 key={option.value}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.05 * index }}
                 type="button"
                 onClick={() => toggleRestriction(option.value)}
-                className={`p-4 rounded-lg border-2 transition-all ${
+                className={`p-4 rounded-xl border-2 backdrop-blur-xl transition-all ${
                   selectedRestrictions.includes(option.value)
-                    ? 'border-indigo-600 bg-indigo-50'
-                    : 'border-gray-200 hover:border-gray-300'
+                    ? 'border-purple-400 bg-purple-500/20'
+                    : 'border-white/20 bg-white/5 hover:bg-white/10'
                 }`}
               >
                 <div className="flex items-start gap-3">
                   <span className="text-2xl">{option.icon}</span>
                   <div className="flex-1 text-left">
-                    <div className="font-medium text-gray-900 flex items-center gap-2">
+                    <div className="font-medium text-white flex items-center gap-2">
                       {option.label}
                       {selectedRestrictions.includes(option.value) && (
-                        <Check className="h-4 w-4 text-indigo-600" />
+                        <Check className="h-4 w-4 text-purple-400" />
                       )}
                     </div>
-                    <div className="text-sm text-gray-500 mt-1">
+                    <div className="text-sm text-white/60 mt-1">
                       {option.description}
                     </div>
                   </div>
                 </div>
-              </button>
+              </motion.button>
             ))}
           </div>
+          
+          {/* Compatibility Warning */}
+          <AnimatePresence>
+            {compatibilityWarning && (
+              <motion.div 
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mt-4 overflow-hidden"
+              >
+                <GlassCard variant="error" className="flex gap-2">
+                  <AlertCircle className="h-5 w-5 text-amber-400 flex-shrink-0" />
+                  <p className="text-sm text-amber-200">{compatibilityWarning}</p>
+                </GlassCard>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Allergies */}
-        <div>
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
-            Allergies & Intolerances
+        <GlassCard>
+          <h3 className="text-lg font-semibold text-white mb-2">
+            Alergias e Intolerancias
           </h3>
-          <p className="text-sm text-gray-600 mb-4">
-            Add any specific ingredients you need to avoid
+          <p className="text-sm text-white/60 mb-4">
+            Añade cualquier ingrediente específico que necesites evitar
           </p>
           
           <div className="space-y-3">
+            {/* Common Allergens Quick Add */}
+            {!showAllergenSuggestions && allergies.length < 3 && (
+              <button
+                type="button"
+                onClick={() => setShowAllergenSuggestions(true)}
+                className="text-sm text-purple-400 hover:text-purple-300 flex items-center gap-1 transition-colors"
+              >
+                <Sparkles className="w-4 h-4" />
+                Mostrar alérgenos comunes
+              </button>
+            )}
+            
+            <AnimatePresence>
+              {showAllergenSuggestions && (
+                <motion.div 
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  className="bg-purple-500/10 rounded-xl p-3 space-y-2 border border-purple-400/20"
+                >
+                  <p className="text-xs text-purple-300 font-medium">Alérgenos comunes - Haz clic para añadir:</p>
+                  <div className="flex flex-wrap gap-2">
+                    {COMMON_ALLERGENS.filter(a => !allergies.includes(a)).map((allergen, index) => (
+                      <motion.button
+                        key={allergen}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: index * 0.03 }}
+                        type="button"
+                        onClick={() => addCommonAllergen(allergen)}
+                        className="px-3 py-1 bg-white/10 border border-white/20 rounded-full text-sm hover:bg-white/20 transition-all text-white/80"
+                      >
+                        + {allergen}
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+            
             {/* Allergy Input */}
             <div className="flex gap-2">
               <input
@@ -194,80 +345,114 @@ export function DietaryPreferencesStep({ onNext, onBack }: DietaryPreferencesSte
                 value={newAllergy}
                 onChange={(e) => setNewAllergy(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addAllergy())}
-                placeholder="e.g., shellfish, soy, eggs"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                placeholder="ej: mariscos, soja, huevos"
+                className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/40 focus:ring-2 focus:ring-purple-500 focus:border-purple-500 focus:outline-none transition-all"
               />
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="button"
                 onClick={addAllergy}
                 disabled={!newAllergy.trim()}
-                className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
               >
                 <Plus className="h-5 w-5" />
-              </button>
+              </motion.button>
             </div>
 
             {/* Allergy List */}
-            {allergies.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {allergies.map((allergy) => (
-                  <span
-                    key={allergy}
-                    className="inline-flex items-center gap-1 px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm"
-                  >
-                    {allergy}
-                    <button
-                      type="button"
-                      onClick={() => removeAllergy(allergy)}
-                      className="hover:text-red-900"
+            <AnimatePresence>
+              {allergies.length > 0 && (
+                <motion.div 
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-wrap gap-2"
+                >
+                  {allergies.map((allergy, index) => (
+                    <motion.span
+                      key={allergy}
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ delay: index * 0.05 }}
+                      className="inline-flex items-center gap-1 px-3 py-1 bg-red-500/20 text-red-300 border border-red-400/30 rounded-full text-sm backdrop-blur-xl"
                     >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </span>
-                ))}
-              </div>
-            )}
+                      {allergy}
+                      <button
+                        type="button"
+                        onClick={() => removeAllergy(allergy)}
+                        className="hover:text-red-200 transition-colors"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </motion.span>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
-        </div>
+        </GlassCard>
+
+        {/* Recipe Count Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+        >
+          <GlassCard variant="success" className="flex gap-3">
+            <Sparkles className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+            <div className="text-sm text-green-200">
+              <p className="font-medium mb-1">
+                Tenemos {getRecommendedRecipeCount()} recetas perfectas para ti
+              </p>
+              <p className="text-green-300/80">
+                Nuestro sistema se adapta a tus preferencias para ofrecerte comidas deliciosas y seguras
+                {selectedRestrictions.length > 0 && ' que cumplen con todas tus restricciones'}.
+              </p>
+            </div>
+          </GlassCard>
+        </motion.div>
 
         {/* Info Box */}
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 flex gap-3">
-          <Info className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-          <div className="text-sm text-blue-800">
-            <p className="font-medium mb-1">Your preferences are private</p>
-            <p>
-              We use this information solely to provide you with suitable meal suggestions 
-              and ensure your safety. You can update these preferences at any time.
+        <GlassCard className="flex gap-3">
+          <Info className="h-5 w-5 text-blue-400 flex-shrink-0 mt-0.5" />
+          <div className="text-sm">
+            <p className="font-medium mb-1 text-white">Tus preferencias son privadas</p>
+            <p className="text-white/60">
+              Usamos esta información únicamente para proporcionarte sugerencias de comidas adecuadas 
+              y garantizar tu seguridad. Puedes actualizar estas preferencias en cualquier momento.
             </p>
           </div>
-        </div>
+        </GlassCard>
 
         {/* Navigation Buttons */}
         <div className="flex justify-between pt-6">
-          <button
-            type="button"
+          <GlassButton
             onClick={onBack}
-            className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+            variant="secondary"
+            className="flex items-center gap-2"
           >
-            Back
-          </button>
+            <ArrowLeft className="w-4 h-4" />
+            Atrás
+          </GlassButton>
           
           <div className="flex gap-3">
-            <button
-              type="button"
+            <GlassButton
               onClick={onNext}
-              className="px-6 py-2 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+              variant="ghost"
             >
-              Skip for now
-            </button>
+              Omitir por ahora
+            </GlassButton>
             
-            <button
+            <GlassButton
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              variant="primary"
+              className="flex items-center gap-2"
             >
-              {isLoading ? 'Saving...' : 'Save & Continue'}
-            </button>
+              {isLoading ? 'Guardando...' : 'Guardar y Continuar'}
+              <ArrowRight className="w-4 h-4" />
+            </GlassButton>
           </div>
         </div>
       </form>

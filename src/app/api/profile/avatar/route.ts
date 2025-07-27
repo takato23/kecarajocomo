@@ -1,6 +1,7 @@
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 export async function POST(request: NextRequest) {
   try {
@@ -73,7 +74,7 @@ export async function POST(request: NextRequest) {
     
     return NextResponse.json({ url: publicUrl });
   } catch (error: unknown) {
-    console.error('Error uploading avatar:', error);
+    logger.error('Error uploading avatar:', 'API:route', error);
     return NextResponse.json(
       { error: 'Failed to upload avatar' },
       { status: 500 }

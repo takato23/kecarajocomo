@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
+import { logger } from '@/services/logger';
 
 import {
   Recipe,
@@ -217,7 +218,7 @@ export const useRecipeStore = create<RecipeState>()(
           const response = await generateRecipeWithAI(request);
           set({ aiResponse: response, isGeneratingAI: false });
         } catch (error: unknown) {
-          console.error('Failed to generate AI recipe:', error);
+          logger.error('Failed to generate AI recipe:', 'recipes:recipeStore', error);
           set({ isGeneratingAI: false });
           throw error;
         }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 interface UseVoiceRecordingOptions {
   continuous?: boolean;
@@ -69,7 +70,7 @@ export function useVoiceRecording({
     };
 
     recognition.onerror = (event: any) => {
-      console.error('Voice recording error:', event.error);
+      logger.error('Voice recording error:', 'useVoiceRecording', event.error);
       setError(event.error);
       setIsRecording(false);
     };
@@ -117,7 +118,7 @@ export function useVoiceRecording({
       try {
         recognitionRef.current.start();
       } catch (err: unknown) {
-        console.error('Error starting recording:', err);
+        logger.error('Error starting recording:', 'useVoiceRecording', err);
         setError('Failed to start recording');
       }
     }

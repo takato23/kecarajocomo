@@ -11,6 +11,7 @@ import { OrchestratorAgent } from '../../../agents/system/OrchestratorAgent';
 import type { AgentContext, ComplexTaskRequest, WorkflowResult } from '../../../agents/types';
 import type { UserPreferences, Recipe, WeekPlan } from '@/types';
 import { supabase } from '@/lib/supabase';
+import { logger } from '@/services/logger';
 
 interface AgentOrchestrationConfig {
   enableAutonomousMode: boolean;
@@ -334,7 +335,7 @@ export class AgentOrchestrator extends EventEmitter {
           });
 
         } catch (error) {
-          console.error(`Weekly optimization failed for user ${userId}:`, error);
+          logger.error(`Weekly optimization failed for user ${userId}:`, 'AgentOrchestrator', error);
         }
       }
 
@@ -390,7 +391,7 @@ export class AgentOrchestrator extends EventEmitter {
       }
 
     } catch (error) {
-      console.error('Error loading user context:', error);
+      logger.error('Error loading user context:', 'AgentOrchestrator', error);
     }
   }
 

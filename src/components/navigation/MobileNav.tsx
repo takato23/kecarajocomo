@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence, useAnimation } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Home, 
   BookOpen, 
@@ -265,11 +266,20 @@ export function MobileNav() {
                     setMoreMenuOpen(false);
                     triggerHaptic([0, 10, 100, 20]); // Success pattern
                     try {
-                      // TODO: Implement sign out
-                      router.push('/login');
+                      // Call logout from user store
+                      const { logout } = useAppStore.getState();
+                      logout();
+                      
+                      // Clear any local storage or session data
+                      if (typeof window !== 'undefined') {
+                        localStorage.removeItem('kecarajo-store');
+                        sessionStorage.clear();
+                      }
+                      
+                      // Redirect to home page
                       router.push('/');
                     } catch (error) {
-                      console.error('Error al cerrar sesión:', error);
+                      logger.error('Error al cerrar sesión:', 'MobileNav', error);
                     }
                   }}
                   className="mt-4 w-full flex items-center justify-center space-x-2 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 hover:bg-red-100 dark:hover:bg-red-900/30 transition-colors"

@@ -2,6 +2,7 @@ import React, { useRef, useCallback, useState, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { BrowserMultiFormatReader, NotFoundException } from '@zxing/library';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   X, 
   Camera, 
@@ -134,14 +135,14 @@ export const BarcodeScanner = React.memo<BarcodeScannerProps>(({
             }
           } catch (error: unknown) {
             if (!(error instanceof NotFoundException)) {
-              console.error('Barcode scanning error:', error);
+              logger.error('Barcode scanning error:', 'BarcodeScanner', error);
             }
           } finally {
             bitmap.close();
           }
         }
       } catch (error: unknown) {
-        console.error('Screenshot error:', error);
+        logger.error('Screenshot error:', 'BarcodeScanner', error);
       }
       
       // Continue scanning

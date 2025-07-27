@@ -1,6 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/lib/logger';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-import { createServerSupabaseClient } from '../../../../../lib/supabase/client';
+import { createServerSupabaseClient } from '@/lib/supabase/client';
 
 export async function POST(request: NextRequest) {
   try {
@@ -107,8 +110,8 @@ INSTRUCCIONES:
 
 Genera las sugerencias de recetas:`;
 
-    // Call AI service
-    const aiResponse = await callClaudeAPI(systemPrompt, userPrompt);
+    // Call Gemini API
+    const aiResponse = await callGeminiAPI(systemPrompt, userPrompt);
     
     // Parse response
     const suggestionsData = await parseAndValidateSuggestionsResponse(aiResponse);
@@ -118,8 +121,8 @@ Genera las sugerencias de recetas:`;
     
     // Log AI usage
     await logAIUsage(user.id, 'pantry_suggestions', {
-      input_tokens: aiResponse.usage?.input_tokens || 0,
-      output_tokens: aiResponse.usage?.output_tokens || 0,
+      input_tokens: Math.ceil((systemPrompt.length + userPrompt.length) / 4),
+      output_tokens: Math.ceil(aiResponse.length / 4),
       success: true,
       pantry_items_count: pantryItems.length
     });
@@ -127,7 +130,7 @@ Genera las sugerencias de recetas:`;
     return NextResponse.json(enhancedSuggestions);
 
   } catch (error: unknown) {
-    console.error('Pantry suggestions error:', error);
+    logger.error('Pantry suggestions error:', 'API:route', error);
     
     return NextResponse.json(
       { 
@@ -139,43 +142,47 @@ Genera las sugerencias de recetas:`;
   }
 }
 
-async function callClaudeAPI(systemPrompt: string, userPrompt: string): Promise<any> {
-  const claudeApiKey = process.env.CLAUDE_API_KEY;
+async function callGeminiAPI(systemPrompt: string, userPrompt: string): Promise<string> {
+  const apiKey = geminiConfig.getApiKey() || geminiConfig.getApiKey();
   
-  if (!claudeApiKey) {
-    console.warn('Claude API key not available, using mock response');
-    return getMockPantrySuggestions();
+  if (!apiKey) {
+    logger.warn('Gemini API key not available, using mock response', 'API:route');
+    return JSON.stringify(getMockPantrySuggestions().content[0].text);
   }
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': claudeApiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-sonnet-20240229',
-        max_tokens: 6000,
-        system: systemPrompt,
-        messages: [
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ]
-      })
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ 
+      model: geminiConfig.default.model,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 2048
+        topP: 0.8,
+        topK: 40
+      }
     });
 
-    if (!response.ok) {
-      throw new Error(`Claude API error: ${response.statusText}`);
+    const prompt = `${systemPrompt}\n\n${userPrompt}`;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    let text = response.text();
+    
+    // Limpiar respuesta de markdown si existe
+    text = text.trim();
+    if (text.startsWith('```json')) {
+      text = text.slice(7);
     }
-
-    return await response.json();
+    if (text.startsWith('```')) {
+      text = text.slice(3);
+    }
+    if (text.endsWith('```')) {
+      text = text.slice(0, -3);
+    }
+    
+    return text.trim();
   } catch (error: unknown) {
-    console.warn('Using fallback for pantry suggestions:', error.message);
-    return getMockPantrySuggestions();
+    logger.warn('Using fallback for pantry suggestions:', 'API:route', error);
+    return JSON.stringify(getMockPantrySuggestions().content[0].text);
   }
 }
 
@@ -335,8 +342,7 @@ function getMockPantrySuggestions(): any {
             total_ingredients_available: 8,
             ingredients_used: 7,
             waste_reduction_score: 0.85
-          }
-        })
+          })
       }
     ],
     usage: {
@@ -346,19 +352,14 @@ function getMockPantrySuggestions(): any {
   };
 }
 
-async function parseAndValidateSuggestionsResponse(aiResponse: any): Promise<any> {
+async function parseAndValidateSuggestionsResponse(aiResponse: string): Promise<any> {
   try {
-    const responseText = aiResponse.content[0]?.text;
-    if (!responseText) {
+    if (!aiResponse) {
       throw new Error('Empty response from AI');
     }
 
-    const jsonMatch = responseText.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('No valid JSON found in AI response');
-    }
-
-    const suggestionsData = JSON.parse(jsonMatch[0]);
+    // Parse response directly (it should already be clean JSON)
+    const suggestionsData = JSON.parse(aiResponse);
 
     // Validate structure
     if (!suggestionsData.recipes || !Array.isArray(suggestionsData.recipes)) {
@@ -453,6 +454,6 @@ async function logAIUsage(userId: string, operation: string, metrics: any): Prom
         created_at: new Date().toISOString()
       });
   } catch (error: unknown) {
-    console.error('Failed to log AI usage:', error);
+    logger.error('Failed to log AI usage:', 'API:route', error);
   }
 }

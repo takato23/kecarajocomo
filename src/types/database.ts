@@ -9,6 +9,447 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      users: {
+        Row: {
+          id: string
+          email: string
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          email: string
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          email?: string
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      user_profiles: {
+        Row: {
+          id: string
+          username: string | null
+          full_name: string | null
+          avatar_url: string | null
+          bio: string | null
+          location: string | null
+          date_of_birth: string | null
+          phone: string | null
+          dietary_restrictions: string[] | null
+          cuisine_preferences: string[] | null
+          cooking_skill_level: string | null
+          household_size: number | null
+          onboarding_completed: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          username?: string | null
+          full_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          location?: string | null
+          date_of_birth?: string | null
+          phone?: string | null
+          dietary_restrictions?: string[] | null
+          cuisine_preferences?: string[] | null
+          cooking_skill_level?: string | null
+          household_size?: number | null
+          onboarding_completed?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          username?: string | null
+          full_name?: string | null
+          avatar_url?: string | null
+          bio?: string | null
+          location?: string | null
+          date_of_birth?: string | null
+          phone?: string | null
+          dietary_restrictions?: string[] | null
+          cuisine_preferences?: string[] | null
+          cooking_skill_level?: string | null
+          household_size?: number | null
+          onboarding_completed?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      user_preferences: {
+        Row: {
+          id: string
+          user_id: string
+          dietary_restrictions: string[] | null
+          cuisine_preferences: string[] | null
+          cooking_skill_level: string | null
+          household_size: number | null
+          preferred_meal_types: string[] | null
+          avoid_ingredients: string[] | null
+          calorie_target: number | null
+          protein_target: number | null
+          carb_target: number | null
+          fat_target: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          dietary_restrictions?: string[] | null
+          cuisine_preferences?: string[] | null
+          cooking_skill_level?: string | null
+          household_size?: number | null
+          preferred_meal_types?: string[] | null
+          avoid_ingredients?: string[] | null
+          calorie_target?: number | null
+          protein_target?: number | null
+          carb_target?: number | null
+          fat_target?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          dietary_restrictions?: string[] | null
+          cuisine_preferences?: string[] | null
+          cooking_skill_level?: string | null
+          household_size?: number | null
+          preferred_meal_types?: string[] | null
+          avoid_ingredients?: string[] | null
+          calorie_target?: number | null
+          protein_target?: number | null
+          carb_target?: number | null
+          fat_target?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      recipes: {
+        Row: {
+          id: string
+          user_id: string
+          title: string
+          description: string | null
+          instructions: Json[] | null
+          prep_time: number | null
+          cook_time: number | null
+          total_time: number | null
+          servings: number
+          difficulty: string | null
+          cuisine: string | null
+          diet_type: string[] | null
+          tags: string[] | null
+          image_url: string | null
+          source: string | null
+          source_url: string | null
+          is_public: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          title: string
+          description?: string | null
+          instructions?: Json[] | null
+          prep_time?: number | null
+          cook_time?: number | null
+          total_time?: number | null
+          servings?: number
+          difficulty?: string | null
+          cuisine?: string | null
+          diet_type?: string[] | null
+          tags?: string[] | null
+          image_url?: string | null
+          source?: string | null
+          source_url?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          title?: string
+          description?: string | null
+          instructions?: Json[] | null
+          prep_time?: number | null
+          cook_time?: number | null
+          total_time?: number | null
+          servings?: number
+          difficulty?: string | null
+          cuisine?: string | null
+          diet_type?: string[] | null
+          tags?: string[] | null
+          image_url?: string | null
+          source?: string | null
+          source_url?: string | null
+          is_public?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      recipe_ingredients: {
+        Row: {
+          id: string
+          recipe_id: string
+          ingredient_id: string
+          quantity: number
+          unit: string
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          recipe_id: string
+          ingredient_id: string
+          quantity: number
+          unit: string
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          recipe_id?: string
+          ingredient_id?: string
+          quantity?: number
+          unit?: string
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      nutrition_info: {
+        Row: {
+          id: string
+          recipe_id: string
+          calories: number | null
+          protein: number | null
+          carbs: number | null
+          fat: number | null
+          fiber: number | null
+          sugar: number | null
+          sodium: number | null
+          cholesterol: number | null
+          serving_size: string | null
+          servings_per_recipe: number | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          recipe_id: string
+          calories?: number | null
+          protein?: number | null
+          carbs?: number | null
+          fat?: number | null
+          fiber?: number | null
+          sugar?: number | null
+          sodium?: number | null
+          cholesterol?: number | null
+          serving_size?: string | null
+          servings_per_recipe?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          recipe_id?: string
+          calories?: number | null
+          protein?: number | null
+          carbs?: number | null
+          fat?: number | null
+          fiber?: number | null
+          sugar?: number | null
+          sodium?: number | null
+          cholesterol?: number | null
+          serving_size?: string | null
+          servings_per_recipe?: number | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      meal_plans: {
+        Row: {
+          id: string
+          user_id: string
+          date: string
+          meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
+          recipe_id: string
+          servings: number
+          notes: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          date: string
+          meal_type: 'breakfast' | 'lunch' | 'dinner' | 'snack'
+          recipe_id: string
+          servings?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          date?: string
+          meal_type?: 'breakfast' | 'lunch' | 'dinner' | 'snack'
+          recipe_id?: string
+          servings?: number
+          notes?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      recipe_ratings: {
+        Row: {
+          id: string
+          recipe_id: string
+          user_id: string
+          rating: number
+          comment: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          recipe_id: string
+          user_id: string
+          rating: number
+          comment?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          recipe_id?: string
+          user_id?: string
+          rating?: number
+          comment?: string | null
+          created_at?: string
+        }
+      }
+      user_favorites: {
+        Row: {
+          id: string
+          user_id: string
+          recipe_id: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          recipe_id: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          recipe_id?: string
+          created_at?: string
+        }
+      }
+      stores: {
+        Row: {
+          id: string
+          name: string
+          location: string | null
+          chain_id: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          location?: string | null
+          chain_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          location?: string | null
+          chain_id?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      products: {
+        Row: {
+          id: string
+          name: string
+          barcode: string | null
+          brand: string | null
+          category: string | null
+          image_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          barcode?: string | null
+          brand?: string | null
+          category?: string | null
+          image_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          barcode?: string | null
+          brand?: string | null
+          category?: string | null
+          image_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      price_history: {
+        Row: {
+          id: string
+          product_id: string
+          store_id: string
+          price: number
+          currency: string
+          is_promotion: boolean
+          promotion_details: string | null
+          recorded_at: string
+        }
+        Insert: {
+          id?: string
+          product_id: string
+          store_id: string
+          price: number
+          currency?: string
+          is_promotion?: boolean
+          promotion_details?: string | null
+          recorded_at?: string
+        }
+        Update: {
+          id?: string
+          product_id?: string
+          store_id?: string
+          price?: number
+          currency?: string
+          is_promotion?: boolean
+          promotion_details?: string | null
+          recorded_at?: string
+        }
+      }
       profiles: {
         Row: {
           id: string

@@ -9,6 +9,7 @@ import type {
 } from '../../types/recipes';
 import type { IngredientParserConfig } from '../../types/pantry';
 import { supabase } from '../supabase/client';
+import { logger } from '@/services/logger';
 
 export class RecipeParserService {
   private static instance: RecipeParserService;
@@ -244,7 +245,7 @@ export class RecipeParserService {
       // Sort by score descending
       return suggestions.sort((a, b) => b.score - a.score).slice(0, 5);
     } catch (error: unknown) {
-      console.error('Error finding ingredient suggestions:', error);
+      logger.error('Error finding ingredient suggestions:', 'recipe-parser.service', error);
       return [];
     }
   }

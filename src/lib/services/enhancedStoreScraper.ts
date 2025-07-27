@@ -1,4 +1,5 @@
 import { parseIngredient } from './ingredientParser';
+import { logger } from '@/services/logger';
 
 // Types
 export interface StoreProduct {
@@ -160,7 +161,7 @@ export class EnhancedStoreScraper {
       return products;
     } catch (error: unknown) {
       this.recordFailedRequest();
-      console.error('Enhanced store scraping error:', error);
+      logger.error('Enhanced store scraping error:', 'enhancedStoreScraper', error);
       onProgress?.('Using fallback data due to error');
       return this.getMockProducts(normalizedQuery);
     }
@@ -235,7 +236,7 @@ export class EnhancedStoreScraper {
   // Enhanced product normalization with flexible field mapping
   private normalizeProducts(data: BuscaPreciosResponse): StoreProduct[] {
     if (!data.products || !Array.isArray(data.products)) {
-      console.warn('Invalid API response format');
+      logger.warn('Invalid API response format', 'enhancedStoreScraper');
       return [];
     }
     
@@ -342,7 +343,7 @@ export class EnhancedStoreScraper {
       
       return entry.data;
     } catch (error: unknown) {
-      console.error('Cache read error:', error);
+      logger.error('Cache read error:', 'enhancedStoreScraper', error);
       return null;
     }
   }
@@ -361,7 +362,7 @@ export class EnhancedStoreScraper {
       
       localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
     } catch (error: unknown) {
-      console.error('Cache write error:', error);
+      logger.error('Cache write error:', 'enhancedStoreScraper', error);
       // Clear cache if storage is full
       if (error instanceof Error && error.name === 'QuotaExceededError') {
         this.clearCache();
@@ -392,7 +393,7 @@ export class EnhancedStoreScraper {
         localStorage.setItem(this.CACHE_KEY, JSON.stringify(cache));
       }
     } catch (error: unknown) {
-      console.error('Cache cleanup error:', error);
+      logger.error('Cache cleanup error:', 'enhancedStoreScraper', error);
     }
   }
 
@@ -406,7 +407,7 @@ export class EnhancedStoreScraper {
         this.serviceStatus = JSON.parse(statusData);
       }
     } catch (error: unknown) {
-      console.error('Status load error:', error);
+      logger.error('Status load error:', 'enhancedStoreScraper', error);
     }
   }
 
@@ -416,7 +417,7 @@ export class EnhancedStoreScraper {
     try {
       localStorage.setItem(this.STATUS_KEY, JSON.stringify(this.serviceStatus));
     } catch (error: unknown) {
-      console.error('Status save error:', error);
+      logger.error('Status save error:', 'enhancedStoreScraper', error);
     }
   }
 
@@ -524,7 +525,7 @@ export class EnhancedStoreScraper {
           await this.sleep(100);
         }
       } catch (error: unknown) {
-        console.error(`Error searching for ${query}:`, error);
+        logger.error(`Error searching for ${query}:`, 'enhancedStoreScraper', error);
         results.set(query, []);
       }
     }

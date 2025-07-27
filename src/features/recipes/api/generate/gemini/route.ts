@@ -1,15 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import geminiConfig from '@/lib/config/gemini.config';;
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { logger } from '@/services/logger';
 
 import { AIRecipeRequest, AIRecipeResponse } from '../../../types';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const genAI = 
+  const featureConfig = geminiConfig.getFeatureConfig('recipeGeneration');
+  new GoogleGenerativeAI(featureConfig.apiKey)!);
 
 export async function POST(request: NextRequest) {
   try {
     const body: AIRecipeRequest = await request.json();
     
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const prompt = buildGeminiPrompt(body);
     
@@ -26,14 +30,14 @@ export async function POST(request: NextRequest) {
       const aiResponse: AIRecipeResponse = JSON.parse(jsonMatch[0]);
       return NextResponse.json(aiResponse);
     } catch (parseError: unknown) {
-      console.error('Failed to parse Gemini response:', parseError);
+      logger.error('Failed to parse Gemini response:', 'recipes:route', parseError);
       return NextResponse.json(
         { error: 'Failed to parse AI response' },
         { status: 500 }
       );
     }
   } catch (error: unknown) {
-    console.error('Error calling Gemini API:', error);
+    logger.error('Error calling Gemini API:', 'recipes:route', error);
     return NextResponse.json(
       { error: 'Failed to generate recipe' },
       { status: 500 }

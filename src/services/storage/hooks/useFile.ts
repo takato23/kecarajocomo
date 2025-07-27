@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { getStorageService } from '../UnifiedStorageService';
 import {
@@ -165,7 +166,7 @@ export function useFile(options: UseFileOptions = {}): UseFileReturn {
     }
 
     if (errors.length > 0) {
-      console.error('Some files failed to upload:', errors);
+      logger.error('Some files failed to upload:', 'useFile', errors);
       // You could throw here or return partial results
     }
 

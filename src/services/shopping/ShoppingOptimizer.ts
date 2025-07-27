@@ -1,4 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { logger } from '@/services/logger';
 
 import type { Database } from '@/types/database';
 
@@ -131,7 +132,7 @@ export class ShoppingOptimizer {
       
       // 8. Validar contra presupuesto
       if (shoppingList.totalEstimated > userBudget) {
-        console.warn(`⚠️ Lista excede presupuesto: $${shoppingList.totalEstimated} > $${userBudget}`);
+        logger.warn(`⚠️ Lista excede presupuesto: $${shoppingList.totalEstimated} > $${userBudget}`, 'ShoppingOptimizer');
         // Marcar items opcionales si excede presupuesto
         this.adjustForBudget(shoppingList.items, userBudget);
       }
@@ -142,7 +143,7 @@ export class ShoppingOptimizer {
       return shoppingList;
       
     } catch (error: unknown) {
-      console.error('Error generando lista:', error);
+      logger.error('Error generando lista:', 'ShoppingOptimizer', error);
       throw new Error('Error al generar lista de compras');
     }
   }
@@ -189,7 +190,7 @@ export class ShoppingOptimizer {
         .single();
 
       if (error) {
-        console.error('Error al guardar item en DB:', error);
+        logger.error('Error al guardar item en DB:', 'ShoppingOptimizer', error);
         throw error;
       }
 
@@ -202,7 +203,7 @@ export class ShoppingOptimizer {
       };
       
     } catch (error: unknown) {
-      console.error('Error agregando item:', error);
+      logger.error('Error agregando item:', 'ShoppingOptimizer', error);
       throw new Error('Error al agregar item');
     }
   }
@@ -219,7 +220,7 @@ export class ShoppingOptimizer {
         .eq('list_id', listId);
 
       if (error) {
-        console.error('Error al actualizar item en DB:', error);
+        logger.error('Error al actualizar item en DB:', 'ShoppingOptimizer', error);
         throw error;
       }
 
@@ -242,7 +243,7 @@ export class ShoppingOptimizer {
       }
 
     } catch (error: unknown) {
-      console.error('Error actualizando item:', error);
+      logger.error('Error actualizando item:', 'ShoppingOptimizer', error);
       throw error;
     }
   }
@@ -268,7 +269,7 @@ export class ShoppingOptimizer {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error obteniendo listas de DB:', error);
+        logger.error('Error obteniendo listas de DB:', 'ShoppingOptimizer', error);
         throw error;
       }
 
@@ -300,7 +301,7 @@ export class ShoppingOptimizer {
         status: list.status || 'active'
       }));
     } catch (error: unknown) {
-      console.error('Error obteniendo listas:', error);
+      logger.error('Error obteniendo listas:', 'ShoppingOptimizer', error);
       return [];
     }
   }
@@ -427,7 +428,7 @@ export class ShoppingOptimizer {
       }));
       
     } catch (error: unknown) {
-      console.error('Error categorizando:', error);
+      logger.error('Error categorizando:', 'ShoppingOptimizer', error);
       return items;
     }
   }
@@ -480,7 +481,7 @@ export class ShoppingOptimizer {
       });
       
     } catch (error: unknown) {
-      console.error('Error optimizando:', error);
+      logger.error('Error optimizando:', 'ShoppingOptimizer', error);
       return items;
     }
   }
@@ -595,7 +596,7 @@ export class ShoppingOptimizer {
         .single();
 
       if (listError) {
-        console.error('Error guardando lista:', listError);
+        logger.error('Error guardando lista:', 'ShoppingOptimizer', listError);
         throw listError;
       }
 
@@ -621,7 +622,7 @@ export class ShoppingOptimizer {
           .insert(itemsToInsert);
 
         if (itemsError) {
-          console.error('Error guardando items:', itemsError);
+          logger.error('Error guardando items:', 'ShoppingOptimizer', itemsError);
           // Si falla guardar items, eliminar la lista para mantener consistencia
           await this.supabase
             .from('shopping_lists')
@@ -631,9 +632,9 @@ export class ShoppingOptimizer {
         }
       }
 
-      console.log('✅ Lista guardada exitosamente:', savedList.id);
+      logger.info('✅ Lista guardada exitosamente:', 'ShoppingOptimizer', savedList.id);
     } catch (error: unknown) {
-      console.error('Error guardando lista en DB:', error);
+      logger.error('Error guardando lista en DB:', 'ShoppingOptimizer', error);
       throw new Error('Error al guardar lista de compras');
     }
   }
@@ -753,7 +754,7 @@ export class ShoppingOptimizer {
         .eq('list_id', listId);
 
       if (itemsError) {
-        console.error('Error obteniendo items:', itemsError);
+        logger.error('Error obteniendo items:', 'ShoppingOptimizer', itemsError);
         return;
       }
 
@@ -767,10 +768,10 @@ export class ShoppingOptimizer {
         .eq('id', listId);
 
       if (updateError) {
-        console.error('Error actualizando total:', updateError);
+        logger.error('Error actualizando total:', 'ShoppingOptimizer', updateError);
       }
     } catch (error: unknown) {
-      console.error('Error actualizando total de lista:', error);
+      logger.error('Error actualizando total de lista:', 'ShoppingOptimizer', error);
     }
   }
 
@@ -798,10 +799,10 @@ export class ShoppingOptimizer {
         });
 
       if (error) {
-        console.error('Error guardando historial de uso:', error);
+        logger.error('Error guardando historial de uso:', 'ShoppingOptimizer', error);
       }
     } catch (error: unknown) {
-      console.error('Error en historial de uso:', error);
+      logger.error('Error en historial de uso:', 'ShoppingOptimizer', error);
     }
   }
 
@@ -824,13 +825,13 @@ export class ShoppingOptimizer {
       const { data, error } = await query;
 
       if (error) {
-        console.error('Error obteniendo historial:', error);
+        logger.error('Error obteniendo historial:', 'ShoppingOptimizer', error);
         return [];
       }
 
       return data || [];
     } catch (error: unknown) {
-      console.error('Error obteniendo historial de items:', error);
+      logger.error('Error obteniendo historial de items:', 'ShoppingOptimizer', error);
       return [];
     }
   }
@@ -847,7 +848,7 @@ export class ShoppingOptimizer {
         .eq('list_id', listId);
 
       if (error || !items) {
-        console.error('Error obteniendo items para ahorros:', error);
+        logger.error('Error obteniendo items para ahorros:', 'ShoppingOptimizer', error);
         return;
       }
 
@@ -858,7 +859,7 @@ export class ShoppingOptimizer {
         return sum + (estimated - actual);
       }, 0);
 
-      console.log(`💰 Ahorro total en lista ${listId}: $${totalSavings}`);
+      logger.info(`💰 Ahorro total en lista ${listId}: $${totalSavings}`, 'ShoppingOptimizer');
 
       // Marcar lista como completada si tiene ahorros calculados
       if (totalSavings !== 0) {
@@ -868,7 +869,7 @@ export class ShoppingOptimizer {
           .eq('id', listId);
       }
     } catch (error: unknown) {
-      console.error('Error actualizando ahorros:', error);
+      logger.error('Error actualizando ahorros:', 'ShoppingOptimizer', error);
     }
   }
 
@@ -885,7 +886,7 @@ export class ShoppingOptimizer {
         .eq('checked', true);
 
       if (error || !items) {
-        console.error('Error obteniendo items comprados:', error);
+        logger.error('Error obteniendo items comprados:', 'ShoppingOptimizer', error);
         return;
       }
 
@@ -912,11 +913,11 @@ export class ShoppingOptimizer {
         } else {
           // Crear nuevo item en despensa
           // Nota: Esto requeriría más lógica para obtener ingredient_id correcto
-          console.log(`📦 Nuevo item para despensa: ${item.name}`);
+          logger.info(`📦 Nuevo item para despensa: ${item.name}`, 'ShoppingOptimizer');
         }
       }
     } catch (error: unknown) {
-      console.error('Error actualizando stock:', error);
+      logger.error('Error actualizando stock:', 'ShoppingOptimizer', error);
     }
   }
 

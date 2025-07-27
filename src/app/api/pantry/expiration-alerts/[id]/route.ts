@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryAPIResponse } from '@/features/pantry/types';
 
@@ -61,7 +62,7 @@ export async function GET(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/expiration-alerts/[id]:', error);
+    logger.error('Unexpected error in GET /api/pantry/expiration-alerts/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -113,7 +114,7 @@ export async function DELETE(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in DELETE /api/pantry/expiration-alerts/[id]:', error);
+    logger.error('Unexpected error in DELETE /api/pantry/expiration-alerts/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -181,7 +182,7 @@ export async function PUT(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in PUT /api/pantry/expiration-alerts/[id]:', error);
+    logger.error('Unexpected error in PUT /api/pantry/expiration-alerts/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

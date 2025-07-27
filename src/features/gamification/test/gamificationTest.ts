@@ -1,5 +1,6 @@
 // Simple test to verify gamification system functionality
 import { useGamificationStore } from '../store/gamificationStore';
+import { logger } from '@/services/logger';
 
 export function testGamificationSystem() {
 
@@ -19,7 +20,7 @@ export function testGamificationSystem() {
     return true;
     
   } catch (error: unknown) {
-    console.error('❌ Gamification system test failed:', error);
+    logger.error('❌ Gamification system test failed:', 'gamification:gamificationTest', error);
     return false;
   }
 }

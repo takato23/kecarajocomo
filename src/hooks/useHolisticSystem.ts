@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { getHolisticSystem } from '@/services/core/HolisticSystem';
 
@@ -31,7 +32,7 @@ export function useHolisticSystem() {
       return result;
       
     } catch (error: unknown) {
-      console.error('Error procesando ticket:', error);
+      logger.error('Error procesando ticket:', 'useHolisticSystem', error);
       toast.error('Error al procesar el ticket');
       throw error;
     } finally {
@@ -47,7 +48,7 @@ export function useHolisticSystem() {
     try {
       return await holisticSystem.getUserPreferences(userId);
     } catch (error: unknown) {
-      console.error('Error obteniendo preferencias:', error);
+      logger.error('Error obteniendo preferencias:', 'useHolisticSystem', error);
       toast.error('Error al cargar preferencias');
       return null;
     }
@@ -60,7 +61,7 @@ export function useHolisticSystem() {
     try {
       return await holisticSystem.generateInsights(userId, data);
     } catch (error: unknown) {
-      console.error('Error generando insights:', error);
+      logger.error('Error generando insights:', 'useHolisticSystem', error);
       toast.error('Error al generar insights');
       return [];
     }

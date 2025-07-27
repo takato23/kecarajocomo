@@ -7,6 +7,7 @@
 import { UnifiedAIService } from '@/services/ai';
 import { UnifiedStorageService } from '@/services/storage';
 import { NotificationManager } from '@/services/notifications';
+import { logger } from '@/services/logger';
 
 import type { Recipe } from '../types';
 
@@ -110,7 +111,7 @@ export class EnhancedAIRecipeService {
       return enhancedResponse;
 
     } catch (error: unknown) {
-      console.error('Error generating recipe:', error);
+      logger.error('Error generating recipe:', 'EnhancedAIRecipeService', error);
       
       await this.notificationService.notify({
         type: 'error',
@@ -151,7 +152,7 @@ export class EnhancedAIRecipeService {
       return this.generateRecipe(request);
 
     } catch (error: unknown) {
-      console.error('Error generating recipe from pantry:', error);
+      logger.error('Error generating recipe from pantry:', 'EnhancedAIRecipeService', error);
       throw error;
     }
   }
@@ -174,7 +175,7 @@ export class EnhancedAIRecipeService {
         const alternative = await this.generateRecipe(request);
         alternatives.push(alternative);
       } catch (error: unknown) {
-        console.error(`Error generating alternative: ${modification}`, error);
+        logger.error(`Error generating alternative: ${modification}`, 'EnhancedAIRecipeService', error);
       }
     }
 
@@ -413,7 +414,7 @@ Responde en formato JSON válido.`);
         timestamp: Date.now()
       }, { ttl: 3600000 }); // Cache for 1 hour
     } catch (error: unknown) {
-      console.error('Error caching recipe:', error);
+      logger.error('Error caching recipe:', 'EnhancedAIRecipeService', error);
     }
   }
 }

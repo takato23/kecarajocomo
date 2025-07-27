@@ -2,6 +2,7 @@
 
 import { createServerClient } from '@supabase/ssr';
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/services/logger';
 
 export async function authMiddleware(request: NextRequest) {
   const res = NextResponse.next();
@@ -101,7 +102,7 @@ export async function authMiddleware(request: NextRequest) {
           return NextResponse.redirect(new URL('/onboarding', request.url));
         }
       } catch (error: unknown) {
-        console.error('Failed to check onboarding status:', error);
+        logger.error('Failed to check onboarding status:', 'auth:authMiddleware', error);
         // If we can't check onboarding status, allow the request to continue
       }
     }

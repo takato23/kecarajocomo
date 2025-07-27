@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { SmartParser, ParsedIngredient } from '@/services/voice/smartParser';
 import { VoiceFeedback } from '@/services/voice/voiceFeedback';
@@ -250,7 +251,7 @@ export const useAdvancedVoiceRecognition = ({
           }
           
         } catch (err: unknown) {
-          console.error('Error processing voice input:', err);
+          logger.error('Error processing voice input:', 'useAdvancedVoiceRecognition', err);
           handleError('Error al procesar el comando');
         } finally {
           setIsProcessing(false);
@@ -265,7 +266,7 @@ export const useAdvancedVoiceRecognition = ({
     };
     
     recognition.onerror = (event) => {
-      console.error('Speech recognition error:', event.error);
+      logger.error('Speech recognition error:', 'useAdvancedVoiceRecognition', event.error);
       
       if (event.error === 'no-speech' && isContinuousMode) {
         // Ignore no-speech errors in continuous mode
@@ -624,7 +625,7 @@ export const useAdvancedVoiceRecognition = ({
         rate: voiceProfile?.voiceSettings?.rate
       });
     } catch (err: unknown) {
-      console.error('Error speaking:', err);
+      logger.error('Error speaking:', 'useAdvancedVoiceRecognition', err);
     } finally {
       setIsSpeaking(false);
     }
@@ -673,7 +674,7 @@ export const useAdvancedVoiceRecognition = ({
       
       updateLevel();
     } catch (err: unknown) {
-      console.error('Error accessing microphone:', err);
+      logger.error('Error accessing microphone:', 'useAdvancedVoiceRecognition', err);
       handleError('No se pudo acceder al micrófono');
     }
   }, []);
@@ -790,7 +791,7 @@ export const useAdvancedVoiceRecognition = ({
       try {
         recognitionRef.current.stop();
       } catch (err: unknown) {
-        console.error('Error stopping recognition:', err);
+        logger.error('Error stopping recognition:', 'useAdvancedVoiceRecognition', err);
       }
     }
     stopAudioAnalysis();

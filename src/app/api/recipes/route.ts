@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth/next";
+import { logger } from '@/lib/logger';
 
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+// authOptions removed - using Supabase Auth;
+import { db } from '@/lib/supabase/database.service';
 import { 
   validateQuery, 
   validateAuthAndBody,
@@ -15,7 +16,7 @@ import {
 
 export const GET = validateQuery(RecipeQuerySchema, async (request) => {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     const query = request.validatedQuery!;
     
     const skip = (query.page - 1) * query.limit;
@@ -26,7 +27,7 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
         {
           OR: [
             { isPublic: true },
-            ...(session?.user?.id ? [{ authorId: session.user.id }] : [])
+            ...(session?.user?.id ? [{ authorId: user.id }] : [])
           ]
         },
         ...(query.search ? [{
@@ -49,17 +50,10 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
     const [recipes, total] = await Promise.all([
       prisma.recipe.findMany({
         where,
-        include: {
-          author: {
-            select: {
-              name: true,
-              image: true
-            }
+        // includes handled by Supabase service
           },
           ingredients: {
-            include: {
-              ingredient: true
-            }
+            // includes handled by Supabase service
           },
           nutritionInfo: true,
           _count: {
@@ -84,10 +78,9 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
       total
     });
   } catch (error: unknown) {
-    console.error("Error fetching recipes:", error);
+    logger.error("Error fetching recipes:", 'API:route', error);
     throw new Error("Failed to fetch recipes");
-  }
-});
+  });
 
 export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
   try {
@@ -103,8 +96,7 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
           name: ing.name.toLowerCase(),
           category: 'other',
           unit: ing.unit
-        }
-      });
+        });
       return {
         ingredientId: ingredient.id,
         quantity: ing.quantity,
@@ -127,10 +119,9 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
     }));
 
     // Create the recipe with transaction
-    const recipe = await prisma.$transaction(async (tx) => {
-      const newRecipe = await tx.recipe.create({
-        data: {
-          title: data.title,
+    const recipe = // TODO: Convert transaction to Supabase
+    // await prisma.$transaction(async (tx) => {
+      const newRecipe = await tx.recipe.create({ title: data.title,
           description: data.description || null,
           prepTimeMinutes: data.prepTimeMinutes,
           cookTimeMinutes: data.cookTimeMinutes,
@@ -163,11 +154,7 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
             }
           } : {})
         },
-        include: {
-          ingredients: {
-            include: {
-              ingredient: true
-            }
+        // includes handled by Supabase service
           },
           instructions: {
             orderBy: {
@@ -181,15 +168,13 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
               image: true
             }
           }
-        }
-      });
+        });
 
       return newRecipe;
     });
 
     return createSuccessResponse(recipe, 201);
   } catch (error: unknown) {
-    console.error("Error creating recipe:", error);
+    logger.error("Error creating recipe:", 'API:route', error);
     throw new Error("Failed to create recipe");
-  }
-});
+  });

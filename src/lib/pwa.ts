@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * PWA Service for managing service worker and offline capabilities
  */
@@ -70,7 +72,7 @@ export class PWAService {
         });
 
       } catch (error: unknown) {
-        console.error('[PWA] Service worker registration failed:', error);
+        logger.error('[PWA] Service worker registration failed:', 'Lib:pwa', error);
       }
     } else if (process.env.NODE_ENV === 'development') {
 
@@ -188,7 +190,7 @@ export class PWAService {
 
         }
       } catch (error: unknown) {
-        console.error('[PWA] Background sync registration failed:', error);
+        logger.error('[PWA] Background sync registration failed:', 'Lib:pwa', error);
       }
     }
   }
@@ -214,7 +216,7 @@ export class PWAService {
         return false;
       }
     } catch (error: unknown) {
-      console.error('[PWA] Install failed:', error);
+      logger.error('[PWA] Install failed:', 'Lib:pwa', error);
       return false;
     }
   }

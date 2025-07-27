@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { logger } from '@/services/logger';
 import { 
   Check, 
   X, 
@@ -94,7 +95,7 @@ export function RecipeAvailabilityCheck({
       const data = await response.json();
       setAvailabilityData(data.data);
     } catch (error: unknown) {
-      console.error('Error checking availability:', error);
+      logger.error('Error checking availability:', 'RecipeAvailabilityCheck', error);
       setError('Failed to check ingredient availability');
     } finally {
       setIsLoading(false);
@@ -132,7 +133,7 @@ export function RecipeAvailabilityCheck({
         onShoppingListGenerated?.(data.data.shopping_list);
       }
     } catch (error: unknown) {
-      console.error('Error generating shopping list:', error);
+      logger.error('Error generating shopping list:', 'RecipeAvailabilityCheck', error);
       setError('Failed to generate shopping list');
     } finally {
       setIsGeneratingShoppingList(false);
@@ -171,7 +172,7 @@ export function RecipeAvailabilityCheck({
       // Refresh availability after consumption
       checkAvailability();
     } catch (error: unknown) {
-      console.error('Error cooking recipe:', error);
+      logger.error('Error cooking recipe:', 'RecipeAvailabilityCheck', error);
       setError('Failed to consume ingredients from pantry');
     }
   };

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { logger } from '@/services/logger';
 
 import { 
   GamificationState, 
@@ -215,7 +216,7 @@ export const useGamificationStore = create<GamificationStore>()(
             
             return false;
           } catch (error: unknown) {
-            console.error('Failed to check level up:', error);
+            logger.error('Failed to check level up:', 'gamification:gamificationStore', error);
             return false;
           }
         },
@@ -268,7 +269,7 @@ export const useGamificationStore = create<GamificationStore>()(
             }
             
           } catch (error: unknown) {
-            console.error('Failed to check achievement progress:', error);
+            logger.error('Failed to check achievement progress:', 'gamification:gamificationStore', error);
           }
         },
 
@@ -286,7 +287,7 @@ export const useGamificationStore = create<GamificationStore>()(
               )
             }));
           } catch (error: unknown) {
-            console.error('Failed to mark achievement as notified:', error);
+            logger.error('Failed to mark achievement as notified:', 'gamification:gamificationStore', error);
           }
         },
 
@@ -326,7 +327,7 @@ export const useGamificationStore = create<GamificationStore>()(
             }
             
           } catch (error: unknown) {
-            console.error('Failed to check badge requirements:', error);
+            logger.error('Failed to check badge requirements:', 'gamification:gamificationStore', error);
           }
         },
 
@@ -495,7 +496,7 @@ export const useGamificationStore = create<GamificationStore>()(
               )
             }));
           } catch (error: unknown) {
-            console.error('Failed to mark notification as read:', error);
+            logger.error('Failed to mark notification as read:', 'gamification:gamificationStore', error);
           }
         },
 

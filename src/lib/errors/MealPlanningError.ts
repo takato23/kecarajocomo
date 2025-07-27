@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * Enhanced error handling system for meal planning
  * Provides structured error management with user-friendly messages and recovery options
@@ -253,7 +255,7 @@ export class ErrorReporter {
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('[MealPlanning Error]', errorData);
+      logger.error('[MealPlanning Error]', 'Lib:MealPlanningError', errorData);
     }
 
     // Send to monitoring service in production

@@ -3,6 +3,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 import { Session } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 const SECURE_COOKIE_OPTIONS = {
   httpOnly: true,
@@ -39,7 +40,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error('Failed to set secure session:', error);
+    logger.error('Failed to set secure session:', 'auth:route', error);
     return NextResponse.json(
       { error: 'Failed to set session' },
       { status: 500 }
@@ -68,7 +69,7 @@ export async function GET(request: NextRequest) {
       expires_at: expiresAt ? parseInt(expiresAt) : null
     });
   } catch (error: unknown) {
-    console.error('Failed to get session:', error);
+    logger.error('Failed to get session:', 'auth:route', error);
     return NextResponse.json(
       { error: 'Failed to get session' },
       { status: 500 }
@@ -92,7 +93,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
-    console.error('Failed to clear session:', error);
+    logger.error('Failed to clear session:', 'auth:route', error);
     return NextResponse.json(
       { error: 'Failed to clear session' },
       { status: 500 }

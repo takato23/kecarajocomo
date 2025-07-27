@@ -1,4 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { logger } from '@/services/logger';
 
 import type { Database } from '@/types/database';
 
@@ -106,7 +107,7 @@ export class PantryManager {
       return pantryItems;
       
     } catch (error: unknown) {
-      console.error('Error agregando items:', error);
+      logger.error('Error agregando items:', 'PantryManager', error);
       throw new Error('Error al agregar items a despensa');
     }
   }
@@ -159,7 +160,7 @@ export class PantryManager {
       return enrichedItems;
       
     } catch (error: unknown) {
-      console.error('Error obteniendo items:', error);
+      logger.error('Error obteniendo items:', 'PantryManager', error);
       throw new Error('Error al obtener items de despensa');
     }
   }
@@ -203,7 +204,7 @@ export class PantryManager {
       if (updateError) throw updateError;
 
     } catch (error: unknown) {
-      console.error('Error actualizando cantidad:', error);
+      logger.error('Error actualizando cantidad:', 'PantryManager', error);
       throw new Error('Error al actualizar cantidad');
     }
   }
@@ -221,7 +222,7 @@ export class PantryManager {
       if (error) throw error;
 
     } catch (error: unknown) {
-      console.error('Error eliminando item:', error);
+      logger.error('Error eliminando item:', 'PantryManager', error);
       throw new Error('Error al eliminar item');
     }
   }
@@ -270,7 +271,7 @@ export class PantryManager {
       return stats;
       
     } catch (error: unknown) {
-      console.error('Error obteniendo estadísticas:', error);
+      logger.error('Error obteniendo estadísticas:', 'PantryManager', error);
       throw new Error('Error al obtener estadísticas');
     }
   }
@@ -317,7 +318,7 @@ export class PantryManager {
       return newIngredient;
       
     } catch (error: unknown) {
-      console.error('Error con ingrediente:', error);
+      logger.error('Error con ingrediente:', 'PantryManager', error);
       throw error;
     }
   }
@@ -354,7 +355,7 @@ export class PantryManager {
         .eq('id', ingredientId);
         
     } catch (error: unknown) {
-      console.error('Error updating ingredient price:', error);
+      logger.error('Error updating ingredient price:', 'PantryManager', error);
     }
   }
   
@@ -483,7 +484,7 @@ export class PantryManager {
       };
       
     } catch (error: unknown) {
-      console.error('Error getting item price info:', error);
+      logger.error('Error getting item price info:', 'PantryManager', error);
       return null;
     }
   }
@@ -546,7 +547,7 @@ export class PantryManager {
       return suggestions;
       
     } catch (error: unknown) {
-      console.error('Error generando sugerencias:', error);
+      logger.error('Error generando sugerencias:', 'PantryManager', error);
       return [];
     }
   }
@@ -644,7 +645,7 @@ export class PantryManager {
       };
       
     } catch (error: unknown) {
-      console.error('Error getting pantry value trend:', error);
+      logger.error('Error getting pantry value trend:', 'PantryManager', error);
       return {
         dates: [],
         values: [],

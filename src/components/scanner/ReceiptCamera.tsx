@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useCallback } from "react";
+import { logger } from '@/services/logger';
 import { 
   Camera, 
   Upload, 
@@ -54,7 +55,7 @@ export default function ReceiptCamera({ onCapture, onClose, isProcessing }: Rece
       }
       
     } catch (err: unknown) {
-      console.error('Camera error:', err);
+      logger.error('Camera error:', 'ReceiptCamera', err);
       setHasPermission(false);
       
       if (err.name === 'NotAllowedError') {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { logger } from '@/services/logger';
 
 import UltraPremiumCalendar from './UltraPremiumCalendar';
 
@@ -23,7 +24,7 @@ export default function UltraPremiumCalendarExample() {
           selectedDate={selectedDate}
           onDateSelect={(date) => {
             setSelectedDate(date);
-            console.log('Selected date:', date);
+            logger.info('Selected date:', 'UltraPremiumCalendar.example', date);
           }}
           className="transform hover:scale-[1.02] transition-transform duration-500"
         />

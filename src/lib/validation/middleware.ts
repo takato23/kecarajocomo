@@ -6,8 +6,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { getServerSession } from 'next-auth/next';
+import { logger } from '@/services/logger';
 
-import { authOptions } from '@/lib/auth';
+// authOptions removed - using Supabase Auth;
 import { MealPlanningError, MealPlanningErrorCodes } from '@/lib/errors/MealPlanningError';
 
 import { validateData, validateQueryParams, ApiResponse } from './schemas';
@@ -60,7 +61,7 @@ export function withValidation<TBody = any, TQuery = any>(
 
       // Authentication check
       if (options.requireAuth) {
-        const session = await getServerSession(authOptions);
+        const user = await getUser();
         if (!session?.user?.id) {
           return createErrorResponse(
             'Authentication required',
@@ -70,9 +71,9 @@ export function withValidation<TBody = any, TQuery = any>(
         }
         
         validatedRequest.user = {
-          id: session.user.id,
-          email: session.user.email!,
-          name: session.user.name || undefined,
+          id: user.id,
+          email: user.email!,
+          name: user.name || undefined,
         };
       }
 
@@ -144,7 +145,7 @@ export function withValidation<TBody = any, TQuery = any>(
       return await handler(validatedRequest, context);
 
     } catch (error: unknown) {
-      console.error('API Error:', error);
+      logger.error('API Error:', 'Lib:middleware', error);
       
       if (error instanceof MealPlanningError) {
         return createErrorResponse(

@@ -1,4 +1,5 @@
 import { parserUtils } from '../parser/parserUtils';
+import { logger } from '@/services/logger';
 
 import { StoreScraper } from './storeScraper';
 import { cacheService } from './cacheService';
@@ -72,7 +73,7 @@ export class SmartScanner {
       };
 
     } catch (error: unknown) {
-      console.error('Smart scanner error:', error);
+      logger.error('Smart scanner error:', 'smartScanner', error);
       return {
         success: false,
         error: 'Error al procesar el código de barras'

@@ -5,6 +5,7 @@
 
 import { v4 as uuidv4 } from 'uuid';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import type {
   Notification,
@@ -278,7 +279,7 @@ export class NotificationManager {
       // Play sound
       await audio.play();
     } catch (error: unknown) {
-      console.warn('Failed to play notification sound:', error);
+      logger.warn('Failed to play notification sound:', 'NotificationManager', error);
     }
   }
 
@@ -307,7 +308,7 @@ export class NotificationManager {
 
       this.speechSynthesis.speak(utterance);
     } catch (error: unknown) {
-      console.warn('Failed to speak notification:', error);
+      logger.warn('Failed to speak notification:', 'NotificationManager', error);
     }
   }
 
@@ -324,7 +325,7 @@ export class NotificationManager {
       
       navigator.vibrate(vibrationPattern);
     } catch (error: unknown) {
-      console.warn('Failed to vibrate device:', error);
+      logger.warn('Failed to vibrate device:', 'NotificationManager', error);
     }
   }
 
@@ -355,7 +356,7 @@ export class NotificationManager {
         pushNotification.close();
       };
     } catch (error: unknown) {
-      console.warn('Failed to show push notification:', error);
+      logger.warn('Failed to show push notification:', 'NotificationManager', error);
     }
   }
 
@@ -451,7 +452,7 @@ export class NotificationManager {
         try {
           await this.showNotification(item.notification, item.options);
         } catch (error: unknown) {
-          console.error('Failed to show queued notification:', error);
+          logger.error('Failed to show queued notification:', 'NotificationManager', error);
           
           // Retry logic
           item.attempts++;
@@ -650,7 +651,7 @@ export class NotificationManager {
         const permission = await Notification.requestPermission();
         permissions.push = permission;
       } catch (error: unknown) {
-        console.error('Failed to request notification permission:', error);
+        logger.error('Failed to request notification permission:', 'NotificationManager', error);
       }
     }
 
@@ -727,7 +728,7 @@ export class NotificationManager {
 
       localStorage.setItem('notification-manager', JSON.stringify(state));
     } catch (error: unknown) {
-      console.warn('Failed to save notification state:', error);
+      logger.warn('Failed to save notification state:', 'NotificationManager', error);
     }
   }
 
@@ -771,7 +772,7 @@ export class NotificationManager {
         this.config = { ...this.config, ...state.config };
       }
     } catch (error: unknown) {
-      console.warn('Failed to load notification state:', error);
+      logger.warn('Failed to load notification state:', 'NotificationManager', error);
       localStorage.removeItem('notification-manager');
     }
   }

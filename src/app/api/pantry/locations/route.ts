@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryLocation, PantryAPIResponse } from '@/features/pantry/types';
 
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
       .order('name');
 
     if (error) {
-      console.error('Error fetching pantry locations:', error);
+      logger.error('Error fetching pantry locations:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry locations' },
         { status: 500 }
@@ -38,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/locations:', error);
+    logger.error('Unexpected error in GET /api/pantry/locations:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -98,7 +99,7 @@ export async function POST(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error creating pantry location:', error);
+      logger.error('Error creating pantry location:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to create pantry location' },
         { status: 500 }
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response, { status: 201 });
   } catch (error: unknown) {
-    console.error('Unexpected error in POST /api/pantry/locations:', error);
+    logger.error('Unexpected error in POST /api/pantry/locations:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

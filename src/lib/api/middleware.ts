@@ -21,7 +21,7 @@ export function withErrorHandler(handler: RouteHandler) {
       const supabase = createRouteHandlerClient<Database>({ cookies });
       const { data: { session } } = await supabase.auth.getSession();
 
-      if (!session) {
+      if (!user) {
         throw new AuthenticationError();
       }
 

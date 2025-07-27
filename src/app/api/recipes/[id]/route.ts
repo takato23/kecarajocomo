@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth/next';
+import { logger } from '@/lib/logger';
 
-import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
+// authOptions removed - using Supabase Auth;
+import { db } from '@/lib/supabase/database.service';
 import { 
   MealPlanningError 
 } from '@/lib/errors/MealPlanningError';
@@ -13,7 +14,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -28,28 +29,23 @@ export async function GET(
     }
 
     // Fetch recipe with ingredients and instructions
-    const recipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      include: {
-        ingredients: {
-          include: {
-            ingredient: true
-          }
+    const recipe = await db.getRecipeById({
+      params.id ,
+      // includes handled by Supabase service
         },
         instructions: {
           orderBy: {
             stepNumber: 'asc'
           }
         }
-      }
-    });
+      });
 
     if (!recipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
     // Check access permissions
-    if (!recipe.isPublic && recipe.userId !== session.user.id) {
+    if (!recipe.isPublic && recipe.userId !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
@@ -58,7 +54,7 @@ export async function GET(
 
     return NextResponse.json(recipe);
   } catch (error: unknown) {
-    console.error('Error fetching recipe:', error);
+    logger.error('Error fetching recipe:', 'API:route', error);
     
     if (error instanceof MealPlanningError) {
       return NextResponse.json(
@@ -79,35 +75,34 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check ownership
-    const existingRecipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      select: { userId: true }
-    });
+    const existingRecipe = await db.getRecipeById({
+      params.id ,
+      select: { userId: true });
 
     if (!existingRecipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
-    if (existingRecipe.userId !== session.user.id) {
+    if (existingRecipe.userId !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const body = await request.json();
     
     // Update recipe with transaction
-    const updatedRecipe = await prisma.$transaction(async (tx) => {
+    const updatedRecipe = // TODO: Convert transaction to Supabase
+    // await prisma.$transaction(async (tx) => {
       // Update recipe
       const recipe = await tx.recipe.update({
-        where: { id: params.id },
-        data: {
-          title: body.title,
+        params.id ,
+        { title: body.title,
           description: body.description,
           prepTimeMinutes: body.prepTimeMinutes,
           cookTimeMinutes: body.cookTimeMinutes,
@@ -116,15 +111,13 @@ export async function PUT(
           imageUrl: body.imageUrl,
           isPublic: body.isPublic,
           updatedAt: new Date()
-        }
-      });
+        });
 
       // Update ingredients if provided
       if (body.ingredients) {
         // Delete existing ingredients
         await tx.recipeIngredient.deleteMany({
-          where: { recipeId: params.id }
-        });
+          where: { recipeId: params.id });
 
         // Insert new ingredients
         if (body.ingredients.length > 0) {
@@ -137,8 +130,7 @@ export async function PUT(
                 create: { 
                   name: ing.name,
                   category: 'other'
-                }
-              });
+                });
 
               return {
                 recipeId: params.id,
@@ -162,8 +154,7 @@ export async function PUT(
       if (body.instructions) {
         // Delete existing instructions
         await tx.recipeInstruction.deleteMany({
-          where: { recipeId: params.id }
-        });
+          where: { recipeId: params.id });
 
         // Insert new instructions
         if (body.instructions.length > 0) {
@@ -190,7 +181,7 @@ export async function PUT(
 
     return NextResponse.json(updatedRecipe);
   } catch (error: unknown) {
-    console.error('Error updating recipe:', error);
+    logger.error('Error updating recipe:', 'API:route', error);
     
     if (error instanceof MealPlanningError) {
       return NextResponse.json(
@@ -211,44 +202,41 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check ownership
-    const recipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      select: { userId: true, title: true }
-    });
+    const recipe = await db.getRecipeById({
+      params.id ,
+      select: { userId: true, title: true });
 
     if (!recipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
-    if (recipe.userId !== session.user.id) {
+    if (recipe.userId !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     // Delete recipe with transaction (cascade will handle related records)
-    await prisma.$transaction(async (tx) => {
+    // TODO: Convert transaction to Supabase
+    // await prisma.$transaction(async (tx) => {
       // Delete related records first
       await tx.recipeIngredient.deleteMany({
-        where: { recipeId: params.id }
-      });
+        where: { recipeId: params.id });
 
       await tx.recipeInstruction.deleteMany({
-        where: { recipeId: params.id }
-      });
+        where: { recipeId: params.id });
 
       await tx.favoriteRecipe.deleteMany({
-        where: { recipeId: params.id }
-      });
+        where: { recipeId: params.id });
 
       // Delete the recipe itself
       await tx.recipe.delete({
-        where: { id: params.id }
+        params.id 
       });
     });
 
@@ -261,7 +249,7 @@ export async function DELETE(
       message: 'Recipe deleted successfully' 
     });
   } catch (error: unknown) {
-    console.error('Error deleting recipe:', error);
+    logger.error('Error deleting recipe:', 'API:route', error);
     
     if (error instanceof MealPlanningError) {
       return NextResponse.json(

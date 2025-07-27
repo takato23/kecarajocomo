@@ -4,6 +4,7 @@ import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertCircle, RefreshCw, User, Settings, Database, WifiOff, Eye, EyeOff } from 'lucide-react';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { iOS26LiquidCard } from '@/components/ios26/iOS26LiquidCard';
 import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
@@ -95,7 +96,7 @@ export class ProfileErrorBoundary extends Component<ProfileErrorBoundaryProps, P
 
     // Log to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('[ProfileErrorBoundary]', errorData);
+      logger.error('[ProfileErrorBoundary]', 'ProfileErrorBoundary', errorData);
     }
 
     // Send to monitoring service in production

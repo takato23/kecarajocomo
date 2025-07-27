@@ -4,6 +4,7 @@
  */
 
 import { ConversationEntry, VoiceCommand, VoiceContext } from './types';
+import { logger } from '@/services/logger';
 
 export class ConversationContextManager {
   private conversationHistory: ConversationEntry[] = [];
@@ -254,7 +255,7 @@ export class ConversationContextManager {
         }));
       }
     } catch (error: unknown) {
-      console.error('Failed to import conversation history:', error);
+      logger.error('Failed to import conversation history:', 'ConversationContextManager', error);
     }
   }
 }

@@ -32,13 +32,22 @@ export function ThemeProvider({
   storageKey = 'ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(
-    () => (typeof window !== 'undefined' ? (localStorage?.getItem(storageKey) as Theme) || defaultTheme : defaultTheme)
-  );
-
+  const [mounted, setMounted] = useState(false);
+  const [theme, setTheme] = useState<Theme>(defaultTheme);
   const [effectiveTheme, setEffectiveTheme] = useState<'dark' | 'light'>('light');
 
+  // Handle initial theme on mount
   useEffect(() => {
+    setMounted(true);
+    const storedTheme = localStorage?.getItem(storageKey) as Theme;
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, [storageKey]);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     const root = window.document.documentElement;
 
     root.classList.remove('light', 'dark');
@@ -57,11 +66,11 @@ export function ThemeProvider({
 
     root.classList.add(resolvedTheme);
     setEffectiveTheme(resolvedTheme);
-  }, [theme]);
+  }, [theme, mounted]);
 
   // Listen for system theme changes
   useEffect(() => {
-    if (theme !== 'system') return;
+    if (!mounted || theme !== 'system') return;
 
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleChange = (e: MediaQueryListEvent) => {
@@ -74,7 +83,7 @@ export function ThemeProvider({
 
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
-  }, [theme]);
+  }, [theme, mounted]);
 
   const toggleTheme = () => {
     const newTheme = effectiveTheme === 'dark' ? 'light' : 'dark';

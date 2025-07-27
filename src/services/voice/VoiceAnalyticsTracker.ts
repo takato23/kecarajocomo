@@ -4,6 +4,7 @@
  */
 
 import { VoiceCommand, VoiceIntent, VoiceAnalytics } from './types';
+import { logger } from '@/services/logger';
 
 interface CommandMetrics {
   command: VoiceCommand;
@@ -62,7 +63,7 @@ export class VoiceAnalyticsTracker {
 
     // Log for debugging
     if (!success) {
-      console.error('Voice command failed:', {
+      logger.error('Voice command failed:', 'VoiceAnalyticsTracker', {
         intent: command.intent,
         transcript: command.transcript,
         error: errorReason

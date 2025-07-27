@@ -1,6 +1,7 @@
 import { Decimal } from '@prisma/client/runtime/library';
+import { logger } from '@/services/logger';
 
-import { prisma } from '@/lib/prisma';
+import { db } from '@/lib/supabase/database.service';
 
 export interface PriceInfo {
   productId: string;
@@ -46,15 +47,14 @@ export class PriceTracker {
   ): Promise<void> {
     try {
       await prisma.priceHistory.create({
-        data: {
-          productId,
+        { productId,
           storeId,
           price: new Decimal(price),
           source
         }
       });
     } catch (error: unknown) {
-      console.error('Error tracking price:', error);
+      logger.error('Error tracking price:', 'priceTracker', error);
       throw error;
     }
   }
@@ -75,7 +75,7 @@ export class PriceTracker {
         }))
       });
     } catch (error: unknown) {
-      console.error('Error tracking multiple prices:', error);
+      logger.error('Error tracking multiple prices:', 'priceTracker', error);
       throw error;
     }
   }
@@ -91,9 +91,7 @@ export class PriceTracker {
           recordedAt: { gte: since }
         },
         orderBy: { recordedAt: 'desc' },
-        include: {
-          store: true
-        }
+        // includes handled by Supabase service
       });
       
       return history.map(h => ({
@@ -104,7 +102,7 @@ export class PriceTracker {
         recordedAt: h.recordedAt
       }));
     } catch (error: unknown) {
-      console.error('Error fetching price history:', error);
+      logger.error('Error fetching price history:', 'priceTracker', error);
       return [];
     }
   }
@@ -132,9 +130,7 @@ export class PriceTracker {
           productId: { in: productIds },
           recordedAt: { gte: since }
         },
-        include: {
-          store: true
-        },
+        // includes handled by Supabase service,
         orderBy: { price: 'asc' }
       });
       
@@ -152,7 +148,7 @@ export class PriceTracker {
         }
       });
     } catch (error: unknown) {
-      console.error('Error fetching lowest prices:', error);
+      logger.error('Error fetching lowest prices:', 'priceTracker', error);
     }
     
     return lowestPrices;

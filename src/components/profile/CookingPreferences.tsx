@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   ChefHat,
   Clock,
@@ -110,7 +111,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar nivel de habilidad');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -132,7 +133,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar tiempo disponible');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -156,7 +157,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar métodos de cocina');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -180,7 +181,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar herramientas de cocina');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -204,7 +205,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar tipos de comida');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -224,7 +225,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar presupuesto');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -243,7 +244,7 @@ export const CookingPreferences: React.FC<CookingPreferencesProps> = ({
       });
     } catch (err) {
       setError('Error al actualizar preferencias de planificación');
-      console.error(err);
+      logger.error(err, 'CookingPreferences');
     } finally {
       setIsUpdating(false);
     }

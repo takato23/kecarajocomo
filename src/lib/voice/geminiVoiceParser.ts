@@ -1,4 +1,5 @@
 import { VoiceCommand } from '@/app/api/parse-voice-command/route';
+import { logger } from '@/services/logger';
 
 export interface GeminiParseResult {
   commands: VoiceCommand[];
@@ -31,7 +32,7 @@ export async function parseWithGemini(transcript: string): Promise<GeminiParseRe
       success: true
     };
   } catch (error: unknown) {
-    console.error('Gemini parsing failed:', error);
+    logger.error('Gemini parsing failed:', 'Lib:geminiVoiceParser', error);
     
     return {
       commands: [],

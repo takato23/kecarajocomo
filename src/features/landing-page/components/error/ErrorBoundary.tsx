@@ -1,5 +1,6 @@
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { motion } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 
@@ -52,7 +53,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   private logErrorToService = (error: Error, errorInfo: ErrorInfo) => {
     // In a real app, you would send this to your error tracking service
-    console.error('ErrorBoundary caught an error:', error, errorInfo);
+    logger.error('ErrorBoundary caught an error:', 'ErrorBoundary', error, errorInfo);
     
     // Example: Send to error tracking service
     // errorTrackingService.logError({
@@ -285,7 +286,7 @@ export const useErrorHandler = () => {
 
   React.useEffect(() => {
     if (error) {
-      console.error('Component error:', error);
+      logger.error('Component error:', 'ErrorBoundary', error);
       // Log to error tracking service
     }
   }, [error]);

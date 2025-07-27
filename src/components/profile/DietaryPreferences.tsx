@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Apple, 
   Cookie, 
@@ -139,7 +140,7 @@ export const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({
       await onUpdate({ dietaryRestrictions: updated });
     } catch (err) {
       setError('Error al actualizar restricciones dietéticas');
-      console.error(err);
+      logger.error(err, 'DietaryPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -158,7 +159,7 @@ export const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({
       await onUpdate({ allergies: updated });
     } catch (err) {
       setError('Error al actualizar alergias');
-      console.error(err);
+      logger.error(err, 'DietaryPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -177,7 +178,7 @@ export const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({
       await onUpdate({ cuisinePreferences: updated });
     } catch (err) {
       setError('Error al actualizar preferencias de cocina');
-      console.error(err);
+      logger.error(err, 'DietaryPreferences');
     } finally {
       setIsUpdating(false);
     }
@@ -196,7 +197,7 @@ export const DietaryPreferences: React.FC<DietaryPreferencesProps> = ({
       await onUpdate({ nutritionGoals: updated });
     } catch (err) {
       setError('Error al actualizar objetivos nutricionales');
-      console.error(err);
+      logger.error(err, 'DietaryPreferences');
     } finally {
       setIsUpdating(false);
     }

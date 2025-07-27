@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useCallback, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 interface UseSimpleVoiceRecognitionReturn {
   isListening: boolean;
@@ -93,7 +94,7 @@ export function useSimpleVoiceRecognition(): UseSimpleVoiceRecognitionReturn {
     };
 
     recognition.onerror = (event: any) => {
-      console.error('Voice recognition error:', event.error);
+      logger.error('Voice recognition error:', 'useSimpleVoiceRecognition', event.error);
       setIsListening(false);
       isListeningRef.current = false;
       
@@ -140,7 +141,7 @@ export function useSimpleVoiceRecognition(): UseSimpleVoiceRecognitionReturn {
       stream.getTracks().forEach(track => track.stop());
       return true;
     } catch (error: unknown) {
-      console.error('Microphone permission denied:', error);
+      logger.error('Microphone permission denied:', 'useSimpleVoiceRecognition', error);
       return false;
     }
   };
@@ -169,7 +170,7 @@ export function useSimpleVoiceRecognition(): UseSimpleVoiceRecognitionReturn {
     try {
       recognitionRef.current.start();
     } catch (e: unknown) {
-      console.error('Error starting recognition:', e);
+      logger.error('Error starting recognition:', 'useSimpleVoiceRecognition', e);
     }
   }, [isListening]);
 
@@ -179,7 +180,7 @@ export function useSimpleVoiceRecognition(): UseSimpleVoiceRecognitionReturn {
     try {
       recognitionRef.current.stop();
     } catch (e: unknown) {
-      console.error('Error stopping recognition:', e);
+      logger.error('Error stopping recognition:', 'useSimpleVoiceRecognition', e);
     }
   }, [isListening]);
 

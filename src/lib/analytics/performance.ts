@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * Performance Monitoring & Analytics
  * Real-time performance tracking and optimization
@@ -208,7 +210,7 @@ class PerformanceMonitor {
         body: JSON.stringify({ metrics: metricsToSend }),
       });
     } catch (error: unknown) {
-      console.error('Failed to send performance metrics:', error);
+      logger.error('Failed to send performance metrics:', 'Lib:performance', error);
       // Re-add metrics to retry later
       this.metrics.unshift(...metricsToSend);
     }
@@ -227,7 +229,7 @@ class PerformanceMonitor {
         body: JSON.stringify({ metrics: metricsToSend }),
       });
     } catch (error: unknown) {
-      console.error('Failed to send AI performance metrics:', error);
+      logger.error('Failed to send AI performance metrics:', 'Lib:performance', error);
       this.aiMetrics.unshift(...metricsToSend);
     }
   }
@@ -245,7 +247,7 @@ class PerformanceMonitor {
         body: JSON.stringify({ metrics: metricsToSend }),
       });
     } catch (error: unknown) {
-      console.error('Failed to send database performance metrics:', error);
+      logger.error('Failed to send database performance metrics:', 'Lib:performance', error);
       this.dbMetrics.unshift(...metricsToSend);
     }
   }

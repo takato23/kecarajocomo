@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { enhancedStoreScraper, StoreProduct } from '@/lib/services/enhancedStoreScraper';
 import { parseMultipleIngredients, ParsedIngredient } from '@/lib/services/ingredientParser';
@@ -68,7 +69,7 @@ export function usePriceIntegration(options: UsePriceIntegrationOptions = {}) {
             products
           };
         } catch (error: unknown) {
-          console.error(`Error searching for ${ingredient.simplifiedQuery}:`, error);
+          logger.error(`Error searching for ${ingredient.simplifiedQuery}:`, 'usePriceIntegration', error);
           return {
             ingredient,
             products: []
@@ -151,7 +152,7 @@ export function usePriceIntegration(options: UsePriceIntegrationOptions = {}) {
 
       return result;
     } catch (error: unknown) {
-      console.error('Price optimization error:', error);
+      logger.error('Price optimization error:', 'usePriceIntegration', error);
       if (showNotifications) {
         toast.error('Error al optimizar precios');
       }
@@ -221,7 +222,7 @@ export function usePriceIntegration(options: UsePriceIntegrationOptions = {}) {
 
       return bestStore;
     } catch (error: unknown) {
-      console.error('Error finding best store:', error);
+      logger.error('Error finding best store:', 'usePriceIntegration', error);
       return null;
     }
   }, [optimizePrices]);
@@ -330,7 +331,7 @@ export function usePriceIntegration(options: UsePriceIntegrationOptions = {}) {
 
       return route;
     } catch (error: unknown) {
-      console.error('Error generating shopping route:', error);
+      logger.error('Error generating shopping route:', 'usePriceIntegration', error);
       return [];
     }
   }, [optimizePrices, showNotifications]);

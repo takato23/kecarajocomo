@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { usePantryStore } from '../store/pantryStore';
 
@@ -79,7 +80,7 @@ export function usePantryNotifications(): UseNotificationsReturn {
       setHasPermission(granted);
       return granted;
     } catch (error: unknown) {
-      console.error('Error requesting notification permission:', error);
+      logger.error('Error requesting notification permission:', 'usePantryNotifications', error);
       return false;
     }
   }, []);
@@ -110,7 +111,7 @@ export function usePantryNotifications(): UseNotificationsReturn {
         notification.close();
       };
     } catch (error: unknown) {
-      console.error('Error showing notification:', error);
+      logger.error('Error showing notification:', 'usePantryNotifications', error);
     }
   }, [hasPermission]);
 

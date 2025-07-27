@@ -2,6 +2,7 @@ import { forwardRef, InputHTMLAttributes, useState, useRef, useEffect } from 're
 import { cva, type VariantProps } from 'class-variance-authority';
 import { motion, AnimatePresence } from 'framer-motion';
 import { MicrophoneIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 import { useVoiceService } from '@/hooks/useVoiceService';
@@ -95,7 +96,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
         }
       },
       onError: (error) => {
-        console.error('Voice input error:', error);
+        logger.error('Voice input error:', 'Input', error);
       },
     });
     

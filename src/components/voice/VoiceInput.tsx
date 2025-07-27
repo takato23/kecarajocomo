@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Mic, 
   MicOff, 
@@ -50,7 +51,7 @@ export function VoiceInput({
     continuous: true,
     interimResults: true,
     onCommand: (command) => {
-      console.log('Voice command received:', command);
+      logger.info('Voice command received:', 'VoiceInput', command);
     },
     onEnd: () => {
       if (transcript) {
@@ -82,7 +83,7 @@ export function VoiceInput({
         onResult(parsedIngredients);
       }
     } catch (error) {
-      console.error('Error parsing voice input:', error);
+      logger.error('Error parsing voice input:', 'VoiceInput', error);
     }
   };
 

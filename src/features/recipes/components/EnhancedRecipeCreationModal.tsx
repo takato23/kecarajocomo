@@ -203,7 +203,7 @@ export const EnhancedRecipeCreationModal: React.FC<EnhancedRecipeCreationModalPr
       });
 
     } catch (error: unknown) {
-      console.error('Error generating recipe:', error);
+      logger.error('Error generating recipe:', 'EnhancedRecipeCreationModal', error);
       setMode('ai');
       
       // Track error
@@ -271,7 +271,7 @@ export const EnhancedRecipeCreationModal: React.FC<EnhancedRecipeCreationModalPr
       }
 
     } catch (error: unknown) {
-      console.error('Error scanning photo:', error);
+      logger.error('Error scanning photo:', 'EnhancedRecipeCreationModal', error);
       setMode('scan');
       
       // Track error
@@ -343,7 +343,7 @@ export const EnhancedRecipeCreationModal: React.FC<EnhancedRecipeCreationModalPr
       onClose();
 
     } catch (error: unknown) {
-      console.error('Error importing recipes:', error);
+      logger.error('Error importing recipes:', 'EnhancedRecipeCreationModal', error);
       setMode('import');
       
       // Track error
@@ -416,7 +416,7 @@ export const EnhancedRecipeCreationModal: React.FC<EnhancedRecipeCreationModalPr
       onClose();
 
     } catch (error: unknown) {
-      console.error('Error in bulk import:', error);
+      logger.error('Error in bulk import:', 'EnhancedRecipeCreationModal', error);
       setMode('import');
       
       // Track error

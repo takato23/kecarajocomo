@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { logger } from '@/services/logger';
 import { 
   ArrowLeft, 
   Save,
@@ -96,7 +97,7 @@ export default function AddPantryItemPage() {
         if (response.ok) {
           results.push(await response.json());
         } else {
-          console.error(`Error adding item: ${item.name}`);
+          logger.error(`Error adding item: ${item.name}`, 'Page:page');
         }
       }
       
@@ -113,7 +114,7 @@ export default function AddPantryItemPage() {
       router.push("/pantry");
       
     } catch (error: unknown) {
-      console.error("Error processing receipt items:", error);
+      logger.error("Error processing receipt items:", 'Page:page', error);
       alert("Error procesando los items del ticket");
     } finally {
       setLoading(false);
@@ -144,7 +145,7 @@ export default function AddPantryItemPage() {
 
       router.push("/pantry");
     } catch (error: unknown) {
-      console.error("Error adding item:", error);
+      logger.error("Error adding item:", 'Page:page', error);
       alert("Error al agregar el item. Intenta de nuevo.");
     } finally {
       setLoading(false);

@@ -1,75 +1,38 @@
 'use client';
 
-import React, { useState, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import { logger } from '@/services/logger';
 import {
   Calendar,
   Sparkles,
-  ChevronLeft,
-  ChevronRight,
-  Coffee,
-  Sun,
-  Moon,
-  Sunrise,
-  MoreVertical,
-  X,
+  TrendingUp,
   ShoppingCart,
-  FileText
+  LogIn
 } from 'lucide-react';
 import { toast } from 'sonner';
+import { startOfWeek, format } from 'date-fns';
+import { useRouter } from 'next/navigation';
 
 import { cn } from '@/lib/utils';
-import { useTheme } from '@/contexts/ThemeContext';
-import { LoadingSpinner } from '@/components/ui/enhanced-loading';
-import { iOS26EnhancedCard } from '@/components/ios26/iOS26EnhancedCard';
-import { iOS26LiquidButton } from '@/components/ios26/iOS26LiquidButton';
+import { 
+  KeCard, 
+  KeCardHeader, 
+  KeCardTitle, 
+  KeCardContent,
+  KeButton 
+} from '@/components/ui';
+import { useAuth } from '@/components/auth/AuthProvider';
 
 import { useMealPlanningStore } from '../store/useMealPlanningStore';
 import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
 import type { MealType } from '../types';
 
-import { MealSlot } from './MealSlot';
+import { MobileGrid } from './MobileGrid';
+import { DesktopGrid } from './DesktopGrid';
 import { MealPlannerSkeleton } from './MealPlannerSkeleton';
 import { MealPlannerError } from './MealPlannerError';
-
 const MEAL_TYPES: MealType[] = ['desayuno', 'almuerzo', 'merienda', 'cena'];
-
-const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
-
-const mealConfigs = {
-  desayuno: {
-    label: 'Desayuno',
-    icon: Coffee,
-    emoji: '☕',
-    gradient: 'from-amber-400 via-orange-400 to-yellow-400',
-    glowColor: 'rgba(251, 191, 36, 0.4)',
-    time: '7:00 - 10:00'
-  },
-  almuerzo: {
-    label: 'Almuerzo',
-    icon: Sun,
-    emoji: '☀️',
-    gradient: 'from-blue-400 via-cyan-400 to-teal-400',
-    glowColor: 'rgba(59, 130, 246, 0.4)',
-    time: '12:00 - 14:00'
-  },
-  merienda: {
-    label: 'Merienda',
-    icon: Sunrise,
-    emoji: '🍎',
-    gradient: 'from-green-400 via-emerald-400 to-lime-400',
-    glowColor: 'rgba(34, 197, 94, 0.4)',
-    time: '16:00 - 17:00'
-  },
-  cena: {
-    label: 'Cena',
-    icon: Moon,
-    emoji: '🌙',
-    gradient: 'from-purple-400 via-pink-400 to-rose-400',
-    glowColor: 'rgba(168, 85, 247, 0.4)',
-    time: '19:00 - 21:00'
-  }
-};
 
 interface MealPlannerGridProps {
   onRecipeSelect?: (slot: { dayOfWeek: number; mealType: MealType }) => void;
@@ -77,61 +40,127 @@ interface MealPlannerGridProps {
   onExportWeek?: () => void;
 }
 
+// Hook to detect mobile screen
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  return isMobile;
+}
+
+// Adapter function to convert store data to MealCard format
+function adaptMealDataForGrid(currentWeekPlan: any, getSlotForDay: any) {
+  const weekPlan: any = {};
+  
+  // Handle null currentWeekPlan
+  if (!currentWeekPlan) {
+    // Return empty structure
+    for (let day = 0; day < 7; day++) {
+      weekPlan[day] = {};
+      MEAL_TYPES.forEach((mealType) => {
+        weekPlan[day][mealType] = null;
+      });
+    }
+    return weekPlan;
+  }
+  
+  for (let day = 0; day < 7; day++) {
+    weekPlan[day] = {};
+    
+    MEAL_TYPES.forEach((mealType) => {
+      const slot = getSlotForDay(day, mealType);
+      
+      if (slot?.recipe) {
+        weekPlan[day][mealType] = {
+          id: slot.recipeId,
+          title: slot.recipe.name || 'Receta sin nombre',
+          ingredients: slot.recipe.ingredients || [],
+          macros: {
+            kcal: slot.recipe.nutrition?.calories || 0,
+            protein_g: slot.recipe.nutrition?.protein || 0,
+            carbs_g: slot.recipe.nutrition?.carbs || 0,
+            fat_g: slot.recipe.nutrition?.fat || 0
+          },
+          time_minutes: (slot.recipe.prepTime || 0) + (slot.recipe.cookTime || 0),
+          cost_estimate_ars: slot.estimatedCost || 0,
+          image_url: slot.recipe.image,
+          tags: slot.recipe.tags || []
+        };
+      }
+    });
+  }
+  
+  return weekPlan;
+}
+
 export default function MealPlannerGrid({
   onRecipeSelect,
   onShoppingList,
   onExportWeek
 }: MealPlannerGridProps) {
-  const { effectiveTheme } = useTheme();
-  const isDarkMode = effectiveTheme === 'dark';
+  const isMobile = useIsMobile();
+  const router = useRouter();
+  const { user: authUser } = useAuth();
   
   const {
     currentWeekPlan,
     isLoading,
     error,
-    selectedSlots,
     getSlotForDay,
     getWeekSummary,
     setActiveModal,
-    toggleSlotSelection,
     updateMealSlot,
     removeMealFromSlot,
-    generateWeekWithAI,
     clearWeek,
-    userPreferences
+    loadWeekPlan
   } = useMealPlanningStore();
 
   const {
     generateWeeklyPlan,
     isGenerating: isGeminiGenerating,
     applyGeneratedPlan,
-    lastGeneratedPlan,
-    confidence
+    confidence,
+    generateSingleMeal
   } = useGeminiMealPlanner();
   
-  const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
-  const [currentDayIndex, setCurrentDayIndex] = useState(() => new Date().getDay());
-  const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const currentDate = new Date();
+
+  // Load week plan on mount
+  useEffect(() => {
+    const loadInitialWeekPlan = async () => {
+      try {
+        const startDate = format(startOfWeek(currentDate, { weekStartsOn: 1 }), 'yyyy-MM-dd');
+        await loadWeekPlan(startDate);
+      } catch (error) {
+        logger.error('Failed to load initial week plan:', 'MealPlannerGrid', error);
+      } finally {
+        setIsInitializing(false);
+      }
+    };
+
+    loadInitialWeekPlan();
+  }, [loadWeekPlan]); // Include loadWeekPlan in deps
 
   const weekSummary = useMemo(() => getWeekSummary(), [getWeekSummary]);
+  
+  // Adapt data for the grid components
+  const adaptedWeekPlan = useMemo(() => 
+    adaptMealDataForGrid(currentWeekPlan, getSlotForDay), 
+    [currentWeekPlan, getSlotForDay]
+  );
 
-  const handleSlotClick = useCallback((slot: any) => {
-    if (slot.recipeId) {
-      setActiveModal('recipe-detail');
-    } else {
-      onRecipeSelect?.({ dayOfWeek: slot.dayOfWeek, mealType: slot.mealType });
-    }
-  }, [onRecipeSelect, setActiveModal]);
-
-  const handleSlotClear = useCallback(async (slot: any) => {
-    await removeMealFromSlot(slot.id);
-  }, [removeMealFromSlot]);
-
-  const handleSlotLock = useCallback(async (slot: any, locked: boolean) => {
-    await updateMealSlot(slot.id, { isLocked: locked });
-  }, [updateMealSlot]);
-
+  // AI Generate Week handler
   const handleAIGenerate = useCallback(async () => {
     setIsGenerating(true);
     try {
@@ -148,7 +177,7 @@ export default function MealPlannerGrid({
         });
       }
     } catch (error) {
-      console.error('Failed to generate AI plan:', error);
+      logger.error('Failed to generate AI plan:', 'MealPlannerGrid', error);
       toast.error('Error al generar el plan', {
         description: 'Por favor, intenta de nuevo'
       });
@@ -157,25 +186,20 @@ export default function MealPlannerGrid({
     }
   }, [generateWeeklyPlan, applyGeneratedPlan, confidence]);
 
-  const getCurrentDate = useCallback((dayIndex: number) => {
-    const today = new Date();
-    const currentDay = today.getDay();
-    const mondayOffset = currentDay === 0 ? -6 : 1 - currentDay;
-    const monday = new Date(today);
-    monday.setDate(today.getDate() + mondayOffset);
-    
-    const targetDate = new Date(monday);
-    targetDate.setDate(monday.getDate() + dayIndex);
-    return targetDate;
+  // Meal edit handler
+  const handleMealEdit = useCallback((meal: any, slot: any) => {
+    // TODO: Implement meal edit modal
+    toast.info('Función de edición en desarrollo');
   }, []);
 
-  const isToday = useCallback((dayIndex: number) => {
-    const date = getCurrentDate(dayIndex);
-    const today = new Date();
-    return date.toDateString() === today.toDateString();
-  }, [getCurrentDate]);
+  // Meal duplicate handler
+  const handleMealDuplicate = useCallback((meal: any, slot: any) => {
+    // TODO: Implement meal duplication
+    toast.info('Función de duplicación en desarrollo');
+  }, []);
 
-  if (isLoading && !currentWeekPlan) {
+  // Show skeleton on initial load or when loading without existing data
+  if (isInitializing || (isLoading && !currentWeekPlan)) {
     return <MealPlannerSkeleton />;
   }
 
@@ -184,20 +208,10 @@ export default function MealPlannerGrid({
   }
 
   return (
-    <div className="relative">
-      {/* Main container with enhanced glassmorphism */}
-      <iOS26EnhancedCard
-        variant="aurora"
-        elevation="high"
-        className="relative overflow-hidden"
-      >
-        {/* Animated background gradient */}
-        <div className="absolute inset-0 opacity-5">
-          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 animate-gradient-shift" />
-        </div>
-        
-        {/* Header */}
-        <div className="px-4 md:px-6 py-4 md:py-5 border-b border-white/10">
+    <div className="space-y-6">
+      {/* Header Stats Card */}
+      <KeCard variant="default">
+        <KeCardHeader>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <motion.div
@@ -208,343 +222,166 @@ export default function MealPlannerGrid({
                 <Calendar className="w-5 h-5 text-white" />
               </motion.div>
               <div>
-                <h3 className="text-lg md:text-xl font-bold text-gray-900 dark:text-gray-100">
+                <KeCardTitle className="text-xl">
                   Planificador de Comidas
-                </h3>
-                <p className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
+                </KeCardTitle>
+                <p className="text-sm text-gray-600 dark:text-gray-400">
                   {weekSummary.totalMeals} de 28 comidas planificadas
                 </p>
               </div>
             </div>
-            
+
             {/* Action buttons */}
-            <div className="flex items-center gap-2">
-              <iOS26LiquidButton
-                variant="glass"
-                size="sm"
-                leftIcon={<Sparkles className="w-4 h-4" />}
-                onClick={handleAIGenerate}
-                disabled={isGenerating || isGeminiGenerating}
-                className="hidden md:flex"
-              >
-                {(isGenerating || isGeminiGenerating) ? 'Generando...' : 'Generar Semana'}
-              </iOS26LiquidButton>
-              
-              <iOS26LiquidButton
-                variant="glass"
+            <div className="flex gap-2">
+              <KeButton
+                variant="outline"
                 size="sm"
                 leftIcon={<ShoppingCart className="w-4 h-4" />}
                 onClick={onShoppingList}
+                className="hidden md:flex"
               >
-                Lista
-              </iOS26LiquidButton>
-              
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors md:hidden"
-              >
-                <MoreVertical className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-              </motion.button>
+                Lista de compras
+              </KeButton>
             </div>
           </div>
-          
+        </KeCardHeader>
+
+        <KeCardContent>
+          {/* AI Generate Button or Login Prompt */}
+          {!authUser ? (
+            <div className="mb-6">
+              <KeButton
+                variant="outline"
+                size="lg"
+                leftIcon={<LogIn className="w-5 h-5" />}
+                onClick={() => router.push('/login')}
+                className="w-full"
+              >
+                Inicia sesión para generar planes con IA
+              </KeButton>
+            </div>
+          ) : weekSummary.totalMeals < 14 && (
+            <div className="mb-6">
+              <KeButton
+                variant="primary"
+                size="lg"
+                leftIcon={<Sparkles className="w-5 h-5" />}
+                onClick={handleAIGenerate}
+                disabled={isGenerating || isGeminiGenerating}
+                loading={isGenerating || isGeminiGenerating}
+                className="w-full"
+              >
+                {(isGenerating || isGeminiGenerating) 
+                  ? 'Generando plan con IA...' 
+                  : 'Generar Plan de Semana con IA'
+                }
+              </KeButton>
+            </div>
+          )}
+
+          {/* Confidence indicator */}
+          {confidence > 0 && (
+            <div className="mb-4 flex items-center justify-between text-sm">
+              <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
+                <Sparkles className="w-4 h-4 text-purple-500" />
+                <span>Plan generado por IA</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-20 h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-green-400 to-blue-500 rounded-full"
+                    animate={{ width: `${confidence * 100}%` }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                  />
+                </div>
+                <span className="font-medium">
+                  {Math.round(confidence * 100)}%
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* Progress bar */}
-          <div className="mt-4">
+          <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              <span className="text-sm font-medium text-gray-600 dark:text-gray-400">
                 Progreso de la semana
               </span>
-              <span className="text-xs font-bold text-gray-900 dark:text-gray-100">
+              <span className="text-sm font-bold text-gray-900 dark:text-gray-100">
                 {weekSummary.completionPercentage}%
               </span>
             </div>
-            <div className="relative h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
               <motion.div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-                initial={{ width: 0 }}
+                className="bg-gradient-to-r from-blue-500 to-purple-500 h-2 rounded-full"
                 animate={{ width: `${weekSummary.completionPercentage}%` }}
-                transition={{ duration: 1, ease: "easeOut" }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
               />
             </div>
           </div>
-        </div>
-        
-        {/* Desktop view */}
-        <div className="hidden md:block p-4 md:p-6">
-          {/* Days header */}
-          <div className="grid grid-cols-7 gap-3 mb-4">
-            {DAYS.map((day, index) => (
-              <div key={day} className="text-center">
-                <motion.div
-                  className={cn(
-                    "relative px-3 py-2 rounded-xl transition-all duration-300",
-                    isToday(index) 
-                      ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white shadow-lg scale-105" 
-                      : "bg-white/10 text-gray-700 dark:text-gray-300"
-                  )}
-                  whileHover={{ scale: isToday(index) ? 1.05 : 1.02 }}
-                >
-                  <div className="font-semibold text-sm">{day}</div>
-                  <div className="text-xs mt-1">
-                    {getCurrentDate(index).getDate()}
-                  </div>
-                  {isToday(index) && (
-                    <motion.div
-                      className="absolute -inset-0.5 bg-gradient-to-r from-blue-400 to-purple-400 rounded-xl opacity-50 blur"
-                      animate={{ scale: [1, 1.1, 1] }}
-                      transition={{ duration: 2, repeat: Infinity }}
-                    />
-                  )}
-                </motion.div>
+
+          {/* Week Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <TrendingUp className="w-4 h-4 text-orange-500" />
+                <span className="text-sm font-medium">Comidas</span>
               </div>
-            ))}
-          </div>
-          
-          {/* Meal slots grid */}
-          <div className="space-y-3">
-            {MEAL_TYPES.map((mealType) => {
-              const config = mealConfigs[mealType];
-              return (
-                <div key={mealType}>
-                  {/* Meal type header */}
-                  <div className="flex items-center gap-2 mb-2">
-                    <div className={cn(
-                      "w-8 h-8 rounded-lg flex items-center justify-center",
-                      "bg-gradient-to-br shadow-md",
-                      config.gradient
-                    )}>
-                      <span className="text-sm">{config.emoji}</span>
-                    </div>
-                    <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                      {config.label}
-                    </h4>
-                    <span className="text-xs text-gray-500 dark:text-gray-400">
-                      {config.time}
-                    </span>
-                  </div>
-                  
-                  {/* Meal slots */}
-                  <div className="grid grid-cols-7 gap-3">
-                    {DAYS.map((_, dayIndex) => {
-                      const slot = getSlotForDay(dayIndex === 6 ? 0 : dayIndex + 1, mealType);
-                      return (
-                        <div key={`${dayIndex}-${mealType}`}>
-                          <MealSlot
-                            slot={slot}
-                            dayOfWeek={dayIndex === 6 ? 0 : dayIndex + 1}
-                            mealType={mealType}
-                            isToday={isToday(dayIndex)}
-                            isSelected={slot ? selectedSlots.includes(slot.id) : false}
-                            isHovered={slot ? hoveredSlot === slot.id : false}
-                            onSlotClick={handleSlotClick}
-                            onRecipeSelect={() => onRecipeSelect?.({ dayOfWeek: dayIndex === 6 ? 0 : dayIndex + 1, mealType })}
-                            onSlotClear={handleSlotClear}
-                            onSlotLock={handleSlotLock}
-                            onAIGenerate={() => onRecipeSelect?.({ dayOfWeek: dayIndex === 6 ? 0 : dayIndex + 1, mealType })}
-                          />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        
-        {/* Mobile view */}
-        <div className="block md:hidden p-4">
-          {/* Day navigation */}
-          <div className="flex items-center justify-between mb-6">
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setCurrentDayIndex((prev) => (prev === 0 ? 6 : prev - 1))}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-            </motion.button>
-            
-            <div className="text-center">
-              <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100">
-                {DAYS[currentDayIndex]}
-              </h2>
-              <p className="text-sm text-gray-600 dark:text-gray-400">
-                {getCurrentDate(currentDayIndex).toLocaleDateString('es-ES', { 
-                  day: 'numeric', 
-                  month: 'long' 
-                })}
-              </p>
-              {isToday(currentDayIndex) && (
-                <div className="mt-1 px-2 py-0.5 bg-blue-500 text-white text-xs rounded-full inline-block">
-                  Hoy
-                </div>
-              )}
-            </div>
-            
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setCurrentDayIndex((prev) => (prev === 6 ? 0 : prev + 1))}
-              className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
-            >
-              <ChevronRight className="w-5 h-5 text-gray-700 dark:text-gray-300" />
-            </motion.button>
-          </div>
-          
-          {/* Day indicator dots */}
-          <div className="flex justify-center gap-1.5 mb-6">
-            {DAYS.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => setCurrentDayIndex(index)}
-                className={cn(
-                  "transition-all duration-300",
-                  currentDayIndex === index 
-                    ? "w-8 h-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full" 
-                    : "w-2 h-2 bg-gray-300 dark:bg-gray-600 rounded-full"
-                )}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-              />
-            ))}
-          </div>
-          
-          {/* Current day meals */}
-          <div className="space-y-4">
-            {MEAL_TYPES.map((mealType) => {
-              const config = mealConfigs[mealType];
-              const slot = getSlotForDay(currentDayIndex === 6 ? 0 : currentDayIndex + 1, mealType);
-              
-              return (
-                <motion.div
-                  key={mealType}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <div className="flex items-center gap-2 mb-3">
-                    <div className={cn(
-                      "w-8 h-8 rounded-lg flex items-center justify-center",
-                      "bg-gradient-to-br shadow-md",
-                      config.gradient
-                    )}>
-                      <span className="text-sm">{config.emoji}</span>
-                    </div>
-                    <h4 className="text-sm font-semibold text-gray-800 dark:text-gray-200">
-                      {config.label}
-                    </h4>
-                    <span className="text-xs text-gray-500 dark:text-gray-400 ml-auto">
-                      {config.time}
-                    </span>
-                  </div>
-                  
-                  <MealSlot
-                    slot={slot}
-                    dayOfWeek={currentDayIndex === 6 ? 0 : currentDayIndex + 1}
-                    mealType={mealType}
-                    isToday={isToday(currentDayIndex)}
-                    isSelected={slot ? selectedSlots.includes(slot.id) : false}
-                    onSlotClick={handleSlotClick}
-                    onRecipeSelect={() => onRecipeSelect?.({ dayOfWeek: currentDayIndex === 6 ? 0 : currentDayIndex + 1, mealType })}
-                    onSlotClear={handleSlotClear}
-                    onSlotLock={handleSlotLock}
-                    onAIGenerate={() => onRecipeSelect?.({ dayOfWeek: currentDayIndex === 6 ? 0 : currentDayIndex + 1, mealType })}
-                  />
-                </motion.div>
-              );
-            })}
-          </div>
-        </div>
-        
-        {/* Footer stats */}
-        <div className="px-4 md:px-6 py-4 border-t border-white/10">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {weekSummary.totalMeals}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Comidas</div>
+              </p>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <Calendar className="w-4 h-4 text-blue-500" />
+                <span className="text-sm font-medium">Recetas</span>
+              </div>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {weekSummary.uniqueRecipes}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Recetas</div>
+              </p>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {weekSummary.totalServings}
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <TrendingUp className="w-4 h-4 text-green-500" />
+                <span className="text-sm font-medium">Calorías</span>
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Porciones</div>
-            </div>
-            <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {weekSummary.nutritionAverage?.calories || 0}
-              </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Calorías</div>
+              </p>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-                {weekSummary.nutritionAverage?.protein || 0}g
+              <div className="flex items-center justify-center gap-1 mb-1">
+                <TrendingUp className="w-4 h-4 text-red-500" />
+                <span className="text-sm font-medium">Proteína</span>
               </div>
-              <div className="text-xs text-gray-600 dark:text-gray-400">Proteína</div>
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
+                {weekSummary.nutritionAverage?.protein || 0}g
+              </p>
             </div>
           </div>
-        </div>
-      </iOS26EnhancedCard>
-      
-      {/* Mobile menu */}
-      <AnimatePresence>
-        {showMobileMenu && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            className="fixed bottom-20 right-4 bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-4 z-50 md:hidden"
-          >
-            <div className="space-y-3">
-              <button
-                onClick={() => {
-                  handleAIGenerate();
-                  setShowMobileMenu(false);
-                }}
-                disabled={isGenerating || isGeminiGenerating}
-                className="flex items-center gap-3 w-full px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <Sparkles className="w-5 h-5 text-purple-500" />
-                <span className="text-sm font-medium">
-                  {(isGenerating || isGeminiGenerating) ? 'Generando...' : 'Generar con IA'}
-                </span>
-              </button>
-              
-              <button
-                onClick={() => {
-                  onExportWeek?.();
-                  setShowMobileMenu(false);
-                }}
-                className="flex items-center gap-3 w-full px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <FileText className="w-5 h-5 text-blue-500" />
-                <span className="text-sm font-medium">Exportar</span>
-              </button>
-              
-              <button
-                onClick={() => {
-                  clearWeek();
-                  setShowMobileMenu(false);
-                }}
-                className="flex items-center gap-3 w-full px-4 py-2 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <X className="w-5 h-5 text-red-500" />
-                <span className="text-sm font-medium">Limpiar semana</span>
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+        </KeCardContent>
+      </KeCard>
+
+      {/* Responsive Grid */}
+      {isMobile ? (
+        <MobileGrid
+          currentDate={currentDate}
+          weekPlan={adaptedWeekPlan}
+          onRecipeSelect={onRecipeSelect}
+          onMealEdit={handleMealEdit}
+          onMealDuplicate={handleMealDuplicate}
+          isLoading={isGenerating || isGeminiGenerating}
+        />
+      ) : (
+        <DesktopGrid
+          currentDate={currentDate}
+          weekPlan={adaptedWeekPlan}
+          onRecipeSelect={onRecipeSelect}
+          onMealEdit={handleMealEdit}
+          onMealDuplicate={handleMealDuplicate}
+          isLoading={isGenerating || isGeminiGenerating}
+        />
+      )}
     </div>
   );
 }
