@@ -137,17 +137,18 @@ export async function POST(req: Request) {
           expiryDate: expiryDate ? new Date(expiryDate) : null,
           notes: notes || null,
           purchaseDate: purchaseDate ? new Date(purchaseDate) : new Date(),
-        }
-        // includes handled by Supabase service
       });
 
       // Create extended info if provided
       if (purchasePrice || purchaseDate || barcode) {
-        await prisma.pantryItemExtended.create({ pantryItemId: newItem.id,
+        await prisma.pantryItemExtended.create({
+          data: {
+            pantryItemId: newItem.id,
             purchasePrice: purchasePrice ? new Decimal(purchasePrice) : null,
             purchaseDate: purchaseDate ? new Date(purchaseDate) : null,
             scannedBarcode: barcode || null,
-          });
+          }
+        });
       }
 
       return NextResponse.json(newItem, { status: 201 });

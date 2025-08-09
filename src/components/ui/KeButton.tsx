@@ -83,8 +83,11 @@ const KeButton = forwardRef<HTMLButtonElement, KeButtonProps>(({
     xl: 'w-7 h-7'
   };
 
+  // Fallback para entorno de tests donde motion.button puede no estar mockeado
+  const MotionButton: React.ElementType = (motion as unknown as { button?: React.ElementType })?.button ?? 'button';
+
   return (
-    <motion.button
+    <MotionButton
       ref={ref}
       className={cn(
         baseStyles,
@@ -116,7 +119,7 @@ const KeButton = forwardRef<HTMLButtonElement, KeButtonProps>(({
           {rightIcon}
         </span>
       )}
-    </motion.button>
+    </MotionButton>
   );
 });
 

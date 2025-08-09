@@ -31,14 +31,200 @@ interface ShoppingListResponse {
 
 export async function POST(request: NextRequest) {
   try {
+    // Autenticación
     const user = await getUser();
     if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
-    const { start_date, end_date, meal_plan_ids } = body;
+    const { start_date, end_date, meal_plan_ids, plan } = body as {
+      start_date?: string;
+      end_date?: string;
+      meal_plan_ids?: string[];
+      plan?: any;
+    };
 
+    // Helper: crea mapa de ingredientes requeridos desde un plan arbitrario
+    const collectRequiredFromPlan = (inputPlan: any) => {
+      const required = new Map<string, { total_quantity: number; unit: string; recipes: string[]; category: string }>();
+
+      const upsert = (name: string, qty: number, unit: string, recipeTitle: string, category: string) => {
+        const key = name.trim().toLowerCase();
+        if (!key) return;
+        const ex = required.get(key);
+        if (ex) {
+          if (ex.unit === unit) ex.total_quantity += qty;
+          if (!ex.recipes.includes(recipeTitle)) ex.recipes.push(recipeTitle);
+        } else {
+          required.set(key, { total_quantity: qty, unit, recipes: [recipeTitle], category: category || 'otros' });
+        }
+      };
+
+      const extractIngredients = (recipe: any) => {
+        const title: string = recipe?.title || recipe?.name || 'Receta';
+        const ingredients = recipe?.ingredients;
+        if (Array.isArray(ingredients)) {
+          for (const ing of ingredients) {
+            if (ing && typeof ing === 'object') {
+              const name: string = ing.name || ing.ingredient || '';
+              const amount: number = typeof ing.amount === 'number' ? ing.amount : (typeof ing.quantity === 'number' ? ing.quantity : 1);
+              const unit: string = ing.unit || ing.units || 'unidades';
+              const category: string = ing.aisle || ing.category || 'otros';
+              if (name) upsert(name, amount, unit, title, category);
+            } else if (typeof ing === 'string') {
+              upsert(ing, 1, 'unidades', title, 'otros');
+            }
+          }
+        }
+      };
+
+      const days: any[] = Array.isArray(inputPlan?.days) ? inputPlan.days : [];
+      for (const day of days) {
+        // Formato { meals: { breakfast|lunch|snack|dinner: { recipe } } }
+        if (day?.meals && typeof day.meals === 'object') {
+          for (const key of ['breakfast', 'lunch', 'snack', 'dinner']) {
+            const slot = (day.meals as any)[key];
+            const rec = slot?.recipe || slot; // algunos planes ponen la receta directo
+            if (rec) extractIngredients(rec);
+          }
+        }
+        // Formato { slots: { breakfast|lunch|snack|dinner: RecipeLike } }
+        if (day?.slots && typeof day.slots === 'object') {
+          for (const key of ['breakfast', 'lunch', 'snack', 'dinner']) {
+            const rec = (day.slots as any)[key];
+            if (rec) extractIngredients(rec.recipe || rec);
+          }
+        }
+      }
+
+      // Fallback: recetas a nivel raíz
+      if (Array.isArray(inputPlan?.recipes)) {
+        for (const rec of inputPlan.recipes) extractIngredients(rec);
+      }
+
+      return required;
+    };
+
+    // Helper: derivar rango de fechas desde el plan
+    const deriveRangeFromPlan = (inputPlan: any): { start: Date; end: Date } => {
+      const today = new Date();
+      const dates: Date[] = [];
+      if (Array.isArray(inputPlan?.days)) {
+        for (const day of inputPlan.days) {
+          if (day?.date) {
+            const d = new Date(day.date);
+            if (!isNaN(d.getTime())) dates.push(d);
+          }
+        }
+      }
+      if (dates.length) {
+        dates.sort((a, b) => a.getTime() - b.getTime());
+        return { start: dates[0], end: dates[dates.length - 1] };
+      }
+      // Fallback 7 días desde hoy
+      const end = new Date(today);
+      end.setDate(today.getDate() + 6);
+      return { start: today, end };
+    };
+
+    // Helper: construir respuesta a partir de requerimientos y despensa
+    const buildResponse = (
+      required: Map<string, { total_quantity: number; unit: string; recipes: string[]; category: string }>,
+      pantryMap: Map<string, { quantity: number; unit: string }>,
+      start: Date,
+      end: Date
+    ) => {
+      const shoppingList: ShoppingListItem[] = [] as any;
+      let totalPantryCoverage = 0;
+      let totalRequiredItems = 0;
+
+      required.forEach((req, ingredientName) => {
+        totalRequiredItems++;
+        const available = pantryMap.get(ingredientName);
+        const availableQuantity = available?.quantity || 0;
+        const shortage = Math.max(0, req.total_quantity - availableQuantity);
+        if (availableQuantity > 0) totalPantryCoverage++;
+        if (shortage > 0) {
+          const recipeCount = req.recipes.length;
+          let priority: 'high' | 'medium' | 'low' = 'medium';
+          if (recipeCount >= 3 || shortage >= req.total_quantity) priority = 'high';
+          else if (recipeCount === 1 && shortage < req.total_quantity * 0.5) priority = 'low';
+
+          shoppingList.push({
+            ingredient_name: ingredientName,
+            needed_quantity: req.total_quantity,
+            unit: req.unit,
+            available_quantity: availableQuantity,
+            shortage,
+            priority,
+            category: req.category,
+            recipes_using: [...new Set(req.recipes)]
+          } as any);
+        }
+      });
+
+      // Ordenar por prioridad y categoría
+      shoppingList.sort((a, b) => {
+        const priorityOrder = { high: 3, medium: 2, low: 1 } as const;
+        if (priorityOrder[a.priority] !== priorityOrder[b.priority]) {
+          return priorityOrder[b.priority] - priorityOrder[a.priority];
+        }
+        return a.category.localeCompare(b.category);
+      });
+
+      const response: ShoppingListResponse = {
+        shopping_list: shoppingList,
+        summary: {
+          total_items: shoppingList.length,
+          high_priority_items: shoppingList.filter((i) => i.priority === 'high').length,
+          estimated_total_cost: 0,
+          pantry_coverage_percentage: totalRequiredItems > 0
+            ? Math.round((totalPantryCoverage / totalRequiredItems) * 100)
+            : 0,
+        },
+        meal_plan_dates: {
+          start_date: start.toISOString(),
+          end_date: end.toISOString(),
+        },
+      };
+
+      return response;
+    };
+
+    // Si viene un plan completo, generar lista directamente desde el plan
+    if (plan) {
+      try {
+        const requiredFromPlan = collectRequiredFromPlan(plan);
+        // Cargar despensa del usuario para calcular faltantes
+        const pantryItems = await db.getPantryItems(user.id);
+        const pantryMap = new Map<string, { quantity: number; unit: string }>();
+        pantryItems.forEach((item) => {
+          const ingredientName = item.ingredient?.name?.toLowerCase();
+          if (ingredientName) {
+            const ex = pantryMap.get(ingredientName);
+            if (ex) {
+              if (ex.unit === item.unit) ex.quantity += item.quantity;
+            } else {
+              pantryMap.set(ingredientName, { quantity: item.quantity, unit: item.unit });
+            }
+          }
+        });
+
+        const range = deriveRangeFromPlan(plan);
+        const response = buildResponse(requiredFromPlan, pantryMap, range.start, range.end);
+        return NextResponse.json(response);
+      } catch (e) {
+        console.error('[ShoppingList] Error procesando plan', e);
+        logger.error('Error processing plan for shopping list:', 'meal-planning/shopping-list', e as unknown);
+        return NextResponse.json(
+          { error: 'Invalid plan format' },
+          { status: 400 }
+        );
+      }
+    }
+
+    // Flujo existente: requiere start_date y end_date
     if (!start_date || !end_date) {
       return NextResponse.json(
         { error: 'start_date and end_date are required' },

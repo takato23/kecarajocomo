@@ -1,6 +1,6 @@
 import { createClient } from '@/lib/supabase/client';
 import { Database } from '@/types/database';
-import { logger } from '@/services/logger';
+import { logger } from '@/lib/logger';
 
 type Tables = Database['public']['Tables'];
 type Recipe = Tables['recipes']['Row'];

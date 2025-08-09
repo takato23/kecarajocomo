@@ -42,7 +42,7 @@ export function MagicLinkAuth({ onSuccess, redirectTo = '/' }: MagicLinkAuthProp
       const { error } = await supabase.auth.signInWithOtp({
         email: email.trim().toLowerCase(),
         options: {
-          emailRedirectTo: `${window.location.origin}${redirectTo}`,
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
           data: {
             app_name: 'KeCarajoComer',
             source: 'magic_link_auth'

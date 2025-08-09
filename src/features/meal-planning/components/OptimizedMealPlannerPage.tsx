@@ -31,7 +31,7 @@ const MealPlannerGrid = lazy(() => import('./MealPlannerGrid'));
 const RecipeSelectionModal = lazy(() => import('./RecipeSelectionModal').then(module => ({ default: module.RecipeSelectionModal })));
 const UserPreferencesModal = lazy(() => import('./UserPreferencesModal').then(module => ({ default: module.UserPreferencesModal })));
 const ShoppingListModal = lazy(() => import('./ShoppingListModal').then(module => ({ default: module.ShoppingListModal })));
-const iOS26EnhancedCard = lazy(() => import('@/components/ios26/iOS26EnhancedCard').then(module => ({ default: module.iOS26EnhancedCard })));
+const LazyIOS26EnhancedCard = lazy(() => import('@/components/ios26').then(module => ({ default: module.iOS26EnhancedCard })));
 
 // Loading components
 const LoadingSpinner = memo(() => (
@@ -359,7 +359,7 @@ export default function OptimizedMealPlannerPage() {
               exit={{ opacity: 0, x: 20 }}
             >
               <Suspense fallback={<LoadingSpinner />}>
-                <iOS26EnhancedCard
+                <LazyIOS26EnhancedCard
                   variant="glass"
                   elevation="high"
                   className="p-8 text-center"
@@ -377,7 +377,7 @@ export default function OptimizedMealPlannerPage() {
                   >
                     Open Shopping List
                   </button>
-                </iOS26EnhancedCard>
+                </LazyIOS26EnhancedCard>
               </Suspense>
             </motion.div>
           )}
@@ -390,7 +390,7 @@ export default function OptimizedMealPlannerPage() {
               exit={{ opacity: 0, x: 20 }}
             >
               <Suspense fallback={<LoadingSpinner />}>
-                <iOS26EnhancedCard
+                <LazyIOS26EnhancedCard
                   variant="glass"
                   elevation="high"
                   className="p-8 text-center"
@@ -405,7 +405,7 @@ export default function OptimizedMealPlannerPage() {
                   <button className="px-6 py-3 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium rounded-xl hover:from-orange-600 hover:to-pink-600">
                     View Nutrition Stats
                   </button>
-                </iOS26EnhancedCard>
+                </LazyIOS26EnhancedCard>
               </Suspense>
             </motion.div>
           )}

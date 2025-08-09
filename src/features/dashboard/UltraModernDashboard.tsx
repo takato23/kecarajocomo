@@ -157,7 +157,7 @@ const UltraModernDashboard: React.FC = () => {
               <GlassCard 
                 variant="light" 
                 className="p-6 hover:scale-105 transition-transform cursor-pointer group"
-                onClick={() => router.push('/meal-planning')}
+                onClick={() => router.push('/planificador')}
               >
                 <div className="flex flex-col items-center text-center">
                   <div className="p-3 bg-gradient-to-br from-blue-500/20 to-cyan-500/20 rounded-2xl mb-4 group-hover:from-blue-500/30 group-hover:to-cyan-500/30 transition-colors">

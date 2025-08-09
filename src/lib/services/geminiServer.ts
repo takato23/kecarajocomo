@@ -43,7 +43,7 @@ interface GeminiServerConfig {
 const DEFAULT_CONFIG: GeminiServerConfig = {
   model: geminiConfig.default.model,
   temperature: 0.7,
-  maxOutputTokens: 2048
+  maxOutputTokens: 2048,
   topP: 0.95,
   topK: 40,
   cacheEnabled: true,

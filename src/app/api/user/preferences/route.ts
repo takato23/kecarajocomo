@@ -49,7 +49,8 @@ export async function POST(req: Request) {
         proteinTarget: data.proteinTarget,
         carbTarget: data.carbTarget,
         fatTarget: data.fatTarget,
-      });
+      }
+    });
 
     // Update user's onboarding status
     await db.updateUserProfile(user.id, {
@@ -83,7 +84,8 @@ export async function GET(req: Request) {
     const preferences = await prisma.userPreferences.findUnique({
       where: {
         userId: user.id
-      });
+      }
+    });
 
     return NextResponse.json(preferences);
   } catch (error: unknown) {

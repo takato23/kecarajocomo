@@ -36,6 +36,7 @@ interface DesktopGridProps {
   onMealEdit?: (meal: any, slot: any) => void;
   onMealDuplicate?: (meal: any, slot: any) => void;
   isLoading?: boolean;
+  rangeDays?: number;
 }
 
 const MEAL_TYPES = ['desayuno', 'almuerzo', 'merienda', 'cena'] as const;
@@ -47,7 +48,8 @@ export function DesktopGrid({
   onRecipeSelect,
   onMealEdit,
   onMealDuplicate,
-  isLoading = false
+  isLoading = false,
+  rangeDays = 7
 }: DesktopGridProps) {
   const [hoveredSlot, setHoveredSlot] = useState<string | null>(null);
 
@@ -60,7 +62,7 @@ export function DesktopGrid({
     let totalCost = 0;
     let mealsPlanned = 0;
 
-    for (let day = 0; day < 7; day++) {
+    for (let day = 0; day < rangeDays; day++) {
       for (const mealType of MEAL_TYPES) {
         const meal = weekPlan?.[day]?.[mealType];
         if (meal) {
@@ -77,8 +79,8 @@ export function DesktopGrid({
       totalProtein,
       totalCost,
       mealsPlanned,
-      totalSlots: 28,
-      completionPercentage: Math.round((mealsPlanned / 28) * 100)
+      totalSlots: rangeDays * MEAL_TYPES.length,
+      completionPercentage: Math.round((mealsPlanned / (rangeDays * MEAL_TYPES.length)) * 100)
     };
   };
 
@@ -95,7 +97,7 @@ export function DesktopGrid({
                 Planificación Semanal
               </KeCardTitle>
               <p className="text-sm text-gray-600 dark:text-gray-400">
-                {format(weekStart, "d 'de' MMMM", { locale: es })} - {format(addDays(weekStart, 6), "d 'de' MMMM", { locale: es })}
+                 {format(weekStart, "d 'de' MMMM", { locale: es })} - {format(addDays(weekStart, rangeDays - 1), "d 'de' MMMM", { locale: es })}
               </p>
             </div>
             
@@ -160,7 +162,7 @@ export function DesktopGrid({
                 {weekStats.completionPercentage}%
               </p>
               <p className="text-xs text-gray-500">
-                {weekStats.mealsPlanned}/28 comidas
+                 {weekStats.mealsPlanned}/{weekStats.totalSlots} comidas
               </p>
             </div>
           </div>
@@ -177,7 +179,7 @@ export function DesktopGrid({
         </KeCardContent>
       </KeCard>
 
-      {/* 7x4 Grid */}
+      {/* Grid dinámico por rango */}
       <KeCard variant="default" className="overflow-hidden">
         <KeCardContent className="p-0">
           <div className="grid grid-cols-8 min-h-[600px]">
@@ -195,12 +197,12 @@ export function DesktopGrid({
             ))}
 
             {/* Grid rows - Days */}
-            {DAYS.map((dayName, dayIndex) => (
+            {Array.from({ length: rangeDays }).map((_, dayIndex) => (
               <div key={dayIndex} className="contents">
                 {/* Day label */}
                 <div className="bg-gray-50 dark:bg-gray-800/50 border-r border-b border-gray-200 dark:border-gray-700 p-3 flex flex-col justify-center">
                   <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {dayName}
+                    {DAYS[dayIndex % 7]}
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     {format(addDays(weekStart, dayIndex), 'd/M')}

@@ -1,0 +1,18 @@
+{
+  "helmet": {
+    "contentSecurityPolicy": true,
+    "hsts": {
+      "maxAge": 31536000,
+      "includeSubDomains": true,
+      "preload": true
+    }
+  },
+  "cors": {
+    "origin": "http://localhost:3000",
+    "credentials": true
+  },
+  "rateLimit": {
+    "windowMs": 900000,
+    "max": 100
+  }
+}

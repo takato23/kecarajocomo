@@ -1,0 +1,14 @@
+{
+  "name": "kecarajocomer",
+  "type": "auto-detect",
+  "monitoring": {
+    "extensions": [".js", ".ts", ".jsx", ".tsx", ".json", ".md"],
+    "ignore": ["node_modules", ".git", ".next", "dist", "build"]
+  },
+  "agent": {
+    "primaryModel": "qwen2.5-coder:1.5b",
+    "reasoningModel": "llama3.2:3b",
+    "maxActions": 5,
+    "autoCommit": true
+  }
+}

@@ -37,8 +37,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(cached);
     }
 
-    const user = await db.getUserProfile({
-      user.id ,
+    const userProfile = await db.getUserProfile(user.id, {
       select: {
         id: true,
         name: true,
@@ -64,9 +63,10 @@ export async function GET(request: NextRequest) {
         thirdPartyIntegrations: true,
         createdAt: true,
         updatedAt: true
-      });
+      }
+    });
 
-    if (!user) {
+    if (!userProfile) {
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }
@@ -74,9 +74,9 @@ export async function GET(request: NextRequest) {
     }
 
     // Cache the result
-    await enhancedCache.set(cacheKey, user, 1000 * 60 * 30); // 30 minutes
+    await enhancedCache.set(cacheKey, userProfile, 1000 * 60 * 30); // 30 minutes
 
-    return NextResponse.json(user);
+    return NextResponse.json(userProfile);
 
   } catch (error: unknown) {
     logger.error('Error fetching user profile:', 'API:route', error);
@@ -141,10 +141,10 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update user in database
-    const updatedUser = await db.updateUserProfile(user.id , {
-      { ...updateData,
-        updatedAt: new Date()
-      },
+    const updatedUser = await db.updateUserProfile(user.id, {
+      ...updateData,
+      updatedAt: new Date()
+    }, {
       select: {
         id: true,
         name: true,
@@ -169,7 +169,8 @@ export async function PUT(request: NextRequest) {
         analytics: true,
         thirdPartyIntegrations: true,
         updatedAt: true
-      });
+      }
+    });
 
     // Invalidate related caches
     await enhancedCache.invalidatePattern(`user:${user.id}:*`);

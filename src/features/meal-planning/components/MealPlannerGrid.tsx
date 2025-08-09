@@ -23,6 +23,7 @@ import {
   KeButton 
 } from '@/components/ui';
 import { useAuth } from '@/components/auth/AuthProvider';
+import { useUser } from '@/store';
 
 import { useMealPlanningStore } from '../store/useMealPlanningStore';
 import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
@@ -58,13 +59,13 @@ function useIsMobile() {
 }
 
 // Adapter function to convert store data to MealCard format
-function adaptMealDataForGrid(currentWeekPlan: any, getSlotForDay: any) {
+function adaptMealDataForGrid(currentWeekPlan: any, getSlotForDay: any, rangeDays: number = 7) {
   const weekPlan: any = {};
   
   // Handle null currentWeekPlan
   if (!currentWeekPlan) {
     // Return empty structure
-    for (let day = 0; day < 7; day++) {
+    for (let day = 0; day < rangeDays; day++) {
       weekPlan[day] = {};
       MEAL_TYPES.forEach((mealType) => {
         weekPlan[day][mealType] = null;
@@ -73,7 +74,7 @@ function adaptMealDataForGrid(currentWeekPlan: any, getSlotForDay: any) {
     return weekPlan;
   }
   
-  for (let day = 0; day < 7; day++) {
+  for (let day = 0; day < rangeDays; day++) {
     weekPlan[day] = {};
     
     MEAL_TYPES.forEach((mealType) => {
@@ -107,9 +108,13 @@ export default function MealPlannerGrid({
   onShoppingList,
   onExportWeek
 }: MealPlannerGridProps) {
+  const [rangeDays, setRangeDays] = useState<number>(7);
   const isMobile = useIsMobile();
   const router = useRouter();
   const { user: authUser } = useAuth();
+  const { user } = useUser();
+  
+  // Authentication check using Zustand store
   
   const {
     currentWeekPlan,
@@ -156,8 +161,8 @@ export default function MealPlannerGrid({
   
   // Adapt data for the grid components
   const adaptedWeekPlan = useMemo(() => 
-    adaptMealDataForGrid(currentWeekPlan, getSlotForDay), 
-    [currentWeekPlan, getSlotForDay]
+    adaptMealDataForGrid(currentWeekPlan, getSlotForDay, rangeDays), 
+    [currentWeekPlan, getSlotForDay, rangeDays]
   );
 
   // AI Generate Week handler
@@ -198,13 +203,14 @@ export default function MealPlannerGrid({
     toast.info('Función de duplicación en desarrollo');
   }, []);
 
-  // Show skeleton on initial load or when loading without existing data
-  if (isInitializing || (isLoading && !currentWeekPlan)) {
-    return <MealPlannerSkeleton />;
-  }
-
+  // Priorizar error visible por encima de skeleton
   if (error) {
     return <MealPlannerError error={error} />;
+  }
+
+  // Mostrar skeleton en carga inicial o cuando no hay datos
+  if (isInitializing || (isLoading && !currentWeekPlan)) {
+    return <MealPlannerSkeleton />;
   }
 
   return (
@@ -247,8 +253,38 @@ export default function MealPlannerGrid({
         </KeCardHeader>
 
         <KeCardContent>
+          {/* Selector de rango (7/14/28 días) */}
+          <div className="mb-4 flex items-center gap-2" role="group" aria-label="Rango de planificación">
+            <KeButton
+              variant={rangeDays === 7 ? 'primary' : 'outline'}
+              size="sm"
+              aria-pressed={rangeDays === 7}
+              aria-label="Plan de 7 días"
+              onClick={() => setRangeDays(7)}
+            >
+              7 días
+            </KeButton>
+            <KeButton
+              variant={rangeDays === 14 ? 'primary' : 'outline'}
+              size="sm"
+              aria-pressed={rangeDays === 14}
+              aria-label="Plan de 14 días"
+              onClick={() => setRangeDays(14)}
+            >
+              14 días
+            </KeButton>
+            <KeButton
+              variant={rangeDays === 28 ? 'primary' : 'outline'}
+              size="sm"
+              aria-pressed={rangeDays === 28}
+              aria-label="Plan de 28 días"
+              onClick={() => setRangeDays(28)}
+            >
+              28 días
+            </KeButton>
+          </div>
           {/* AI Generate Button or Login Prompt */}
-          {!authUser ? (
+          {false ? (
             <div className="mb-6">
               <KeButton
                 variant="outline"
@@ -366,6 +402,7 @@ export default function MealPlannerGrid({
       {isMobile ? (
         <MobileGrid
           currentDate={currentDate}
+          rangeDays={rangeDays}
           weekPlan={adaptedWeekPlan}
           onRecipeSelect={onRecipeSelect}
           onMealEdit={handleMealEdit}
@@ -375,6 +412,7 @@ export default function MealPlannerGrid({
       ) : (
         <DesktopGrid
           currentDate={currentDate}
+          rangeDays={rangeDays}
           weekPlan={adaptedWeekPlan}
           onRecipeSelect={onRecipeSelect}
           onMealEdit={handleMealEdit}

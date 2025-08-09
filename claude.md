@@ -73,7 +73,66 @@
   - The CLI will include file contents directly in the context
   - No need for --yolo flag for read-only analysis
   - Gemini's context window can handle entire codebases that would overflow Claude's context
-  - When checking implementations, be specific about what you're looking for to get accurate results # Using Gemini CLI for Large Codebase Analysis
+  - When checking implementations, be specific about what you're looking for to get accurate results
+
+# SuperClaude Agents Integration
+
+KeCarajoComer integra un equipo completo de agentes especializados de SuperClaude para maximizar la calidad y efectividad del desarrollo.
+
+## Agentes Disponibles
+
+### 🏗️ Architect Agent
+- **Especialidad**: Diseño de sistemas, arquitectura de software, microservicios
+- **Ubicación**: `claude-agents/architect-agent.md`
+- **Uso**: Decisiones arquitectónicas, escalabilidad, modernización
+
+### ⚡ Performance Agent  
+- **Especialidad**: Optimización de performance, load testing, bottlenecks
+- **Ubicación**: `claude-agents/performance-agent.md`
+- **Uso**: Análisis de performance, optimización de APIs, testing de carga
+
+### 🛡️ Security Agent
+- **Especialidad**: Threat modeling, compliance, vulnerability assessment
+- **Ubicación**: `claude-agents/security-agent.md`
+- **Uso**: Auditorías de seguridad, implementación de controles, compliance
+
+### 🧪 QA Agent
+- **Especialidad**: Testing strategy, quality assurance, automation
+- **Ubicación**: `claude-agents/qa-agent.md`
+- **Uso**: Estrategias de testing, automatización, quality gates
+
+### 🚀 DevOps Agent
+- **Especialidad**: CI/CD, infrastructure as code, deployment automation
+- **Ubicación**: `claude-agents/devops-agent.md`
+- **Uso**: Pipelines, infrastructure, observabilidad
+
+## Auto-Activación
+
+Los agentes se activan automáticamente basado en keywords y contexto:
+- **architecture**, **design**, **scalability** → Architect Agent
+- **performance**, **slow**, **optimization** → Performance Agent
+- **security**, **vulnerability**, **compliance** → Security Agent
+- **test**, **quality**, **qa** → QA Agent
+- **deploy**, **CI/CD**, **infrastructure** → DevOps Agent
+
+## Integración con KeCarajoComer
+
+Los agentes están optimizados para el stack tecnológico del proyecto:
+- Next.js 15 + React
+- Supabase (PostgreSQL + Auth)
+- Tailwind CSS + Framer Motion
+- TypeScript + Jest + Playwright
+
+## Activación Manual
+
+Para usar un agente específico, referencia el archivo directamente:
+```bash
+# Ejemplo: Consulta arquitectónica
+claude --context claude-agents/architect-agent.md "Diseñar sistema de notificaciones en tiempo real"
+
+# Ejemplo: Optimización de performance  
+claude --context claude-agents/performance-agent.md "Analizar y optimizar performance de APIs"
+``` # Using Gemini CLI for Large Codebase Analysis
 
 
   When analyzing large codebases or multiple files that might exceed context limits, use the Gemini CLI with its massive
@@ -169,3 +228,62 @@
   - No need for --yolo flag for read-only analysis
   - Gemini's context window can handle entire codebases that would overflow Claude's context
   - When checking implementations, be specific about what you're looking for to get accurate results
+
+# SuperClaude Agents Integration
+
+KeCarajoComer integra un equipo completo de agentes especializados de SuperClaude para maximizar la calidad y efectividad del desarrollo.
+
+## Agentes Disponibles
+
+### 🏗️ Architect Agent
+- **Especialidad**: Diseño de sistemas, arquitectura de software, microservicios
+- **Ubicación**: `claude-agents/architect-agent.md`
+- **Uso**: Decisiones arquitectónicas, escalabilidad, modernización
+
+### ⚡ Performance Agent  
+- **Especialidad**: Optimización de performance, load testing, bottlenecks
+- **Ubicación**: `claude-agents/performance-agent.md`
+- **Uso**: Análisis de performance, optimización de APIs, testing de carga
+
+### 🛡️ Security Agent
+- **Especialidad**: Threat modeling, compliance, vulnerability assessment
+- **Ubicación**: `claude-agents/security-agent.md`
+- **Uso**: Auditorías de seguridad, implementación de controles, compliance
+
+### 🧪 QA Agent
+- **Especialidad**: Testing strategy, quality assurance, automation
+- **Ubicación**: `claude-agents/qa-agent.md`
+- **Uso**: Estrategias de testing, automatización, quality gates
+
+### 🚀 DevOps Agent
+- **Especialidad**: CI/CD, infrastructure as code, deployment automation
+- **Ubicación**: `claude-agents/devops-agent.md`
+- **Uso**: Pipelines, infrastructure, observabilidad
+
+## Auto-Activación
+
+Los agentes se activan automáticamente basado en keywords y contexto:
+- **architecture**, **design**, **scalability** → Architect Agent
+- **performance**, **slow**, **optimization** → Performance Agent
+- **security**, **vulnerability**, **compliance** → Security Agent
+- **test**, **quality**, **qa** → QA Agent
+- **deploy**, **CI/CD**, **infrastructure** → DevOps Agent
+
+## Integración con KeCarajoComer
+
+Los agentes están optimizados para el stack tecnológico del proyecto:
+- Next.js 15 + React
+- Supabase (PostgreSQL + Auth)
+- Tailwind CSS + Framer Motion
+- TypeScript + Jest + Playwright
+
+## Activación Manual
+
+Para usar un agente específico, referencia el archivo directamente:
+```bash
+# Ejemplo: Consulta arquitectónica
+claude --context claude-agents/architect-agent.md "Diseñar sistema de notificaciones en tiempo real"
+
+# Ejemplo: Optimización de performance  
+claude --context claude-agents/performance-agent.md "Analizar y optimizar performance de APIs"
+```

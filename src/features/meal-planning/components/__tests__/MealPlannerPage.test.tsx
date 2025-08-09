@@ -39,7 +39,7 @@ jest.mock('../MealPlannerGrid', () => ({
       <button onClick={() => onRecipeSelect({ dayOfWeek: 1, mealType: 'almuerzo' })}>
         Select Recipe
       </button>
-      <button onClick={onShoppingList}>Shopping List</button>
+      <button onClick={onShoppingList}>Open Shopping List</button>
       <button onClick={onExportWeek}>Export Week</button>
     </div>
   ),
@@ -206,7 +206,7 @@ describe('MealPlannerPage', () => {
       render(<MealPlannerPage />);
       
       const shoppingButton = within(screen.getByTestId('meal-planner-grid'))
-        .getByText('Shopping List');
+        .getByText('Open Shopping List');
       await userEvent.click(shoppingButton);
       
       expect(mockStoreState.setActiveModal).toHaveBeenCalledWith('shopping-list');
@@ -325,7 +325,7 @@ describe('MealPlannerPage', () => {
       render(<MealPlannerPage />);
       
       const shoppingButton = within(screen.getByTestId('meal-planner-grid'))
-        .getByText('Shopping List');
+        .getByText('Open Shopping List');
       await userEvent.click(shoppingButton);
       
       expect(mockStoreState.setActiveModal).toHaveBeenCalledWith('shopping-list');

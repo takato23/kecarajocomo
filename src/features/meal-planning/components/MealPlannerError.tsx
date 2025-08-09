@@ -17,7 +17,7 @@ export function MealPlannerError({ error, onRetry }: MealPlannerErrorProps) {
   const router = useRouter();
 
   return (
-    <div className="min-h-[60vh] flex items-center justify-center p-4">
+    <div className="min-h-[60vh] flex items-center justify-center p-4" data-testid="meal-planner-error">
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}

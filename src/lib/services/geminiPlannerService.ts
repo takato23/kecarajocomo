@@ -48,7 +48,8 @@ export interface GeminiPlanResult {
     readonly optimizationRecommendations: any;
     readonly learningAdaptations: any;
   };
-  readonly meta{ readonly promptTokens: number;
+  readonly meta?: {
+    readonly promptTokens: number;
     readonly responseTokens: number;
     readonly processingTime: number;
     readonly confidenceScore: number;
@@ -86,11 +87,16 @@ export class GeminiPlannerService {
   private readonly CACHE_TTL = 4 * 60 * 60 * 1000; // 4 hours
   
   constructor() {
-    this.geminiService = getGeminiService({
-      model: 'gemini-1.5-flash',
-      temperature: 0.7,
-      maxOutputTokens: 8192
-    });
+    try {
+      this.geminiService = getGeminiService({
+        model: 'gemini-1.5-flash',
+        temperature: 0.7,
+        maxOutputTokens: 8192
+      });
+    } catch (error) {
+      logger.error('Failed to initialize Gemini service', 'GeminiPlannerService', error);
+      throw new Error('Gemini service initialization failed. Please check API key configuration.');
+    }
   }
 
   /**
@@ -179,7 +185,7 @@ export class GeminiPlannerService {
       
       return {
         success: false,
-        meta{ promptTokens: 0,
+        meta: { promptTokens: 0,
           responseTokens: 0,
           processingTime: Date.now() - startTime,
           confidenceScore: 0,
@@ -225,7 +231,7 @@ export class GeminiPlannerService {
       
       return {
         success: false,
-        meta{ promptTokens: 0,
+        meta: { promptTokens: 0,
           responseTokens: 0,
           processingTime: Date.now() - startTime,
           confidenceScore: 0,
@@ -450,7 +456,7 @@ export class GeminiPlannerService {
           },
           learningAdaptations: {}
         },
-        meta{ promptTokens: this.estimateTokens(JSON.stringify(context)),
+        meta: { promptTokens: this.estimateTokens(JSON.stringify(context)),
           responseTokens: this.estimateTokens(JSON.stringify(geminiResponse)),
           processingTime: Date.now() - startTime,
           confidenceScore: this.calculateConfidence(geminiResponse),
@@ -463,7 +469,7 @@ export class GeminiPlannerService {
       
       return {
         success: false,
-        meta{ promptTokens: 0,
+        meta: { promptTokens: 0,
           responseTokens: 0,
           processingTime: Date.now() - startTime,
           confidenceScore: 0,
@@ -532,7 +538,7 @@ export class GeminiPlannerService {
       constraints: context.userState.constraints,
       confidence: this.calculateConfidence(geminiResponse) as Percentage,
       generatedAt: new Date(),
-      meta{ aiModel: 'gemini-1.5-pro',
+      meta: { aiModel: 'gemini-1.5-pro',
         generationTime: 0 as Minutes,
         revisionCount: PositiveInteger.create(1),
         userFeedback: null
@@ -757,10 +763,7 @@ export class GeminiPlannerService {
    */
   private async getUserPantryItems(userId: string) {
     try {
-      return await db.getPantryItems(user.id{
-        where: { userId },
-        // includes handled by Supabase service
-      });
+      return await db.getPantryItems(userId);
     } catch {
       return [];
     }
@@ -768,14 +771,8 @@ export class GeminiPlannerService {
 
   private async getUserFavoriteRecipes(userId: string) {
     try {
-      return await prisma.favoriteRecipe.findMany({
-        where: { userId },
-        // includes handled by Supabase service 
-              } 
-            } 
-          } 
-        }
-      });
+      // TODO: Implement favorite recipes in Supabase
+      return [];
     } catch {
       return [];
     }
@@ -943,4 +940,41 @@ export class GeminiPlannerService {
 }
 
 // Export singleton instance
-export const geminiPlannerService = new GeminiPlannerService();
+// Create singleton instance on demand
+let _geminiPlannerService: GeminiPlannerService | null = null;
+
+export const geminiPlannerService = {
+  generateHolisticPlan: async (
+    preferences: UserPreferences,
+    constraints: PlanningConstraints,
+    options?: GeminiPlannerOptions
+  ) => {
+    if (!_geminiPlannerService) {
+      _geminiPlannerService = new GeminiPlannerService();
+    }
+    return _geminiPlannerService.generateHolisticPlan(preferences, constraints, options);
+  },
+  
+  generateDailyOptimization: async (
+    preferences: UserPreferences,
+    currentPlan: Partial<WeeklyPlan>,
+    focusDay: Date,
+    optimizationOptions?: any
+  ) => {
+    if (!_geminiPlannerService) {
+      _geminiPlannerService = new GeminiPlannerService();
+    }
+    return _geminiPlannerService.generateDailyOptimization(preferences, currentPlan, focusDay, optimizationOptions);
+  },
+  
+  suggestFromPantry: async (
+    userId: string,
+    preferences?: Partial<UserPreferences>,
+    constraints?: any
+  ) => {
+    if (!_geminiPlannerService) {
+      _geminiPlannerService = new GeminiPlannerService();
+    }
+    return _geminiPlannerService.suggestFromPantry(userId, preferences, constraints);
+  }
+};

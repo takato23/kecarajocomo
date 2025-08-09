@@ -209,3 +209,20 @@ El store de Zustand maneja:
 ### Errores de TypeScript
 - Ejecutar `npm run type-check` para ver todos los errores
 - Verificar que las dependencias estén instaladas correctamente
+
+## 🤖 AI Capabilities
+
+Este proyecto incluye un ecosistema AI que puede:
+- 🎯 Generar planes de mejora automáticamente
+- 🔧 Aplicar fixes de código inteligentes
+- 🤖 Funcionar como daemon autónomo
+- 📊 Monitorear calidad de código
+
+### Comandos AI:
+```bash
+npm run ai:plan     # Ver qué mejoras puede hacer el AI
+npm run ai:apply    # Aplicar mejoras automáticamente
+npm run ai:daemon   # Activar AI autónomo
+```
+
+---

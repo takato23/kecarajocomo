@@ -99,7 +99,8 @@ ${urls
     headers: {
       'Content-Type': 'application/xml',
       'Cache-Control': 'public, max-age=3600, s-maxage=3600',
-    });
+    }
+  });
 }
 
 // Optional: Generate dynamic sitemap with recipes from database

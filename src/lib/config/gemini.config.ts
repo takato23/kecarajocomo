@@ -3,7 +3,7 @@
  * Centralizes all Gemini API configuration and provides a single source of truth
  */
 
-import { logger } from '@/services/logger';
+import { logger } from '@/lib/logger';
 
 interface GeminiConfig {
   apiKey: string | undefined;

@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   try {
     const user = await getUser();
     
-    if (!session?.user?.id) {
+    if (!user?.id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -19,7 +19,7 @@ export async function POST(req: Request) {
     }
 
     // Check if user has available AI generations (implement limits later)
-    const user = await db.getUserProfile(user.id, {
+    const userProfile = await db.getUserProfile(user.id, {
       select: { 
         id: true,
         name: true,
@@ -70,7 +70,8 @@ export async function POST(req: Request) {
 
     // Create the recipe
     const recipe = await db.createRecipe({
-      title: generatedRecipe.title,
+      data: {
+        title: generatedRecipe.title,
         description: generatedRecipe.description,
         instructions: generatedRecipe.instructions,
         prepTimeMinutes: generatedRecipe.prepTimeMinutes,
@@ -98,17 +99,8 @@ export async function POST(req: Request) {
             }
           }
         } : {})
-      },
-      // includes handled by Supabase service
-        },
-        nutritionInfo: true,
-        author: {
-          select: {
-            name: true,
-            image: true
-          }
-        }
-      });
+      }
+    });
 
     return NextResponse.json(recipe, { status: 201 });
   } catch (error: unknown) {

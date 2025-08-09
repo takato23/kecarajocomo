@@ -1,0 +1,97 @@
+{
+  "date": "2025-07-27T19:47:22.319Z",
+  "filesProcessed": 150,
+  "filesModified": 10,
+  "modifiedFiles": [
+    "src/app/api/user/profile/route.ts",
+    "src/app/api/user/preferences/route.ts",
+    "src/app/api/recipes/route.ts",
+    "src/app/api/recipes/generate/route.ts",
+    "src/app/api/recipes/[id]/route.ts",
+    "src/app/api/pantry/route.ts",
+    "src/lib/services/priceTracker.ts",
+    "src/lib/services/mealPlanningAI.ts",
+    "src/lib/services/geminiPlannerService.ts",
+    "src/services/pricing/priceTracker.ts"
+  ],
+  "patterns": [
+    "src/app/api/**/*.ts",
+    "src/app/api/**/*.tsx",
+    "src/lib/services/**/*.ts",
+    "src/services/**/*.ts"
+  ],
+  "replacements": [
+    {
+      "from": "/import\\s+{\\s*prisma\\s*}\\s+from\\s+['\"]@\\/lib\\/prisma['\"]/g",
+      "to": "import { db } from '@/lib/supabase/database.service'"
+    },
+    {
+      "from": "/import\\s+{\\s*PrismaClient\\s*}\\s+from\\s+['\"]@prisma\\/client['\"]/g",
+      "to": "// PrismaClient removed - using Supabase"
+    },
+    {
+      "from": "/await\\s+prisma\\.recipe\\.findMany\\(/g",
+      "to": "await db.getRecipes(user.id"
+    },
+    {
+      "from": "/await\\s+prisma\\.recipe\\.findUnique\\(/g",
+      "to": "await db.getRecipeById("
+    },
+    {
+      "from": "/await\\s+prisma\\.recipe\\.create\\(/g",
+      "to": "await db.createRecipe("
+    },
+    {
+      "from": "/await\\s+prisma\\.recipe\\.update\\(/g",
+      "to": "await db.updateRecipe("
+    },
+    {
+      "from": "/await\\s+prisma\\.recipe\\.delete\\(/g",
+      "to": "await db.deleteRecipe("
+    },
+    {
+      "from": "/await\\s+prisma\\.ingredient\\.findFirst\\(/g",
+      "to": "await db.findOrCreateIngredient("
+    },
+    {
+      "from": "/await\\s+prisma\\.ingredient\\.create\\(/g",
+      "to": "await db.findOrCreateIngredient("
+    },
+    {
+      "from": "/await\\s+prisma\\.pantryItem\\.findMany\\(/g",
+      "to": "await db.getPantryItems(user.id"
+    },
+    {
+      "from": "/await\\s+prisma\\.pantryItem\\.create\\(/g",
+      "to": "await db.addPantryItem(user.id, "
+    },
+    {
+      "from": "/await\\s+prisma\\.pantryItem\\.update\\(/g",
+      "to": "await db.updatePantryItem("
+    },
+    {
+      "from": "/await\\s+prisma\\.pantryItem\\.delete\\(/g",
+      "to": "await db.deletePantryItem("
+    },
+    {
+      "from": "/await\\s+prisma\\.user\\.findUnique\\(/g",
+      "to": "await db.getUserProfile("
+    },
+    {
+      "from": "/await\\s+prisma\\.user\\.update\\(/g",
+      "to": "await db.updateUserProfile("
+    },
+    {
+      "from": "/where:\\s*{\\s*id:\\s*([^}]+)\\s*}/g",
+      "to": "$1"
+    },
+    {
+      "from": "/data:\\s*{\\s*/g",
+      "to": "{ "
+    },
+    {
+      "from": "/include:\\s*{[^}]+}/g",
+      "to": "// includes handled by Supabase service"
+    }
+  ]
+}

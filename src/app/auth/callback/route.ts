@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabase/client';
+import { createClient } from '@supabase/supabase-js';
 import { logger } from '@/services/logger';
 
 export async function GET(request: NextRequest) {
@@ -32,6 +32,18 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Crear un cliente Supabase específico para este callback
+    const supabase = createClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    );
+
     // Intercambiar el código por una sesión
     const { data, error: exchangeError } = await supabase.auth.exchangeCodeForSession(code);
     

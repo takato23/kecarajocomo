@@ -19,6 +19,7 @@ import { es } from 'date-fns/locale';
 import { toast } from 'sonner';
 
 import { useUser } from '@/store';
+import { useAuth } from '@/providers/SupabaseAuthProvider';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 import { UserPreferences } from '@/lib/types/mealPlanning';
 
@@ -38,6 +39,7 @@ type ViewMode = 'calendar' | 'shopping' | 'nutrition';
 
 export default function MealPlannerPage() {
   const { user } = useUser();
+  const { user: supabaseUser, session, loading: authLoading } = useAuth();
   
   const {
     currentDate,
@@ -59,17 +61,17 @@ export default function MealPlannerPage() {
   } = useGeminiMealPlanner();
   
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
-  const [hasCompletedWizard, setHasCompletedWizard] = useState(true); // Always true since wizard is handled in /planificador
+  const [hasCompletedWizard, setHasCompletedWizard] = useState(true); // Siempre true, wizard se maneja en /planificador
   const [selectedSlot, setSelectedSlot] = useState<{ dayOfWeek: number; mealType: MealType } | null>(null);
 
   // Initialize - always load the current week plan since wizard is handled in /planificador
   useEffect(() => {
-    if (user) {
+    if (supabaseUser || user) {
       // Load current week plan
       const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
       loadWeekPlan(startDate);
     }
-  }, [user, loadWeekPlan]);
+  }, [user, supabaseUser, loadWeekPlan]);
 
 
   const handleWeekNavigation = (direction: 'prev' | 'next' | 'today') => {
@@ -123,10 +125,12 @@ export default function MealPlannerPage() {
     },
   ];
 
-  if (isLoading && !hasCompletedWizard) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" />
+        <div role="status" aria-live="polite" aria-label="Cargando planificador">
+          <LoadingSpinner size="lg" />
+        </div>
       </div>
     );
   }
@@ -200,6 +204,7 @@ export default function MealPlannerPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleWeekNavigation('prev')}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Previous week"
               >
                 <ChevronLeft className="w-5 h-5 text-white" />
               </motion.button>
@@ -218,6 +223,7 @@ export default function MealPlannerPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleWeekNavigation('next')}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Next week"
               >
                 <ChevronRight className="w-5 h-5 text-white" />
               </motion.button>
@@ -265,6 +271,7 @@ export default function MealPlannerPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
+              aria-hidden="true"
             >
               <MealPlannerGrid
                 onRecipeSelect={handleRecipeSelect}
@@ -333,9 +340,9 @@ export default function MealPlannerPage() {
 
       {/* Modals */}
       <AnimatePresence>
-        {activeModal === 'recipe-select' && selectedSlot && (
+        {activeModal === 'recipe-select' && (
           <RecipeSelectionModal
-            slot={selectedSlot}
+            slot={selectedSlot ?? { dayOfWeek: 0, mealType: 'almuerzo' }}
             onClose={() => {
               setActiveModal(null);
               setSelectedSlot(null);

@@ -97,7 +97,8 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
           name: ing.name.toLowerCase(),
           category: 'other',
           unit: ing.unit
-        });
+        }
+      });
       return {
         ingredientId: ingredient.id,
         quantity: ing.quantity,
@@ -119,63 +120,62 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
       notes: inst.notes || null
     }));
 
-    // Create the recipe with transaction
-    const recipe = // TODO: Convert transaction to Supabase
-    // await prisma.$transaction(async (tx) => {
-      const newRecipe = await tx.recipe.create({ title: data.title,
-          description: data.description || null,
-          prepTimeMinutes: data.prepTimeMinutes,
-          cookTimeMinutes: data.cookTimeMinutes,
-          servings: data.servings,
-          difficulty: data.difficulty,
-          cuisine: data.cuisine || null,
-          tags: data.tags,
-          imageUrl: data.imageUrl || null,
-          isPublic: data.isPublic,
-          source: "user",
-          authorId: userId,
-          ingredients: {
-            create: ingredientData
-          },
-          instructions: {
-            create: instructionData
-          },
-          ...(data.nutrition ? {
-            nutritionInfo: {
-              create: {
-                calories: data.nutrition.calories,
-                protein: data.nutrition.protein,
-                carbs: data.nutrition.carbs,
-                fat: data.nutrition.fat,
-                fiber: data.nutrition.fiber || null,
-                sugar: data.nutrition.sugar || null,
-                sodium: data.nutrition.sodium || null,
-                cholesterol: data.nutrition.cholesterol || null
-              }
-            }
-          } : {})
+    // Create the recipe
+    const recipe = await prisma.recipe.create({
+      data: {
+        title: data.title,
+        description: data.description || null,
+        prepTimeMinutes: data.prepTimeMinutes,
+        cookTimeMinutes: data.cookTimeMinutes,
+        servings: data.servings,
+        difficulty: data.difficulty,
+        cuisine: data.cuisine || null,
+        tags: data.tags,
+        imageUrl: data.imageUrl || null,
+        isPublic: data.isPublic,
+        source: "user",
+        authorId: userId,
+        ingredients: {
+          create: ingredientData
         },
-        // includes handled by Supabase service
-          },
-          instructions: {
-            orderBy: {
-              stepNumber: 'asc'
-            }
-          },
-          nutritionInfo: true,
-          author: {
-            select: {
-              name: true,
-              image: true
+        instructions: {
+          create: instructionData
+        },
+        ...(data.nutrition ? {
+          nutritionInfo: {
+            create: {
+              calories: data.nutrition.calories,
+              protein: data.nutrition.protein,
+              carbs: data.nutrition.carbs,
+              fat: data.nutrition.fat,
+              fiber: data.nutrition.fiber || null,
+              sugar: data.nutrition.sugar || null,
+              sodium: data.nutrition.sodium || null,
+              cholesterol: data.nutrition.cholesterol || null
             }
           }
-        });
-
-      return newRecipe;
+        } : {})
+      },
+      include: {
+        ingredients: true,
+        instructions: {
+          orderBy: {
+            stepNumber: 'asc'
+          }
+        },
+        nutritionInfo: true,
+        author: {
+          select: {
+            name: true,
+            image: true
+          }
+        }
+      }
     });
 
     return createSuccessResponse(recipe, 201);
   } catch (error: unknown) {
     logger.error("Error creating recipe:", 'API:route', error);
     throw new Error("Failed to create recipe");
-  });
+  }
+});

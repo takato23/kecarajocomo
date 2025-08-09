@@ -36,6 +36,7 @@ interface MobileGridProps {
   onMealEdit?: (meal: any, slot: any) => void;
   onMealDuplicate?: (meal: any, slot: any) => void;
   isLoading?: boolean;
+  rangeDays?: number;
 }
 
 const MEAL_TYPES = ['desayuno', 'almuerzo', 'merienda', 'cena'] as const;
@@ -47,7 +48,8 @@ export function MobileGrid({
   onRecipeSelect,
   onMealEdit,
   onMealDuplicate,
-  isLoading = false
+  isLoading = false,
+  rangeDays = 7
 }: MobileGridProps) {
   const [selectedDayIndex, setSelectedDayIndex] = useState(0);
 
@@ -59,7 +61,7 @@ export function MobileGrid({
     const threshold = 50;
     if (info.offset.x > threshold && selectedDayIndex > 0) {
       setSelectedDayIndex(selectedDayIndex - 1);
-    } else if (info.offset.x < -threshold && selectedDayIndex < 6) {
+    } else if (info.offset.x < -threshold && selectedDayIndex < rangeDays - 1) {
       setSelectedDayIndex(selectedDayIndex + 1);
     }
   };
@@ -130,7 +132,7 @@ export function MobileGrid({
         {/* Day dots indicator */}
         <KeCardContent className="pt-0">
           <div className="flex justify-center gap-1">
-            {DAYS.map((_, index) => (
+             {Array.from({ length: rangeDays }).map((_, index) => (
               <button
                 key={index}
                 onClick={() => setSelectedDayIndex(index)}
@@ -225,7 +227,7 @@ export function MobileGrid({
           className="space-y-3"
         >
           {MEAL_TYPES.map((mealType) => {
-            const meal = weekPlan?.[selectedDayIndex]?.[mealType];
+             const meal = weekPlan?.[selectedDayIndex]?.[mealType];
             
             return (
               <MealCard

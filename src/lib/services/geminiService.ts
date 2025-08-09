@@ -71,7 +71,7 @@ interface GeminiConfig {
 const DEFAULT_CONFIG: GeminiConfig = {
   model: geminiConfig.default.model,
   temperature: 0.7,
-  maxOutputTokens: 2048
+  maxOutputTokens: 2048,
   topP: 0.95,
   topK: 40
 };
@@ -469,7 +469,12 @@ let geminiService: GeminiService | null = null;
 
 export function getGeminiService(config?: Partial<GeminiConfig>): GeminiService {
   if (!geminiService) {
-    geminiService = new GeminiService(undefined, config);
+    try {
+      geminiService = new GeminiService(undefined, config);
+    } catch (error) {
+      logger.error('Failed to create Gemini service', 'getGeminiService', error);
+      throw error;
+    }
   }
   return geminiService;
 }
