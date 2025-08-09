@@ -1,9 +1,5 @@
-import { PrismaClient } from '@prisma/client'
-
-declare global {
-  var prisma: PrismaClient | undefined
-}
-
-export const prisma = global.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma
+/**
+ * Legacy file - Prisma has been replaced with Supabase
+ * This file exports the database service for backwards compatibility
+ */
+export { db as prisma } from '@/lib/supabase/database.service';

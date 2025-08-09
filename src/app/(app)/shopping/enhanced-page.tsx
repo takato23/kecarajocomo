@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   ShoppingCart, 
   Plus, 
@@ -150,7 +151,7 @@ export default function ShoppingListPage() {
           text: message,
         });
       } catch (err: unknown) {
-        console.error('Error sharing:', err);
+        logger.error('Error sharing:', 'Page:enhanced-page', err);
       }
     } else {
       navigator.clipboard.writeText(message);

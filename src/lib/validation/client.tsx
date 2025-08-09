@@ -5,6 +5,7 @@
 
 import { z } from 'zod';
 import React, { useState, useCallback, useEffect } from 'react';
+import { logger } from '@/services/logger';
 import { 
   FormErrors, 
   zodErrorsToFormErrors, 
@@ -161,7 +162,7 @@ export function useFormValidation<T extends Record<string, any>>({
       await onSubmit(data as T);
       setIsDirty(false);
     } catch (error: unknown) {
-      console.error('Form submission error:', error);
+      logger.error('Form submission error:', 'Lib:client', error);
       
       if (error instanceof z.ZodError) {
         const formErrors = zodErrorsToFormErrors(error);

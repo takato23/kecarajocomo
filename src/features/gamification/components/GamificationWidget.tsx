@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Star, Trophy, Flame, ChevronRight, Gift } from 'lucide-react';
+import { logger } from '@/services/logger';
 
 import { useGamificationProfile, useAchievements, useStreaks } from '../store/gamificationStore';
 import { progressTrackingService } from '../services/progressTrackingService';
@@ -34,7 +35,7 @@ export function GamificationWidget({ userId, className = '' }: GamificationWidge
           setProgressData(analytics);
         }
       } catch (error: unknown) {
-        console.error('Failed to load gamification data:', error);
+        logger.error('Failed to load gamification data:', 'GamificationWidget', error);
       } finally {
         setIsLoading(false);
       }

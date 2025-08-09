@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/services/logger';
 import { 
   Search, 
   Clock, 
@@ -270,7 +271,7 @@ export default function RecetasPage() {
                         await voiceService.speak(`Buscando: ${command.transcript}`);
                       }
                     } catch (error: unknown) {
-                      console.error('Voice search error:', error);
+                      logger.error('Voice search error:', 'Page:page', error);
                       notify({
                         type: 'error',
                         title: 'Error de Búsqueda por Voz',

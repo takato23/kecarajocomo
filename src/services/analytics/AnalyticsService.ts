@@ -4,6 +4,7 @@
  */
 
 import { v4 as uuidv4 } from 'uuid';
+import { logger } from '@/services/logger';
 
 import { PostHogProvider } from './providers/PostHogProvider';
 import type {
@@ -118,7 +119,7 @@ export class AnalyticsService implements AnalyticsMethods {
         session_id: this.sessionId,
       });
     } catch (error: unknown) {
-      console.error('Failed to initialize analytics:', error);
+      logger.error('Failed to initialize analytics:', 'AnalyticsService', error);
       throw error;
     }
   }
@@ -161,7 +162,7 @@ export class AnalyticsService implements AnalyticsMethods {
         this.flush();
       }
     } catch (error: unknown) {
-      console.error('Failed to track event:', error);
+      logger.error('Failed to track event:', 'AnalyticsService', error);
     }
   }
 
@@ -320,7 +321,7 @@ export class AnalyticsService implements AnalyticsMethods {
         }
       });
     } catch (err: unknown) {
-      console.error('Failed to track error:', err);
+      logger.error('Failed to track error:', 'AnalyticsService', err);
     }
   }
 
@@ -494,7 +495,7 @@ export class AnalyticsService implements AnalyticsMethods {
     try {
       await this.sendToProviders(events);
     } catch (error: unknown) {
-      console.error('Failed to flush events:', error);
+      logger.error('Failed to flush events:', 'AnalyticsService', error);
       // Put events back in queue
       this.eventQueue.unshift(...events);
     }
@@ -522,7 +523,7 @@ export class AnalyticsService implements AnalyticsMethods {
           body: JSON.stringify({ events }),
         });
       } catch (error: unknown) {
-        console.warn('Failed to send events to custom endpoint:', error);
+        logger.warn('Failed to send events to custom endpoint:', 'AnalyticsService', error);
       }
     }
   }
@@ -542,13 +543,13 @@ export class AnalyticsService implements AnalyticsMethods {
             break;
           // Add other providers here
           default:
-            console.warn(`Unknown provider: ${config.provider}`);
+            logger.warn(`Unknown provider: ${config.provider}`, 'AnalyticsService');
             continue;
         }
 
         this.providers.set(config.provider, provider);
       } catch (error: unknown) {
-        console.error(`Failed to initialize ${config.provider}:`, error);
+        logger.error(`Failed to initialize ${config.provider}:`, 'AnalyticsService', error);
       }
     }
   }
@@ -637,7 +638,7 @@ export class AnalyticsService implements AnalyticsMethods {
         });
       }
     } catch (error: unknown) {
-      console.warn('Failed to setup performance tracking:', error);
+      logger.warn('Failed to setup performance tracking:', 'AnalyticsService', error);
     }
   }
 

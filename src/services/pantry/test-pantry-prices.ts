@@ -5,11 +5,12 @@
 
 import { HolisticFoodSystem } from '../core/HolisticSystem';
 import { getIngredientPriceService } from '../pricing/ingredientPriceService';
+import { logger } from '@/services/logger';
 
 import { getPantryManager } from './PantryManager';
 
 async function testPantryPrices() {
-  console.log('🧪 Testing PantryManager price integration...\n');
+  logger.info('🧪 Testing PantryManager price integration...\n', 'test-pantry-prices');
   
   try {
     // Initialize system
@@ -21,10 +22,10 @@ async function testPantryPrices() {
     const testUserId = 'test-user-123';
     
     // Test 1: Get pantry stats with real prices
-    console.log('📊 Test 1: Getting pantry stats with real prices...');
+    logger.info('📊 Test 1: Getting pantry stats with real prices...', 'test-pantry-prices');
     try {
       const stats = await pantryManager.getPantryStats(testUserId);
-      console.log('✅ Pantry Stats:', {
+      logger.info('✅ Pantry Stats:', 'test-pantry-prices', {
         totalItems: stats.totalItems,
         estimatedValue: `$${stats.estimatedValue.toFixed(2)}`,
         expiringItems: stats.expiringItems,
@@ -32,57 +33,57 @@ async function testPantryPrices() {
         lowStockItems: stats.lowStockItems
       });
     } catch (error) {
-      console.log('❌ Error getting pantry stats:', error);
+      logger.info('❌ Error getting pantry stats:', 'test-pantry-prices', error);
     }
     
     // Test 2: Get shopping suggestions with prices
-    console.log('\n🛒 Test 2: Getting shopping suggestions with estimated prices...');
+    logger.info('\n🛒 Test 2: Getting shopping suggestions with estimated prices...', 'test-pantry-prices');
     try {
       const suggestions = await pantryManager.getShoppingSuggestions(testUserId);
-      console.log('✅ Shopping Suggestions:');
+      logger.info('✅ Shopping Suggestions:', 'test-pantry-prices');
       suggestions.forEach(suggestion => {
-        console.log(`  - ${suggestion.name}:`);
-        console.log(`    Reason: ${suggestion.reason}`);
-        console.log(`    Priority: ${suggestion.priority}`);
-        console.log(`    Quantity: ${suggestion.estimatedQuantity}`);
-        console.log(`    Estimated Price: $${(suggestion.estimatedPrice || 0).toFixed(2)}`);
+        logger.info(`  - ${suggestion.name}:`, 'test-pantry-prices');
+        logger.info(`    Reason: ${suggestion.reason}`, 'test-pantry-prices');
+        logger.info(`    Priority: ${suggestion.priority}`, 'test-pantry-prices');
+        logger.info(`    Quantity: ${suggestion.estimatedQuantity}`, 'test-pantry-prices');
+        logger.info(`    Estimated Price: $${(suggestion.estimatedPrice || 0).toFixed(2, 'test-pantry-prices')}`);
       });
     } catch (error) {
-      console.log('❌ Error getting shopping suggestions:', error);
+      logger.info('❌ Error getting shopping suggestions:', 'test-pantry-prices', error);
     }
     
     // Test 3: Get pantry value trend
-    console.log('\n📈 Test 3: Getting pantry value trend...');
+    logger.info('\n📈 Test 3: Getting pantry value trend...', 'test-pantry-prices');
     try {
       const trend = await pantryManager.getPantryValueTrend(testUserId, 7);
-      console.log('✅ Pantry Value Trend:');
-      console.log(`  Trend: ${trend.trend}`);
-      console.log(`  Change: ${trend.percentageChange.toFixed(2)}%`);
-      console.log(`  Last 7 days values:`, trend.values.map(v => `$${v.toFixed(2)}`).join(', '));
+      logger.info('✅ Pantry Value Trend:', 'test-pantry-prices');
+      logger.info(`  Trend: ${trend.trend}`, 'test-pantry-prices');
+      logger.info(`  Change: ${trend.percentageChange.toFixed(2, 'test-pantry-prices')}%`);
+      logger.info(`  Last 7 days values:`, 'test-pantry-prices', trend.values.map(v => `$${v.toFixed(2)}`).join(', '));
     } catch (error) {
-      console.log('❌ Error getting pantry value trend:', error);
+      logger.info('❌ Error getting pantry value trend:', 'test-pantry-prices', error);
     }
     
     // Test 4: Test ingredient price service directly
-    console.log('\n💰 Test 4: Testing ingredient price service...');
+    logger.info('\n💰 Test 4: Testing ingredient price service...', 'test-pantry-prices');
     try {
       // Test with some common ingredient categories
       const testIngredientId = 'test-ingredient-123';
       const price = await priceService.getIngredientPrice(testIngredientId);
-      console.log(`✅ Single ingredient price: $${price.toFixed(2)}`);
+      logger.info(`✅ Single ingredient price: $${price.toFixed(2, 'test-pantry-prices')}`);
       
       // Test batch pricing
       const testIds = ['id1', 'id2', 'id3'];
       const batchPrices = await priceService.getBatchPrices(testIds);
-      console.log('✅ Batch prices retrieved:', batchPrices.size, 'items');
+      logger.info('✅ Batch prices retrieved:', 'test-pantry-prices', batchPrices.size, 'items');
     } catch (error) {
-      console.log('❌ Error testing price service:', error);
+      logger.info('❌ Error testing price service:', 'test-pantry-prices', error);
     }
     
-    console.log('\n✨ Price integration testing complete!');
+    logger.info('\n✨ Price integration testing complete!', 'test-pantry-prices');
     
   } catch (error) {
-    console.error('❌ Test failed:', error);
+    logger.error('❌ Test failed:', 'test-pantry-prices', error);
   }
 }
 

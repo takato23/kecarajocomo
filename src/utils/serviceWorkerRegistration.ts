@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 const isLocalhost = Boolean(
   window.location.hostname === 'localhost' ||
   window.location.hostname === '[::1]' ||
@@ -71,7 +73,7 @@ function registerValidSW(swUrl: string, config?: Config) {
       };
     })
     .catch((error) => {
-      console.error('Error during service worker registration:', error);
+      logger.error('Error during service worker registration:', 'serviceWorkerRegistration', error);
     });
 }
 
@@ -110,7 +112,7 @@ export function unregister() {
         registration.unregister();
       })
       .catch((error) => {
-        console.error(error.message);
+        logger.error(error.message, 'serviceWorkerRegistration');
       });
   }
 }
@@ -138,7 +140,7 @@ export async function registerBackgroundSync(tag: string): Promise<void> {
       await (registration as any).sync.register(tag);
 
     } catch (error: unknown) {
-      console.error('Background sync registration failed:', error);
+      logger.error('Background sync registration failed:', 'serviceWorkerRegistration', error);
     }
   }
 }

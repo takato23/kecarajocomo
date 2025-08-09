@@ -41,8 +41,8 @@ export const AI_MODELS = {
   CLAUDE_3_HAIKU: 'claude-3-haiku-20240307',
   
   // Gemini
-  GEMINI_PRO: 'gemini-pro',
-  GEMINI_PRO_VISION: 'gemini-pro-vision',
+  GEMINI_PRO: 'gemini-1.5-flash',
+  GEMINI_PRO_VISION: 'gemini-1.5-flash',
 } as const;
 
 export const DEFAULT_AI_CONFIG = {

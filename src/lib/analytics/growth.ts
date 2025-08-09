@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * Growth Analytics & User Behavior Tracking
  * Comprehensive growth analytics with user behavior insights
@@ -543,7 +545,7 @@ class GrowthAnalytics {
         body: JSON.stringify({ events: eventsToSend }),
       });
     } catch (error: unknown) {
-      console.error('Failed to send analytics events:', error);
+      logger.error('Failed to send analytics events:', 'Lib:growth', error);
       // Re-add events to retry later
       this.events.unshift(...eventsToSend);
     }

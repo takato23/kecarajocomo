@@ -205,7 +205,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
       setHouseholdMembers(prev => [...prev, data]);
       success('Miembro del hogar agregado');
     } catch (err: unknown) {
-      console.error('Error al agregar miembro del hogar');
+      logger.error('Error al agregar miembro del hogar', 'ProfileContext');
       throw err;
     }
   }, [user?.id]);
@@ -224,7 +224,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
       );
       success('Miembro actualizado');
     } catch (err: unknown) {
-      console.error('Error al actualizar miembro');
+      logger.error('Error al actualizar miembro', 'ProfileContext');
       throw err;
     }
   }, []);
@@ -241,7 +241,7 @@ const HouseholdProvider = memo<{ children: React.ReactNode }>(({ children }) => 
       setHouseholdMembers(prev => prev.filter(m => m.id !== id));
       success('Miembro eliminado');
     } catch (err: unknown) {
-      console.error('Error al eliminar miembro');
+      logger.error('Error al eliminar miembro', 'ProfileContext');
       throw err;
     }
   }, []);
@@ -282,7 +282,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       await updateStoreProfile(updates);
       success('Perfil actualizado correctamente');
     } catch (err: unknown) {
-      console.error('Error al actualizar el perfil');
+      logger.error('Error al actualizar el perfil', 'ProfileContext');
       throw err;
     }
   }, [user?.id, profile, updateStoreProfile]);
@@ -294,7 +294,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       await updateStorePreferences(updates);
       success('Preferencias actualizadas');
     } catch (err: unknown) {
-      console.error('Error al actualizar las preferencias');
+      logger.error('Error al actualizar las preferencias', 'ProfileContext');
       throw err;
     }
   }, [user?.id, updateStorePreferences]);
@@ -324,7 +324,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
 
       return data.publicUrl;
     } catch (err: unknown) {
-      console.error('Error al subir la imagen');
+      logger.error('Error al subir la imagen', 'ProfileContext');
       throw err;
     }
   }, [user?.id, updateProfile]);
@@ -337,7 +337,7 @@ const ProfileActionsProvider = memo<{ children: React.ReactNode }>(({ children }
       memoCache.clear();
       success('Perfil actualizado');
     } catch (err: unknown) {
-      console.error('Error al actualizar el perfil');
+      logger.error('Error al actualizar el perfil', 'ProfileContext');
       throw err;
     }
   }, [user?.id]);

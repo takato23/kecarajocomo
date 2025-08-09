@@ -4,6 +4,7 @@
  */
 
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 /**
  * Profile-specific error codes
@@ -506,7 +507,7 @@ export class ProfileErrorHandler {
 
     // Console logging
     if (process.env.NODE_ENV === 'development') {
-      console.error('[ProfileErrorHandler]', errorData);
+      logger.error('[ProfileErrorHandler]', 'ProfileErrorHandler', errorData);
     }
 
     // Send to monitoring service in production

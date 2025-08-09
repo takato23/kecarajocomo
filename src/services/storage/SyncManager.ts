@@ -4,6 +4,7 @@
  */
 
 import { UnifiedStorageService } from './UnifiedStorageService';
+import { logger } from '@/services/logger';
 import {
   SyncOptions,
   SyncStatus,
@@ -41,7 +42,7 @@ export class SyncManager {
     if (this.syncOptions.syncInterval && this.syncOptions.syncInterval > 0) {
       this.syncTimer = setInterval(() => {
         this.sync().catch(err => {
-          console.error('Auto-sync error:', err);
+          logger.error('Auto-sync error:', 'SyncManager', err);
           this.syncStatus.errors.push(err.message);
         });
       }, this.syncOptions.syncInterval);

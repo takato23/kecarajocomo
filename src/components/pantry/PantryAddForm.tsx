@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   X, 
   Plus, 
@@ -217,7 +218,7 @@ export function PantryAddForm({ onClose, onSubmit }: PantryAddFormProps) {
       await onSubmit(submitData);
       onClose();
     } catch (error: unknown) {
-      console.error('Error submitting form:', error);
+      logger.error('Error submitting form:', 'PantryAddForm', error);
       setErrors({ submit: 'Error al agregar el ingrediente. Intenta nuevamente.' });
     } finally {
       setIsSubmitting(false);

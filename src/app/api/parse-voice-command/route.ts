@@ -1,7 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import geminiConfig from '@/lib/config/gemini.config';;
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { logger } from '@/lib/logger';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+const featureConfig = geminiConfig.getFeatureConfig('voiceCommands');
+const genAI = new GoogleGenerativeAI(featureConfig.apiKey || '');
 
 export interface VoiceCommand {
   action: 'add' | 'remove' | 'complete' | 'update_quantity' | 'clear_list' | 'unknown';
@@ -103,14 +106,14 @@ export async function POST(request: NextRequest) {
     }
 
     // Si no hay API key de Gemini, usar fallback
-    if (!process.env.GEMINI_API_KEY) {
-      console.warn('GEMINI_API_KEY not found, using fallback parsing');
+    if (!geminiConfig.getApiKey()) {
+      logger.warn('GEMINI_API_KEY not found, using fallback parsing', 'API:route');
       const commands = fallbackParsing(transcript);
       return NextResponse.json({ commands });
     }
 
     try {
-      const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+      const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
       const prompt = createPrompt(transcript);
       
       const result = await model.generateContent(prompt);
@@ -140,8 +143,8 @@ export async function POST(request: NextRequest) {
         });
 
       } catch (parseError: unknown) {
-        console.error('Failed to parse Gemini response as JSON:', parseError);
-        console.error('Raw response:', text);
+        logger.error('Failed to parse Gemini response as JSON:', 'API:route', parseError);
+        logger.error('Raw response:', 'API:route', text);
         
         // Usar fallback si el parsing falla
         commands = fallbackParsing(transcript);
@@ -150,7 +153,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ commands });
 
     } catch (geminiError: unknown) {
-      console.error('Gemini API error:', geminiError);
+      logger.error('Gemini API error:', 'API:route', geminiError);
       
       // Usar fallback si Gemini falla
       const commands = fallbackParsing(transcript);
@@ -158,7 +161,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error: unknown) {
-    console.error('Error in parse-voice-command API:', error);
+    logger.error('Error in parse-voice-command API:', 'API:route', error);
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

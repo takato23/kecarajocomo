@@ -1,16 +1,17 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { logger } from '@/lib/logger';
 
-import { authOptions } from "@/lib/auth";
+// authOptions removed - using Supabase Auth;
 import { UnifiedAIService } from "@/services/ai";
 import type { RecipeGenerationParams } from "@/services/ai/types";
-import { prisma } from "@/lib/prisma";
+import { db } from '@/lib/supabase/database.service';
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
-    if (!session?.user?.id) {
+    if (!user?.id) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -18,8 +19,7 @@ export async function POST(req: Request) {
     }
 
     // Check if user has available AI generations (implement limits later)
-    const user = await prisma.user.findUnique({
-      where: { id: session.user.id },
+    const userProfile = await db.getUserProfile(user.id, {
       select: { 
         id: true,
         name: true,
@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     const ingredientData = await Promise.all(ingredientPromises);
 
     // Create the recipe
-    const recipe = await prisma.recipe.create({
+    const recipe = await db.createRecipe({
       data: {
         title: generatedRecipe.title,
         description: generatedRecipe.description,
@@ -82,7 +82,7 @@ export async function POST(req: Request) {
         tags: generatedRecipe.tags,
         isPublic: true,
         source: "ai",
-        authorId: session.user.id,
+        authorId: user.id,
         ingredients: {
           create: ingredientData
         },
@@ -99,26 +99,12 @@ export async function POST(req: Request) {
             }
           }
         } : {})
-      },
-      include: {
-        ingredients: {
-          include: {
-            ingredient: true
-          }
-        },
-        nutritionInfo: true,
-        author: {
-          select: {
-            name: true,
-            image: true
-          }
-        }
       }
     });
 
     return NextResponse.json(recipe, { status: 201 });
   } catch (error: unknown) {
-    console.error("Error generating recipe:", error);
+    logger.error("Error generating recipe:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to generate recipe" },
       { status: 500 }

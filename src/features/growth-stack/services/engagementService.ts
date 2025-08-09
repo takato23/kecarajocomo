@@ -7,6 +7,7 @@ import {
 } from '../types';
 
 import { getAnalyticsService } from './analyticsService';
+import { logger } from '@/services/logger';
 
 interface EngagementConfig {
   apiEndpoint: string;
@@ -86,7 +87,7 @@ class EngagementService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to initialize engagement service:', error);
+      logger.error('Failed to initialize engagement service:', 'engagementService', error);
       throw error;
     }
   }
@@ -135,7 +136,7 @@ class EngagementService {
       this.setCachedData(cacheKey, engagement);
       return engagement;
     } catch (error: unknown) {
-      console.error('Failed to fetch user engagement:', error);
+      logger.error('Failed to fetch user engagement:', 'engagementService', error);
       return null;
     }
   }
@@ -158,7 +159,7 @@ class EngagementService {
       this.setCachedData(cacheKey, metrics);
       return metrics;
     } catch (error: unknown) {
-      console.error('Failed to fetch engagement metrics:', error);
+      logger.error('Failed to fetch engagement metrics:', 'engagementService', error);
       return this.getDefaultMetrics();
     }
   }
@@ -181,7 +182,7 @@ class EngagementService {
       this.setCachedData(cacheKey, segments);
       return segments;
     } catch (error: unknown) {
-      console.error('Failed to fetch user segments:', error);
+      logger.error('Failed to fetch user segments:', 'engagementService', error);
       return {} as Record<UserSegment, number>;
     }
   }
@@ -207,7 +208,7 @@ class EngagementService {
       this.setCachedData(cacheKey, analysis);
       return analysis;
     } catch (error: unknown) {
-      console.error('Failed to fetch funnel analysis:', error);
+      logger.error('Failed to fetch funnel analysis:', 'engagementService', error);
       return null;
     }
   }
@@ -233,7 +234,7 @@ class EngagementService {
       this.setCachedData(cacheKey, analysis);
       return analysis;
     } catch (error: unknown) {
-      console.error('Failed to fetch cohort analysis:', error);
+      logger.error('Failed to fetch cohort analysis:', 'engagementService', error);
       return [];
     }
   }
@@ -256,7 +257,7 @@ class EngagementService {
       this.setCachedData(cacheKey, insights);
       return insights;
     } catch (error: unknown) {
-      console.error('Failed to fetch engagement insights:', error);
+      logger.error('Failed to fetch engagement insights:', 'engagementService', error);
       return [];
     }
   }
@@ -442,7 +443,7 @@ class EngagementService {
         this.userActivities.set(activity.userId, activity);
       }
     } catch (error: unknown) {
-      console.error('Failed to load user activities:', error);
+      logger.error('Failed to load user activities:', 'engagementService', error);
     }
   }
 
@@ -504,7 +505,7 @@ class EngagementService {
 
       this.setCachedData('engagement_metrics_current', metrics);
     } catch (error: unknown) {
-      console.error('Failed to calculate metrics:', error);
+      logger.error('Failed to calculate metrics:', 'engagementService', error);
     }
   }
 

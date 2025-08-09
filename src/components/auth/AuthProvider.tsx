@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { Session, User, AuthError } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/lib/logger';
 
 import { supabase } from '@/lib/supabase/client';
 
@@ -51,7 +52,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setSession(session);
         setUser(session?.user ?? null);
       } catch (error: unknown) {
-        console.error('Error getting initial session:', error);
+        logger.error('Error getting initial session:', 'AuthProvider', error);
         setError(error instanceof Error ? error.message : 'Failed to get session');
       } finally {
         setLoading(false);
@@ -63,14 +64,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     // Listen for auth changes
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
-
         setSession(session);
         setUser(session?.user ?? null);
         setLoading(false);
 
         // Handle sign in
         if (event === 'SIGNED_IN') {
-          router.push('/dashboard');
+          // Don't redirect on sign in - let the user navigate
+          // router.push('/dashboard');
         }
         
         // Handle sign out

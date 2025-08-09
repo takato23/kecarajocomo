@@ -82,7 +82,8 @@ export function ShoppingListModal({ onClose }: ShoppingListModalProps) {
               <div className="flex gap-2">
                 <iOS26LiquidButton
                   variant="glass"
-                  leftIcon={<Download className="w-4 h-4" />}
+                  icon={<Download className="w-4 h-4" />}
+                  iconPosition="left"
                   onClick={handleExport}
                   size="sm"
                 >
@@ -90,7 +91,8 @@ export function ShoppingListModal({ onClose }: ShoppingListModalProps) {
                 </iOS26LiquidButton>
                 <iOS26LiquidButton
                   variant="glass"
-                  leftIcon={<Share2 className="w-4 h-4" />}
+                  icon={<Share2 className="w-4 h-4" />}
+                  iconPosition="left"
                   onClick={handleShare}
                   size="sm"
                 >
@@ -98,7 +100,7 @@ export function ShoppingListModal({ onClose }: ShoppingListModalProps) {
                 </iOS26LiquidButton>
               </div>
               <iOS26LiquidButton
-                variant="solid"
+                variant="primary"
                 onClick={onClose}
                 className="bg-gradient-to-r from-green-500 to-blue-500"
               >

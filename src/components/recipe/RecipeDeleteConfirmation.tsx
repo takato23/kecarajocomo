@@ -6,6 +6,7 @@
 'use client';
 
 import { useState } from 'react';
+import { logger } from '@/services/logger';
 import { 
   AlertTriangle, 
   Trash2, 
@@ -141,7 +142,7 @@ export function RecipeDeleteConfirmation({
       onClose();
 
     } catch (error: unknown) {
-      console.error('Error deleting recipe:', error);
+      logger.error('Error deleting recipe:', 'RecipeDeleteConfirmation', error);
       
       let errorMessage = 'Error al eliminar la receta';
       if (error instanceof MealPlanningError) {

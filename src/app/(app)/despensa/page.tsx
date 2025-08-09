@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/services/logger';
 import { 
   Package,
   Search,
@@ -34,6 +35,7 @@ import { cn } from '@/lib/utils';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import { usePantry } from '@/hooks/usePantry';
 import { IngredientCategory } from '@/types/pantry';
+import { OnboardingPacks } from '@/components/pantry/OnboardingPacks';
 
 // Category mapping for ingredient categories
 const categoryIconMap: Record<IngredientCategory, React.ComponentType> = {
@@ -211,7 +213,7 @@ export default function DespensaPage() {
         photo: undefined
       });
     } catch (error) {
-      console.error('Error adding item:', error);
+      logger.error('Error adding item:', 'Page:page', error);
     }
   };
 
@@ -220,7 +222,19 @@ export default function DespensaPage() {
       await deletePantryItem(id);
       setShowDetailsModal(false);
     } catch (error) {
-      console.error('Error deleting item:', error);
+      logger.error('Error deleting item:', 'Page:page', error);
+    }
+  };
+
+  const handlePackSelection = async (ingredients: any[]) => {
+    try {
+      // Agregar múltiples items secuencialmente
+      for (const ingredient of ingredients) {
+        await addItemToPantry(ingredient);
+      }
+    } catch (error) {
+      logger.error('Error adding pack items:', 'Page:page', error);
+      throw error; // Propagar error para que OnboardingPacks pueda manejarlo
     }
   };
 
@@ -483,7 +497,9 @@ export default function DespensaPage() {
                           />
                         ) : (
                           <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-                            <CategoryIcon className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                            {React.createElement(CategoryIcon, {
+                              className: "w-16 h-16 text-gray-400 dark:text-gray-500"
+                            })}
                           </div>
                         )}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
@@ -491,7 +507,9 @@ export default function DespensaPage() {
                         {/* Category Badge */}
                         <div className="absolute top-3 left-3">
                           <div className="p-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg">
-                            <CategoryIcon className="w-5 h-5 dark:text-white" />
+                            {React.createElement(CategoryIcon, {
+                              className: "w-5 h-5 dark:text-white"
+                            })}
                           </div>
                         </div>
 
@@ -567,7 +585,9 @@ export default function DespensaPage() {
                           />
                         ) : (
                           <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800 flex items-center justify-center">
-                            <CategoryIcon className="w-8 h-8 text-gray-400 dark:text-gray-500" />
+                            {React.createElement(CategoryIcon, {
+                              className: "w-8 h-8 text-gray-400 dark:text-gray-500"
+                            })}
                           </div>
                         )}
                         
@@ -592,7 +612,9 @@ export default function DespensaPage() {
                           </div>
                         </div>
 
-                        <CategoryIcon className="w-5 h-5 text-gray-400 dark:text-gray-500" />
+                        {React.createElement(CategoryIcon, {
+                          className: "w-5 h-5 text-gray-400 dark:text-gray-500"
+                        })}
                       </div>
                     </GlassCard>
                   </motion.div>
@@ -607,29 +629,58 @@ export default function DespensaPage() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="text-center py-12"
+            className="py-12"
           >
-            <GlassCard variant="subtle" className="p-8 max-w-md mx-auto">
-              <Package className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                {searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all' 
-                  ? 'No se encontraron items'
-                  : 'Tu despensa está vacía'}
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-4">
-                {searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all'
-                  ? 'Intenta ajustar tus filtros o añade nuevos items a tu despensa.'
-                  : 'Comienza agregando tu primer ingrediente para llevar el control de tu despensa.'}
-              </p>
-              <GlassButton
-                variant="primary"
-                icon={<Plus className="w-4 h-4" />}
-                onClick={() => setShowAddModal(true)}
-                disabled={isAdding}
-              >
-                {isAdding ? 'Añadiendo...' : 'Añadir Primer Item'}
-              </GlassButton>
-            </GlassCard>
+            {/* Si hay filtros activos, mostrar mensaje de no encontrados */}
+            {(searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all') ? (
+              <div className="text-center">
+                <GlassCard variant="subtle" className="p-8 max-w-md mx-auto">
+                  <Package className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                    No se encontraron items
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    Intenta ajustar tus filtros o añade nuevos items a tu despensa.
+                  </p>
+                  <GlassButton
+                    variant="primary"
+                    icon={<Plus className="w-4 h-4" />}
+                    onClick={() => setShowAddModal(true)}
+                    disabled={isAdding}
+                  >
+                    {isAdding ? 'Añadiendo...' : 'Añadir Item'}
+                  </GlassButton>
+                </GlassCard>
+              </div>
+            ) : (
+              /* Si no hay filtros, mostrar onboarding con packs */
+              <div className="max-w-4xl mx-auto">
+                <OnboardingPacks 
+                  onPackSelected={handlePackSelection}
+                  isLoading={isAdding}
+                />
+                
+                {/* Divider */}
+                <div className="flex items-center gap-4 my-8">
+                  <div className="flex-1 border-t border-gray-200/50 dark:border-gray-700/50"></div>
+                  <span className="text-sm text-gray-500 dark:text-gray-400 px-3">o agregá manualmente</span>
+                  <div className="flex-1 border-t border-gray-200/50 dark:border-gray-700/50"></div>
+                </div>
+
+                {/* Manual add option */}
+                <div className="text-center">
+                  <GlassButton
+                    variant="outline"
+                    icon={<Plus className="w-4 h-4" />}
+                    onClick={() => setShowAddModal(true)}
+                    disabled={isAdding}
+                    size="lg"
+                  >
+                    {isAdding ? 'Añadiendo...' : 'Agregar item individual'}
+                  </GlassButton>
+                </div>
+              </div>
+            )}
           </motion.div>
         )}
       </div>

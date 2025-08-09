@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Camera, 
   Upload, 
@@ -101,7 +102,7 @@ export const PhotoRecognition = React.memo<PhotoRecognitionProps>(({
         showToast(`¡Alimentos detectados! Se encontraron ${foods.length} alimentos en la imagen`, 'success');
       }
     } catch (error: unknown) {
-      console.error('Error processing image:', error);
+      logger.error('Error processing image:', 'PhotoRecognition', error);
       showToast("Error al procesar la imagen. Por favor, intenta con otra imagen", 'error');
     } finally {
       setIsProcessing(false);
@@ -133,7 +134,7 @@ export const PhotoRecognition = React.memo<PhotoRecognitionProps>(({
       }
       setIsCameraActive(true);
     } catch (error: unknown) {
-      console.error('Error accessing camera:', error);
+      logger.error('Error accessing camera:', 'PhotoRecognition', error);
       showToast("Error al acceder a la cámara. Por favor, permite el acceso a la cámara", 'error');
     }
   };

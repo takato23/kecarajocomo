@@ -1,4 +1,5 @@
 import Tesseract from 'tesseract.js';
+import { logger } from '@/services/logger';
 
 import type { HolisticFoodSystem } from '../core/HolisticSystem';
 import { getGeminiService } from '../ai/GeminiService';
@@ -102,7 +103,7 @@ export class ReceiptScanner {
         };
 
       } catch (aiError: unknown) {
-        console.warn('⚠️ Error en IA, usando método tradicional:', aiError);
+        logger.warn('⚠️ Error en IA, usando método tradicional:', 'ReceiptScanner', aiError);
         
         // Fallback a método tradicional
         const parsedItems = await this.parseReceiptText(ocrText);
@@ -122,7 +123,7 @@ export class ReceiptScanner {
       return parsedReceipt;
       
     } catch (error: unknown) {
-      console.error('Error en scanner:', error);
+      logger.error('Error en scanner:', 'ReceiptScanner', error);
       throw new Error('Error al escanear el ticket');
     }
   }

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import dynamic from "next/dynamic";
+import { logger } from '@/services/logger';
 import { 
   Scan, 
   Package, 
@@ -120,7 +121,7 @@ export default function ScannerModal({ isOpen, onClose, onProductSelect }: Scann
       
       handleProductSelect(manualProduct);
     } catch (error: unknown) {
-      console.error("Error creating manual association:", error);
+      logger.error("Error creating manual association:", 'ScannerModal', error);
     }
   };
 

@@ -4,6 +4,7 @@
  */
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import {
   StorageItem,
@@ -68,7 +69,7 @@ export class SupabaseStorageProvider extends StorageProviderInterface {
 
       return data.value as T;
     } catch (error: unknown) {
-      console.error('Supabase get error:', error);
+      logger.error('Supabase get error:', 'SupabaseStorageProvider', error);
       return null;
     }
   }
@@ -210,7 +211,7 @@ export class SupabaseStorageProvider extends StorageProviderInterface {
 
       return { used };
     } catch (error: unknown) {
-      console.error('Supabase getSize error:', error);
+      logger.error('Supabase getSize error:', 'SupabaseStorageProvider', error);
       return { used: 0 };
     }
   }
@@ -230,7 +231,7 @@ export class SupabaseStorageProvider extends StorageProviderInterface {
 
       return (data || []).map(record => record.key);
     } catch (error: unknown) {
-      console.error('Supabase keys error:', error);
+      logger.error('Supabase keys error:', 'SupabaseStorageProvider', error);
       return [];
     }
   }

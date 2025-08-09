@@ -4,6 +4,7 @@ import { createContext, useContext, ReactNode, useEffect } from 'react';
 import { useProfileCache, useProfileCacheWarmup } from '@/hooks/useProfileCache';
 import { useAuth } from '@/features/auth/hooks/useAuth';
 import type { Database } from '@/types/supabase';
+import { logger } from '@/services/logger';
 
 type Profile = Database['public']['Tables']['profiles']['Row'];
 type ProfilePreferences = Database['public']['Tables']['profile_preferences']['Row'];
@@ -52,7 +53,7 @@ export function CachedProfileProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     if (process.env.NODE_ENV === 'development') {
       const interval = setInterval(() => {
-        console.log('Profile Cache Performance:', {
+        logger.info('Profile Cache Performance:', 'CachedProfileProvider', {
           hitRate: `${(stats.hitRate * 100).toFixed(2)}%`,
           size: `${(stats.cacheSize / 1024).toFixed(2)}KB`,
           entries: stats.entries,

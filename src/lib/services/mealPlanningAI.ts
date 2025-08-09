@@ -1,4 +1,6 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/services/logger';
 
 import { prisma } from '../prisma';
 import { 
@@ -40,19 +42,21 @@ export class EnhancedMealPlanningAI {
   private readonly RETRY_DELAY = 1000;
 
   constructor() {
-    if (!process.env.GOOGLE_AI_API_KEY) {
+    if (!geminiConfig.getApiKey()) {
       throw MealPlanningErrorFactory.aiServiceUnavailable(
         new Error('GOOGLE_AI_API_KEY environment variable is required')
       );
     }
     
     try {
-      this.genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+      this.genAI = 
+  const featureConfig = geminiConfig.getFeatureConfig('mealPlanning');
+  new GoogleGenerativeAI(featureConfig.apiKey));
       this.model = this.genAI.getGenerativeModel({ 
         model: 'gemini-2.0-flash-exp', // Actualizado a Flash 2.0 para mejor rendimiento y menor costo
         generationConfig: {
           temperature: 0.7,
-          maxOutputTokens: 4096,
+          maxOutputTokens: 2048
           topP: 0.9,
           topK: 40,
         }
@@ -171,8 +175,7 @@ export class EnhancedMealPlanningAI {
           prepPlan,
           shoppingList
         }),
-        metadata: {
-          aiModel: 'gemini-1.5-flash',
+        meta{ aiModel: geminiConfig.default.model,
           generationTime: (Date.now() - startTime) as Minutes,
           revisionCount: PositiveInteger.create(1),
           userFeedback: null
@@ -286,7 +289,7 @@ export class EnhancedMealPlanningAI {
         
         return this.processMealSuggestions(jsonData);
       } catch (parseError: unknown) {
-        console.error('Error parsing AI response:', parseError);
+        logger.error('Error parsing AI response:', 'mealPlanningAI', parseError);
         throw MealPlanningErrorFactory.aiResponseInvalid(text, 'JSON parsing failed');
       }
       
@@ -296,7 +299,7 @@ export class EnhancedMealPlanningAI {
       }
       
       // Fallback to database recipes
-      console.warn('AI meal suggestion failed, using fallback strategy:', error);
+      logger.warn('AI meal suggestion failed, using fallback strategy:', 'mealPlanningAI', error);
       return this.generateFallbackMealSuggestions(preferences, constraints);
     }
   }
@@ -344,7 +347,7 @@ export class EnhancedMealPlanningAI {
     constraints: PlanningConstraints
   ): Promise<MealSuggestion[]> {
     // Get existing recipes from database that match preferences
-    const recipes = await prisma.recipe.findMany({
+    const recipes = await db.getRecipes(user.id{
       where: {
         AND: [
           { prepTimeMinutes: { lte: constraints.maxPrepTime } },
@@ -352,11 +355,7 @@ export class EnhancedMealPlanningAI {
           // Add more filters based on preferences
         ]
       },
-      include: {
-        ingredients: {
-          include: {
-            ingredient: true
-          }
+      // includes handled by Supabase service
         }
       },
       take: 21 // 3 meals × 7 days
@@ -394,14 +393,12 @@ export class EnhancedMealPlanningAI {
    */
   private async getUserPantryItemsSafe(userId: string): Promise<any[]> {
     try {
-      return await prisma.pantryItem.findMany({
+      return await db.getPantryItems(user.id{
         where: { userId },
-        include: {
-          ingredient: true
-        }
+        // includes handled by Supabase service
       });
     } catch (error: unknown) {
-      console.warn('Failed to fetch pantry items:', error);
+      logger.warn('Failed to fetch pantry items:', 'mealPlanningAI', error);
       return [];
     }
   }
@@ -413,20 +410,14 @@ export class EnhancedMealPlanningAI {
     try {
       return await prisma.favoriteRecipe.findMany({
         where: { userId },
-        include: {
-          recipe: {
-            include: {
-              ingredients: {
-                include: {
-                  ingredient: true
-                }
+        // includes handled by Supabase service
               }
             }
           }
         }
       });
     } catch (error: unknown) {
-      console.warn('Failed to fetch favorite recipes:', error);
+      logger.warn('Failed to fetch favorite recipes:', 'mealPlanningAI', error);
       return [];
     }
   }

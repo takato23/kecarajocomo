@@ -1,4 +1,5 @@
 import { VoiceCommand, VoiceCommandResult, VoiceSettings } from '../types';
+import { logger } from '@/services/logger';
 
 export class VoiceService {
   private recognition: SpeechRecognition | null = null;
@@ -52,7 +53,7 @@ export class VoiceService {
       this.isInitialized = true;
       return true;
     } catch (error: unknown) {
-      console.error('Failed to initialize voice service:', error);
+      logger.error('Failed to initialize voice service:', 'voiceService', error);
       return false;
     }
   }
@@ -63,7 +64,7 @@ export class VoiceService {
       stream.getTracks().forEach(track => track.stop());
       return true;
     } catch (error: unknown) {
-      console.error('Microphone permission denied:', error);
+      logger.error('Microphone permission denied:', 'voiceService', error);
       return false;
     }
   }
@@ -114,7 +115,7 @@ export class VoiceService {
       this.isListening = true;
       return true;
     } catch (error: unknown) {
-      console.error('Failed to start listening:', error);
+      logger.error('Failed to start listening:', 'voiceService', error);
       return false;
     }
   }

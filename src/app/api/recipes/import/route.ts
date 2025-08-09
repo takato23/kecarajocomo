@@ -4,6 +4,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/lib/logger';
 
 import { RecipeImportService } from '@/features/recipes/services/RecipeImportService';
 import { getCurrentUser } from '@/lib/supabase';
@@ -64,7 +65,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(result);
 
   } catch (error: unknown) {
-    console.error('Error en endpoint de importación:', error);
+    logger.error('Error en endpoint de importación:', 'API:route', error);
     
     return NextResponse.json(
       { 
@@ -112,7 +113,7 @@ export async function GET(request: NextRequest) {
     );
 
   } catch (error: unknown) {
-    console.error('Error en endpoint de importación GET:', error);
+    logger.error('Error en endpoint de importación GET:', 'API:route', error);
     
     return NextResponse.json(
       { 

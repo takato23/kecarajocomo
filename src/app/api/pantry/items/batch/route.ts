@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { 
   BatchPantryOperation, 
@@ -58,7 +59,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in POST /api/pantry/items/batch:', error);
+    logger.error('Unexpected error in POST /api/pantry/items/batch:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -95,7 +96,7 @@ export async function DELETE(request: NextRequest) {
       .eq('user_id', user.id);
 
     if (error) {
-      console.error('Error deleting pantry items:', error);
+      logger.error('Error deleting pantry items:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to delete pantry items' },
         { status: 500 }
@@ -110,7 +111,7 @@ export async function DELETE(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in DELETE /api/pantry/items/batch:', error);
+    logger.error('Unexpected error in DELETE /api/pantry/items/batch:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

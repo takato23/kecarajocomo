@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback, useEffect, useRef } from 'react';
+import { logger } from '@/services/logger';
 
 import { getStorageService } from '../UnifiedStorageService';
 import {
@@ -81,14 +82,14 @@ export function useStorage<T = any>(options: UseStorageOptions = {}): UseStorage
   useEffect(() => {
     if (options.autoSync) {
       storageService.enableSync().catch(err => {
-        console.error('Failed to enable auto-sync:', err);
+        logger.error('Failed to enable auto-sync:', 'useStorage', err);
       });
     }
     
     return () => {
       if (options.autoSync) {
         storageService.disableSync().catch(err => {
-          console.error('Failed to disable auto-sync:', err);
+          logger.error('Failed to disable auto-sync:', 'useStorage', err);
         });
       }
     };
@@ -161,7 +162,7 @@ export function useStorage<T = any>(options: UseStorageOptions = {}): UseStorage
       const value = await storageService.get(fullKey);
       return value !== null;
     } catch (err: unknown) {
-      console.error('Storage has error:', err);
+      logger.error('Storage has error:', 'useStorage', err);
       return false;
     }
   }, [storageService, createKey]);

@@ -4,8 +4,9 @@
  */
 
 import { PrismaClient, Store, Product, Price } from '@prisma/client';
+import { logger } from '@/services/logger';
 
-import { normalizeIngredient } from '@/lib/parser';
+// import { normalizeIngredient } from '@/lib/parser'; // Commented out - not available
 
 const prisma = new PrismaClient();
 
@@ -100,19 +101,7 @@ export class PriceTracker {
             { normalizedName: { contains: normalized, mode: 'insensitive' } }
           ]
         },
-        include: {
-          prices: {
-            where: {
-              active: true
-            },
-            include: {
-              store: true
-            },
-            orderBy: {
-              updatedAt: 'desc'
-            }
-          }
-        }
+        include: { prices: true }, orderBy: { updatedAt: 'desc' }
       });
       
       if (!product || product.prices.length === 0) {
@@ -161,7 +150,7 @@ export class PriceTracker {
         }
       };
     } catch (error: unknown) {
-      console.error('Error comparing product prices:', error);
+      logger.error('Error comparing product prices:', 'priceTracker', error);
       return null;
     }
   }
@@ -200,9 +189,7 @@ export class PriceTracker {
                 ]
               }
             },
-            include: {
-              product: true
-            },
+            // includes handled by Supabase service,
             orderBy: {
               updatedAt: 'desc'
             }
@@ -252,7 +239,7 @@ export class PriceTracker {
       // Sort by total price (cheapest first)
       return comparisons.sort((a, b) => a.totalPrice - b.totalPrice);
     } catch (error: unknown) {
-      console.error('Error comparing basket prices:', error);
+      logger.error('Error comparing basket prices:', 'priceTracker', error);
       return [];
     }
   }
@@ -274,9 +261,7 @@ export class PriceTracker {
           productId,
           createdAt: { gte: startDate }
         },
-        include: {
-          store: true
-        },
+        // includes handled by Supabase service,
         orderBy: {
           createdAt: 'asc'
         }
@@ -323,7 +308,7 @@ export class PriceTracker {
       
       return trends;
     } catch (error: unknown) {
-      console.error('Error getting price trends:', error);
+      logger.error('Error getting price trends:', 'priceTracker', error);
       return [];
     }
   }
@@ -364,7 +349,7 @@ export class PriceTracker {
       
       return alert;
     } catch (error: unknown) {
-      console.error('Error creating price alert:', error);
+      logger.error('Error creating price alert:', 'priceTracker', error);
       throw error;
     }
   }
@@ -384,15 +369,8 @@ export class PriceTracker {
         where: category ? { category } : undefined,
         include: {
           prices: {
-            where: {
-              active: true,
-              updatedAt: {
-                gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000) // Last 7 days
-              }
-            },
-            include: {
-              store: true
-            }
+            orderBy: { createdAt: 'desc' },
+            take: 10
           }
         }
       });
@@ -409,7 +387,7 @@ export class PriceTracker {
       // Sort by savings percentage
       return deals.sort((a, b) => b.product.savings.percentage - a.product.savings.percentage);
     } catch (error: unknown) {
-      console.error('Error finding deals:', error);
+      logger.error('Error finding deals:', 'priceTracker', error);
       return [];
     }
   }

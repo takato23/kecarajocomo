@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Calendar,
   Settings,
@@ -18,6 +19,7 @@ import { es } from 'date-fns/locale';
 import { toast } from 'sonner';
 
 import { useUser } from '@/store';
+import { useAuth } from '@/providers/SupabaseAuthProvider';
 import { LoadingSpinner } from '@/components/ui/enhanced-loading';
 import { UserPreferences } from '@/lib/types/mealPlanning';
 
@@ -25,7 +27,6 @@ import { useMealPlanningStore } from '../store/useMealPlanningStore';
 import { useGeminiMealPlanner } from '../hooks/useGeminiMealPlanner';
 import type { MealType } from '../types';
 
-import { MealPlannerWizard, type WizardData } from './MealPlannerWizard';
 import MealPlannerGrid from './MealPlannerGrid';
 import { RecipeSelectionModal } from './RecipeSelectionModal';
 import { UserPreferencesModal } from './UserPreferencesModal';
@@ -38,6 +39,7 @@ type ViewMode = 'calendar' | 'shopping' | 'nutrition';
 
 export default function MealPlannerPage() {
   const { user } = useUser();
+  const { user: supabaseUser, session, loading: authLoading } = useAuth();
   
   const {
     currentDate,
@@ -59,80 +61,18 @@ export default function MealPlannerPage() {
   } = useGeminiMealPlanner();
   
   const [viewMode, setViewMode] = useState<ViewMode>('calendar');
-  const [showWizard, setShowWizard] = useState(false);
-  const [hasCompletedWizard, setHasCompletedWizard] = useState(false);
+  const [hasCompletedWizard, setHasCompletedWizard] = useState(true); // Siempre true, wizard se maneja en /planificador
   const [selectedSlot, setSelectedSlot] = useState<{ dayOfWeek: number; mealType: MealType } | null>(null);
 
-  // Initialize
+  // Initialize - always load the current week plan since wizard is handled in /planificador
   useEffect(() => {
-    if (user) {
-      // Check if user has completed wizard
-      const wizardCompleted = localStorage.getItem(`meal-wizard-completed-${user.id}`);
-      
-      if (!wizardCompleted) {
-        setShowWizard(true);
-      } else {
-        setHasCompletedWizard(true);
-        // Load current week plan
-        const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-        loadWeekPlan(startDate);
-      }
+    if (supabaseUser || user) {
+      // Load current week plan
+      const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+      loadWeekPlan(startDate);
     }
-  }, [user, loadWeekPlan]);
+  }, [user, supabaseUser, loadWeekPlan]);
 
-  const handleWizardComplete = async (data: WizardData) => {
-    if (user) {
-      localStorage.setItem(`meal-wizard-completed-${user.id}`, 'true');
-      localStorage.setItem(`meal-preferences-${user.id}`, JSON.stringify(data));
-    }
-    setHasCompletedWizard(true);
-    setShowWizard(false);
-    
-    // Load current week plan after completing wizard
-    const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-    await loadWeekPlan(startDate);
-
-    // Convert wizard data to UserPreferences format
-    const preferences: Partial<UserPreferences> = {
-      userId: user?.id || '',
-      dietaryRestrictions: data.dietaryPreferences as any[],
-      allergies: data.allergies as any[],
-      favoriteCuisines: data.cuisinePreferences as any[],
-      cookingSkillLevel: data.cookingSkill,
-      householdSize: 2, // Default value
-      weeklyBudget: data.budgetLevel === 'low' ? 300 : data.budgetLevel === 'medium' ? 500 : 800,
-      maxPrepTimePerMeal: data.maxCookingTime,
-      preferredMealTypes: ['breakfast', 'lunch', 'dinner']
-    };
-
-    // Generate initial meal plan with AI
-    toast.promise(
-      generateWeeklyPlan(preferences),
-      {
-        loading: 'Generando tu plan de comidas personalizado con IA...',
-        success: async (result) => {
-          if (result.success && result.data) {
-            await applyGeneratedPlan(result.data);
-            return 'Plan de comidas generado exitosamente!';
-          }
-          throw new Error('No se pudo generar el plan');
-        },
-        error: 'Error al generar el plan de comidas'
-      }
-    );
-  };
-
-  const handleWizardSkip = () => {
-    if (user) {
-      localStorage.setItem(`meal-wizard-completed-${user.id}`, 'skipped');
-    }
-    setHasCompletedWizard(true);
-    setShowWizard(false);
-    
-    // Load current week plan after skipping wizard
-    const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
-    loadWeekPlan(startDate);
-  };
 
   const handleWeekNavigation = (direction: 'prev' | 'next' | 'today') => {
     let newDate: Date;
@@ -161,7 +101,7 @@ export default function MealPlannerPage() {
 
   const handleExportWeek = async () => {
     // TODO: Implement week export functionality
-    console.log('Export week');
+    logger.info('Export week', 'MealPlannerPage');
   };
 
   const views = [
@@ -185,10 +125,12 @@ export default function MealPlannerPage() {
     },
   ];
 
-  if (isLoading && !hasCompletedWizard) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" />
+        <div role="status" aria-live="polite" aria-label="Cargando planificador">
+          <LoadingSpinner size="lg" />
+        </div>
       </div>
     );
   }
@@ -209,30 +151,6 @@ export default function MealPlannerPage() {
     );
   }
 
-  // Show wizard if not completed
-  if (!hasCompletedWizard && !showWizard) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 flex items-center justify-center p-4">
-        <div className="text-center">
-          <div className="text-6xl mb-4">📅</div>
-          <h3 className="text-xl font-semibold text-white mb-2">
-            Welcome to Meal Planning!
-          </h3>
-          <p className="text-white/60 mb-6">
-            Let's personalize your meal planning experience
-          </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setShowWizard(true)}
-            className="px-8 py-4 bg-gradient-to-r from-orange-500 to-pink-500 text-white font-medium text-lg rounded-xl hover:from-orange-600 hover:to-pink-600 shadow-lg"
-          >
-            Get Started
-          </motion.button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
@@ -286,6 +204,7 @@ export default function MealPlannerPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleWeekNavigation('prev')}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Previous week"
               >
                 <ChevronLeft className="w-5 h-5 text-white" />
               </motion.button>
@@ -304,6 +223,7 @@ export default function MealPlannerPage() {
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleWeekNavigation('next')}
                 className="p-2 rounded-xl bg-white/10 hover:bg-white/20 transition-colors"
+                aria-label="Next week"
               >
                 <ChevronRight className="w-5 h-5 text-white" />
               </motion.button>
@@ -351,6 +271,7 @@ export default function MealPlannerPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 20 }}
+              aria-hidden="true"
             >
               <MealPlannerGrid
                 onRecipeSelect={handleRecipeSelect}
@@ -419,9 +340,9 @@ export default function MealPlannerPage() {
 
       {/* Modals */}
       <AnimatePresence>
-        {activeModal === 'recipe-select' && selectedSlot && (
+        {activeModal === 'recipe-select' && (
           <RecipeSelectionModal
-            slot={selectedSlot}
+            slot={selectedSlot ?? { dayOfWeek: 0, mealType: 'almuerzo' }}
             onClose={() => {
               setActiveModal(null);
               setSelectedSlot(null);
@@ -442,13 +363,6 @@ export default function MealPlannerPage() {
         )}
       </AnimatePresence>
 
-      {/* Meal Planner Wizard */}
-      {showWizard && (
-        <MealPlannerWizard
-          onComplete={handleWizardComplete}
-          onSkip={handleWizardSkip}
-        />
-      )}
     </div>
   );
 }

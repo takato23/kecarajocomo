@@ -103,6 +103,93 @@ jest.mock('next/navigation', () => ({
   },
 }))
 
+// Mock next-auth
+jest.mock('next-auth/react', () => ({
+  useSession: jest.fn(() => ({
+    data: {
+      user: {
+        id: 'test-user-id',
+        email: 'test@example.com',
+        name: 'Test User'
+      }
+    },
+    status: 'authenticated'
+  })),
+  SessionProvider: ({ children }) => children,
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+}))
+
+// Mock Supabase client
+jest.mock('@/lib/supabase/client', () => ({
+  supabase: {
+    from: jest.fn(() => ({
+      select: jest.fn().mockReturnThis(),
+      insert: jest.fn().mockReturnThis(),
+      update: jest.fn().mockReturnThis(),
+      delete: jest.fn().mockReturnThis(),
+      upsert: jest.fn().mockReturnThis(),
+      eq: jest.fn().mockReturnThis(),
+      gte: jest.fn().mockReturnThis(),
+      lte: jest.fn().mockReturnThis(),
+      in: jest.fn().mockReturnThis(),
+      order: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      single: jest.fn().mockReturnThis(),
+      then: jest.fn((callback) => callback({ data: null, error: null })),
+    })),
+    auth: {
+      getUser: jest.fn(() => Promise.resolve({ data: { user: null }, error: null })),
+      signIn: jest.fn(),
+      signOut: jest.fn(),
+      onAuthStateChange: jest.fn(),
+    },
+    channel: jest.fn(() => ({
+      on: jest.fn().mockReturnThis(),
+      subscribe: jest.fn(),
+      unsubscribe: jest.fn(),
+    })),
+  },
+}))
+
+// Mock AI services
+jest.mock('@/lib/services/geminiService', () => ({
+  callGeminiWeeklyPlan: jest.fn(),
+  callGeminiRegenerateMeal: jest.fn(),
+  callGeminiAlternatives: jest.fn(),
+}))
+
+jest.mock('@/lib/services/mealPlanningAI', () => ({
+  generateWeeklyPlan: jest.fn(),
+  regenerateMeal: jest.fn(),
+  generateAlternatives: jest.fn(),
+}))
+
+// Mock logger
+jest.mock('@/lib/logger', () => ({
+  logger: {
+    info: jest.fn(),
+    warn: jest.fn(),
+    error: jest.fn(),
+    debug: jest.fn(),
+  },
+}))
+
+// Mock dayjs
+jest.mock('dayjs', () => {
+  const originalDayjs = jest.requireActual('dayjs');
+  return {
+    __esModule: true,
+    default: jest.fn((date) => {
+      if (!date) {
+        return originalDayjs('2024-01-15T00:00:00Z'); // Fixed date for tests
+      }
+      return originalDayjs(date);
+    }),
+    extend: jest.fn(),
+  };
+})
+
 // Mock environment variables
 process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://test.supabase.co'
 process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'test-anon-key'

@@ -2,6 +2,7 @@
 
 import { useRef, useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { AutoSaveManager, type AutoSaveConfig, type SaveState } from '@/services/profile/AutoSaveManager';
 import { OfflineQueue } from '@/lib/offline/OfflineQueue';
@@ -137,7 +138,7 @@ export function useAutoSave<T>(
       await onSave(data);
       
     } catch (error) {
-      console.error('Error en auto-save:', error);
+      logger.error('Error en auto-save:', 'useAutoSave', error);
       throw error;
     }
   }, [onSave, onValidate, enableOffline, storageKey, handleStateChange]);
@@ -234,7 +235,7 @@ export function useAutoSave<T>(
         try {
           await retryFailedSaves();
         } catch (error) {
-          console.error('Error al sincronizar al volver online:', error);
+          logger.error('Error al sincronizar al volver online:', 'useAutoSave', error);
         }
       }
     };
@@ -263,7 +264,7 @@ export function useAutoSave<T>(
         currentDataRef.current = resolvedData;
         await forceSave();
       } catch (error) {
-        console.error('Error resolviendo conflicto:', error);
+        logger.error('Error resolviendo conflicto:', 'useAutoSave', error);
         handleStateChange('error');
       }
     };
@@ -277,7 +278,7 @@ export function useAutoSave<T>(
       if (document.hidden && hasPendingChanges && autoSaveManagerRef.current) {
         // Force save when page becomes hidden
         autoSaveManagerRef.current.forceSave(currentDataRef.current).catch(error => {
-          console.error('Error en guardado al ocultar página:', error);
+          logger.error('Error en guardado al ocultar página:', 'useAutoSave', error);
         });
       }
     };

@@ -7,6 +7,7 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { logger } from '@/services/logger';
 import { 
   Save, 
   AlertCircle, 
@@ -250,7 +251,7 @@ export function UserProfileForm({ user, preferences, section }: UserProfileFormP
       setErrors(newErrors);
       return Object.keys(newErrors).length === 0;
     } catch (error: unknown) {
-      console.error('Form validation error:', error);
+      logger.error('Form validation error:', 'UserProfileForm', error);
       setErrors({ form: ['Error de validación del formulario'] });
       return false;
     }
@@ -337,7 +338,7 @@ export function UserProfileForm({ user, preferences, section }: UserProfileFormP
       }, 1000);
 
     } catch (error: unknown) {
-      console.error('Error saving profile:', error);
+      logger.error('Error saving profile:', 'UserProfileForm', error);
       
       let errorMessage = 'Error al guardar el perfil';
       if (error instanceof MealPlanningError) {

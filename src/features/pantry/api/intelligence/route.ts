@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { logger } from '@/services/logger';
 
 import { GeminiPantryService } from '../../services/geminiPantryService';
 import { PantryItem, PantryStats } from '../../types';
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
         );
     }
   } catch (error: unknown) {
-    console.error('Error in pantry intelligence API:', error);
+    logger.error('Error in pantry intelligence API:', 'pantry:route', error);
     return NextResponse.json(
       { error: 'Failed to process pantry intelligence request' },
       { status: 500 }

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+import { logger } from '@/services/logger';
 
 import {
   CookingAssistantSession,
@@ -557,7 +558,7 @@ export const useCookingAssistantStore = create<CookingAssistantState>()(
           try {
             await voiceService.speak(text, options);
           } catch (error: unknown) {
-            console.error('Speech error:', error);
+            logger.error('Speech error:', 'cooking-assistant:cookingAssistantStore', error);
           } finally {
             set({ isSpeaking: false });
           }

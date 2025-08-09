@@ -4,6 +4,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { logger } from '@/services/logger';
 
 import {
   VoiceServiceConfig,
@@ -229,7 +230,7 @@ export class UnifiedVoiceService extends EventEmitter {
    */
   async speak(text: string, options: TTSOptions = {}): Promise<void> {
     if (!this.synthesis) {
-      console.warn('Speech synthesis not supported');
+      logger.warn('Speech synthesis not supported', 'UnifiedVoiceService');
       return;
     }
 
@@ -270,7 +271,7 @@ export class UnifiedVoiceService extends EventEmitter {
       await this.handleBuiltInCommand(command);
 
     } catch (error: unknown) {
-      console.error('Error executing command:', error);
+      logger.error('Error executing command:', 'UnifiedVoiceService', error);
       throw error;
     } finally {
       this.isProcessing = false;
@@ -333,10 +334,10 @@ export class UnifiedVoiceService extends EventEmitter {
           if (command.confidence >= this.config.confidenceThreshold) {
             this.emit('result', command);
           } else {
-            console.warn('Low confidence command:', command);
+            logger.warn('Low confidence command:', 'UnifiedVoiceService', command);
           }
         } catch (error: unknown) {
-          console.error('Error parsing command:', error);
+          logger.error('Error parsing command:', 'UnifiedVoiceService', error);
           this.emit('error', new VoiceServiceError(
             'Failed to parse command',
             'PARSING_ERROR',

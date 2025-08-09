@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Mic, 
   MicOff, 
@@ -63,7 +64,7 @@ export function UniversalVoiceButton({
           try {
             ingredients = parseMultipleIngredients(result.transcript);
           } catch (parseError) {
-            console.warn('Failed to parse ingredients:', parseError);
+            logger.warn('Failed to parse ingredients:', 'UniversalVoiceButton', parseError);
           }
         }
         

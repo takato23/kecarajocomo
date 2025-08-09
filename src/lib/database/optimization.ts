@@ -4,6 +4,7 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import { performanceMonitor } from '../analytics/performance';
 
@@ -159,7 +160,7 @@ class DatabaseOptimizer {
 
       // Log slow queries
       if (duration > this.config.slowQueryThreshold) {
-        console.warn(`Slow query detected: ${table} took ${duration}ms`);
+        logger.warn(`Slow query detected: ${table} took ${duration}ms`, 'Lib:optimization');
       }
 
       // Cache successful queries
@@ -187,7 +188,7 @@ class DatabaseOptimizer {
         cached: false,
       });
 
-      console.error(`Database query error for ${table}:`, error);
+      logger.error(`Database query error for ${table}:`, 'Lib:optimization', error);
       throw error;
     }
   }

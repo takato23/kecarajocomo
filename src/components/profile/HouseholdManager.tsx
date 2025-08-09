@@ -2,6 +2,7 @@
 
 import React, { useState, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Users,
   Edit2,
@@ -165,7 +166,7 @@ export const HouseholdManager: React.FC<HouseholdManagerProps> = ({
       });
     } catch (err) {
       setError(editingMember ? 'Error al actualizar miembro' : 'Error al agregar miembro');
-      console.error(err);
+      logger.error(err, 'HouseholdManager');
     } finally {
       setIsLoading(false);
     }
@@ -180,7 +181,7 @@ export const HouseholdManager: React.FC<HouseholdManagerProps> = ({
       await removeHouseholdMember(memberId);
     } catch (err) {
       setError('Error al eliminar miembro');
-      console.error(err);
+      logger.error(err, 'HouseholdManager');
     } finally {
       setIsDeleting(null);
     }

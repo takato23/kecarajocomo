@@ -6,6 +6,7 @@ import {
 
 import { getAnalyticsService } from './analyticsService';
 import { getEngagementService } from './engagementService';
+import { logger } from '@/services/logger';
 
 interface RetentionConfig {
   apiEndpoint: string;
@@ -92,7 +93,7 @@ class RetentionService {
 
       }
     } catch (error: unknown) {
-      console.error('Failed to initialize retention service:', error);
+      logger.error('Failed to initialize retention service:', 'retentionService', error);
       throw error;
     }
   }
@@ -151,7 +152,7 @@ class RetentionService {
       this.userProfiles.set(userId, profile);
       return profile;
     } catch (error: unknown) {
-      console.error('Failed to fetch user profile:', error);
+      logger.error('Failed to fetch user profile:', 'retentionService', error);
       return null;
     }
   }
@@ -195,7 +196,7 @@ class RetentionService {
 
         resolve(Math.min(churnRisk, 1));
       } catch (error: unknown) {
-        console.error('Failed to analyze churn risk:', error);
+        logger.error('Failed to analyze churn risk:', 'retentionService', error);
         resolve(0.5);
       }
     });
@@ -313,7 +314,7 @@ class RetentionService {
 
       return true;
     } catch (error: unknown) {
-      console.error('Failed to execute retention action:', error);
+      logger.error('Failed to execute retention action:', 'retentionService', error);
       return false;
     }
   }
@@ -340,7 +341,7 @@ class RetentionService {
 
       return metrics;
     } catch (error: unknown) {
-      console.error('Failed to fetch retention metrics:', error);
+      logger.error('Failed to fetch retention metrics:', 'retentionService', error);
       return this.getDefaultMetrics();
     }
   }
@@ -358,7 +359,7 @@ class RetentionService {
       const insights = await response.json();
       return insights;
     } catch (error: unknown) {
-      console.error('Failed to fetch retention insights:', error);
+      logger.error('Failed to fetch retention insights:', 'retentionService', error);
       return [];
     }
   }
@@ -409,7 +410,7 @@ class RetentionService {
       try {
         await this.processCampaign(campaign);
       } catch (error: unknown) {
-        console.error(`Failed to process campaign ${campaign.id}:`, error);
+        logger.error(`Failed to process campaign ${campaign.id}:`, 'retentionService', error);
       }
     }
   }
@@ -457,7 +458,7 @@ class RetentionService {
       const users = await response.json();
       return users;
     } catch (error: unknown) {
-      console.error('Failed to get eligible users:', error);
+      logger.error('Failed to get eligible users:', 'retentionService', error);
       return [];
     }
   }
@@ -496,7 +497,7 @@ class RetentionService {
         })
       });
     } catch (error: unknown) {
-      console.error('Failed to track campaign execution:', error);
+      logger.error('Failed to track campaign execution:', 'retentionService', error);
     }
   }
 
@@ -516,7 +517,7 @@ class RetentionService {
         this.campaigns.set(campaign.id, campaign);
       }
     } catch (error: unknown) {
-      console.error('Failed to load active campaigns:', error);
+      logger.error('Failed to load active campaigns:', 'retentionService', error);
     }
   }
 
@@ -536,7 +537,7 @@ class RetentionService {
         this.userProfiles.set(profile.userId, profile);
       }
     } catch (error: unknown) {
-      console.error('Failed to load user profiles:', error);
+      logger.error('Failed to load user profiles:', 'retentionService', error);
     }
   }
 
@@ -557,7 +558,7 @@ class RetentionService {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
       }
     } catch (error: unknown) {
-      console.error('Failed to save campaign:', error);
+      logger.error('Failed to save campaign:', 'retentionService', error);
       throw error;
     }
   }

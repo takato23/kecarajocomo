@@ -4,6 +4,8 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { logger } from '@/services/logger';
+import geminiConfig from '@/lib/config/gemini.config';
 
 export class GeminiService {
   private genAI: GoogleGenerativeAI | null = null;
@@ -15,21 +17,31 @@ export class GeminiService {
   }
 
   private initialize(): void {
-    // Check for API key in environment
-    const apiKey = process.env.GOOGLE_GEMINI_API_KEY || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+    // Get API key from centralized config
+    const apiKey = geminiConfig.getApiKey();
     
-    if (apiKey && apiKey !== 'your_gemini_api_key' && apiKey.length > 10) {
+    if (apiKey && geminiConfig.validate()) {
       try {
         this.genAI = new GoogleGenerativeAI(apiKey);
-        this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+        // Use default model from config
+        const config = geminiConfig.default;
+        this.model = this.genAI.getGenerativeModel({ 
+          model: config.model,
+          generationConfig: {
+            temperature: config.temperature,
+            topK: config.topK,
+            topP: config.topP,
+            maxOutputTokens: config.maxTokens,
+          }
+        });
         this.isAvailable = true;
-        // GeminiService initialized successfully
+        logger.info('[GeminiService] Initialized successfully with model:', 'GeminiService', { model: config.model });
       } catch (error) {
-        console.warn('[GeminiService] Failed to initialize:', error);
+        logger.warn('[GeminiService] Failed to initialize:', 'GeminiService', error);
         this.isAvailable = false;
       }
     } else {
-      console.info('[GeminiService] No valid API key found, service disabled');
+      logger.info('[GeminiService] No valid API key found, service disabled');
       this.isAvailable = false;
     }
   }
@@ -47,7 +59,7 @@ export class GeminiService {
    */
   async analyze(data: any): Promise<any> {
     if (!this.isAvailable || !this.model) {
-      console.debug('[GeminiService] Service not available, returning null');
+      logger.debug('[GeminiService] Service not available, returning null');
       return null;
     }
 
@@ -75,7 +87,7 @@ export class GeminiService {
         timestamp: new Date().toISOString()
       };
     } catch (error) {
-      console.error('[GeminiService] Analysis error:', error);
+      logger.error('[GeminiService] Analysis error:', 'GeminiService', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',
@@ -90,19 +102,19 @@ export class GeminiService {
    */
   async generateContent(prompt: string): Promise<string> {
     if (!this.isAvailable || !this.model) {
-      console.debug('[GeminiService] Service not available, returning empty string');
+      logger.debug('[GeminiService] Service not available, returning empty string');
       return '';
     }
 
     try {
-      console.debug('[GeminiService] Generating content...');
+      logger.debug('[GeminiService] Generating content...');
       const result = await this.model.generateContent(prompt);
       const response = await result.response;
       const text = response.text();
-      console.debug('[GeminiService] Content generated successfully');
+      logger.debug('[GeminiService] Content generated successfully');
       return text;
     } catch (error) {
-      console.error('[GeminiService] Content generation error:', error);
+      logger.error('[GeminiService] Content generation error:', 'GeminiService', error);
       // Return a user-friendly message instead of throwing
       return 'Unable to generate content at this time. Please try again later.';
     }
@@ -113,7 +125,7 @@ export class GeminiService {
    */
   async streamContent(prompt: string, onChunk?: (text: string) => void): Promise<string> {
     if (!this.isAvailable || !this.model) {
-      console.debug('[GeminiService] Service not available for streaming');
+      logger.debug('[GeminiService] Service not available for streaming');
       return '';
     }
 
@@ -131,7 +143,7 @@ export class GeminiService {
 
       return fullText;
     } catch (error) {
-      console.error('[GeminiService] Streaming error:', error);
+      logger.error('[GeminiService] Streaming error:', 'GeminiService', error);
       return 'Unable to generate content at this time.';
     }
   }
@@ -141,7 +153,7 @@ export class GeminiService {
    */
   async analyzeImage(imageData: string | Buffer, prompt?: string): Promise<any> {
     if (!this.isAvailable || !this.genAI) {
-      console.debug('[GeminiService] Service not available for image analysis');
+      logger.debug('[GeminiService] Service not available for image analysis');
       return null;
     }
 
@@ -177,7 +189,7 @@ export class GeminiService {
         timestamp: new Date().toISOString()
       };
     } catch (error) {
-      console.error('[GeminiService] Image analysis error:', error);
+      logger.error('[GeminiService] Image analysis error:', 'GeminiService', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Unknown error',

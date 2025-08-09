@@ -2,9 +2,13 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { CheckCircle, Sparkles, Calendar, Book, ShoppingCart } from 'lucide-react';
+import { CheckCircle, Sparkles, Calendar, Book, ShoppingCart, ArrowRight, Zap, Trophy, Star, Package } from 'lucide-react';
+import { motion } from 'framer-motion';
+import confetti from 'canvas-confetti';
+import { logger } from '@/services/logger';
 
 import { useOnboardingStore } from '../../store/onboardingStore';
+import { GlassCard, GlassButton } from './shared/GlassCard';
 
 export function CompletionStep() {
   const router = useRouter();
@@ -14,12 +18,20 @@ export function CompletionStep() {
     const handleCompletion = async () => {
       try {
         await completeOnboarding();
+        
+        // Fire confetti
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        });
+        
         // Redirect after a short delay to show the completion animation
         setTimeout(() => {
           router.push('/dashboard');
-        }, 2000);
+        }, 3000);
       } catch (error: unknown) {
-        console.error('Failed to complete onboarding:', error);
+        logger.error('Failed to complete onboarding:', 'CompletionStep', error);
       }
     };
 
@@ -28,34 +40,47 @@ export function CompletionStep() {
 
   const nextSteps = [
     {
-      icon: <Calendar className="h-6 w-6 text-blue-600" />,
-      title: 'Create Your First Meal Plan',
-      description: 'Generate a personalized weekly meal plan with AI',
-      action: 'Plan This Week',
+      icon: Calendar,
+      title: 'Crea tu Primer Plan',
+      description: 'Genera un plan semanal personalizado con IA',
+      action: 'Planificar Semana',
+      color: 'from-blue-400 to-cyan-400',
+      href: '/meal-planning'
     },
     {
-      icon: <Book className="h-6 w-6 text-green-600" />,
-      title: 'Explore Recipes',
-      description: 'Discover thousands of recipes tailored to your preferences',
-      action: 'Browse Recipes',
+      icon: Book,
+      title: 'Explora Recetas',
+      description: 'Descubre miles de recetas adaptadas a tus gustos',
+      action: 'Ver Recetas',
+      color: 'from-green-400 to-emerald-400',
+      href: '/recetas'
     },
     {
-      icon: <ShoppingCart className="h-6 w-6 text-purple-600" />,
-      title: 'Generate Shopping Lists',
-      description: 'Get optimized grocery lists based on your meal plans',
-      action: 'Create List',
+      icon: ShoppingCart,
+      title: 'Lista de Compras',
+      description: 'Obtén listas optimizadas basadas en tus planes',
+      action: 'Crear Lista',
+      color: 'from-purple-400 to-pink-400',
+      href: '/lista-compras'
     },
   ];
 
   if (isLoading) {
     return (
       <div className="max-w-2xl mx-auto text-center py-12">
-        <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-indigo-600 mx-auto mb-6"></div>
-        <h2 className="text-2xl font-bold text-gray-900 mb-2">
-          Completing Your Setup...
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+          className="relative w-16 h-16 mx-auto mb-6"
+        >
+          <div className="absolute inset-0 rounded-full border-3 border-white/20"></div>
+          <div className="absolute inset-0 rounded-full border-3 border-purple-400 border-t-transparent"></div>
+        </motion.div>
+        <h2 className="text-2xl font-bold text-white mb-2">
+          Completando tu configuración...
         </h2>
-        <p className="text-gray-600">
-          We're finalizing your personalized meal planning experience
+        <p className="text-white/60">
+          Estamos finalizando tu experiencia personalizada
         </p>
       </div>
     );
@@ -64,91 +89,171 @@ export function CompletionStep() {
   return (
     <div className="max-w-3xl mx-auto text-center">
       {/* Success Animation */}
-      <div className="mb-8">
-        <div className="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 animate-pulse">
-          <CheckCircle className="h-12 w-12 text-green-600" />
-        </div>
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">
-          🎉 Welcome to kecarajocomer!
-        </h1>
-        <p className="text-xl text-gray-600 mb-6">
-          Your personalized meal planning journey starts now
-        </p>
-      </div>
+      <motion.div 
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="mb-8"
+      >
+        <motion.div 
+          animate={{ 
+            scale: [1, 1.1, 1],
+            rotate: [0, 5, -5, 0]
+          }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-24 h-24 bg-gradient-to-br from-green-400 to-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg"
+        >
+          <Trophy className="h-12 w-12 text-white" />
+        </motion.div>
+        <motion.h1 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="text-4xl font-bold text-white mb-4"
+        >
+          ¡Bienvenido a Ke Carajo Comer! 🎉
+        </motion.h1>
+        <motion.p 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="text-xl text-white/80 mb-6"
+        >
+          Tu viaje culinario personalizado comienza ahora
+        </motion.p>
+      </motion.div>
 
       {/* Completion Summary */}
-      <div className="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-lg p-8 mb-8">
-        <div className="flex items-center justify-center mb-4">
-          <Sparkles className="h-8 w-8 text-indigo-600 mr-2" />
-          <h2 className="text-2xl font-bold text-gray-900">
-            You're All Set!
-          </h2>
-        </div>
-        <p className="text-gray-700 mb-6">
-          We've configured your account with your preferences, dietary needs, and pantry items. 
-          Our AI is now ready to create personalized meal plans just for you.
-        </p>
-        
-        <div className="grid md:grid-cols-3 gap-4 text-sm">
-          <div className="bg-white rounded-lg p-4">
-            <div className="font-semibold text-gray-900 mb-1">Profile Complete</div>
-            <div className="text-gray-600">Preferences and dietary needs saved</div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.5 }}
+      >
+        <GlassCard className="p-8 mb-8">
+          <div className="flex items-center justify-center mb-4">
+            <Sparkles className="h-8 w-8 text-yellow-400 mr-2" />
+            <h2 className="text-2xl font-bold text-white">
+              ¡Todo listo!
+            </h2>
           </div>
-          <div className="bg-white rounded-lg p-4">
-            <div className="font-semibold text-gray-900 mb-1">Pantry Stocked</div>
-            <div className="text-gray-600">Your ingredients are ready for meal planning</div>
+          <p className="text-white/80 mb-6">
+            Hemos configurado tu cuenta con tus preferencias, necesidades dietéticas y despensa. 
+            Nuestra IA está lista para crear planes de comidas personalizados para ti.
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-4 text-sm">
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.6 }}
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20"
+            >
+              <CheckCircle className="w-6 h-6 text-green-400 mx-auto mb-2" />
+              <div className="font-semibold text-white mb-1">Perfil Completo</div>
+              <div className="text-white/60">Preferencias y dieta guardadas</div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.7 }}
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20"
+            >
+              <Package className="w-6 h-6 text-blue-400 mx-auto mb-2" />
+              <div className="font-semibold text-white mb-1">Despensa Lista</div>
+              <div className="text-white/60">Tus ingredientes están registrados</div>
+            </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.8 }}
+              className="bg-white/10 backdrop-blur-xl rounded-xl p-4 border border-white/20"
+            >
+              <Zap className="w-6 h-6 text-purple-400 mx-auto mb-2" />
+              <div className="font-semibold text-white mb-1">IA Activada</div>
+              <div className="text-white/60">Sugerencias personalizadas listas</div>
+            </motion.div>
           </div>
-          <div className="bg-white rounded-lg p-4">
-            <div className="font-semibold text-gray-900 mb-1">AI Ready</div>
-            <div className="text-gray-600">Personalized suggestions are being prepared</div>
-          </div>
-        </div>
-      </div>
+        </GlassCard>
+      </motion.div>
 
       {/* Next Steps */}
-      <div className="mb-8">
-        <h3 className="text-xl font-semibold text-gray-900 mb-6">
-          Here's what you can do next:
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.9 }}
+        className="mb-8"
+      >
+        <h3 className="text-xl font-semibold text-white mb-6">
+          Aquí está lo que puedes hacer ahora:
         </h3>
         <div className="grid md:grid-cols-3 gap-6">
-          {nextSteps.map((step, index) => (
-            <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow">
-              <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center mx-auto mb-4">
-                {step.icon}
-              </div>
-              <h4 className="font-semibold text-gray-900 mb-2">{step.title}</h4>
-              <p className="text-gray-600 text-sm mb-4">{step.description}</p>
-              <button className="text-indigo-600 hover:text-indigo-700 font-medium text-sm">
-                {step.action} →
-              </button>
-            </div>
-          ))}
+          {nextSteps.map((step, index) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 + index * 0.1 }}
+                whileHover={{ scale: 1.05 }}
+                onClick={() => router.push(step.href)}
+                className="cursor-pointer"
+              >
+                <GlassCard className="p-6 h-full hover:bg-white/10 transition-all">
+                  <div className={`w-12 h-12 bg-gradient-to-br ${step.color} rounded-xl flex items-center justify-center mx-auto mb-4 shadow-lg`}>
+                    <Icon className="h-6 w-6 text-white" />
+                  </div>
+                  <h4 className="font-semibold text-white mb-2">{step.title}</h4>
+                  <p className="text-white/60 text-sm mb-4">{step.description}</p>
+                  <button className="text-purple-400 hover:text-purple-300 font-medium text-sm flex items-center gap-1 mx-auto transition-colors">
+                    {step.action} <ArrowRight className="w-4 h-4" />
+                  </button>
+                </GlassCard>
+              </motion.div>
+            );
+          })}
         </div>
-      </div>
+      </motion.div>
 
       {/* Tips & Encouragement */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
-        <h4 className="font-semibold text-blue-900 mb-3">💡 Pro Tips for Getting Started</h4>
-        <div className="text-left space-y-2 text-sm text-blue-800">
-          <p>• Start with a simple weekly plan to get familiar with the interface</p>
-          <p>• Rate meals you try to improve future AI suggestions</p>
-          <p>• Update your pantry regularly for the most accurate recommendations</p>
-          <p>• Explore different cuisines to expand your culinary horizons</p>
-        </div>
-      </div>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.3 }}
+      >
+        <GlassCard variant="highlight" className="p-6 mb-8">
+          <h4 className="font-semibold text-white mb-3 flex items-center justify-center gap-2">
+            <Star className="w-5 h-5 text-yellow-400" />
+            Tips Pro para Empezar
+          </h4>
+          <div className="text-left space-y-2 text-sm text-purple-200">
+            <p>• Comienza con un plan semanal simple para familiarizarte</p>
+            <p>• Califica las comidas para mejorar las sugerencias de la IA</p>
+            <p>• Actualiza tu despensa regularmente para recomendaciones precisas</p>
+            <p>• Explora diferentes cocinas para expandir tus horizontes culinarios</p>
+          </div>
+        </GlassCard>
+      </motion.div>
 
       {/* Auto-redirect notice */}
-      <div className="text-center">
-        <p className="text-gray-500 text-sm mb-4">
-          Taking you to your dashboard in a moment...
+      <motion.div 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+        className="text-center"
+      >
+        <p className="text-white/60 text-sm mb-4">
+          Te llevaremos a tu dashboard en un momento...
         </p>
-        <button
+        <GlassButton
           onClick={() => router.push('/dashboard')}
-          className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white font-medium rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition-colors"
+          variant="primary"
+          className="inline-flex items-center gap-2"
         >
-          Go to Dashboard Now
-        </button>
-      </div>
+          Ir al Dashboard Ahora
+          <ArrowRight className="w-4 h-4" />
+        </GlassButton>
+      </motion.div>
     </div>
   );
 }

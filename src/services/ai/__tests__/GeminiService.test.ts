@@ -18,7 +18,7 @@ describe('GeminiService', () => {
     beforeAll(() => {
       // Ensure no API key is set
       delete process.env.GOOGLE_GEMINI_API_KEY;
-      delete process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+      delete process.env.GOOGLE_GEMINI_API_KEY;
     });
 
     it('should initialize without throwing errors', () => {

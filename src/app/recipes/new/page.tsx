@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { logger } from '@/services/logger';
 import { 
   ArrowLeft, 
   Plus, 
@@ -114,7 +115,7 @@ export default function NewRecipePage() {
       const data = await response.json();
       router.push(`/recipes/${data.id}`);
     } catch (error: unknown) {
-      console.error("Error creating recipe:", error);
+      logger.error("Error creating recipe:", 'Page:page', error);
       alert("Failed to create recipe. Please try again.");
     } finally {
       setLoading(false);

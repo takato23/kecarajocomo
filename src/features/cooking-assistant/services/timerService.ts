@@ -1,4 +1,5 @@
 import { CookingTimer } from '../types';
+import { logger } from '@/services/logger';
 
 export class TimerService {
   private timers: Map<string, CookingTimer> = new Map();
@@ -237,7 +238,7 @@ export class TimerService {
       oscillator.start(audioContext.currentTime);
       oscillator.stop(audioContext.currentTime + 0.5);
     } catch (error: unknown) {
-      console.warn('Could not play notification sound:', error);
+      logger.warn('Could not play notification sound:', 'timerService', error);
       // Fallback to system notification
       if ('Notification' in window && Notification.permission === 'granted') {
         new Notification('Timer Complete!', {

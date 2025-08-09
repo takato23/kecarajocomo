@@ -41,7 +41,7 @@ class Logger {
     switch (entry.level) {
       case 'debug':
         if (this.isDevelopment) {
-
+          console.debug(logMessage, entry.data || '');
         }
         break;
       case 'info':

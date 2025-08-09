@@ -16,6 +16,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { logger } from '@/services/logger';
 import type { 
   UserProfile, 
   UserPreferences, 
@@ -147,7 +148,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
       const initTime = performance.now() - startTime;
       this.recordPerformanceMetric('system:initialization', initTime);
       
-      console.log(`ProfileSystemIntegrator initialized in ${initTime.toFixed(2)}ms`);
+      logger.info(`ProfileSystemIntegrator initialized in ${initTime.toFixed(2, 'Lib:ProfileSystemIntegrator')}ms`);
       
     } catch (error) {
       this.handleError('initialization', error as Error);
@@ -360,7 +361,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
    * Cleanup and shutdown the system
    */
   async shutdown(): Promise<void> {
-    console.log('Shutting down ProfileSystemIntegrator...');
+    logger.info('Shutting down ProfileSystemIntegrator...', 'Lib:ProfileSystemIntegrator');
     
     // Clear intervals
     if (this.syncInterval) {
@@ -381,7 +382,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
     }
 
     this.state.isInitialized = false;
-    console.log('ProfileSystemIntegrator shutdown complete');
+    logger.info('ProfileSystemIntegrator shutdown complete', 'Lib:ProfileSystemIntegrator');
   }
 
   // Private methods
@@ -424,7 +425,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
         try {
           await this.forceSynchronization();
         } catch (error) {
-          console.warn('Real-time sync failed:', error);
+          logger.warn('Real-time sync failed:', 'Lib:ProfileSystemIntegrator', error);
         }
       }
     }, this.config.syncIntervalMs);
@@ -452,7 +453,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
 
       return conflicts;
     } catch (error) {
-      console.warn('Conflict detection failed:', error);
+      logger.warn('Conflict detection failed:', 'Lib:ProfileSystemIntegrator', error);
       return [];
     }
   }
@@ -522,7 +523,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
   }
 
   private handleError(operation: string, error: Error, context?: any): void {
-    console.error(`ProfileSystemIntegrator error [${operation}]:`, error, context);
+    logger.error(`ProfileSystemIntegrator error [${operation}]:`, 'Lib:ProfileSystemIntegrator', error, context);
     
     if (this.config.enableErrorTracking) {
       this.emit('profile:error', { 
@@ -546,7 +547,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
 
   private async retryOperation(operation: string, context: any): Promise<any> {
     // Implement retry logic based on operation type
-    console.log(`Retrying operation: ${operation}`, context);
+    logger.info(`Retrying operation: ${operation}`, 'Lib:ProfileSystemIntegrator', context);
     // This would contain the actual retry logic
   }
 
@@ -606,7 +607,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
 
   private handleOnline(): void {
     this.state.isOnline = true;
-    console.log('ProfileSystemIntegrator: Back online');
+    logger.info('ProfileSystemIntegrator: Back online', 'Lib:ProfileSystemIntegrator');
     
     // Trigger sync when back online
     if (this.state.pendingChanges > 0) {
@@ -616,7 +617,7 @@ export class ProfileSystemIntegrator extends EventEmitter {
 
   private handleOffline(): void {
     this.state.isOnline = false;
-    console.log('ProfileSystemIntegrator: Offline mode activated');
+    logger.info('ProfileSystemIntegrator: Offline mode activated', 'Lib:ProfileSystemIntegrator');
   }
 
   private chunkArray<T>(array: T[], size: number): T[][] {

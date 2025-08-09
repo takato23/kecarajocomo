@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { logger } from '@/services/logger';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -108,7 +109,7 @@ export const storage = {
     try {
       window.localStorage.setItem(key, JSON.stringify(value));
     } catch {
-      console.error('Failed to save to localStorage');
+      logger.error('Failed to save to localStorage', 'Lib:utils');
     }
   },
   remove: (key: string) => {

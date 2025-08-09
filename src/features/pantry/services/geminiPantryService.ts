@@ -3,14 +3,18 @@
  * AI-driven pantry management with smart insights and recommendations
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/services/logger';
 
 import { 
   PantryItem,
   PantryStats 
 } from '../types';
 
-const genAI = new GoogleGenerativeAI(process.env.GOOGLE_GEMINI_API_KEY!);
+const genAI = 
+  const featureConfig = geminiConfig.getFeatureConfig('pantryAnalysis');
+  new GoogleGenerativeAI(featureConfig.apiKey)!);
 
 export interface PantryInsight {
   type: 'waste_reduction' | 'usage_optimization' | 'storage_improvement' | 'recipe_suggestion' | 'shopping_optimization';
@@ -77,7 +81,7 @@ export class GeminiPantryService {
       budget_conscious?: boolean;
     }
   ): Promise<PantryInsight[]> {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const prompt = `
 As a pantry management expert, analyze this pantry inventory and provide actionable insights.
@@ -138,7 +142,7 @@ Provide 5-8 most impactful insights.`;
       const parsed = JSON.parse(jsonMatch[0]);
       return parsed.insights || [];
     } catch (error: unknown) {
-      console.error('Error generating pantry insights:', error);
+      logger.error('Error generating pantry insights:', 'geminiPantryService', error);
       return this.getFallbackInsights(pantryItems, pantryStats);
     }
   }
@@ -149,7 +153,7 @@ Provide 5-8 most impactful insights.`;
   static async predictExpirationDates(
     pantryItems: PantryItem[]
   ): Promise<SmartExpirationPrediction[]> {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const itemsWithoutExpiration = pantryItems.filter(item => !item.expiration_date);
     
@@ -210,7 +214,7 @@ Provide realistic predictions based on food science principles.`;
         predicted_expiration_date: new Date(pred.predicted_expiration_date)
       })) || [];
     } catch (error: unknown) {
-      console.error('Error predicting expiration dates:', error);
+      logger.error('Error predicting expiration dates:', 'geminiPantryService', error);
       return [];
     }
   }
@@ -222,7 +226,7 @@ Provide realistic predictions based on food science principles.`;
     missingIngredients: string[],
     availablePantryItems: PantryItem[]
   ): Promise<IngredientSubstitution[]> {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const prompt = `
 As a culinary expert, suggest ingredient substitutions using available pantry items.
@@ -273,7 +277,7 @@ Consider flavor profiles, cooking properties, and nutritional impact.`;
       const parsed = JSON.parse(jsonMatch[0]);
       return parsed.substitutions || [];
     } catch (error: unknown) {
-      console.error('Error generating substitutions:', error);
+      logger.error('Error generating substitutions:', 'geminiPantryService', error);
       return [];
     }
   }
@@ -290,7 +294,7 @@ Consider flavor profiles, cooking properties, and nutritional impact.`;
       amount_used: number;
     }>
   ): Promise<PantryOptimizationPlan> {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const prompt = `
 Create a comprehensive pantry optimization plan based on current inventory and usage patterns.
@@ -359,7 +363,7 @@ Provide 3-5 immediate actions, 4-week plan, and long-term strategy.`;
       const parsed = JSON.parse(jsonMatch[0]);
       return parsed;
     } catch (error: unknown) {
-      console.error('Error creating optimization plan:', error);
+      logger.error('Error creating optimization plan:', 'geminiPantryService', error);
       return this.getFallbackOptimizationPlan(pantryItems, pantryStats);
     }
   }
@@ -381,7 +385,7 @@ Provide 3-5 immediate actions, 4-week plan, and long-term strategy.`;
     quantity_suggestion: string;
     cost_estimate?: number;
   }>> {
-    const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+    const model = genAI.getGenerativeModel({ model: geminiConfig.default.model });
     
     const prompt = `
 Analyze pantry inventory and upcoming meals to generate smart shopping recommendations.
@@ -433,7 +437,7 @@ Provide 8-12 most important recommendations.`;
       const parsed = JSON.parse(jsonMatch[0]);
       return parsed.recommendations || [];
     } catch (error: unknown) {
-      console.error('Error generating shopping recommendations:', error);
+      logger.error('Error generating shopping recommendations:', 'geminiPantryService', error);
       return [];
     }
   }

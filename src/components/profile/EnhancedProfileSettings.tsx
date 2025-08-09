@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   User, 
   Palette, 
@@ -355,7 +356,7 @@ export const EnhancedProfileSettings: React.FC = () => {
       setHasChanges(false);
       // Show success toast
     } catch (error: unknown) {
-      console.error('Error saving settings:', error);
+      logger.error('Error saving settings:', 'EnhancedProfileSettings', error);
     } finally {
       setSaving(false);
     }

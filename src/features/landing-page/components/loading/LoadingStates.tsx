@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 
@@ -453,7 +454,7 @@ export const LoadingButton = ({
       setInternalLoading(true);
       await onClick();
     } catch (error: unknown) {
-      console.error('Button action failed:', error);
+      logger.error('Button action failed:', 'LoadingStates', error);
     } finally {
       setInternalLoading(false);
     }

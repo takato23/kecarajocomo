@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   X, Plus, Calendar, MapPin, DollarSign, FileText, 
   Mic, Keyboard, Check, ChevronRight, Info
@@ -208,7 +209,7 @@ export function PantryItemFormWithVoice({ item, onClose, onSuccess }: PantryItem
       onSuccess?.();
       onClose();
     } catch (error: unknown) {
-      console.error('Error saving pantry item:', error);
+      logger.error('Error saving pantry item:', 'PantryItemFormWithVoice', error);
     }
   };
 
@@ -232,7 +233,7 @@ export function PantryItemFormWithVoice({ item, onClose, onSuccess }: PantryItem
       try {
         await addItem(itemData);
       } catch (error: unknown) {
-        console.error('Error adding item:', parsedItem.extracted_name, error);
+        logger.error('Error adding item:', 'PantryItemFormWithVoice', parsedItem.extracted_name, error);
       }
     }
     

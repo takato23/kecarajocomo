@@ -4,6 +4,7 @@
  */
 
 import { EventEmitter } from 'events';
+import { logger } from '@/services/logger';
 
 import {
   StorageProvider,
@@ -361,7 +362,7 @@ export class UnifiedStorageService extends EventEmitter {
         await this.offlineManager.remove(operation.id);
       } catch (error: unknown) {
         await this.offlineManager.incrementRetry(operation.id);
-        console.error('Failed to process queued operation:', error);
+        logger.error('Failed to process queued operation:', 'UnifiedStorageService', error);
       }
     }
   }

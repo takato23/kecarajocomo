@@ -7,6 +7,7 @@
 import { createServerSupabaseClient } from '@/lib/supabase';
 import { NotificationManager } from '@/services/notifications';
 import { getVoiceService } from '@/services/voice/UnifiedVoiceService';
+import { logger } from '@/services/logger';
 
 import type { Recipe } from '../types';
 
@@ -174,7 +175,7 @@ export class RecipeImportService {
       });
 
     } catch (error: unknown) {
-      console.error('Error in recipe import:', error);
+      logger.error('Error in recipe import:', 'RecipeImportService', error);
       
       await this.notificationService.notify({
         type: 'error',
@@ -280,7 +281,7 @@ export class RecipeImportService {
           }
 
         } catch (error: unknown) {
-          console.error(`❌ Error procesando receta "${recipe.title}":`, error);
+          logger.error(`❌ Error procesando receta "${recipe.title}":`, 'RecipeImportService', error);
           result.errors.push({
             index: i,
             title: recipe.title,
@@ -307,7 +308,7 @@ export class RecipeImportService {
       return result;
 
     } catch (error: unknown) {
-      console.error('💥 Error crítico en importación:', error);
+      logger.error('💥 Error crítico en importación:', 'RecipeImportService', error);
       result.errors.push({
         index: -1,
         title: 'Error del sistema',
@@ -351,7 +352,7 @@ export class RecipeImportService {
       });
 
     } catch (error: unknown) {
-      console.error('Error importando archivo personalizado:', error);
+      logger.error('Error importando archivo personalizado:', 'RecipeImportService', error);
       throw error;
     }
   }
@@ -423,7 +424,7 @@ export class RecipeImportService {
       return await response.json();
     } catch (error: unknown) {
       // Fallback: load from static file
-      console.warn('Could not load from API, attempting static file');
+      logger.warn('Could not load from API, attempting static file', 'RecipeImportService');
       
       try {
         const response = await fetch('/docs/recipes_full.json');
@@ -432,7 +433,7 @@ export class RecipeImportService {
         }
         return await response.json();
       } catch (staticError: unknown) {
-        console.error('Could not load static file either:', staticError);
+        logger.error('Could not load static file either:', 'RecipeImportService', staticError);
         throw new Error('No se pudo acceder al archivo de recetas');
       }
     }
@@ -549,7 +550,7 @@ export class RecipeImportService {
 
       return null;
     } catch (error: unknown) {
-      console.error('Error buscando receta existente:', error);
+      logger.error('Error buscando receta existente:', 'RecipeImportService', error);
       return null;
     }
   }
@@ -652,7 +653,7 @@ export class RecipeImportService {
 
       return user?.role === 'admin';
     } catch (error: unknown) {
-      console.error('Error verificando rol de admin:', error);
+      logger.error('Error verificando rol de admin:', 'RecipeImportService', error);
       return false;
     }
   }
@@ -721,10 +722,10 @@ export class RecipeImportService {
         
         await voiceService.speak(voiceMessage, { lang: 'es-MX' });
       } catch (voiceError: unknown) {
-        console.warn('Error en feedback de voz:', voiceError);
+        logger.warn('Error en feedback de voz:', 'RecipeImportService', voiceError);
       }
     } catch (error: unknown) {
-      console.error('Error enviando notificación:', error);
+      logger.error('Error enviando notificación:', 'RecipeImportService', error);
     }
   }
 
@@ -799,7 +800,7 @@ export class RecipeImportService {
       };
 
     } catch (error: unknown) {
-      console.error(`Error processing recipe ${title}:`, error);
+      logger.error(`Error processing recipe ${title}:`, 'RecipeImportService', error);
       return {
         recipe: title,
         status: 'error',
@@ -863,7 +864,7 @@ export class RecipeImportService {
       // Check if image is accessible
       const response = await fetch(imageUrl, { method: 'HEAD' });
       if (!response.ok) {
-        console.warn(`Image not accessible: ${imageUrl}`);
+        logger.warn(`Image not accessible: ${imageUrl}`, 'RecipeImportService');
         return ''; // Return empty string if image not accessible
       }
 
@@ -871,7 +872,7 @@ export class RecipeImportService {
       return imageUrl;
 
     } catch (error: unknown) {
-      console.warn(`Error validating image ${imageUrl}:`, error);
+      logger.warn(`Error validating image ${imageUrl}:`, 'RecipeImportService', error);
       return ''; // Return empty string on error
     }
   }
@@ -894,7 +895,7 @@ export class RecipeImportService {
       await this.storageService.set(`recipe_${recipe.id}`, recipe);
 
     } catch (error: unknown) {
-      console.error('Error saving recipe:', error);
+      logger.error('Error saving recipe:', 'RecipeImportService', error);
       throw new Error('No se pudo guardar la receta');
     }
   }

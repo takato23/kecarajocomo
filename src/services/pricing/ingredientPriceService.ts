@@ -4,6 +4,7 @@
  */
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { logger } from '@/services/logger';
 
 import type { Database } from '@/types/database';
 
@@ -82,7 +83,7 @@ export class IngredientPriceService {
       return estimatedPrice;
       
     } catch (error) {
-      console.error('Error getting ingredient price:', error);
+      logger.error('Error getting ingredient price:', 'ingredientPriceService', error);
       // Return a reasonable default based on category
       return this.getDefaultPriceByCategory(ingredientId);
     }
@@ -131,7 +132,7 @@ export class IngredientPriceService {
       return priceInfo;
       
     } catch (error) {
-      console.error('Error getting detailed price info:', error);
+      logger.error('Error getting detailed price info:', 'ingredientPriceService', error);
       return {
         ingredientId,
         averagePrice: 0,
@@ -196,7 +197,7 @@ export class IngredientPriceService {
       return { average, lowest, highest };
       
     } catch (error) {
-      console.error('Error analyzing receipt prices:', error);
+      logger.error('Error analyzing receipt prices:', 'ingredientPriceService', error);
       return { average: 0 };
     }
   }

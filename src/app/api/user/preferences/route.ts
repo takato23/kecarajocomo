@@ -1,12 +1,13 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
+import { logger } from '@/lib/logger';
 
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+// authOptions removed - using Supabase Auth;
+import { db } from '@/lib/supabase/database.service';
 
 export async function POST(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
     // Update or create user preferences
     const preferences = await prisma.userPreferences.upsert({
       where: {
-        userId: session.user.id,
+        userId: user.id,
       },
       update: {
         dietaryRestrictions: data.dietaryRestrictions || [],
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
         fatTarget: data.fatTarget,
       },
       create: {
-        userId: session.user.id,
+        userId: user.id,
         dietaryRestrictions: data.dietaryRestrictions || [],
         allergies: data.allergies || [],
         favoriteCuisines: data.favoriteCuisines || [],
@@ -48,17 +49,12 @@ export async function POST(req: Request) {
         proteinTarget: data.proteinTarget,
         carbTarget: data.carbTarget,
         fatTarget: data.fatTarget,
-      },
+      }
     });
 
     // Update user's onboarding status
-    await prisma.user.update({
-      where: {
-        id: session.user.id,
-      },
-      data: {
-        onboardingCompleted: true,
-      },
+    await db.updateUserProfile(user.id, {
+      onboardingCompleted: true
     });
 
     return NextResponse.json({
@@ -66,7 +62,7 @@ export async function POST(req: Request) {
       preferences,
     });
   } catch (error: unknown) {
-    console.error("Error saving preferences:", error);
+    logger.error("Error saving preferences:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to save preferences" },
       { status: 500 }
@@ -76,7 +72,7 @@ export async function POST(req: Request) {
 
 export async function GET(req: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     
     if (!session?.user?.id) {
       return NextResponse.json(
@@ -87,13 +83,13 @@ export async function GET(req: Request) {
 
     const preferences = await prisma.userPreferences.findUnique({
       where: {
-        userId: session.user.id,
-      },
+        userId: user.id
+      }
     });
 
     return NextResponse.json(preferences);
   } catch (error: unknown) {
-    console.error("Error fetching preferences:", error);
+    logger.error("Error fetching preferences:", 'API:route', error);
     return NextResponse.json(
       { error: "Failed to fetch preferences" },
       { status: 500 }

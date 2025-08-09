@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase/client';
+import { logger } from '@/services/logger';
 
 export interface ShoppingList {
   id: string;
@@ -55,7 +56,7 @@ class ShoppingListService {
       .single();
 
     if (error && error.code !== 'PGRST116') { // PGRST116 = no rows returned
-      console.error('Error fetching active list:', error);
+      logger.error('Error fetching active list:', 'shoppingListService', error);
       throw error;
     }
 
@@ -83,7 +84,7 @@ class ShoppingListService {
       .single();
 
     if (error) {
-      console.error('Error creating list:', error);
+      logger.error('Error creating list:', 'shoppingListService', error);
       throw error;
     }
 
@@ -100,7 +101,7 @@ class ShoppingListService {
       .order('created_at', { ascending: true });
 
     if (error) {
-      console.error('Error fetching items:', error);
+      logger.error('Error fetching items:', 'shoppingListService', error);
       throw error;
     }
 
@@ -137,7 +138,7 @@ class ShoppingListService {
       .single();
 
     if (error) {
-      console.error('Error adding item:', error);
+      logger.error('Error adding item:', 'shoppingListService', error);
       throw error;
     }
 
@@ -154,7 +155,7 @@ class ShoppingListService {
       .single();
 
     if (error) {
-      console.error('Error updating item:', error);
+      logger.error('Error updating item:', 'shoppingListService', error);
       throw error;
     }
 
@@ -182,7 +183,7 @@ class ShoppingListService {
       .eq('id', itemId);
 
     if (error) {
-      console.error('Error deleting item:', error);
+      logger.error('Error deleting item:', 'shoppingListService', error);
       throw error;
     }
   }
@@ -201,7 +202,7 @@ class ShoppingListService {
       .eq('checked', true);
 
     if (error) {
-      console.error('Error clearing completed items:', error);
+      logger.error('Error clearing completed items:', 'shoppingListService', error);
       throw error;
     }
   }
@@ -218,7 +219,7 @@ class ShoppingListService {
       });
 
     if (error) {
-      console.error('Error saving price history:', error);
+      logger.error('Error saving price history:', 'shoppingListService', error);
       // Don't throw - price history is not critical
     }
   }
@@ -232,7 +233,7 @@ class ShoppingListService {
       .single();
 
     if (error && error.code !== 'PGRST116') {
-      console.error('Error fetching preferences:', error);
+      logger.error('Error fetching preferences:', 'shoppingListService', error);
       throw error;
     }
 
@@ -251,7 +252,7 @@ class ShoppingListService {
         .single();
 
       if (createError) {
-        console.error('Error creating preferences:', error);
+        logger.error('Error creating preferences:', 'shoppingListService', error);
         throw createError;
       }
 
@@ -269,7 +270,7 @@ class ShoppingListService {
       .eq('user_id', userId);
 
     if (error) {
-      console.error('Error updating preferences:', error);
+      logger.error('Error updating preferences:', 'shoppingListService', error);
       throw error;
     }
   }
@@ -323,7 +324,7 @@ class ShoppingListService {
       .limit(limit);
 
     if (error) {
-      console.error('Error fetching lists history:', error);
+      logger.error('Error fetching lists history:', 'shoppingListService', error);
       throw error;
     }
 

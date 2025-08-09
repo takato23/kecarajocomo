@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Trophy, Star, Flame, Target, Bell, Settings, TrendingUp, Award } from 'lucide-react';
+import { logger } from '@/services/logger';
 
 import { 
   useGamificationStore, 
@@ -60,7 +61,7 @@ export function GamificationDashboard({ className = '' }: GamificationDashboardP
           loadNotifications()
         ]);
       } catch (error: unknown) {
-        console.error('Failed to load gamification data:', error);
+        logger.error('Failed to load gamification data:', 'GamificationDashboard', error);
       }
     };
 
@@ -94,7 +95,7 @@ export function GamificationDashboard({ className = '' }: GamificationDashboardP
     try {
       await joinChallenge(challengeId);
     } catch (error: unknown) {
-      console.error('Failed to join challenge:', error);
+      logger.error('Failed to join challenge:', 'GamificationDashboard', error);
     }
   };
 

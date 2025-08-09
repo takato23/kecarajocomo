@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { logger } from '@/services/logger';
 import { 
   Sparkles, 
   X, 
@@ -97,7 +98,7 @@ export default function AIGenerateModal({ isOpen, onClose }: AIGenerateModalProp
       router.push(`/recipes/${recipe.id}`);
       onClose();
     } catch (error: unknown) {
-      console.error("Error generating recipe:", error);
+      logger.error("Error generating recipe:", 'AIGenerateModal', error);
       alert("Failed to generate recipe. Please try again.");
     } finally {
       setLoading(false);

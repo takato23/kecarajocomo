@@ -20,9 +20,11 @@ import {
   AIServiceError,
 } from './types';
 import { OpenAIProvider } from './providers/OpenAIProvider';
+import geminiConfig from '@/lib/config/gemini.config';
 import { AnthropicProvider } from './providers/AnthropicProvider';
 import { GeminiProvider } from './providers/GeminiProvider';
 import { AIProviderInterface } from './providers/AIProviderInterface';
+import { aiProxy } from '@/lib/ai/AIProxyClient';
 
 export class UnifiedAIService {
   private static instance: UnifiedAIService;
@@ -33,7 +35,7 @@ export class UnifiedAIService {
   private constructor(config: AIServiceConfig = {}) {
     this.config = {
       provider: 'auto',
-      model: 'gemini-pro',
+      model: geminiConfig.default.model,
       temperature: 0.7,
       maxTokens: 2048,
       topP: 1,
@@ -57,22 +59,33 @@ export class UnifiedAIService {
   }
 
   private initializeProviders(): void {
-    // Initialize OpenAI if API key is available
-    const openaiKey = this.config.apiKey || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-    if (openaiKey) {
-      this.providers.set('openai', new OpenAIProvider({ apiKey: openaiKey }));
-    }
+    // Note: API keys are now handled server-side via proxy endpoints
+    // Initialize providers with proxy configuration
+    
+    // Check if we're running on client-side to use proxy
+    const isClientSide = typeof window !== 'undefined';
+    
+    if (isClientSide) {
+      // Client-side: Use proxy endpoints (no API keys exposed)
+      this.providers.set('openai', new OpenAIProvider({ useProxy: true }));
+      this.providers.set('anthropic', new AnthropicProvider({ useProxy: true }));
+      this.providers.set('gemini', new GeminiProvider({ useProxy: true }));
+    } else {
+      // Server-side: Use API keys directly (secure)
+      const openaiKey = this.config.apiKey || process.env.OPENAI_API_KEY;
+      if (openaiKey) {
+        this.providers.set('openai', new OpenAIProvider({ apiKey: openaiKey }));
+      }
 
-    // Initialize Anthropic if API key is available
-    const anthropicKey = this.config.apiKey || process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY;
-    if (anthropicKey) {
-      this.providers.set('anthropic', new AnthropicProvider({ apiKey: anthropicKey }));
-    }
+      const anthropicKey = this.config.apiKey || process.env.ANTHROPIC_API_KEY;
+      if (anthropicKey) {
+        this.providers.set('anthropic', new AnthropicProvider({ apiKey: anthropicKey }));
+      }
 
-    // Initialize Gemini if API key is available
-    const geminiKey = this.config.apiKey || process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-    if (geminiKey) {
-      this.providers.set('gemini', new GeminiProvider({ apiKey: geminiKey }));
+      const geminiKey = this.config.apiKey || geminiConfig.getApiKey();
+      if (geminiKey) {
+        this.providers.set('gemini', new GeminiProvider({ apiKey: geminiKey }));
+      }
     }
   }
 
@@ -680,6 +693,128 @@ Respond with complete meal plan in JSON format.`;
     if (message.includes('quota')) return 'QUOTA_EXCEEDED';
     
     return 'UNKNOWN';
+  }
+
+  /**
+   * Client-side proxy methods (secure)
+   * These methods use the proxy endpoints to avoid exposing API keys
+   */
+
+  /**
+   * Generate recipe using secure proxy
+   */
+  async generateRecipeSecure(request: {
+    prompt: string;
+    ingredients?: string[];
+    dietaryRestrictions?: string[];
+    cuisine?: string;
+    mealType?: string;
+    servings?: number;
+    maxPrepTime?: number;
+    provider?: 'gemini' | 'openai' | 'anthropic';
+  }): Promise<GeneratedRecipe> {
+    const isClientSide = typeof window !== 'undefined';
+    
+    if (isClientSide) {
+      // Use proxy for client-side calls
+      const response = await aiProxy.generateRecipe(request);
+      
+      if (!response.success) {
+        throw new AIServiceError(
+          response.error || 'Failed to generate recipe',
+          'PROXY_ERROR',
+          request.provider || 'gemini'
+        );
+      }
+
+      return response.data;
+    } else {
+      // Use direct provider for server-side calls
+      return this.generateRecipe(request);
+    }
+  }
+
+  /**
+   * Generate text using secure proxy
+   */
+  async generateTextSecure(
+    prompt: string,
+    provider: 'openai' | 'anthropic' | 'gemini' = 'gemini',
+    config?: Partial<AIServiceConfig>
+  ): Promise<string> {
+    const isClientSide = typeof window !== 'undefined';
+    
+    if (isClientSide) {
+      // Use proxy for client-side calls
+      return await aiProxy.generateText(prompt, provider, config?.model);
+    } else {
+      // Use direct provider for server-side calls
+      const response = await this.generateText({
+        prompt,
+        systemPrompt: config?.systemPrompt
+      }, { ...config, provider });
+      
+      return response.data;
+    }
+  }
+
+  /**
+   * Generate JSON using secure proxy
+   */
+  async generateJSONSecure<T = any>(
+    prompt: string,
+    provider: 'openai' | 'anthropic' | 'gemini' = 'gemini',
+    config?: Partial<AIServiceConfig>
+  ): Promise<T> {
+    const isClientSide = typeof window !== 'undefined';
+    
+    if (isClientSide) {
+      // Use proxy for client-side calls
+      return await aiProxy.generateJSON(prompt, provider, config?.model);
+    } else {
+      // Use direct provider for server-side calls
+      const response = await this.generateJSON<T>({
+        prompt,
+        format: 'json',
+        systemPrompt: config?.systemPrompt
+      }, undefined, { ...config, provider });
+      
+      return response.data;
+    }
+  }
+
+  /**
+   * Analyze image using secure proxy
+   */
+  async analyzeImageSecure(
+    imageUrl: string | File,
+    prompt: string,
+    provider: 'openai' | 'gemini' = 'gemini'
+  ): Promise<string> {
+    const isClientSide = typeof window !== 'undefined';
+    
+    if (isClientSide) {
+      // Use proxy for client-side calls
+      return await aiProxy.analyzeImage(imageUrl, prompt, provider);
+    } else {
+      // Use direct provider for server-side calls
+      let imageData: string;
+      
+      if (imageUrl instanceof File) {
+        // Convert File to base64 (this would need implementation)
+        throw new Error('File upload analysis not implemented for server-side');
+      } else {
+        imageData = imageUrl;
+      }
+      
+      const response = await this.analyzeImage({
+        imageUrl: imageData,
+        analysisType: 'general',
+        prompt
+      }, { provider });
+      
+      return response.data;
+    }
   }
 }
 

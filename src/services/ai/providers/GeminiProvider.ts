@@ -4,6 +4,7 @@
  */
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import geminiConfig from '@/lib/config/gemini.config';
 
 import {
   AIProvider,
@@ -21,9 +22,18 @@ export class GeminiProvider extends AIProviderInterface {
   name: AIProvider = 'gemini';
   private genAI: GoogleGenerativeAI;
 
-  constructor(config: { apiKey: string }) {
+  constructor(config: { apiKey?: string; useProxy?: boolean }) {
     super(config);
-    this.genAI = new GoogleGenerativeAI(config.apiKey);
+    
+    if (config.useProxy) {
+      // Proxy mode - no API key needed
+      this.genAI = null;
+    } else if (config.apiKey) {
+      // Direct mode - use API key
+      this.genAI = new GoogleGenerativeAI(config.apiKey);
+    } else {
+      throw new Error('Either apiKey or useProxy must be specified');
+    }
   }
 
   async generateText(
@@ -32,7 +42,7 @@ export class GeminiProvider extends AIProviderInterface {
   ): Promise<AITextResponse> {
     try {
       const model = this.genAI.getGenerativeModel({ 
-        model: config.model === 'gemini-pro-vision' ? 'gemini-pro' : config.model || 'gemini-pro',
+        model: config.model === geminiConfig.default.model ? geminiConfig.default.model : config.model || geminiConfig.default.model,
       });
 
       // Build prompt with context
@@ -77,7 +87,7 @@ export class GeminiProvider extends AIProviderInterface {
       return {
         data: text,
         provider: 'gemini',
-        model: (config.model || 'gemini-pro') as any,
+        model: (config.model || geminiConfig.default.model) as any,
         usage,
         format: request.format || 'text',
         metadata: {
@@ -97,7 +107,7 @@ export class GeminiProvider extends AIProviderInterface {
   ): Promise<AIStreamResponse> {
     try {
       const model = this.genAI.getGenerativeModel({ 
-        model: config.model || 'gemini-pro',
+        model: config.model || geminiConfig.default.model,
       });
 
       // Build prompt
@@ -138,7 +148,7 @@ export class GeminiProvider extends AIProviderInterface {
       return {
         stream,
         provider: 'gemini',
-        model: (config.model || 'gemini-pro') as any,
+        model: (config.model || geminiConfig.default.model) as any,
       };
     } catch (error: unknown) {
       throw this.handleError(error);
@@ -151,7 +161,7 @@ export class GeminiProvider extends AIProviderInterface {
   ): Promise<AITextResponse> {
     try {
       const model = this.genAI.getGenerativeModel({ 
-        model: 'gemini-pro-vision',
+        model: geminiConfig.default.model,
       });
 
       // Convert image to required format
@@ -225,7 +235,7 @@ export class GeminiProvider extends AIProviderInterface {
       return {
         data: text,
         provider: 'gemini',
-        model: 'gemini-pro-vision' as any,
+        model: geminiConfig.default.model as any,
         format: 'text',
         metadata: {
           requestId: this.generateRequestId(),

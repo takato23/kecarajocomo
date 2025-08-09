@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { logger } from '@/services/logger';
 
 import type {
   PantryItem,
@@ -410,7 +411,7 @@ export const usePantryStore = create<PantryState>()(
             state.expirationAlerts = data.alerts || [];
           });
         } catch (error: unknown) {
-          console.error('Failed to fetch expiration alerts:', error);
+          logger.error('Failed to fetch expiration alerts:', 'pantry:pantryStore', error);
         }
       },
       
@@ -431,7 +432,7 @@ export const usePantryStore = create<PantryState>()(
             }
           });
         } catch (error: unknown) {
-          console.error('Failed to dismiss alert:', error);
+          logger.error('Failed to dismiss alert:', 'pantry:pantryStore', error);
         }
       },
       
@@ -488,7 +489,7 @@ export const usePantryStore = create<PantryState>()(
             state.stats = stats;
           });
         } catch (error: unknown) {
-          console.error('Failed to fetch pantry stats:', error);
+          logger.error('Failed to fetch pantry stats:', 'pantry:pantryStore', error);
         }
       },
       
@@ -503,7 +504,7 @@ export const usePantryStore = create<PantryState>()(
             state.analysis = analysis;
           });
         } catch (error: unknown) {
-          console.error('Failed to fetch pantry analysis:', error);
+          logger.error('Failed to fetch pantry analysis:', 'pantry:pantryStore', error);
         }
       },
       

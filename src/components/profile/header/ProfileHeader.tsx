@@ -5,6 +5,7 @@ import { Edit2, Save, X, Camera, Upload, Sparkles, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 import { useProfileContext } from '@/contexts/ProfileContext';
@@ -63,7 +64,7 @@ function EnhancedAvatarUpload({
       toast.success('Avatar updated successfully!');
     } catch (error) {
       toast.error('Failed to upload avatar');
-      console.error('Avatar upload error:', error);
+      logger.error('Avatar upload error:', 'ProfileHeader', error);
     } finally {
       setIsUploading(false);
     }
@@ -433,7 +434,7 @@ export function ProfileHeader({ className }: ProfileHeaderProps) {
       toast.success('Profile updated successfully');
     } catch (error: unknown) {
       toast.error('Failed to update profile');
-      console.error('Profile update error:', error);
+      logger.error('Profile update error:', 'ProfileHeader', error);
     }
   };
 

@@ -1,8 +1,14 @@
 'use client';
 
 import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { devtools, subscribeWithSelector } from 'zustand/middleware';
+import { immer } from 'zustand/middleware/immer';
 import { format, startOfWeek, addDays, isSameDay } from 'date-fns';
+import { logger } from '@/lib/logger';
+import { MealPlanService } from '@/lib/supabase/meal-plans';
+import { supabase } from '@/lib/supabase/client';
+import { debounce } from 'lodash';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 
 import type {
   MealPlanningStore,
@@ -92,6 +98,73 @@ const mockRecipes: Record<string, Recipe> = {
   }
 };
 
+// Function to generate a default week plan for testing
+const generateDefaultWeekPlan = (startDate: string): WeekPlan => {
+  const endDate = format(addDays(new Date(startDate), 6), 'yyyy-MM-dd');
+  const recipes = Object.values(mockRecipes);
+  
+  const weekPlan: WeekPlan = {
+    id: `default-plan-${Date.now()}`,
+    userId: 'mock-user',
+    startDate,
+    endDate,
+    slots: [],
+    isActive: true,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  // Generate slots for the week with some mock meals
+  for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+    const date = format(addDays(new Date(startDate), dayOffset), 'yyyy-MM-dd');
+    const dayOfWeek = addDays(new Date(startDate), dayOffset).getDay();
+    
+    // Add breakfast
+    weekPlan.slots.push({
+      id: `${date}-breakfast`,
+      date,
+      dayOfWeek,
+      mealType: 'breakfast' as MealType,
+      position: 0,
+      recipeId: recipes[0]?.id,
+      recipe: recipes[0],
+      isPlanned: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Add lunch
+    weekPlan.slots.push({
+      id: `${date}-lunch`,
+      date,
+      dayOfWeek,
+      mealType: 'lunch' as MealType,
+      position: 1,
+      recipeId: recipes[1]?.id,
+      recipe: recipes[1],
+      isPlanned: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    // Add dinner  
+    weekPlan.slots.push({
+      id: `${date}-dinner`,
+      date,
+      dayOfWeek,
+      mealType: 'dinner' as MealType,
+      position: 2,
+      recipeId: recipes[2]?.id,
+      recipe: recipes[2],
+      isPlanned: true,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+  }
+  
+  return weekPlan;
+};
+
 const mockUserPreferences: UserPreferences = {
   dietaryPreferences: ['omnivore'],
   dietProfile: 'balanced',
@@ -134,7 +207,7 @@ const getCachedWeekPlan = (startDate: string): WeekPlan | null => {
     
     return data;
   } catch (error) {
-    console.error('Error reading cache:', error);
+    logger.error('Error reading cache:', 'meal-planning:useMealPlanningStore', error);
     return null;
   }
 };
@@ -147,7 +220,7 @@ const setCachedWeekPlan = (startDate: string, data: WeekPlan) => {
     };
     localStorage.setItem(`${CACHE_KEY_PREFIX}${startDate}`, JSON.stringify(cacheData));
   } catch (error) {
-    console.error('Error writing cache:', error);
+    logger.error('Error writing cache:', 'meal-planning:useMealPlanningStore', error);
   }
 };
 
@@ -160,13 +233,38 @@ const clearCache = () => {
       }
     });
   } catch (error) {
-    console.error('Error clearing cache:', error);
+    logger.error('Error clearing cache:', 'meal-planning:useMealPlanningStore', error);
   }
 };
 
+// Real-time subscription management
+let realtimeChannel: RealtimeChannel | null = null;
+
+// Debounced save function to prevent too many updates
+const debouncedSave = debounce(async (weekPlan: WeekPlan) => {
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const result = await MealPlanService.saveWeekPlan(
+      user.id,
+      weekPlan.startDate,
+      format(addDays(new Date(weekPlan.startDate), 6), 'yyyy-MM-dd'),
+      weekPlan
+    );
+    
+    if (result.error) {
+      logger.error('Error in debounced save:', 'meal-planning:useMealPlanningStore', result.error);
+    }
+  } catch (error) {
+    logger.error('Error in debounced save:', 'meal-planning:useMealPlanningStore', error);
+  }
+}, 2000);
+
 export const useMealPlanningStore = create<MealPlanningStore>()(
   devtools(
-    (set, get) => ({
+    subscribeWithSelector(
+      immer((set, get) => ({
       // Core State
       currentWeekPlan: null,
       recipes: mockRecipes,
@@ -178,10 +276,19 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
       error: null,
       selectedSlots: [],
       draggedSlot: null,
+      isOnline: true,
+      isSyncing: false,
+      lastSyncedAt: null,
       
       // Modal State
       activeModal: null,
       selectedMeal: null,
+      
+      // Offline queue
+      offlineQueue: [],
+      
+      // Real-time state
+      realtimeStatus: 'disconnected',
 
       // Actions - Data Management
       loadWeekPlan: async (startDate: string) => {
@@ -194,13 +301,44 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             return;
           }
 
-          // Mock API call - in production, this would fetch from backend
+          // Get current user
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) {
+            // For testing purposes, create a mock user ID
+            const mockUser = {
+              id: 'mock-user-' + Date.now(),
+              email: 'test@test.com',
+              // Use a fallback for demo purposes
+            };
+            
+            // Use existing plan from cache or generate a default plan
+            const defaultPlan = generateDefaultWeekPlan(startDate);
+            set({ 
+              currentWeekPlan: defaultPlan, 
+              isLoading: false,
+              error: null 
+            });
+            return;
+          }
+
           const endDate = format(addDays(new Date(startDate), 6), 'yyyy-MM-dd');
           
-          // Create empty week plan
+          // Try to load from Supabase
+          const result = await MealPlanService.getWeekPlan(user.id, startDate, endDate);
+          
+          if (result.data && result.data.slots.length > 0) {
+            // Use existing plan from database
+            const weekPlan = result.data;
+            setCachedWeekPlan(startDate, weekPlan);
+            set({ currentWeekPlan: weekPlan, isLoading: false });
+            logger.info('Loaded meal plan from Supabase', 'MealPlanningStore', { weekPlan });
+            return;
+          }
+          
+          // Create empty week plan if none exists
           const weekPlan: WeekPlan = {
             id: `week-${startDate}`,
-            userId: 'current-user', // Would come from auth
+            userId: user.id,
             startDate,
             endDate,
             slots: [],
@@ -243,8 +381,24 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
       saveWeekPlan: async (weekPlan: WeekPlan) => {
         set({ isLoading: true, error: null });
         try {
-          // Mock API call - in production, this would save to backend
-          await new Promise(resolve => setTimeout(resolve, 500));
+          // Get current user or use mock
+          const { data: { user } } = await supabase.auth.getUser();
+          const userId = user?.id || 'mock-user-' + Date.now();
+
+          // Calculate end date
+          const endDate = format(addDays(new Date(weekPlan.startDate), 6), 'yyyy-MM-dd');
+          
+          // Save to Supabase
+          const result = await MealPlanService.saveWeekPlan(
+            userId,
+            weekPlan.startDate,
+            endDate,
+            weekPlan
+          );
+          
+          if (result.error) {
+            throw result.error;
+          }
           
           const updatedWeekPlan = { 
             ...weekPlan, 
@@ -258,7 +412,10 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             currentWeekPlan: updatedWeekPlan, 
             isLoading: false 
           });
+          
+          logger.info('Meal plan saved to Supabase', 'MealPlanningStore', { weekPlan });
         } catch (error) {
+          logger.error('Failed to save meal plan', 'MealPlanningStore', error);
           set({ error: error instanceof Error ? error.message : 'Failed to save week plan', isLoading: false });
         }
       },
@@ -288,8 +445,12 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             updatedAt: new Date().toISOString()
           };
 
-          set({ currentWeekPlan: updatedWeekPlan });
-          await get().saveWeekPlan(updatedWeekPlan);
+          set(state => {
+            state.currentWeekPlan = updatedWeekPlan;
+          });
+          
+          // Use debounced save for better performance
+          debouncedSave(updatedWeekPlan);
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to add meal to slot' });
         }
@@ -312,8 +473,12 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             updatedAt: new Date().toISOString()
           };
 
-          set({ currentWeekPlan: updatedWeekPlan });
-          await get().saveWeekPlan(updatedWeekPlan);
+          set(state => {
+            state.currentWeekPlan = updatedWeekPlan;
+          });
+          
+          // Use debounced save for better performance
+          debouncedSave(updatedWeekPlan);
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to update meal slot' });
         }
@@ -342,8 +507,12 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
             updatedAt: new Date().toISOString()
           };
 
-          set({ currentWeekPlan: updatedWeekPlan });
-          await get().saveWeekPlan(updatedWeekPlan);
+          set(state => {
+            state.currentWeekPlan = updatedWeekPlan;
+          });
+          
+          // Use debounced save for better performance
+          debouncedSave(updatedWeekPlan);
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to remove meal from slot' });
         }
@@ -443,8 +612,12 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
           // Clear cache for this week
           localStorage.removeItem(`${CACHE_KEY_PREFIX}${currentWeekPlan.startDate}`);
           
-          set({ currentWeekPlan: updatedWeekPlan });
-          await get().saveWeekPlan(updatedWeekPlan);
+          set(state => {
+            state.currentWeekPlan = updatedWeekPlan;
+          });
+          
+          // Use debounced save for better performance
+          debouncedSave(updatedWeekPlan);
         } catch (error) {
           set({ error: error instanceof Error ? error.message : 'Failed to clear week' });
         }
@@ -571,22 +744,394 @@ export const useMealPlanningStore = create<MealPlanningStore>()(
       },
 
       getShoppingList: async (): Promise<ShoppingList> => {
-        // Mock implementation - would generate from current week plan
-        return {
-          id: `shopping-${Date.now()}`,
-          userId: 'current-user',
-          weekPlanId: get().currentWeekPlan?.id || '',
-          items: [],
-          categories: [],
-          estimatedTotal: 0,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString()
-        };
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) {
+          throw new Error('No current week plan available');
+        }
+
+        try {
+          // Get current user
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) {
+            throw new Error('User not authenticated');
+          }
+
+          // Call the shopping list generation API
+          const response = await fetch('/api/shopping/generate', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              userId: user.id,
+              weekPlanId: currentWeekPlan.id,
+              options: {
+                organizeByStore: true,
+                groupByCategory: true,
+                prioritizeByExpiration: true,
+                includePriceComparisons: true,
+                suggestAlternatives: true,
+                optimizeRoute: false
+              }
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error('Failed to generate shopping list');
+          }
+
+          const result = await response.json();
+          
+          if (!result.success) {
+            throw new Error(result.error || 'Failed to generate shopping list');
+          }
+
+          return result.data.shoppingList;
+        } catch (error) {
+          logger.error('Error generating shopping list', 'MealPlanningStore', error);
+          
+          // Fallback: return basic shopping list
+          return {
+            id: `shopping-${Date.now()}`,
+            userId: 'current-user',
+            weekPlanId: currentWeekPlan.id,
+            items: [],
+            categories: [],
+            estimatedTotal: 0,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          };
+        }
+      },
+
+      // Export functionality
+      exportWeekPlanAsJSON: (): string => {
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) {
+          throw new Error('No current week plan to export');
+        }
+        
+        return JSON.stringify(currentWeekPlan, null, 2);
+      },
+
+      exportWeekPlanAsCSV: (): string => {
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) {
+          throw new Error('No current week plan to export');
+        }
+
+        const csv = ['Day,Meal Type,Recipe Name,Servings,Prep Time,Cook Time'];
+        
+        currentWeekPlan.slots.forEach(slot => {
+          if (slot.recipe) {
+            const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const dayName = dayNames[slot.dayOfWeek];
+            const mealTypeNames = {
+              'desayuno': 'Desayuno',
+              'almuerzo': 'Almuerzo', 
+              'merienda': 'Merienda',
+              'cena': 'Cena'
+            };
+            
+            csv.push([
+              dayName,
+              mealTypeNames[slot.mealType],
+              slot.recipe.name,
+              slot.servings.toString(),
+              slot.recipe.prepTime?.toString() || '0',
+              slot.recipe.cookTime?.toString() || '0'
+            ].join(','));
+          }
+        });
+
+        return csv.join('\n');
+      },
+
+      exportWeekPlanAsPDF: async (): Promise<Blob> => {
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) {
+          throw new Error('No current week plan to export');
+        }
+
+        // Simple HTML to PDF conversion using browser print
+        const html = `
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Plan de Comidas - ${currentWeekPlan.startDate}</title>
+            <style>
+              body { font-family: Arial, sans-serif; margin: 20px; }
+              h1 { color: #333; text-align: center; }
+              .day { margin: 20px 0; page-break-inside: avoid; }
+              .day h2 { color: #666; border-bottom: 2px solid #ddd; padding-bottom: 5px; }
+              .meal { margin: 10px 0; padding: 10px; background: #f9f9f9; border-radius: 5px; }
+              .meal-type { font-weight: bold; color: #555; }
+              .recipe-name { font-size: 18px; margin: 5px 0; }
+              .recipe-details { color: #777; font-size: 14px; }
+              .no-meal { color: #999; font-style: italic; }
+            </style>
+          </head>
+          <body>
+            <h1>Plan de Comidas</h1>
+            <p style="text-align: center; color: #666;">Semana del ${currentWeekPlan.startDate} al ${currentWeekPlan.endDate}</p>
+            
+            ${Array.from({ length: 7 }, (_, dayIndex) => {
+              const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+              const daySlots = currentWeekPlan.slots.filter(slot => slot.dayOfWeek === dayIndex);
+              const mealTypes: MealType[] = ['desayuno', 'almuerzo', 'merienda', 'cena'];
+              const mealTypeNames = {
+                'desayuno': 'Desayuno',
+                'almuerzo': 'Almuerzo', 
+                'merienda': 'Merienda',
+                'cena': 'Cena'
+              };
+
+              return `
+                <div class="day">
+                  <h2>${dayNames[dayIndex]}</h2>
+                  ${mealTypes.map(mealType => {
+                    const slot = daySlots.find(s => s.mealType === mealType);
+                    if (slot?.recipe) {
+                      return `
+                        <div class="meal">
+                          <div class="meal-type">${mealTypeNames[mealType]}</div>
+                          <div class="recipe-name">${slot.recipe.name}</div>
+                          <div class="recipe-details">
+                            Porciones: ${slot.servings} | 
+                            Prep: ${slot.recipe.prepTime || 0} min | 
+                            Cocción: ${slot.recipe.cookTime || 0} min
+                          </div>
+                        </div>
+                      `;
+                    } else {
+                      return `
+                        <div class="meal">
+                          <div class="meal-type">${mealTypeNames[mealType]}</div>
+                          <div class="no-meal">Sin asignar</div>
+                        </div>
+                      `;
+                    }
+                  }).join('')}
+                </div>
+              `;
+            }).join('')}
+          </body>
+          </html>
+        `;
+
+        // Create a blob with HTML content
+        return new Blob([html], { type: 'text/html' });
+      },
+
+      // Real-time sync methods
+      setupRealtimeSync: async () => {
+        try {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (!user) return;
+          
+          // Clean up existing subscription
+          if (realtimeChannel) {
+            await supabase.removeChannel(realtimeChannel);
+          }
+          
+          // Set up new subscription
+          realtimeChannel = supabase
+            .channel(`meal-plans:${user.id}`)
+            .on(
+              'postgres_changes',
+              {
+                event: '*',
+                schema: 'public',
+                table: 'meal_plans',
+                filter: `user_id=eq.${user.id}`
+              },
+              async (payload) => {
+                logger.info('Real-time update received', 'MealPlanningStore', { payload });
+                
+                // Reload current week plan if it's affected
+                const { currentWeekPlan } = get();
+                if (currentWeekPlan && payload.new) {
+                  const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+                  await get().loadWeekPlan(startDate);
+                }
+              }
+            )
+            .on(
+              'postgres_changes',
+              {
+                event: '*',
+                schema: 'public',
+                table: 'planned_meals'
+              },
+              async (payload) => {
+                logger.info('Real-time meal update received', 'MealPlanningStore', { payload });
+                
+                // Reload if it affects current plan
+                const { currentWeekPlan } = get();
+                if (currentWeekPlan) {
+                  const startDate = format(startOfWeek(new Date(), { weekStartsOn: 1 }), 'yyyy-MM-dd');
+                  await get().loadWeekPlan(startDate);
+                }
+              }
+            )
+            .subscribe((status) => {
+              set({ realtimeStatus: status });
+              logger.info('Real-time subscription status', 'MealPlanningStore', { status });
+            });
+            
+        } catch (error) {
+          logger.error('Error setting up real-time sync', 'MealPlanningStore', error);
+        }
+      },
+      
+      cleanupRealtimeSync: async () => {
+        if (realtimeChannel) {
+          await supabase.removeChannel(realtimeChannel);
+          realtimeChannel = null;
+          set({ realtimeStatus: 'disconnected' });
+        }
+      },
+      
+      // Offline support methods
+      syncOfflineChanges: async () => {
+        const { offlineQueue, isOnline } = get();
+        if (!isOnline || offlineQueue.length === 0) return;
+        
+        set({ isSyncing: true });
+        
+        try {
+          for (const action of offlineQueue) {
+            await action();
+          }
+          
+          set({
+            offlineQueue: [],
+            lastSyncedAt: new Date().toISOString(),
+            isSyncing: false
+          });
+          
+          logger.info('Offline changes synced successfully', 'MealPlanningStore');
+        } catch (error) {
+          logger.error('Error syncing offline changes', 'MealPlanningStore', error);
+          set({ isSyncing: false });
+        }
+      },
+      
+      setOnlineStatus: (isOnline: boolean) => {
+        set({ isOnline });
+        if (isOnline) {
+          get().syncOfflineChanges();
+        }
+      },
+      
+      // Batch operations
+      batchUpdateSlots: async (updates: Array<{ slotId: string; changes: Partial<MealSlot> }>) => {
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) return;
+        
+        try {
+          const updatedSlots = currentWeekPlan.slots.map(slot => {
+            const update = updates.find(u => u.slotId === slot.id);
+            if (update) {
+              return { ...slot, ...update.changes, updatedAt: new Date().toISOString() };
+            }
+            return slot;
+          });
+          
+          const updatedWeekPlan = {
+            ...currentWeekPlan,
+            slots: updatedSlots,
+            updatedAt: new Date().toISOString()
+          };
+          
+          set(state => {
+            state.currentWeekPlan = updatedWeekPlan;
+          });
+          
+          // Use debounced save for batch updates
+          debouncedSave(updatedWeekPlan);
+        } catch (error) {
+          set({ error: error instanceof Error ? error.message : 'Failed to batch update slots' });
+        }
+      },
+      
+      downloadWeekPlan: (format: 'json' | 'csv' | 'pdf') => {
+        const { currentWeekPlan } = get();
+        if (!currentWeekPlan) {
+          throw new Error('No current week plan to download');
+        }
+
+        const fileName = `plan-comidas-${currentWeekPlan.startDate}`;
+        
+        switch (format) {
+          case 'json': {
+            const jsonData = get().exportWeekPlanAsJSON();
+            const blob = new Blob([jsonData], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${fileName}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            break;
+          }
+          case 'csv': {
+            const csvData = get().exportWeekPlanAsCSV();
+            const blob = new Blob([csvData], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${fileName}.csv`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            break;
+          }
+          case 'pdf': {
+            get().exportWeekPlanAsPDF().then(blob => {
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${fileName}.html`;
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              URL.revokeObjectURL(url);
+            });
+            break;
+          }
+          default:
+            throw new Error(`Unsupported export format: ${format}`);
+        }
       }
-    }),
+      }))
+    ),
     {
       name: 'meal-planning-store',
-      version: 1
+      version: 2
     }
   )
 );
+
+// Subscribe to auth changes
+supabase.auth.onAuthStateChange((event, session) => {
+  if (event === 'SIGNED_IN' && session) {
+    useMealPlanningStore.getState().setupRealtimeSync();
+  } else if (event === 'SIGNED_OUT') {
+    useMealPlanningStore.getState().cleanupRealtimeSync();
+  }
+});
+
+// Handle online/offline status
+if (typeof window !== 'undefined') {
+  window.addEventListener('online', () => {
+    useMealPlanningStore.getState().setOnlineStatus(true);
+  });
+  
+  window.addEventListener('offline', () => {
+    useMealPlanningStore.getState().setOnlineStatus(false);
+  });
+}

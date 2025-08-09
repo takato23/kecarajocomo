@@ -1,16 +1,45 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
+import { getUser } from '@/lib/auth/supabase-auth';
+import { db } from '@/lib/supabase/database.service';
+import { GeminiService } from '@/services/ai/GeminiService';
 
-import type { ExpirationAlert, PantryAPIResponse } from '@/features/pantry/types';
+interface ExpirationAlert {
+  id: string;
+  pantry_item_id: string;
+  item_name: string;
+  expiration_date: Date;
+  days_until_expiration: number;
+  alert_type: 'warning' | 'urgent' | 'expired';
+  dismissed: boolean;
+  created_at: Date;
+  suggested_recipes?: string[];
+}
+
+async function generateQuickRecipeSuggestions(ingredients: string[]): Promise<string[]> {
+  const gemini = new GeminiService();
+  
+  const prompt = `
+Generate 3 quick recipe names that use ${ingredients.join(', ')} as main ingredients.
+Focus on simple, quick recipes that can be made with minimal additional ingredients.
+Return only the recipe names as a simple array of strings.
+Example format: ["Recipe Name 1", "Recipe Name 2", "Recipe Name 3"]
+`;
+
+  try {
+    const response = await gemini.generateContent(prompt);
+    const suggestions = JSON.parse(response);
+    return Array.isArray(suggestions) ? suggestions : [];
+  } catch (error) {
+    logger.error('Error generating quick recipe suggestions:', 'ExpirationAlerts', error);
+    return [];
+  }
+}
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    const user = await getUser();
+    if (!user?.id) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },
         { status: 401 }
@@ -23,33 +52,18 @@ export async function GET(request: NextRequest) {
 
     // Get pantry items with expiration dates
     const now = new Date();
-    const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const pantryItems = await db.getPantryItems(user.id);
 
-    let query = supabase
-      .from('pantry_items')
-      .select('*')
-      .eq('user_id', user.id)
-      .not('expiration_date', 'is', null);
+    // Filter items with expiration dates
+    const itemsWithExpiration = pantryItems.filter(item => 
+      item.expiration_date && 
+      (includeExpired || new Date(item.expiration_date) >= now)
+    );
 
-    // Only include items expiring within a reasonable timeframe unless specifically requested
-    if (!includeExpired) {
-      query = query.gte('expiration_date', now.toISOString());
-    }
-
-    const { data: items, error } = await query;
-
-    if (error) {
-      console.error('Error fetching pantry items for alerts:', error);
-      return NextResponse.json(
-        { success: false, message: 'Failed to fetch expiration alerts' },
-        { status: 500 }
-      );
-    }
-
-    // Generate expiration alerts
-    const alerts: ExpirationAlert[] = items
-      ?.map((item) => {
-        const expirationDate = new Date(item.expiration_date);
+    // Generate expiration alerts with recipe suggestions
+    const alerts: ExpirationAlert[] = itemsWithExpiration
+      .map((item) => {
+        const expirationDate = new Date(item.expiration_date!);
         const daysUntilExpiration = Math.ceil(
           (expirationDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24)
         );
@@ -59,7 +73,6 @@ export async function GET(request: NextRequest) {
 
         if (daysUntilExpiration < 0) {
           alertType = 'expired';
-          // Only include expired items if requested
           shouldInclude = includeExpired;
         } else if (daysUntilExpiration <= 2) {
           alertType = 'urgent';
@@ -77,15 +90,27 @@ export async function GET(request: NextRequest) {
         return {
           id: `alert-${item.id}`,
           pantry_item_id: item.id,
-          item_name: item.ingredient_name,
+          item_name: item.ingredient?.name || 'Unknown',
           expiration_date: expirationDate,
           days_until_expiration: daysUntilExpiration,
           alert_type: alertType,
-          dismissed: false, // Real implementation would check dismissed status from DB
+          dismissed: false,
           created_at: now,
+          suggested_recipes: [] // Will be populated below
         };
       })
-      .filter((alert): alert is ExpirationAlert => alert !== null) || [];
+      .filter((alert): alert is ExpirationAlert => alert !== null);
+
+    // Add recipe suggestions for urgent/expired items
+    for (const alert of alerts.filter(a => a.alert_type === 'urgent' || a.alert_type === 'expired')) {
+      try {
+        const suggestions = await generateQuickRecipeSuggestions([alert.item_name]);
+        alert.suggested_recipes = suggestions;
+      } catch (error) {
+        logger.error('Failed to generate recipe suggestions for alert:', 'ExpirationAlerts', error);
+        alert.suggested_recipes = [];
+      }
+    }
 
     // Sort by urgency (expired first, then by days until expiration)
     alerts.sort((a, b) => {
@@ -96,14 +121,12 @@ export async function GET(request: NextRequest) {
       return a.days_until_expiration - b.days_until_expiration;
     });
 
-    const response: PantryAPIResponse<ExpirationAlert[]> = {
+    return NextResponse.json({
       data: alerts,
       success: true,
-    };
-
-    return NextResponse.json(response);
+    });
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/expiration-alerts:', error);
+    logger.error('Unexpected error in GET /api/pantry/expiration-alerts:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -113,11 +136,8 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
-    
-    // Get authenticated user
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
-    if (authError || !user) {
+    const user = await getUser();
+    if (!user?.id) {
       return NextResponse.json(
         { success: false, message: 'Unauthorized' },
         { status: 401 }
@@ -133,8 +153,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // For now, we'll just return success since we don't have a dedicated alerts table
-    // In a full implementation, you'd update the alert status in the database
+    // In a full implementation, you'd update the alert status in a dedicated alerts table
+    // For now, we'll just return success and could implement alert preferences in user settings
     let message = '';
     
     switch (action) {
@@ -151,15 +171,13 @@ export async function POST(request: NextRequest) {
         );
     }
 
-    const response: PantryAPIResponse<null> = {
+    return NextResponse.json({
       data: null,
       success: true,
       message,
-    };
-
-    return NextResponse.json(response);
+    });
   } catch (error: unknown) {
-    console.error('Unexpected error in POST /api/pantry/expiration-alerts:', error);
+    logger.error('Unexpected error in POST /api/pantry/expiration-alerts:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

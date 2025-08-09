@@ -1,152 +1,96 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { z } from 'zod';
-
-import { authOptions } from '@/lib/auth';
+import { createClient } from '@/lib/supabase/server';
+import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 import { geminiPlannerService } from '@/lib/services/geminiPlannerService';
+import { UserPreferences, PlanningConstraints } from '@/lib/types/mealPlanning';
 
-// Request validation schema
-const RegenerateRequestSchema = z.object({
-  feedback: z.string().min(1).max(1000),
-  currentPlan: z.object({
-    id: z.string(),
-    userId: z.string(),
-    preferences: z.any(),
-    constraints: z.any(),
-    meals: z.array(z.any())
-  }),
-  userId: z.string()
-});
-
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    // Check authentication
-    const session = await getServerSession(authOptions);
-    if (!session?.user?.id) {
+    const cookieStore = await cookies();
+    const supabase = createClient(cookieStore);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    
+    if (authError || !user) {
       return NextResponse.json(
-        { error: 'No autorizado' },
+        { error: 'Unauthorized' },
         { status: 401 }
       );
     }
 
-    // Parse and validate request body
-    const body = await request.json();
-    
-    // Validate request
-    const validationResult = RegenerateRequestSchema.safeParse(body);
-    if (!validationResult.success) {
+    const body = await req.json();
+    const { mealType, preferences, constraints, avoidRecipes } = body;
+
+    // Validate required fields
+    if (!mealType || !preferences || !constraints) {
       return NextResponse.json(
-        { 
-          error: 'Datos de solicitud inválidos', 
-          details: validationResult.error.errors 
-        },
+        { error: 'Missing required fields: mealType, preferences, and constraints' },
         { status: 400 }
       );
     }
 
-    const { feedback, currentPlan, userId } = validationResult.data;
-
-    // Ensure user ID matches session
-    if (userId !== session.user.id || currentPlan.userId !== session.user.id) {
+    // Validate meal type
+    if (!['breakfast', 'lunch', 'dinner'].includes(mealType)) {
       return NextResponse.json(
-        { error: 'ID de usuario no coincide' },
-        { status: 403 }
+        { error: 'Invalid meal type. Must be breakfast, lunch, or dinner' },
+        { status: 400 }
       );
     }
 
-    // Extract preferences and constraints from current plan
-    const preferences = currentPlan.preferences || {
-      userId: session.user.id,
-      householdSize: 2,
-      cookingSkillLevel: 'intermediate' as const,
-      dietaryRestrictions: [],
-      allergies: [],
-      favoriteCuisines: []
-    };
-
-    const constraints = currentPlan.constraints || {
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      mealTypes: ['breakfast', 'lunch', 'dinner'] as const,
-      servings: 2,
-      maxPrepTime: 60
-    };
-
-    // Add feedback to the preferences to guide regeneration
-    const enhancedPreferences = {
+    // Ensure user ID is set
+    const userPreferences: UserPreferences = {
       ...preferences,
-      regenerationFeedback: feedback
+      userId: user.id
     };
 
-    // Generate new plan with feedback consideration
-    const result = await geminiPlannerService.generateHolisticPlan(
-      enhancedPreferences,
-      constraints,
-      {
-        useHolisticAnalysis: true,
-        includeExternalFactors: true,
-        optimizeResources: true,
-        enableLearning: true,
-        analysisDepth: 'comprehensive'
-      }
+    const planningConstraints: PlanningConstraints = {
+      ...constraints,
+      startDate: new Date(constraints.startDate),
+      endDate: new Date(constraints.endDate)
+    };
+
+    logger.info('Regenerating meal', 'meal-planning/regenerate', {
+      userId: user.id,
+      mealType,
+      avoidRecipes: avoidRecipes?.length || 0
+    });
+
+    const meal = await geminiPlannerService.regenerateMeal(
+      mealType as 'breakfast' | 'lunch' | 'dinner',
+      userPreferences,
+      planningConstraints,
+      avoidRecipes
     );
 
-    if (!result.success) {
+    if (!meal) {
+      logger.error('Failed to regenerate meal', 'meal-planning/regenerate');
       return NextResponse.json(
         { 
-          error: result.error || 'Error al regenerar el plan',
-          success: false 
+          success: false,
+          error: 'Failed to regenerate meal'
         },
         { status: 500 }
       );
     }
 
-    // Process learning feedback if available
-    if (result.plan && currentPlan.id) {
-      try {
-        await geminiPlannerService.processLearningFeedback(
-          currentPlan.id,
-          {
-            mealRatings: {},
-            timeAccuracy: {},
-            difficultyActual: {},
-            innovations: [],
-            challenges: [feedback] // Use feedback as a challenge to address
-          }
-        );
-      } catch (learningError) {
-        // Log but don't fail the request
-        console.error('Error processing learning feedback:', learningError);
-      }
-    }
+    logger.info('Successfully regenerated meal', 'meal-planning/regenerate', {
+      userId: user.id,
+      mealType,
+      mealName: meal.recipe.title
+    });
 
-    // Return successful result
-    return NextResponse.json(result);
+    return NextResponse.json({
+      success: true,
+      meal
+    });
 
   } catch (error) {
-    console.error('Error in plan regeneration:', error);
+    logger.error('Error in meal regeneration endpoint', 'meal-planning/regenerate', error);
     
-    // Handle specific errors
-    if (error instanceof Error) {
-      if (error.message.includes('GOOGLE_AI_API_KEY')) {
-        return NextResponse.json(
-          { error: 'Servicio de IA no configurado correctamente' },
-          { status: 503 }
-        );
-      }
-      
-      if (error.message.includes('timeout')) {
-        return NextResponse.json(
-          { error: 'La regeneración tomó demasiado tiempo. Por favor, intenta de nuevo.' },
-          { status: 504 }
-        );
-      }
-    }
-
     return NextResponse.json(
       { 
-        error: 'Error interno del servidor',
-        success: false 
+        success: false,
+        error: error instanceof Error ? error.message : 'Internal server error'
       },
       { status: 500 }
     );

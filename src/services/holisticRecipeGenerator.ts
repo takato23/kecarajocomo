@@ -7,6 +7,7 @@ import { geminiPlannerService } from '@/lib/services/geminiPlannerService';
 import { GeminiPlannerPrompts } from '@/lib/services/geminiPlannerPrompts';
 import type { UserPreferences } from '@/lib/types/mealPlanning';
 import { enhancedCache, CacheKeyGenerator } from '@/lib/services/enhancedCacheService';
+import { logger } from '@/services/logger';
 
 export interface HolisticRecipeRequest {
   readonly recipeName?: string;
@@ -138,7 +139,7 @@ export class HolisticRecipeGenerator {
       return recipeResponse;
       
     } catch (error) {
-      console.error('Error generating holistic recipe:', error);
+      logger.error('Error generating holistic recipe:', 'holisticRecipeGenerator', error);
       return {
         success: false,
         metadata: {
@@ -328,7 +329,7 @@ export class HolisticRecipeGenerator {
         }
       };
     } catch (error) {
-      console.error('Error processing recipe response:', error);
+      logger.error('Error processing recipe response:', 'holisticRecipeGenerator', error);
       return {
         success: false,
         metadata: {

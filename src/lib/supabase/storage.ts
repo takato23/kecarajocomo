@@ -3,6 +3,7 @@
  */
 
 import { supabase } from './client';
+import { logger } from '@/services/logger';
 
 export interface UploadResult {
   url: string;
@@ -296,7 +297,7 @@ export async function uploadMultiple(
         onProgress(completed, files.length);
       }
     } catch (error) {
-      console.error(`Failed to upload ${path}:`, error);
+      logger.error(`Failed to upload ${path}:`, 'Lib:storage', error);
       // Continue with other uploads
     }
   }

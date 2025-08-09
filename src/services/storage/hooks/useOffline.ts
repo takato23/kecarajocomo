@@ -4,6 +4,7 @@
  */
 
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { getStorageService } from '../UnifiedStorageService';
 
@@ -36,7 +37,7 @@ export function useOffline(): UseOfflineReturn {
       setIsOnline(true);
       // Automatically process queue when coming back online
       processQueue().catch(err => {
-        console.error('Failed to process offline queue:', err);
+        logger.error('Failed to process offline queue:', 'useOffline', err);
       });
     };
 
@@ -101,7 +102,7 @@ export function useOffline(): UseOfflineReturn {
       await storageService.processOfflineQueue();
       updateQueueSize();
     } catch (error: unknown) {
-      console.error('Failed to process offline queue:', error);
+      logger.error('Failed to process offline queue:', 'useOffline', error);
       throw error;
     }
   }, [storageService, updateQueueSize]);

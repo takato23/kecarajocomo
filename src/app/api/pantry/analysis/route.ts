@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryAnalysis, PantryAPIResponse } from '@/features/pantry/types';
 
@@ -24,7 +25,7 @@ export async function GET(request: NextRequest) {
       .eq('user_id', user.id);
 
     if (pantryError) {
-      console.error('Error fetching pantry items:', pantryError);
+      logger.error('Error fetching pantry items:', 'API:route', pantryError);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry items' },
         { status: 500 }
@@ -56,7 +57,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/analysis:', error);
+    logger.error('Unexpected error in GET /api/pantry/analysis:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -206,7 +207,7 @@ function generatePantryAnalysis(pantryItems: any[], cookingEvents: any[]): Pantr
         : ['Organize pantry with oldest items in front', 'Keep pantry at consistent temperature'],
       recipe_suggestions: recipeSuggestions.length > 0 
         ? recipeSuggestions 
-        : ['Try new recipes with ingredients you have on hand'],
-    },
+        : ['Try new recipes with ingredients you have on hand']
+    }
   };
 }

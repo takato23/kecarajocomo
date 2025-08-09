@@ -4,6 +4,7 @@
  */
 
 import posthog from 'posthog-js';
+import { logger } from '@/services/logger';
 
 import type { 
   AnalyticsEvent, 
@@ -44,7 +45,7 @@ export class PostHogProvider {
 
       this.initialized = true;
     } catch (error: unknown) {
-      console.error('Failed to initialize PostHog:', error);
+      logger.error('Failed to initialize PostHog:', 'PostHogProvider', error);
       throw error;
     }
   }
@@ -67,7 +68,7 @@ export class PostHogProvider {
         device_info: event.device_info,
       });
     } catch (error: unknown) {
-      console.error('PostHog track error:', error);
+      logger.error('PostHog track error:', 'PostHogProvider', error);
     }
   }
 
@@ -87,7 +88,7 @@ export class PostHogProvider {
         ...properties,
       });
     } catch (error: unknown) {
-      console.error('PostHog page error:', error);
+      logger.error('PostHog page error:', 'PostHogProvider', error);
     }
   }
 
@@ -100,7 +101,7 @@ export class PostHogProvider {
     try {
       posthog.identify(userId, traits);
     } catch (error: unknown) {
-      console.error('PostHog identify error:', error);
+      logger.error('PostHog identify error:', 'PostHogProvider', error);
     }
   }
 
@@ -113,7 +114,7 @@ export class PostHogProvider {
     try {
       posthog.group(groupType, groupId, traits);
     } catch (error: unknown) {
-      console.error('PostHog group error:', error);
+      logger.error('PostHog group error:', 'PostHogProvider', error);
     }
   }
 
@@ -126,7 +127,7 @@ export class PostHogProvider {
     try {
       posthog.alias(userId, previousId);
     } catch (error: unknown) {
-      console.error('PostHog alias error:', error);
+      logger.error('PostHog alias error:', 'PostHogProvider', error);
     }
   }
 
@@ -142,7 +143,7 @@ export class PostHogProvider {
         customMetrics: metrics.customMetrics,
       });
     } catch (error: unknown) {
-      console.error('PostHog performance tracking error:', error);
+      logger.error('PostHog performance tracking error:', 'PostHogProvider', error);
     }
   }
 
@@ -163,7 +164,7 @@ export class PostHogProvider {
         ...metadata,
       });
     } catch (err: unknown) {
-      console.error('PostHog error tracking error:', err);
+      logger.error('PostHog error tracking error:', 'PostHogProvider', err);
     }
   }
 
@@ -185,7 +186,7 @@ export class PostHogProvider {
         ...data.metadata,
       });
     } catch (error: unknown) {
-      console.error('PostHog voice tracking error:', error);
+      logger.error('PostHog voice tracking error:', 'PostHogProvider', error);
     }
   }
 
@@ -204,7 +205,7 @@ export class PostHogProvider {
         ...data.metadata,
       });
     } catch (error: unknown) {
-      console.error('PostHog feature tracking error:', error);
+      logger.error('PostHog feature tracking error:', 'PostHogProvider', error);
     }
   }
 
@@ -217,7 +218,7 @@ export class PostHogProvider {
     try {
       posthog.register(properties);
     } catch (error: unknown) {
-      console.error('PostHog setSuperProperties error:', error);
+      logger.error('PostHog setSuperProperties error:', 'PostHogProvider', error);
     }
   }
 
@@ -230,7 +231,7 @@ export class PostHogProvider {
     try {
       posthog.reset();
     } catch (error: unknown) {
-      console.error('PostHog reset error:', error);
+      logger.error('PostHog reset error:', 'PostHogProvider', error);
     }
   }
 
@@ -243,7 +244,7 @@ export class PostHogProvider {
     try {
       posthog.opt_out_capturing();
     } catch (error: unknown) {
-      console.error('PostHog opt out error:', error);
+      logger.error('PostHog opt out error:', 'PostHogProvider', error);
     }
   }
 
@@ -256,7 +257,7 @@ export class PostHogProvider {
     try {
       posthog.opt_in_capturing();
     } catch (error: unknown) {
-      console.error('PostHog opt in error:', error);
+      logger.error('PostHog opt in error:', 'PostHogProvider', error);
     }
   }
 
@@ -269,7 +270,7 @@ export class PostHogProvider {
     try {
       return posthog.has_opted_out_capturing();
     } catch (error: unknown) {
-      console.error('PostHog hasOptedOut error:', error);
+      logger.error('PostHog hasOptedOut error:', 'PostHogProvider', error);
       return false;
     }
   }
@@ -283,7 +284,7 @@ export class PostHogProvider {
     try {
       return posthog.get_session_id();
     } catch (error: unknown) {
-      console.error('PostHog getSessionId error:', error);
+      logger.error('PostHog getSessionId error:', 'PostHogProvider', error);
       return null;
     }
   }
@@ -297,7 +298,7 @@ export class PostHogProvider {
     try {
       posthog.startSessionRecording();
     } catch (error: unknown) {
-      console.error('PostHog session recording error:', error);
+      logger.error('PostHog session recording error:', 'PostHogProvider', error);
     }
   }
 
@@ -310,7 +311,7 @@ export class PostHogProvider {
     try {
       posthog.stopSessionRecording();
     } catch (error: unknown) {
-      console.error('PostHog stop session recording error:', error);
+      logger.error('PostHog stop session recording error:', 'PostHogProvider', error);
     }
   }
 
@@ -323,7 +324,7 @@ export class PostHogProvider {
     try {
       return posthog.isSessionRecordingEnabled();
     } catch (error: unknown) {
-      console.error('PostHog session recording check error:', error);
+      logger.error('PostHog session recording check error:', 'PostHogProvider', error);
       return false;
     }
   }
@@ -339,7 +340,7 @@ export class PostHogProvider {
         posthog.feature_flags.override({ [key]: value });
       });
     } catch (error: unknown) {
-      console.error('PostHog feature flags error:', error);
+      logger.error('PostHog feature flags error:', 'PostHogProvider', error);
     }
   }
 
@@ -352,7 +353,7 @@ export class PostHogProvider {
     try {
       return posthog.getFeatureFlag(key);
     } catch (error: unknown) {
-      console.error('PostHog get feature flag error:', error);
+      logger.error('PostHog get feature flag error:', 'PostHogProvider', error);
       return undefined;
     }
   }
@@ -366,7 +367,7 @@ export class PostHogProvider {
     try {
       return posthog.isFeatureEnabled(key);
     } catch (error: unknown) {
-      console.error('PostHog feature check error:', error);
+      logger.error('PostHog feature check error:', 'PostHogProvider', error);
       return false;
     }
   }
@@ -381,7 +382,7 @@ export class PostHogProvider {
       // PostHog automatically batches and sends events
       // This is a no-op for compatibility
     } catch (error: unknown) {
-      console.error('PostHog flush error:', error);
+      logger.error('PostHog flush error:', 'PostHogProvider', error);
     }
   }
 
@@ -396,7 +397,7 @@ export class PostHogProvider {
       // Events are automatically flushed on page unload
       this.initialized = false;
     } catch (error: unknown) {
-      console.error('PostHog shutdown error:', error);
+      logger.error('PostHog shutdown error:', 'PostHogProvider', error);
     }
   }
 }

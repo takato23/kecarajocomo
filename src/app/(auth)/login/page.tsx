@@ -1,122 +1,85 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { Suspense, useEffect, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
+import { MagicLinkAuth } from '@/components/auth/MagicLinkAuth';
 
-import { signIn, signInWithGoogle, signInWithGitHub } from '@/lib/supabase/client';
-import { AuthForm } from '@/features/auth/components/AuthForm';
-import { SocialAuthButtons } from '@/features/auth/components/SocialAuthButtons';
-import { useAppStore } from '@/store';
-
-export default function LoginPage() {
+// Componente separado para manejar los search params
+function LoginContent() {
   const router = useRouter();
-  const setUser = useAppStore((state) => state.setUser);
-  const [isLoading, setIsLoading] = useState(false);
+  const searchParams = useSearchParams();
   const [error, setError] = useState<string | null>(null);
 
-  const handleEmailLogin = async (email: string, password: string) => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const { user } = await signIn(email, password);
-      if (user) {
-        setUser({
-          id: user.id,
-          email: user.email!,
-          name: user.user_metadata?.name || user.email!.split('@')[0],
-          createdAt: new Date(user.created_at),
-          lastLogin: new Date()
-        });
-        router.push('/app');
-      }
-    } catch (err: any) {
-      setError(err.message || 'Failed to sign in');
-    } finally {
-      setIsLoading(false);
+  useEffect(() => {
+    // Mostrar error si viene de la URL (ej: desde callback)
+    const urlError = searchParams.get('error');
+    if (urlError) {
+      setError(urlError);
     }
-  };
+  }, [searchParams]);
 
-  const handleSocialLogin = async (provider: 'google' | 'github') => {
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      if (provider === 'google') {
-        await signInWithGoogle();
-      } else {
-        await signInWithGitHub();
-      }
-    } catch (err: any) {
-      setError(err.message || `Failed to sign in with ${provider}`);
-      setIsLoading(false);
-    }
+  const handleAuthSuccess = () => {
+    // Redirigir al dashboard después de enviar el magic link
+    // El usuario será redirigido automáticamente después de hacer clic en el link
   };
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4 }}
-      className="w-full"
-    >
-      <div className="rounded-2xl bg-white/80 backdrop-blur-md border border-white/20 shadow-xl p-8">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Welcome back</h2>
-        
-        {error && (
-          <div className="mb-4 p-3 rounded-lg bg-red-50 border border-red-200">
-            <p className="text-sm text-red-600">{error}</p>
-          </div>
-        )}
-
-        <AuthForm
-          mode="login"
-          onSubmit={handleEmailLogin}
-          isLoading={isLoading}
-        />
-
-        <div className="mt-6">
-          <div className="relative">
-            <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300" />
-            </div>
-            <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">Or continue with</span>
-            </div>
-          </div>
-
-          <div className="mt-6">
-            <SocialAuthButtons
-              onGoogleClick={() => handleSocialLogin('google')}
-              onGitHubClick={() => handleSocialLogin('github')}
-              isLoading={isLoading}
-            />
-          </div>
-        </div>
-
-        <div className="mt-6 text-center">
-          <p className="text-sm text-gray-600">
-            Don&apos;t have an account?{' '}
-            <Link
-              href="/signup"
-              className="font-medium text-lime-600 hover:text-lime-500 transition-colors"
-            >
-              Sign up
-            </Link>
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md"
+      >
+        {/* Header branding */}
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+            KeCarajoComer
+          </h1>
+          <p className="text-gray-600 dark:text-gray-300">
+            Planificá tu semana y comprá inteligente
           </p>
         </div>
 
-        <div className="mt-4 text-center">
-          <Link
-            href="/forgot-password"
-            className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
-          >
-            Forgot your password?
-          </Link>
+        {/* Error global de URL */}
+        {error && (
+          <div className="mb-6 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <p className="text-sm text-red-700 dark:text-red-400">{error}</p>
+          </div>
+        )}
+
+        {/* Componente de Magic Link Auth */}
+        <MagicLinkAuth 
+          onSuccess={handleAuthSuccess}
+          redirectTo="/"
+        />
+
+        {/* Footer info */}
+        <div className="mt-8 text-center">
+          <p className="text-xs text-gray-500 dark:text-gray-400">
+            Primera vez aquí? No te preocupes, creamos tu cuenta automáticamente
+          </p>
+        </div>
+      </motion.div>
+    </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center p-4">
+        <div className="w-full max-w-md text-center">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded mb-4"></div>
+            <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded mb-8"></div>
+            <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded"></div>
+          </div>
         </div>
       </div>
-    </motion.div>
+    }>
+      <LoginContent />
+    </Suspense>
   );
 }

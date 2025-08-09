@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import type { Database } from '@/types/database';
 
@@ -96,7 +97,7 @@ export class HolisticFoodSystem {
       };
       
     } catch (error: unknown) {
-      console.error('Error en procesamiento holístico:', error);
+      logger.error('Error en procesamiento holístico:', 'HolisticSystem', error);
       throw error;
     }
   }
@@ -112,7 +113,7 @@ export class HolisticFoodSystem {
       .single();
     
     if (error) {
-      console.error('Error obteniendo preferencias:', error);
+      logger.error('Error obteniendo preferencias:', 'HolisticSystem', error);
       return null;
     }
     
@@ -148,7 +149,7 @@ export class HolisticFoodSystem {
     const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
     
     if (!apiKey) {
-      console.warn('Gemini API key no configurada, usando mock');
+      logger.warn('Gemini API key no configurada, usando mock', 'HolisticSystem');
       return { success: false, message: 'Gemini no configurado' };
     }
     

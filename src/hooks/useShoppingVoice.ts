@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 import { parseSpanishVoiceInput } from '@/lib/voice/spanishVoiceParser';
 import { parseWithGemini, convertToShoppingCommands } from '@/lib/voice/geminiVoiceParser';
@@ -189,7 +190,7 @@ export function useShoppingVoice({
           break;
       }
     } catch (error: unknown) {
-      console.error('Error processing voice command:', error);
+      logger.error('Error processing voice command:', 'useShoppingVoice', error);
     } finally {
       setIsProcessing(false);
     }
@@ -236,7 +237,7 @@ export function useShoppingVoice({
         processedCommandsRef.current = new Set(commands.slice(-25));
       }
     } catch (error: unknown) {
-      console.error('Error processing transcript:', error);
+      logger.error('Error processing transcript:', 'useShoppingVoice', error);
       setLastCommand('Error procesando comando');
     } finally {
       setIsProcessing(false);

@@ -5,6 +5,7 @@
 
 import { Redis } from '@upstash/redis';
 import { Ratelimit } from '@upstash/ratelimit';
+import { logger } from '@/services/logger';
 
 import { performanceMonitor } from '../analytics/performance';
 
@@ -90,7 +91,7 @@ class AICache {
     const { success, reset, remaining } = await this.ratelimit.limit(userId);
     
     if (!success) {
-      console.warn(`Rate limit exceeded for user ${userId}. Reset: ${reset}, Remaining: ${remaining}`);
+      logger.warn(`Rate limit exceeded for user ${userId}. Reset: ${reset}, Remaining: ${remaining}`, 'Lib:cache');
       return false;
     }
     
@@ -146,7 +147,7 @@ class AICache {
         return { ...cached.response, cached: true };
       }
     } catch (error: unknown) {
-      console.error('Redis cache error:', error);
+      logger.error('Redis cache error:', 'Lib:cache', error);
     }
 
     return null;
@@ -171,7 +172,7 @@ class AICache {
     try {
       await this.redis.setex(cacheKey, ttl || this.defaultTTL, cacheEntry);
     } catch (error: unknown) {
-      console.error('Redis cache set error:', error);
+      logger.error('Redis cache set error:', 'Lib:cache', error);
     }
   }
 
@@ -190,7 +191,7 @@ class AICache {
         await this.redis.del(...keys);
       }
     } catch (error: unknown) {
-      console.error('Redis cache invalidation error:', error);
+      logger.error('Redis cache invalidation error:', 'Lib:cache', error);
     }
   }
 

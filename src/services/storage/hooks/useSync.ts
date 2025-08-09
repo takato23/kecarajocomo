@@ -4,6 +4,7 @@
  */
 
 import { useState, useCallback, useEffect } from 'react';
+import { logger } from '@/services/logger';
 
 import { getStorageService } from '../UnifiedStorageService';
 import { SyncOptions, SyncStatus } from '../types';
@@ -92,14 +93,14 @@ export function useSync(options: UseSyncOptions = {}): UseSyncReturn {
   useEffect(() => {
     if (options.autoSync) {
       enableSync(options).catch(err => {
-        console.error('Failed to enable auto-sync:', err);
+        logger.error('Failed to enable auto-sync:', 'useSync', err);
       });
     }
     
     return () => {
       if (options.autoSync) {
         disableSync().catch(err => {
-          console.error('Failed to disable auto-sync:', err);
+          logger.error('Failed to disable auto-sync:', 'useSync', err);
         });
       }
     };
@@ -109,7 +110,7 @@ export function useSync(options: UseSyncOptions = {}): UseSyncReturn {
     try {
       await storageService.sync();
     } catch (error: unknown) {
-      console.error('Sync failed:', error);
+      logger.error('Sync failed:', 'useSync', error);
       throw error;
     }
   }, [storageService]);
@@ -121,7 +122,7 @@ export function useSync(options: UseSyncOptions = {}): UseSyncReturn {
         ...syncOptions,
       });
     } catch (error: unknown) {
-      console.error('Failed to enable sync:', error);
+      logger.error('Failed to enable sync:', 'useSync', error);
       throw error;
     }
   }, [storageService, options]);
@@ -130,7 +131,7 @@ export function useSync(options: UseSyncOptions = {}): UseSyncReturn {
     try {
       await storageService.disableSync();
     } catch (error: unknown) {
-      console.error('Failed to disable sync:', error);
+      logger.error('Failed to disable sync:', 'useSync', error);
       throw error;
     }
   }, [storageService]);
@@ -140,7 +141,7 @@ export function useSync(options: UseSyncOptions = {}): UseSyncReturn {
       // Force a sync to resolve pending operations
       await sync();
     } catch (error: unknown) {
-      console.error('Failed to resolve pending operations:', error);
+      logger.error('Failed to resolve pending operations:', 'useSync', error);
       throw error;
     }
   }, [sync]);

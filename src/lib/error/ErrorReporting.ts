@@ -4,6 +4,7 @@
  */
 
 import { ProfileError, ProfileErrorCode } from '@/services/error/ProfileErrorHandler';
+import { logger } from '@/services/logger';
 
 /**
  * Error report interface
@@ -75,22 +76,22 @@ export interface MonitoringService {
 class ConsoleMonitoringService implements MonitoringService {
   async reportError(report: ErrorReport): Promise<void> {
     console.group(`🚨 Error Report [${report.error.severity?.toUpperCase() || 'UNKNOWN'}]`);
-    console.log('ID:', report.id);
-    console.log('Timestamp:', report.timestamp.toISOString());
-    console.log('Error:', report.error);
-    console.log('Context:', report.context);
-    console.log('Fingerprint:', report.fingerprint);
-    console.log('Tags:', report.tags);
+    logger.info('ID:', 'Lib:ErrorReporting', report.id);
+    logger.info('Timestamp:', 'Lib:ErrorReporting', report.timestamp.toISOString());
+    logger.info('Error:', 'Lib:ErrorReporting', report.error);
+    logger.info('Context:', 'Lib:ErrorReporting', report.context);
+    logger.info('Fingerprint:', 'Lib:ErrorReporting', report.fingerprint);
+    logger.info('Tags:', 'Lib:ErrorReporting', report.tags);
     console.groupEnd();
   }
 
   async reportMetrics(metrics: ErrorMetrics): Promise<void> {
     console.group('📊 Error Metrics');
-    console.log('Total Errors:', metrics.total);
-    console.log('By Code:', metrics.byCode);
-    console.log('By Severity:', metrics.bySeverity);
-    console.log('By Component:', metrics.byComponent);
-    console.log('Trends:', metrics.trends);
+    logger.info('Total Errors:', 'Lib:ErrorReporting', metrics.total);
+    logger.info('By Code:', 'Lib:ErrorReporting', metrics.byCode);
+    logger.info('By Severity:', 'Lib:ErrorReporting', metrics.bySeverity);
+    logger.info('By Component:', 'Lib:ErrorReporting', metrics.byComponent);
+    logger.info('Trends:', 'Lib:ErrorReporting', metrics.trends);
     console.groupEnd();
   }
 
@@ -135,13 +136,13 @@ class SentryMonitoringService implements MonitoringService {
 
       this.initialized = true;
     } catch (error) {
-      console.warn('Failed to initialize Sentry:', error);
+      logger.warn('Failed to initialize Sentry:', 'Lib:ErrorReporting', error);
     }
   }
 
   async reportError(report: ErrorReport): Promise<void> {
     if (!this.initialized) {
-      console.warn('Sentry not initialized, falling back to console');
+      logger.warn('Sentry not initialized, falling back to console', 'Lib:ErrorReporting');
       const consoleService = new ConsoleMonitoringService();
       return consoleService.reportError(report);
     }
@@ -181,7 +182,7 @@ class SentryMonitoringService implements MonitoringService {
         Sentry.captureException(error);
       });
     } catch (error) {
-      console.error('Failed to report error to Sentry:', error);
+      logger.error('Failed to report error to Sentry:', 'Lib:ErrorReporting', error);
     }
   }
 
@@ -197,7 +198,7 @@ class SentryMonitoringService implements MonitoringService {
         level: 'info'
       });
     } catch (error) {
-      console.error('Failed to report metrics to Sentry:', error);
+      logger.error('Failed to report metrics to Sentry:', 'Lib:ErrorReporting', error);
     }
   }
 
@@ -233,7 +234,7 @@ class LocalStorageMonitoringService implements MonitoringService {
       
       localStorage.setItem(this.storageKey, JSON.stringify(trimmedReports));
     } catch (error) {
-      console.warn('Failed to store error report locally:', error);
+      logger.warn('Failed to store error report locally:', 'Lib:ErrorReporting', error);
     }
   }
 
@@ -244,7 +245,7 @@ class LocalStorageMonitoringService implements MonitoringService {
         timestamp: new Date().toISOString()
       }));
     } catch (error) {
-      console.warn('Failed to store error metrics locally:', error);
+      logger.warn('Failed to store error metrics locally:', 'Lib:ErrorReporting', error);
     }
   }
 
@@ -272,7 +273,7 @@ class LocalStorageMonitoringService implements MonitoringService {
       localStorage.removeItem(this.storageKey);
       localStorage.removeItem('error_metrics');
     } catch (error) {
-      console.warn('Failed to clear stored reports:', error);
+      logger.warn('Failed to clear stored reports:', 'Lib:ErrorReporting', error);
     }
   }
 
@@ -283,7 +284,7 @@ class LocalStorageMonitoringService implements MonitoringService {
       try {
         await remoteService.reportError(report);
       } catch (error) {
-        console.warn('Failed to sync report with remote service:', error);
+        logger.warn('Failed to sync report with remote service:', 'Lib:ErrorReporting', error);
         break; // Stop syncing if remote service is unavailable
       }
     }
@@ -368,7 +369,7 @@ export class ErrorReportingService {
       try {
         await service.reportError(report);
       } catch (err) {
-        console.warn('Failed to report error to monitoring service:', err);
+        logger.warn('Failed to report error to monitoring service:', 'Lib:ErrorReporting', err);
       }
     });
 
@@ -581,7 +582,7 @@ export class ErrorReportingService {
       try {
         await service.reportMetrics(this.metrics);
       } catch (err) {
-        console.warn('Failed to report metrics to monitoring service:', err);
+        logger.warn('Failed to report metrics to monitoring service:', 'Lib:ErrorReporting', err);
       }
     });
 
@@ -653,7 +654,7 @@ export class ErrorReportingService {
           await this.localService.syncWithRemote(remoteService);
           break; // Success, stop trying other services
         } catch (error) {
-          console.warn('Failed to sync with remote service:', error);
+          logger.warn('Failed to sync with remote service:', 'Lib:ErrorReporting', error);
         }
       }
     }

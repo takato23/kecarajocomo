@@ -1,4 +1,5 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { logger } from '@/services/logger';
 
 import type { Database } from '@/types/database';
 import type { HolisticFoodSystem } from '../core/HolisticSystem';
@@ -55,7 +56,7 @@ export class ProfileManager {
       return parseProfileFromDatabase(data);
       
     } catch (error: unknown) {
-      console.error('Error obteniendo perfil:', error);
+      logger.error('Error obteniendo perfil:', 'ProfileManager', error);
       return null;
     }
   }
@@ -85,7 +86,7 @@ export class ProfileManager {
       return parseProfileFromDatabase(data);
       
     } catch (error: unknown) {
-      console.error('Error actualizando perfil:', error);
+      logger.error('Error actualizando perfil:', 'ProfileManager', error);
       throw new Error('Error al actualizar perfil');
     }
   }
@@ -109,7 +110,7 @@ export class ProfileManager {
       if (error) throw error;
       
     } catch (error: unknown) {
-      console.error('Error actualizando restricciones:', error);
+      logger.error('Error actualizando restricciones:', 'ProfileManager', error);
       throw error;
     }
   }
@@ -130,7 +131,7 @@ export class ProfileManager {
       if (error) throw error;
       
     } catch (error: unknown) {
-      console.error('Error actualizando alergias:', error);
+      logger.error('Error actualizando alergias:', 'ProfileManager', error);
       throw error;
     }
   }
@@ -177,7 +178,7 @@ export class ProfileManager {
       return checkIngredientCompatibility(ingredient, profile.dietaryRestrictions);
       
     } catch (error: unknown) {
-      console.error('Error verificando compatibilidad:', error);
+      logger.error('Error verificando compatibilidad:', 'ProfileManager', error);
       return { compatible: true };
     }
   }
@@ -217,7 +218,7 @@ export class ProfileManager {
       };
       
     } catch (error: unknown) {
-      console.error('Error obteniendo recomendaciones:', error);
+      logger.error('Error obteniendo recomendaciones:', 'ProfileManager', error);
       return {
         suggestedIngredients: [],
         avoidIngredients: [],

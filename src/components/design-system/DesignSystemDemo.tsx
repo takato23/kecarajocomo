@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { logger } from '@/services/logger';
 
 import {
   Button,
@@ -191,9 +192,9 @@ export const DesignSystemDemo: React.FC = () => {
           <RecipeCard
             {...sampleRecipe}
             variant="glass"
-            onFavoriteToggle={(id) => console.log('Toggle favorite:', id)}
-            onShare={(id) => console.log('Share:', id)}
-            onClick={(id) => console.log('View recipe:', id)}
+            onFavoriteToggle={(id) => logger.info('Toggle favorite:', 'DesignSystemDemo', id)}
+            onShare={(id) => logger.info('Share:', 'DesignSystemDemo', id)}
+            onClick={(id) => logger.info('View recipe:', 'DesignSystemDemo', id)}
           />
           
           <RecipeCard

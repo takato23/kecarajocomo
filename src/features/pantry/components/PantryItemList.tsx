@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { logger } from '@/services/logger';
 import { 
   Search, 
   Filter, 
@@ -91,7 +92,7 @@ export function PantryItemList({
       await deleteItems(selectedItems);
       clearSelection();
     } catch (error: unknown) {
-      console.error('Error deleting items:', error);
+      logger.error('Error deleting items:', 'PantryItemList', error);
     }
   };
 
@@ -99,7 +100,7 @@ export function PantryItemList({
     try {
       await consumeItem(item.id, quantity);
     } catch (error: unknown) {
-      console.error('Error consuming item:', error);
+      logger.error('Error consuming item:', 'PantryItemList', error);
     }
   };
 

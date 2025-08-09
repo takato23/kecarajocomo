@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import { consumeIngredientsFromPantry } from '@/features/pantry/utils/mealPlanIntegration';
 import type { 
@@ -51,7 +52,7 @@ export async function POST(request: NextRequest) {
       .eq('user_id', user.id);
 
     if (pantryError) {
-      console.error('Error fetching pantry items:', pantryError);
+      logger.error('Error fetching pantry items:', 'API:route', pantryError);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry items' },
         { status: 500 }
@@ -164,7 +165,7 @@ export async function POST(request: NextRequest) {
     const errors = results.filter(result => result.error);
 
     if (errors.length > 0) {
-      console.error('Errors updating pantry after consumption:', errors);
+      logger.error('Errors updating pantry after consumption:', 'API:route', errors);
       return NextResponse.json(
         { success: false, message: 'Failed to update pantry items' },
         { status: 500 }
@@ -184,7 +185,7 @@ export async function POST(request: NextRequest) {
         });
       } catch (error: unknown) {
         // Don't fail the request if logging fails
-        console.error('Failed to log cooking event:', error);
+        logger.error('Failed to log cooking event:', 'API:route', error);
       }
     }
 
@@ -209,7 +210,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in POST /api/pantry/consume:', error);
+    logger.error('Unexpected error in POST /api/pantry/consume:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

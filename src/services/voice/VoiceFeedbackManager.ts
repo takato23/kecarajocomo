@@ -4,6 +4,7 @@
  */
 
 import { TTSOptions, VoiceFeedbackSound, VoiceServiceConfig } from './types';
+import { logger } from '@/services/logger';
 
 export class VoiceFeedbackManager {
   private synthesis: SpeechSynthesis | null = null;
@@ -66,7 +67,7 @@ export class VoiceFeedbackManager {
         const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
         this.sounds.set(name, audioBuffer);
       } catch (error: unknown) {
-        console.warn(`Failed to load sound: ${name}`, error);
+        logger.warn(`Failed to load sound: ${name}`, 'VoiceFeedbackManager', error);
       }
     }
   }
@@ -76,7 +77,7 @@ export class VoiceFeedbackManager {
    */
   async speak(text: string, options: TTSOptions = {}): Promise<void> {
     if (!this.synthesis) {
-      console.warn('Speech synthesis not supported');
+      logger.warn('Speech synthesis not supported', 'VoiceFeedbackManager');
       return;
     }
 
@@ -156,7 +157,7 @@ export class VoiceFeedbackManager {
 
     const buffer = this.sounds.get(name);
     if (!buffer) {
-      console.warn(`Sound not loaded: ${name}`);
+      logger.warn(`Sound not loaded: ${name}`, 'VoiceFeedbackManager');
       return;
     }
 
@@ -187,7 +188,7 @@ export class VoiceFeedbackManager {
         gainNode.disconnect();
       };
     } catch (error: unknown) {
-      console.error(`Error playing sound: ${name}`, error);
+      logger.error(`Error playing sound: ${name}`, 'VoiceFeedbackManager', error);
     }
   }
 
@@ -213,7 +214,7 @@ export class VoiceFeedbackManager {
       oscillator.start();
       oscillator.stop(this.audioContext.currentTime + duration / 1000);
     } catch (error: unknown) {
-      console.error('Error generating beep:', error);
+      logger.error('Error generating beep:', 'VoiceFeedbackManager', error);
     }
   }
 

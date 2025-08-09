@@ -34,7 +34,7 @@ export async function getServerSession() {
 
 export async function requireAuth(request: NextRequest) {
   // Basic auth check - would implement proper auth in production
-  const session = await getServerSession();
+  const user = await getUser();
   
   if (!session?.user) {
     return new Response('Unauthorized', { status: 401 });

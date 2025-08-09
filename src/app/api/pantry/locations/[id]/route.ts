@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import type { PantryLocation, PantryAPIResponse } from '@/features/pantry/types';
 
@@ -35,7 +36,7 @@ export async function GET(
           { status: 404 }
         );
       }
-      console.error('Error fetching pantry location:', error);
+      logger.error('Error fetching pantry location:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to fetch pantry location' },
         { status: 500 }
@@ -50,7 +51,7 @@ export async function GET(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in GET /api/pantry/locations/[id]:', error);
+    logger.error('Unexpected error in GET /api/pantry/locations/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -123,7 +124,7 @@ export async function PUT(
           { status: 404 }
         );
       }
-      console.error('Error updating pantry location:', error);
+      logger.error('Error updating pantry location:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to update pantry location' },
         { status: 500 }
@@ -138,7 +139,7 @@ export async function PUT(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in PUT /api/pantry/locations/[id]:', error);
+    logger.error('Unexpected error in PUT /api/pantry/locations/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }
@@ -170,7 +171,7 @@ export async function DELETE(
       .eq('location', (await context.params).id);
 
     if (countError) {
-      console.error('Error checking location usage:', countError);
+      logger.error('Error checking location usage:', 'API:route', countError);
       return NextResponse.json(
         { success: false, message: 'Failed to check location usage' },
         { status: 500 }
@@ -194,7 +195,7 @@ export async function DELETE(
       .eq('user_id', user.id);
 
     if (error) {
-      console.error('Error deleting pantry location:', error);
+      logger.error('Error deleting pantry location:', 'API:route', error);
       return NextResponse.json(
         { success: false, message: 'Failed to delete pantry location' },
         { status: 500 }
@@ -209,7 +210,7 @@ export async function DELETE(
 
     return NextResponse.json(response);
   } catch (error: unknown) {
-    console.error('Unexpected error in DELETE /api/pantry/locations/[id]:', error);
+    logger.error('Unexpected error in DELETE /api/pantry/locations/[id]:', 'API:route', error);
     return NextResponse.json(
       { success: false, message: 'Internal server error' },
       { status: 500 }

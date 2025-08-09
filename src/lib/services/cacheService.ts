@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 interface CacheEntry<T> {
   data: T;
   timestamp: number;
@@ -48,7 +50,7 @@ export class CacheService {
       const request = indexedDB.open(this.DB_NAME, this.DB_VERSION);
       
       request.onerror = () => {
-        console.error('Failed to open IndexedDB');
+        logger.error('Failed to open IndexedDB', 'cacheService');
       };
       
       request.onsuccess = (event) => {
@@ -64,7 +66,7 @@ export class CacheService {
         }
       };
     } catch (error: unknown) {
-      console.error('IndexedDB initialization error:', error);
+      logger.error('IndexedDB initialization error:', 'cacheService', error);
     }
   }
 
@@ -147,7 +149,7 @@ export class CacheService {
           resolve(null);
         };
       } catch (error: unknown) {
-        console.error('IndexedDB get error:', error);
+        logger.error('IndexedDB get error:', 'cacheService', error);
         resolve(null);
       }
     });
@@ -165,7 +167,7 @@ export class CacheService {
         request.onsuccess = () => resolve();
         request.onerror = () => resolve();
       } catch (error: unknown) {
-        console.error('IndexedDB save error:', error);
+        logger.error('IndexedDB save error:', 'cacheService', error);
         resolve();
       }
     });
@@ -183,7 +185,7 @@ export class CacheService {
         request.onsuccess = () => resolve();
         request.onerror = () => resolve();
       } catch (error: unknown) {
-        console.error('IndexedDB delete error:', error);
+        logger.error('IndexedDB delete error:', 'cacheService', error);
         resolve();
       }
     });
@@ -201,7 +203,7 @@ export class CacheService {
         request.onsuccess = () => resolve();
         request.onerror = () => resolve();
       } catch (error: unknown) {
-        console.error('IndexedDB clear error:', error);
+        logger.error('IndexedDB clear error:', 'cacheService', error);
         resolve();
       }
     });
@@ -255,7 +257,7 @@ export class CacheService {
         }
       };
     } catch (error: unknown) {
-      console.error('Failed to clear expired from IndexedDB:', error);
+      logger.error('Failed to clear expired from IndexedDB:', 'cacheService', error);
     }
   }
 

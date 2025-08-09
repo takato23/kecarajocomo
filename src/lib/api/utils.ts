@@ -18,7 +18,7 @@ export async function withAuth<T>(
     
     // Get auth session
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 

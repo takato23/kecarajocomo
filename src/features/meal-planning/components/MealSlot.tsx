@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import {
   Plus,
   Lock,
@@ -34,6 +35,7 @@ interface MealSlotProps {
   isToday?: boolean;
   isSelected?: boolean;
   isHovered?: boolean;
+  isGeneratingAI?: boolean;
   onSlotClick?: (slot: MealSlotType) => void;
   onRecipeSelect?: () => void;
   onSlotClear?: (slot: MealSlotType) => void;
@@ -48,6 +50,7 @@ export function MealSlot({
   isToday = false,
   isSelected = false,
   isHovered = false,
+  isGeneratingAI = false,
   onSlotClick,
   onRecipeSelect,
   onSlotClear,
@@ -87,7 +90,7 @@ export function MealSlot({
         toast.error('Error al regenerar la receta');
       }
     } catch (error) {
-      console.error('Failed to regenerate:', error);
+      logger.error('Failed to regenerate:', 'MealSlot', error);
       toast.error('Error al regenerar la receta');
     } finally {
       setIsRegenerating(false);
@@ -165,9 +168,34 @@ export function MealSlot({
             </motion.div>
           )}
 
-          {/* Menu button */}
+          {/* Menu button and AI regenerate button */}
           {hasRecipe && (
-            <div className="absolute top-2 right-2 z-10">
+            <div className="absolute top-2 right-2 z-10 flex gap-1">
+              {/* AI Regenerate button */}
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleRegenerate();
+                }}
+                disabled={isRegenerating || isGeneratingAI}
+                className="w-6 h-6 bg-purple-500/80 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-purple-600/80 transition-colors disabled:opacity-50"
+                title="Regenerar con IA"
+              >
+                {isRegenerating ? (
+                  <motion.div
+                    animate={{ rotate: 360 }}
+                    transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  >
+                    <Sparkles className="w-3 h-3 text-white" />
+                  </motion.div>
+                ) : (
+                  <RefreshCw className="w-3 h-3 text-white" />
+                )}
+              </motion.button>
+              
+              {/* Menu button */}
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -260,29 +288,56 @@ export function MealSlot({
                 </div>
               </>
             ) : (
-              <div className="h-full flex flex-col items-center justify-center">
+              <div className="h-full flex flex-col items-center justify-center gap-2">
                 <motion.div
                   whileHover={{ rotate: 180 }}
                   transition={{ duration: 0.3 }}
-                  className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center mb-2"
+                  className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center"
                 >
                   <Plus className="w-5 h-5 text-white" />
                 </motion.div>
-                <p className="text-xs text-gray-600 dark:text-gray-400">
+                <p className="text-xs text-gray-600 dark:text-gray-400 text-center">
                   Agregar comida
                 </p>
+                
+                {/* AI Generate button for empty slots */}
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (onAIGenerate && !isGeneratingAI) onAIGenerate();
+                  }}
+                  disabled={isGeneratingAI}
+                  className="mt-1 px-2 py-1 bg-gradient-to-r from-purple-500 to-pink-500 text-white text-xs rounded-full hover:from-purple-600 hover:to-pink-600 transition-all font-medium flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isGeneratingAI ? (
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                    >
+                      <Sparkles className="w-3 h-3" />
+                    </motion.div>
+                  ) : (
+                    <Sparkles className="w-3 h-3" />
+                  )}
+                  <span>{isGeneratingAI ? '...' : 'IA'}</span>
+                </motion.button>
               </div>
             )}
           </div>
 
           {/* Loading overlay */}
-          {isRegenerating && (
+          {(isRegenerating || isGeneratingAI) && (
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl flex items-center justify-center z-20"
+              className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-3xl flex flex-col items-center justify-center z-20"
             >
               <LoadingSpinner size="sm" />
+              <p className="text-white text-xs mt-2 font-medium">
+                {isGeneratingAI ? 'Generando con IA...' : 'Regenerando...'}
+              </p>
             </motion.div>
           )}
         </iOS26EnhancedCard>

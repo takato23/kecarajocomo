@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 import { 
   Bell, 
   User, 
@@ -376,11 +377,20 @@ export function Navbar() {
                         onClick={async () => {
                           setUserMenuOpen(false);
                           try {
-                            // TODO: Implement sign out
-                            router.push('/login');
+                            // Call logout from user store
+                            const { logout } = useAppStore.getState();
+                            logout();
+                            
+                            // Clear any local storage or session data
+                            if (typeof window !== 'undefined') {
+                              localStorage.removeItem('kecarajo-store');
+                              sessionStorage.clear();
+                            }
+                            
+                            // Redirect to home page
                             router.push('/');
                           } catch (error) {
-                            console.error('Error al cerrar sesión:', error);
+                            logger.error('Error al cerrar sesión:', 'Navbar', error);
                           }
                         }}
                         className="flex items-center space-x-2 w-full px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white transition-colors text-left"

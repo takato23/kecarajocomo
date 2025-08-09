@@ -1,24 +1,11 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/lib/logger';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-import { createServerSupabaseClient } from '../../../../../lib/supabase/client';
+import { createServerSupabaseClient } from '@/lib/supabase/client';
 
-// AI provider imports (you would implement these based on your chosen provider)
-// For now, we'll simulate Claude API integration
-interface ClaudeMessage {
-  role: 'user' | 'assistant' | 'system';
-  content: string;
-}
-
-interface ClaudeResponse {
-  content: Array<{
-    type: 'text';
-    text: string;
-  }>;
-  usage: {
-    input_tokens: number;
-    output_tokens: number;
-  };
-}
+// Interfaces for the response
 
 export async function POST(request: NextRequest) {
   try {
@@ -94,8 +81,8 @@ ESTRUCTURA JSON OBLIGATORIA:
   "alternatives": ["string"] - sugerencias de variaciones o substituciones
 }`;
 
-    // Call AI service (this would be your actual AI API call)
-    const aiResponse = await callClaudeAPI(systemPrompt, prompt);
+    // Call Gemini API
+    const aiResponse = await callGeminiAPI(systemPrompt, prompt);
     
     // Parse and validate response
     const recipeData = await parseAndValidateRecipeResponse(aiResponse);
@@ -115,7 +102,7 @@ ESTRUCTURA JSON OBLIGATORIA:
     });
 
   } catch (error: unknown) {
-    console.error('Recipe generation error:', error);
+    logger.error('Recipe generation error:', 'API:route', error);
     
     return NextResponse.json(
       { 
@@ -128,49 +115,58 @@ ESTRUCTURA JSON OBLIGATORIA:
 }
 
 // Simulated Claude API call - replace with actual implementation
-async function callClaudeAPI(systemPrompt: string, userPrompt: string): Promise<ClaudeResponse> {
-  // This is where you'd make the actual API call to Claude
-  // For now, we'll return a mock response
+async function callGeminiAPI(systemPrompt: string, userPrompt: string): Promise<any> {
+  const apiKey = geminiConfig.getApiKey() || geminiConfig.getApiKey();
   
-  const claudeApiKey = process.env.CLAUDE_API_KEY;
-  if (!claudeApiKey) {
-    throw new Error('Claude API key not configured');
+  if (!apiKey) {
+    logger.warn('Gemini API key not available, using fallback', 'API:route');
+    return getMockRecipeResponse(userPrompt);
   }
 
   try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': claudeApiKey,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-3-sonnet-20240229',
-        max_tokens: 4000,
-        system: systemPrompt,
-        messages: [
-          {
-            role: 'user',
-            content: userPrompt
-          }
-        ]
-      })
+    const genAI = new GoogleGenerativeAI(apiKey);
+    const model = genAI.getGenerativeModel({ 
+      model: geminiConfig.default.model,
+      generationConfig: {
+        temperature: 0.7,
+        maxOutputTokens: 2048,
+        topP: 0.8,
+        topK: 40
+      }
     });
 
-    if (!response.ok) {
-      throw new Error(`Claude API error: ${response.statusText}`);
+    const prompt = `${systemPrompt}\n\n${userPrompt}`;
+    const result = await model.generateContent(prompt);
+    const response = await result.response;
+    let text = response.text();
+    
+    // Limpiar respuesta de markdown si existe
+    text = text.trim();
+    if (text.startsWith('```json')) {
+      text = text.slice(7);
     }
-
-    return await response.json();
+    if (text.startsWith('```')) {
+      text = text.slice(3);
+    }
+    if (text.endsWith('```')) {
+      text = text.slice(0, -3);
+    }
+    
+    // Return in expected format
+    return {
+      content: [{ type: 'text', text: text.trim() }],
+      usage: {
+        input_tokens: Math.ceil((systemPrompt.length + userPrompt.length) / 4),
+        output_tokens: Math.ceil(text.length / 4)
+      }
+    };
   } catch (error: unknown) {
-    // Fallback to mock data if Claude API is not available
-    console.warn('Claude API not available, using fallback:', error.message);
+    logger.warn('Gemini API error, using fallback:', 'API:route', error);
     return getMockRecipeResponse(userPrompt);
   }
 }
 
-function getMockRecipeResponse(prompt: string): ClaudeResponse {
+function getMockRecipeResponse(prompt: string): any {
   // Mock response for development/testing
   const mockRecipe = {
     name: "Pasta con Pollo y Verduras",
@@ -367,7 +363,7 @@ async function logAIUsage(userId: string, operation: string, metrics: any): Prom
         created_at: new Date().toISOString()
       });
   } catch (error: unknown) {
-    console.error('Failed to log AI usage:', error);
+    logger.error('Failed to log AI usage:', 'API:route', error);
     // Don't throw - logging failure shouldn't break the main operation
   }
 }

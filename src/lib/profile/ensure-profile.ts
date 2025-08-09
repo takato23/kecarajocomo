@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js';
+import { logger } from '@/services/logger';
 
 import { supabase } from '@/lib/supabase';
 
@@ -41,7 +42,7 @@ export async function ensureUserProfile(user: User) {
       });
 
     if (profileError) {
-      console.error('Error creating profile:', profileError);
+      logger.error('Error creating profile:', 'Lib:ensure-profile', profileError);
       throw profileError;
     }
   }
@@ -98,7 +99,7 @@ export async function ensureUserProfile(user: User) {
       });
 
     if (preferencesError) {
-      console.error('Error creating preferences:', preferencesError);
+      logger.error('Error creating preferences:', 'Lib:ensure-profile', preferencesError);
       throw preferencesError;
     }
   }

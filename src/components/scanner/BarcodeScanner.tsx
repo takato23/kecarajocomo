@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { BrowserMultiFormatReader } from "@zxing/library";
 import { X, Camera, Loader2, AlertCircle } from "lucide-react";
+import { logger } from '@/services/logger';
 
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
@@ -63,13 +64,13 @@ export default function BarcodeScanner({ onScan, onClose, isOpen }: BarcodeScann
           }
           
           if (error && error.name !== 'NotFoundException') {
-            console.error('Barcode scan error:', error);
+            logger.error('Barcode scan error:', 'BarcodeScanner', error);
           }
         }
       );
       
     } catch (err: unknown) {
-      console.error('Camera initialization error:', err);
+      logger.error('Camera initialization error:', 'BarcodeScanner', err);
       setHasPermission(false);
       
       if (err.name === 'NotAllowedError') {

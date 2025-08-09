@@ -3,7 +3,9 @@
  * Diseñado para funcionar en Vercel con Gemini Flash 2.0
  */
 
-import { GoogleGenerativeAI } from '@google/generative-ai';
+import { GoogleGenerativeAI } from '@google/generative-ai'
+import geminiConfig from '@/lib/config/gemini.config';;
+import { logger } from '@/services/logger';
 
 import type { 
   UserPreferences, 
@@ -83,7 +85,7 @@ export class GeminiMealPlannerAPI {
   private model: any;
   
   constructor() {
-    const apiKey = process.env.GOOGLE_AI_API_KEY || process.env.NEXT_PUBLIC_GOOGLE_AI_API_KEY;
+    const apiKey = geminiConfig.getApiKey() || geminiConfig.getApiKey();
     
     if (!apiKey) {
       throw new Error('Google AI API key is required');
@@ -130,7 +132,7 @@ export class GeminiMealPlannerAPI {
       return planResponse;
       
     } catch (error) {
-      console.error('Error generating meal plan:', error);
+      logger.error('Error generating meal plan:', 'geminiMealPlannerAPI', error);
       return {
         success: false,
         error: error instanceof Error ? error.message : 'Failed to generate meal plan'
@@ -183,12 +185,12 @@ RESPONDE SOLO con JSON:
         const cleanJson = text.replace(/```json\n?|```/g, '').trim();
         return JSON.parse(cleanJson);
       } catch {
-        console.error('Failed to parse recipe JSON');
+        logger.error('Failed to parse recipe JSON', 'geminiMealPlannerAPI');
         return null;
       }
       
     } catch (error) {
-      console.error('Error generating recipe:', error);
+      logger.error('Error generating recipe:', 'geminiMealPlannerAPI', error);
       return null;
     }
   }
@@ -268,7 +270,7 @@ RESPONDE SOLO con este JSON:
         weekPlan: parsed
       };
     } catch (error) {
-      console.error('Error parsing Gemini response:', error);
+      logger.error('Error parsing Gemini response:', 'geminiMealPlannerAPI', error);
       return {
         success: false,
         error: 'Failed to parse meal plan response'

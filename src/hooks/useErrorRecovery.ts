@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
+import { logger } from '@/services/logger';
 
 import { 
   ProfileError, 
@@ -130,7 +131,7 @@ export function useErrorRecovery(config: ErrorRecoveryConfig = {}) {
       }
 
     } catch (reportError) {
-      console.error('Failed to handle error properly:', reportError);
+      logger.error('Failed to handle error properly:', 'useErrorRecovery', reportError);
       
       // Fallback error state
       setState({
@@ -220,7 +221,7 @@ export function useErrorRecovery(config: ErrorRecoveryConfig = {}) {
       return true;
 
     } catch (retryError) {
-      console.error('Retry failed:', retryError);
+      logger.error('Retry failed:', 'useErrorRecovery', retryError);
 
       const canRetryAgain = state.recoveryAttempts < maxRetries - 1;
 
@@ -288,7 +289,7 @@ export function useErrorRecovery(config: ErrorRecoveryConfig = {}) {
       clearError();
 
     } catch (actionError) {
-      console.error('Recovery action failed:', actionError);
+      logger.error('Recovery action failed:', 'useErrorRecovery', actionError);
       
       setState(prevState => ({
         ...prevState,

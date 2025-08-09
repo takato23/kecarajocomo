@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
+import { logger } from '@/lib/logger';
 
 import { UnifiedAIService } from '@/services/ai';
 import type { Database } from '@/lib/supabase/types';
@@ -11,7 +12,7 @@ export async function POST(request: NextRequest) {
     
     // Get auth session
     const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
+    if (!user) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
         cuisine: body.cuisinePreference,
         difficulty: body.difficulty,
         servings: body.servings,
-        maxCookTime: body.maxTime,
+        maxCookTime: body.maxTime
       }
     });
 
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
         .from('recipes')
         .insert({
           ...generatedRecipe,
-          user_id: session.user.id,
+          user_id: user.id,
           is_public: false,
           source: 'ai_generated',
         })
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
         .single();
 
       if (recipeError) {
-        console.error('Failed to save recipe:', recipeError);
+        logger.error('Failed to save recipe:', 'API:route', recipeError);
       } else {
         generatedRecipe.id = recipe.id;
       }
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ recipe: generatedRecipe });
   } catch (error: unknown) {
-    console.error('Recipe generation error:', error);
+    logger.error('Recipe generation error:', 'API:route', error);
     return NextResponse.json(
       { error: error.message || 'Failed to generate recipe' },
       { status: 500 }

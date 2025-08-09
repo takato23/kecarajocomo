@@ -74,8 +74,9 @@ export function UserPreferencesModal({ onClose }: UserPreferencesModalProps) {
                 Cancelar
               </iOS26LiquidButton>
               <iOS26LiquidButton
-                variant="solid"
-                leftIcon={<Save className="w-4 h-4" />}
+                variant="primary"
+                icon={<Save className="w-4 h-4" />}
+                iconPosition="left"
                 onClick={handleSave}
                 className="bg-gradient-to-r from-blue-500 to-purple-500"
               >

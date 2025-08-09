@@ -1,7 +1,8 @@
 import { getServerSession } from "next-auth/next";
+import { logger } from '@/lib/logger';
 
-import { authOptions } from "@/lib/auth";
-import { prisma } from "@/lib/prisma";
+// authOptions removed - using Supabase Auth;
+import { db } from '@/lib/supabase/database.service';
 import { 
   validateQuery, 
   validateAuthAndBody,
@@ -15,7 +16,7 @@ import {
 
 export const GET = validateQuery(RecipeQuerySchema, async (request) => {
   try {
-    const session = await getServerSession(authOptions);
+    const user = await getUser();
     const query = request.validatedQuery!;
     
     const skip = (query.page - 1) * query.limit;
@@ -26,7 +27,7 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
         {
           OR: [
             { isPublic: true },
-            ...(session?.user?.id ? [{ authorId: session.user.id }] : [])
+            ...(session?.user?.id ? [{ authorId: user.id }] : [])
           ]
         },
         ...(query.search ? [{
@@ -50,16 +51,9 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
       prisma.recipe.findMany({
         where,
         include: {
-          author: {
-            select: {
-              name: true,
-              image: true
-            }
-          },
+          // includes handled by Supabase service
           ingredients: {
-            include: {
-              ingredient: true
-            }
+            // includes handled by Supabase service
           },
           nutritionInfo: true,
           _count: {
@@ -84,7 +78,7 @@ export const GET = validateQuery(RecipeQuerySchema, async (request) => {
       total
     });
   } catch (error: unknown) {
-    console.error("Error fetching recipes:", error);
+    logger.error("Error fetching recipes:", 'API:route', error);
     throw new Error("Failed to fetch recipes");
   }
 });
@@ -126,70 +120,62 @@ export const POST = validateAuthAndBody(RecipeCreateSchema, async (request) => {
       notes: inst.notes || null
     }));
 
-    // Create the recipe with transaction
-    const recipe = await prisma.$transaction(async (tx) => {
-      const newRecipe = await tx.recipe.create({
-        data: {
-          title: data.title,
-          description: data.description || null,
-          prepTimeMinutes: data.prepTimeMinutes,
-          cookTimeMinutes: data.cookTimeMinutes,
-          servings: data.servings,
-          difficulty: data.difficulty,
-          cuisine: data.cuisine || null,
-          tags: data.tags,
-          imageUrl: data.imageUrl || null,
-          isPublic: data.isPublic,
-          source: "user",
-          authorId: userId,
-          ingredients: {
-            create: ingredientData
-          },
-          instructions: {
-            create: instructionData
-          },
-          ...(data.nutrition ? {
-            nutritionInfo: {
-              create: {
-                calories: data.nutrition.calories,
-                protein: data.nutrition.protein,
-                carbs: data.nutrition.carbs,
-                fat: data.nutrition.fat,
-                fiber: data.nutrition.fiber || null,
-                sugar: data.nutrition.sugar || null,
-                sodium: data.nutrition.sodium || null,
-                cholesterol: data.nutrition.cholesterol || null
-              }
-            }
-          } : {})
+    // Create the recipe
+    const recipe = await prisma.recipe.create({
+      data: {
+        title: data.title,
+        description: data.description || null,
+        prepTimeMinutes: data.prepTimeMinutes,
+        cookTimeMinutes: data.cookTimeMinutes,
+        servings: data.servings,
+        difficulty: data.difficulty,
+        cuisine: data.cuisine || null,
+        tags: data.tags,
+        imageUrl: data.imageUrl || null,
+        isPublic: data.isPublic,
+        source: "user",
+        authorId: userId,
+        ingredients: {
+          create: ingredientData
         },
-        include: {
-          ingredients: {
-            include: {
-              ingredient: true
-            }
-          },
-          instructions: {
-            orderBy: {
-              stepNumber: 'asc'
-            }
-          },
-          nutritionInfo: true,
-          author: {
-            select: {
-              name: true,
-              image: true
+        instructions: {
+          create: instructionData
+        },
+        ...(data.nutrition ? {
+          nutritionInfo: {
+            create: {
+              calories: data.nutrition.calories,
+              protein: data.nutrition.protein,
+              carbs: data.nutrition.carbs,
+              fat: data.nutrition.fat,
+              fiber: data.nutrition.fiber || null,
+              sugar: data.nutrition.sugar || null,
+              sodium: data.nutrition.sodium || null,
+              cholesterol: data.nutrition.cholesterol || null
             }
           }
+        } : {})
+      },
+      include: {
+        ingredients: true,
+        instructions: {
+          orderBy: {
+            stepNumber: 'asc'
+          }
+        },
+        nutritionInfo: true,
+        author: {
+          select: {
+            name: true,
+            image: true
+          }
         }
-      });
-
-      return newRecipe;
+      }
     });
 
     return createSuccessResponse(recipe, 201);
   } catch (error: unknown) {
-    console.error("Error creating recipe:", error);
+    logger.error("Error creating recipe:", 'API:route', error);
     throw new Error("Failed to create recipe");
   }
 });

@@ -1,3 +1,5 @@
+import { logger } from '@/services/logger';
+
 /**
  * @fileoverview AI-Powered Profile Recommendation Engine
  * @module services/profile/ProfileRecommendationEngine
@@ -158,7 +160,7 @@ export class ProfileRecommendationEngine {
       // Sort by priority and confidence
       return this.prioritizeRecommendations(recommendations);
     } catch (error) {
-      console.error('Error generating recommendations:', error);
+      logger.error('Error generating recommendations:', 'ProfileRecommendationEngine', error);
       return [];
     }
   }

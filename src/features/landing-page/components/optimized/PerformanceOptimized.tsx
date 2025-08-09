@@ -1,4 +1,5 @@
 import React, { lazy, Suspense, memo, useMemo, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { cn } from '@/lib/utils';
 
@@ -248,7 +249,7 @@ export const usePerformanceMonitor = () => {
         
         return () => observer.disconnect();
       } catch (error: unknown) {
-        console.warn('Performance monitoring not available:', error);
+        logger.warn('Performance monitoring not available:', 'PerformanceOptimized', error);
       }
     }
   }, []);

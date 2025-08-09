@@ -3,6 +3,7 @@
 import React, { useState, useCallback } from 'react';
 import { Camera, Upload, Mic, X, Check, AlertCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { logger } from '@/services/logger';
 
 import { useHolisticSystem } from '@/hooks/useHolisticSystem';
 import { cn } from '@/lib/utils';
@@ -47,7 +48,7 @@ export function SmartScanner() {
     
     // Check if user is authenticated
     if (!user) {
-      console.error('Usuario no autenticado');
+      logger.error('Usuario no autenticado', 'SmartScanner');
       // Could show an error message or redirect to login
       return;
     }
@@ -76,7 +77,7 @@ export function SmartScanner() {
       }
       
     } catch (error: unknown) {
-      console.error('Error en escaneo:', error);
+      logger.error('Error en escaneo:', 'SmartScanner', error);
       // Fallback a mock para testing
       setScanResult({
         items: [

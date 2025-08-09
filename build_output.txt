@@ -1,0 +1,131 @@
+
+> kecarajocomer@0.1.0 build
+> next build
+
+  ▲ Next.js 15.0.0
+  - Environments: .env.production.local, .env.local, .env
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully
+   Skipping validation of types
+   Skipping linting
+   Collecting page data ...
+   Generating static pages (0/79) ...
+   Generating static pages (19/79) 
+   Generating static pages (39/79) 
+   Generating static pages (59/79) 
+ ✓ Generating static pages (79/79)
+   Finalizing page optimization ...
+   Collecting build traces ...
+ ⚠ Failed to copy traced files for /Users/santiagobalosky/kecarajocomer/.next/server/app/(app)/page.js Error: ENOENT: no such file or directory, copyfile '/Users/santiagobalosky/kecarajocomer/.next/server/app/(app)/page_client-reference-manifest.js' -> '/Users/santiagobalosky/kecarajocomer/.next/standalone/.next/server/app/(app)/page_client-reference-manifest.js'
+    at async Object.copyFile (node:internal/fs/promises:616:10)
+    at async /Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/utils.js:1408:21
+    at async Promise.all (index 29)
+    at async handleTraceFiles (/Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/utils.js:1389:9)
+    at async copyTracedFiles (/Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/utils.js:1463:13)
+    at async /Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/index.js:240:9
+    at async Span.traceAsyncFn (/Users/santiagobalosky/kecarajocomer/node_modules/next/dist/trace/trace.js:157:20)
+    at async writeStandaloneDirectory (/Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/index.js:239:5)
+    at async /Users/santiagobalosky/kecarajocomer/node_modules/next/dist/build/index.js:2378:17
+    at async Span.traceAsyncFn (/Users/santiagobalosky/kecarajocomer/node_modules/next/dist/trace/trace.js:157:20) {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'copyfile',
+  path: '/Users/santiagobalosky/kecarajocomer/.next/server/app/(app)/page_client-reference-manifest.js',
+  dest: '/Users/santiagobalosky/kecarajocomer/.next/standalone/.next/server/app/(app)/page_client-reference-manifest.js'
+}
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    14 kB           242 kB
+├ ○ /_not-found                          905 B           100 kB
+├ ƒ /api/ai/generate-recipe              215 B           121 kB
+├ ƒ /api/ai/meal-plan                    215 B           121 kB
+├ ƒ /api/ai/recipes/generate             256 B          99.8 kB
+├ ƒ /api/ai/recipes/personalized         256 B          99.8 kB
+├ ƒ /api/ai/recipes/suggest-pantry       255 B          99.8 kB
+├ ƒ /api/ai/suggest-from-pantry          215 B           121 kB
+├ ƒ /api/check-recipes                   256 B          99.8 kB
+├ ƒ /api/health                          255 B          99.8 kB
+├ ƒ /api/meal-planner/generate           256 B          99.8 kB
+├ ƒ /api/meal-planning/generate          256 B          99.8 kB
+├ ƒ /api/meal-planning/optimize-daily    255 B          99.8 kB
+├ ƒ /api/meal-planning/regenerate        256 B          99.8 kB
+├ ƒ /api/pantry                          256 B          99.8 kB
+├ ƒ /api/pantry/analysis                 257 B          99.8 kB
+├ ƒ /api/pantry/availability             255 B          99.8 kB
+├ ƒ /api/pantry/consume                  256 B          99.8 kB
+├ ƒ /api/pantry/expiration-alerts        257 B          99.8 kB
+├ ƒ /api/pantry/expiration-alerts/[id]   256 B          99.8 kB
+├ ƒ /api/pantry/items                    256 B          99.8 kB
+├ ƒ /api/pantry/items/[id]               255 B          99.8 kB
+├ ƒ /api/pantry/items/batch              255 B          99.8 kB
+├ ƒ /api/pantry/locations                255 B          99.8 kB
+├ ƒ /api/pantry/locations/[id]           255 B          99.8 kB
+├ ƒ /api/pantry/stats                    255 B          99.8 kB
+├ ƒ /api/parse-voice-command             255 B          99.8 kB
+├ ƒ /api/profile/avatar                  256 B          99.8 kB
+├ ƒ /api/profile/complete                256 B          99.8 kB
+├ ƒ /api/profile/household               257 B          99.8 kB
+├ ƒ /api/recipes                         257 B          99.8 kB
+├ ƒ /api/recipes/[id]                    256 B          99.8 kB
+├ ƒ /api/recipes/full                    256 B          99.8 kB
+├ ƒ /api/recipes/generate                215 B           121 kB
+├ ƒ /api/recipes/import                  1.02 kB         114 kB
+├ ƒ /api/robots                          256 B          99.8 kB
+├ ○ /api/sitemap                         0 B                0 B
+├ ƒ /api/test-schema                     256 B          99.8 kB
+├ ƒ /api/user/preferences                257 B          99.8 kB
+├ ƒ /api/user/profile                    256 B          99.8 kB
+├ ○ /app                                 276 B           207 kB
+├ ○ /buscar                              255 B          99.8 kB
+├ ○ /dashboard                           277 B           207 kB
+├ ○ /despensa                            10.5 kB         232 kB
+├ ○ /despensa/add                        531 B           100 kB
+├ ○ /despensa/agregar                    255 B          99.8 kB
+├ ○ /despensa/alertas                    256 B          99.8 kB
+├ ○ /despensa/escanear                   3.54 kB         103 kB
+├ ○ /forgot-password                     2.26 kB         187 kB
+├ ○ /lista-compras                       8.57 kB         248 kB
+├ ○ /login                               3.28 kB         206 kB
+├ ○ /meal-planning                       34.5 kB         258 kB
+├ ○ /notifications                       2.12 kB         110 kB
+├ ○ /offline                             865 B           100 kB
+├ ○ /onboarding                          3.54 kB         197 kB
+├ ○ /pantry                              19 kB           247 kB
+├ ○ /pantry/add                          19.9 kB         200 kB
+├ ○ /pantry/scan                         4.45 kB         216 kB
+├ ○ /pantry/voice                        538 B           100 kB
+├ ○ /pantry/voice-demo                   1.65 kB         169 kB
+├ ○ /perfil                              33.6 kB         235 kB
+├ ○ /planificador                        517 B           100 kB
+├ ○ /prices                              2.3 kB          183 kB
+├ ○ /profile                             38.2 kB         273 kB
+├ ○ /recetas                             88.1 kB         335 kB
+├ ○ /recetas/favoritas                   1.43 kB         139 kB
+├ ○ /recetas/favorites                   255 B          99.8 kB
+├ ○ /recetas/generar                     1.51 kB         139 kB
+├ ○ /recetas/generate                    255 B          99.8 kB
+├ ○ /recetas/import                      256 B          99.8 kB
+├ ○ /recetas/mis-recetas                 255 B          99.8 kB
+├ ○ /recetas/nueva                       255 B          99.8 kB
+├ ƒ /recipes/[id]                        5.33 kB         114 kB
+├ ○ /recipes/generate                    6.61 kB         183 kB
+├ ○ /recipes/new                         6.15 kB         183 kB
+├ ○ /scanner                             534 B           100 kB
+├ ○ /search                              4.57 kB         153 kB
+├ ○ /settings                            2.13 kB         110 kB
+├ ○ /showcase                            13.1 kB         203 kB
+├ ○ /signup                              4.04 kB         189 kB
+├ ○ /test-nav                            255 B          99.8 kB
+└ ○ /test-recetas                        726 B           100 kB
++ First Load JS shared by all            99.6 kB
+  ├ chunks/4bd1b696-b8f71cd26f628d43.js  52.6 kB
+  ├ chunks/6215-fbcaf1a5bcb50c30.js      44.7 kB
+  └ other shared chunks (total)          2.27 kB
+
+
+ƒ Middleware                             31.9 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

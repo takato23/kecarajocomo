@@ -4,6 +4,7 @@
  */
 
 import { useEffect, useState, useCallback, useMemo } from 'react';
+import { logger } from '@/services/logger';
 
 import { getAnalyticsService } from '../AnalyticsService';
 import type {
@@ -52,7 +53,7 @@ export function useAnalytics(config?: Partial<AnalyticsServiceConfig>): UseAnaly
           }
         }
       } catch (error: unknown) {
-        console.error('Failed to initialize analytics:', error);
+        logger.error('Failed to initialize analytics:', 'useAnalytics', error);
       }
     };
 
@@ -377,7 +378,7 @@ export function usePerformanceTracking() {
         });
       }
     } catch (error: unknown) {
-      console.warn('Failed to setup performance tracking:', error);
+      logger.warn('Failed to setup performance tracking:', 'useAnalytics', error);
     }
   }, [trackPerformance]);
 

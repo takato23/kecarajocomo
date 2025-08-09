@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { logger } from '@/services/logger';
 
 import { supabase } from '@/lib/supabase/client';
 import { useUser } from '@/store';
@@ -390,7 +391,7 @@ export function useDashboardData() {
       setRetryCount(0); // Reset retry count on success
 
     } catch (err: unknown) {
-      console.error('Error fetching dashboard data:', err);
+      logger.error('Error fetching dashboard data:', 'useDashboardData', err);
       
       const dashboardError: DashboardError = {
         message: err.message || 'Failed to load dashboard data',

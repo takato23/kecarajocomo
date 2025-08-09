@@ -1,4 +1,5 @@
 import { OfflineQueue } from '@/lib/offline/OfflineQueue';
+import { logger } from '@/services/logger';
 
 export type SaveState = 'idle' | 'saving' | 'saved' | 'error' | 'offline' | 'conflict';
 
@@ -195,7 +196,7 @@ export class AutoSaveManager<T> {
    * Handle save error with retry logic
    */
   private async handleSaveError(saveData: PendingSave<T>, error: unknown): Promise<void> {
-    console.error('Error en auto-save:', error);
+    logger.error('Error en auto-save:', 'AutoSaveManager', error);
     
     // Check if we should retry
     if (saveData.retryCount < this.config.maxRetries) {
@@ -218,7 +219,7 @@ export class AutoSaveManager<T> {
           
           this.stateCallback?.('offline');
         } catch (queueError) {
-          console.error('Error enqueueing failed save:', queueError);
+          logger.error('Error enqueueing failed save:', 'AutoSaveManager', queueError);
           this.stateCallback?.('error');
         }
       } else {
@@ -275,7 +276,7 @@ export class AutoSaveManager<T> {
           }
         }
       } catch (error) {
-        console.error('Error checking for conflicts:', error);
+        logger.error('Error checking for conflicts:', 'AutoSaveManager', error);
         // Continue with save anyway
       }
     }
@@ -307,7 +308,7 @@ export class AutoSaveManager<T> {
       
       localStorage.setItem(backupKey, JSON.stringify(backupData));
     } catch (error) {
-      console.error('Error creating backup:', error);
+      logger.error('Error creating backup:', 'AutoSaveManager', error);
     }
   }
 
@@ -331,7 +332,7 @@ export class AutoSaveManager<T> {
         }
       }
     } catch (error) {
-      console.error('Error loading backup:', error);
+      logger.error('Error loading backup:', 'AutoSaveManager', error);
     }
     
     return null;
@@ -347,7 +348,7 @@ export class AutoSaveManager<T> {
       const backupKey = `${this.config.storageKeyPrefix || 'autosave'}_${this.storageKey}_backup`;
       localStorage.removeItem(backupKey);
     } catch (error) {
-      console.error('Error clearing backup:', error);
+      logger.error('Error clearing backup:', 'AutoSaveManager', error);
     }
   }
 
@@ -389,7 +390,7 @@ export class AutoSaveManager<T> {
           this.stateCallback?.('saved');
         }
       } catch (error) {
-        console.error('Error processing offline queue:', error);
+        logger.error('Error processing offline queue:', 'AutoSaveManager', error);
         this.stateCallback?.('error');
       }
     }
