@@ -1,12 +1,10 @@
 'use client';
 
-import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { useAppStore } from '@/store';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const user = useAppStore((state) => state.user.profile);
-  const isAuthenticated = useAppStore((state) => state.user.isAuthenticated);
+  // Access minimal state to avoid unused vars
   const isLoading = useAppStore((state) => state.user.isLoading);
   const pathname = usePathname();
   

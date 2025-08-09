@@ -6,11 +6,7 @@
 import type {
   UserProfile,
   UserPreferences,
-  DietaryRestriction,
-  Allergy,
-  HouseholdMember,
-  TasteProfile,
-  NutritionalGoals
+  DietaryRestriction
 } from './index';
 
 // ============================================================================

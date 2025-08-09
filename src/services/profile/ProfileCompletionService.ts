@@ -1,5 +1,4 @@
 import type { UserProfile, UserPreferences, HouseholdMember } from '@/types/profile';
-import { supabase } from '@/lib/supabase';
 import { logger } from '@/services/logger';
 
 // Achievement types

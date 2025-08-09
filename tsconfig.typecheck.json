@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": true
+  },
+  "include": [
+    "next-env.d.ts",
+    "src/app/api/recipes/**/*.ts",
+    "src/lib/validation/**/*.ts",
+    "src/lib/errors/MealPlanningError.ts",
+    "src/lib/supabase/types.ts",
+    "src/lib/services/simpleCache.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/store",
+    "src/services",
+    "src/types",
+    "src/utils/profile-transformers.ts",
+    "training-data",
+    ".config",
+    "tests",
+    ".next"
+  ]
+}

@@ -5,7 +5,6 @@ import { toast } from 'sonner';
 
 import { 
   ProfileError, 
-  ProfileErrorHandler, 
   ProfileErrorCode,
   profileErrorHandler,
   UserProfileError,
