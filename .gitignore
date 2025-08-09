@@ -64,7 +64,19 @@ training_data_expanded/
 
 # Cache directories
 .cache/
+.jest-cache/
+
+# Local agent and runtime artifacts
+.localagent/
+*.pid
+*.log
+watcher.log
+localagent.log
 
 # Test results
 test-results/
 playwright-report/
+
+# Analysis artifacts
+package.json.analysis
+tsconfig.tsbuildinfo.analysis
