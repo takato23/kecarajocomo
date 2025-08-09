@@ -36,5 +36,14 @@
         "newlines-between": "always"
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["**/__tests__/**/*", "**/*.test.ts", "**/*.test.tsx"],
+      "rules": {
+        "@typescript-eslint/no-var-requires": "off",
+        "unused-imports/no-unused-imports": "warn"
+      }
+    }
+  ]
 }

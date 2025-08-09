@@ -1,9 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+// Prisma client is disabled during Supabase-only stabilization phase to avoid accidental usage.
+// Keeping a minimal stub to avoid import errors in legacy files. Do not use.
 
-declare global {
-  var prisma: PrismaClient | undefined
-}
-
-export const prisma = global.prisma || new PrismaClient()
-
-if (process.env.NODE_ENV !== 'production') global.prisma = prisma
+export const prisma = undefined as unknown as never;

@@ -5,10 +5,11 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
-import { getServerSession } from 'next-auth/next';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 
-import { authOptions } from '@/lib/auth';
-import { MealPlanningError, MealPlanningErrorCodes } from '@/lib/errors/MealPlanningError';
+import { MealPlanningError } from '@/lib/errors/MealPlanningError';
+import type { Database } from '@/lib/supabase/types';
 
 import { validateData, validateQueryParams, ApiResponse } from './schemas';
 
@@ -16,7 +17,7 @@ import { validateData, validateQueryParams, ApiResponse } from './schemas';
 // TYPES
 // =============================================================================
 
-export type ValidatedRequest<TBody = any, TQuery = any> = NextRequest & {
+export type ValidatedRequest<TBody = unknown, TQuery = unknown> = NextRequest & {
   json: () => Promise<TBody>;
   validatedBody?: TBody;
   validatedQuery?: TQuery;
@@ -27,7 +28,7 @@ export type ValidatedRequest<TBody = any, TQuery = any> = NextRequest & {
   };
 };
 
-export type ApiHandler<TBody = any, TQuery = any> = (
+export type ApiHandler<TBody = unknown, TQuery = unknown> = (
   request: ValidatedRequest<TBody, TQuery>,
   context: { params?: any }
 ) => Promise<NextResponse>;
@@ -60,19 +61,21 @@ export function withValidation<TBody = any, TQuery = any>(
 
       // Authentication check
       if (options.requireAuth) {
-        const session = await getServerSession(authOptions);
-        if (!session?.user?.id) {
+        const supabase = createRouteHandlerClient<Database>({ cookies });
+
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user?.id) {
           return createErrorResponse(
             'Authentication required',
             401,
-            MealPlanningErrorCodes.AUTHENTICATION_REQUIRED
+            undefined
           );
         }
-        
+
         validatedRequest.user = {
-          id: session.user.id,
-          email: session.user.email!,
-          name: session.user.name || undefined,
+          id: user.id,
+          email: user.email ?? '',
+          name: user.user_metadata?.name ?? undefined,
         };
       }
 
@@ -80,16 +83,16 @@ export function withValidation<TBody = any, TQuery = any>(
       if (options.query) {
         const { searchParams } = new URL(request.url);
         const queryResult = validateQueryParams(options.query, searchParams);
-        
+
         if (!queryResult.success) {
           return createErrorResponse(
             'Invalid query parameters',
             400,
-            MealPlanningErrorCodes.VALIDATION_FAILED,
+            undefined,
             queryResult.error
           );
         }
-        
+
         validatedRequest.validatedQuery = queryResult.data;
       }
 
@@ -98,22 +101,22 @@ export function withValidation<TBody = any, TQuery = any>(
         try {
           const body = await request.json();
           const bodyResult = validateData(options.body, body);
-          
+
           if (!bodyResult.success) {
             return createErrorResponse(
               'Invalid request body',
               400,
-              MealPlanningErrorCodes.VALIDATION_FAILED,
+              undefined,
               bodyResult.error
             );
           }
-          
-          validatedRequest.validatedBody = bodyResult.data;
+
+          validatedRequest.validatedBody = bodyResult.data as TBody;
         } catch (error: unknown) {
           return createErrorResponse(
             'Invalid JSON in request body',
             400,
-            MealPlanningErrorCodes.VALIDATION_FAILED
+            undefined
           );
         }
       }
@@ -125,12 +128,12 @@ export function withValidation<TBody = any, TQuery = any>(
           options.rateLimit.requests,
           options.rateLimit.window
         );
-        
+
         if (!rateLimitResult.allowed) {
           return createErrorResponse(
             'Rate limit exceeded',
             429,
-            MealPlanningErrorCodes.RATE_LIMIT_EXCEEDED,
+            undefined,
             {
               retryAfter: rateLimitResult.retryAfter,
               limit: options.rateLimit.requests,
@@ -145,20 +148,20 @@ export function withValidation<TBody = any, TQuery = any>(
 
     } catch (error: unknown) {
       console.error('API Error:', error);
-      
+
       if (error instanceof MealPlanningError) {
         return createErrorResponse(
           error.userMessage || error.message,
-          error.statusCode || 500,
-          error.code,
+          500,
+          undefined,
           error.context
         );
       }
-      
+
       return createErrorResponse(
         'Internal server error',
         500,
-        MealPlanningErrorCodes.INTERNAL_ERROR
+        undefined
       );
     }
   };
@@ -233,58 +236,68 @@ export async function validateOwnership(
   if (!request.user) {
     throw new MealPlanningError(
       'Authentication required',
-      MealPlanningErrorCodes.AUTHENTICATION_REQUIRED,
+      'AUTHENTICATION_REQUIRED',
       {},
       'You must be logged in to perform this action'
     );
   }
 
   try {
-    const { prisma } = await import('@/lib/prisma');
-    
-    let resource;
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    let ownerId: string | null = null;
+
     switch (resourceType) {
-      case 'recipe':
-        resource = await prisma.recipe.findUnique({
-          where: { id: resourceId },
-          select: { userId: true }
-        });
+      case 'recipe': {
+        const { data } = await supabase
+          .from('recipes')
+          .select('created_by')
+          .eq('id', resourceId)
+          .single();
+        ownerId = data?.created_by ?? null;
         break;
-      case 'meal-plan':
-        resource = await prisma.mealPlan.findUnique({
-          where: { id: resourceId },
-          select: { userId: true }
-        });
+      }
+      case 'meal-plan': {
+        const { data } = await supabase
+          .from('meal_plans')
+          .select('user_id')
+          .eq('id', resourceId)
+          .single();
+        ownerId = (data as any)?.user_id ?? null;
         break;
-      case 'pantry-item':
-        resource = await prisma.pantryItem.findUnique({
-          where: { id: resourceId },
-          select: { userId: true }
-        });
+      }
+      case 'pantry-item': {
+        const { data } = await supabase
+          .from('pantry_items')
+          .select('user_id')
+          .eq('id', resourceId)
+          .single();
+        ownerId = (data as any)?.user_id ?? null;
         break;
+      }
       default:
         throw new Error(`Unknown resource type: ${resourceType}`);
     }
 
-    if (!resource) {
+    if (!ownerId) {
       throw new MealPlanningError(
         'Resource not found',
-        MealPlanningErrorCodes.NOT_FOUND,
+        'NOT_FOUND',
         { resourceId, resourceType },
         'The requested resource does not exist'
       );
     }
 
-    return resource.userId === request.user.id;
-  } catch (error: unknown) {
+    return ownerId === request.user.id;
+  } catch (error: any) {
     if (error instanceof MealPlanningError) {
       throw error;
     }
-    
+
     throw new MealPlanningError(
       'Failed to validate ownership',
-      MealPlanningErrorCodes.DATABASE_ERROR,
-      { resourceId, resourceType, error: error.message }
+      'DATABASE_ERROR',
+      { resourceId, resourceType, error: error?.message }
     );
   }
 }
@@ -305,7 +318,7 @@ export function requireOwnership(
         return createErrorResponse(
           'Access denied',
           403,
-          MealPlanningErrorCodes.FORBIDDEN,
+          undefined,
           { resourceId, resourceType }
         );
       }
@@ -353,9 +366,8 @@ async function checkRateLimit(
 }
 
 function getClientIdentifier(request: NextRequest): string {
-  // In production, you might want to use a combination of IP and user ID
   const forwarded = request.headers.get('x-forwarded-for');
-  const ip = forwarded ? forwarded.split(',')[0] : request.ip || 'unknown';
+  const ip = forwarded ? forwarded.split(',')[0] : 'unknown';
   return ip;
 }
 
@@ -483,7 +495,7 @@ export function validate<T>(schema: z.ZodSchema<T>) {
       if (!result.success) {
         throw new MealPlanningError(
           'Validation failed',
-          MealPlanningErrorCodes.VALIDATION_FAILED,
+          'VALIDATION_FAILED',
           result.error
         );
       }
@@ -506,7 +518,7 @@ export function rateLimit(requests: number, windowSeconds: number) {
       if (!rateLimitResult.allowed) {
         throw new MealPlanningError(
           'Rate limit exceeded',
-          MealPlanningErrorCodes.RATE_LIMIT_EXCEEDED,
+          'RATE_LIMIT_EXCEEDED',
           { retryAfter: rateLimitResult.retryAfter }
         );
       }

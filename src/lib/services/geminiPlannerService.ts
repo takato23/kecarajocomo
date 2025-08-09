@@ -10,7 +10,7 @@ import {
   PlanningConstraints, 
   WeeklyPlan 
 } from '../types/mealPlanning';
-import { prisma } from '../prisma';
+// removed prisma reliance
 
 import { 
   GeminiPlannerPrompts, 
@@ -66,7 +66,7 @@ export class GeminiPlannerService {
       model: 'gemini-2.0-flash-exp', // Usando Flash 2.0 para optimizar costos
       generationConfig: {
         temperature: 0.4, // Balanceado para creatividad y precisión
-        maxOutputTokens: 4096, // Suficiente para respuestas completas
+        maxOutputTokens: 4096,
         topP: 0.8,
         topK: 40,
       }
@@ -400,23 +400,19 @@ export class GeminiPlannerService {
    */
   private async getUserPantryItems(userId: string) {
     try {
-      return await prisma.pantryItem.findMany({
-        where: { userId },
-        include: { ingredient: true }
-      });
+      // Placeholder until Supabase integration is added
+      return [] as any[];
     } catch {
-      return [];
+      return [] as any[];
     }
   }
 
   private async getUserFavoriteRecipes(userId: string) {
     try {
-      return await prisma.favoriteRecipe.findMany({
-        where: { userId },
-        include: { recipe: { include: { ingredients: { include: { ingredient: true } } } } }
-      });
+      // Placeholder until Supabase integration is added
+      return [] as any[];
     } catch {
-      return [];
+      return [] as any[];
     }
   }
 

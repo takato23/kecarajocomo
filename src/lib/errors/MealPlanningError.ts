@@ -106,7 +106,7 @@ export const MealPlanningErrorCodes = {
   RATE_LIMIT_EXCEEDED: 'RATE_LIMIT_EXCEEDED',
 } as const;
 
-export type MealPlanningErrorCode = typeof MealPlanningErrorCodes[keyof typeof MealPlanningErrorCodes];
+export type MealPlanningErrorCode = string;
 
 /**
  * User-friendly error interface for frontend display

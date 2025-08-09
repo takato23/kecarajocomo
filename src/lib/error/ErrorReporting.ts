@@ -3,7 +3,7 @@
  * Provides structured error logging, metrics collection, and monitoring integration
  */
 
-import { ProfileError, ProfileErrorCode } from '@/services/error/ProfileErrorHandler';
+import { ProfileError } from '@/services/error/ProfileErrorHandler';
 
 /**
  * Error report interface

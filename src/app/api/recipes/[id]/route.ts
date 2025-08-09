@@ -1,72 +1,72 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
+import { cookies } from 'next/headers';
+import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
+import type { Database } from '@/lib/supabase/types';
 
-import { authOptions } from '@/lib/auth';
-import { prisma } from '@/lib/prisma';
-import { 
-  MealPlanningError 
-} from '@/lib/errors/MealPlanningError';
-import { enhancedCache, CacheKeyGenerator } from '@/lib/services/enhancedCacheService';
+import { simpleCache, SimpleCacheKey } from '@/lib/services/simpleCache';
+
+type MinimalRecipe = { is_public: boolean; created_by: string };
 
 export async function GET(
   request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnon) {
+      return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    const { data: { user } } = await supabase.auth.getUser();
 
     // Check cache first
-    const cacheKey = CacheKeyGenerator.recipe(params.id);
-    const cached = await enhancedCache.get(cacheKey);
+    const cacheKey = SimpleCacheKey.recipe(params.id);
+    const cached = await simpleCache.get<MinimalRecipe & Record<string, unknown>>(cacheKey);
     
     if (cached) {
-      return NextResponse.json(cached);
+      // For access control, ensure either public or owner when user authenticated; otherwise return public cached only
+      if (cached.is_public || (user?.id && cached.created_by === user.id)) {
+        return NextResponse.json(cached);
+      }
     }
 
-    // Fetch recipe with ingredients and instructions
-    const recipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      include: {
-        ingredients: {
-          include: {
-            ingredient: true
-          }
-        },
-        instructions: {
-          orderBy: {
-            stepNumber: 'asc'
-          }
-        }
-      }
-    });
+    const { data: recipeRaw, error } = await supabase
+      .from('recipes')
+      .select('*')
+      .eq('id', params.id)
+      .single();
 
-    if (!recipe) {
+    if (error) {
+      if (error.code === 'PGRST116') {
+        return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
+      }
+      throw new Error(error.message);
+    }
+
+    if (!recipeRaw) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
+    const recipe = recipeRaw as MinimalRecipe & Record<string, unknown>;
+
     // Check access permissions
-    if (!recipe.isPublic && recipe.userId !== session.user.id) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    if (!recipe.is_public) {
+      if (!user?.id) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+      }
+      if (recipe.created_by !== user.id) {
+        return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+      }
     }
 
     // Cache the result
-    await enhancedCache.set(cacheKey, recipe, 1000 * 60 * 60 * 2); // 2 hours
+    await simpleCache.set(cacheKey, recipeRaw, 1000 * 60 * 60 * 2); // 2 hours
 
-    return NextResponse.json(recipe);
-  } catch (error: unknown) {
+    return NextResponse.json(recipeRaw);
+  } catch (error: any) {
     console.error('Error fetching recipe:', error);
-    
-    if (error instanceof MealPlanningError) {
-      return NextResponse.json(
-        { error: error.userMessage || error.message },
-        { status: 400 }
-      );
-    }
-    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -79,126 +79,68 @@ export async function PUT(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnon) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     // Check ownership
-    const existingRecipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      select: { userId: true }
-    });
+    const { data: existingRecipe, error: fetchErr } = await supabase
+      .from('recipes')
+      .select('created_by')
+      .eq('id', params.id)
+      .single();
 
-    if (!existingRecipe) {
+    if (fetchErr || !existingRecipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
-    if (existingRecipe.userId !== session.user.id) {
+    if (existingRecipe.created_by !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
     const body = await request.json();
-    
-    // Update recipe with transaction
-    const updatedRecipe = await prisma.$transaction(async (tx) => {
-      // Update recipe
-      const recipe = await tx.recipe.update({
-        where: { id: params.id },
-        data: {
-          title: body.title,
-          description: body.description,
-          prepTimeMinutes: body.prepTimeMinutes,
-          cookTimeMinutes: body.cookTimeMinutes,
-          servings: body.servings,
-          difficulty: body.difficulty,
-          imageUrl: body.imageUrl,
-          isPublic: body.isPublic,
-          updatedAt: new Date()
-        }
-      });
 
-      // Update ingredients if provided
-      if (body.ingredients) {
-        // Delete existing ingredients
-        await tx.recipeIngredient.deleteMany({
-          where: { recipeId: params.id }
-        });
+    const update = {
+      name: body.title,
+      description: body.description ?? null,
+      prep_time: body.prepTimeMinutes,
+      cook_time: body.cookTimeMinutes,
+      total_time: (body.prepTimeMinutes ?? 0) + (body.cookTimeMinutes ?? 0),
+      servings: body.servings,
+      difficulty: body.difficulty,
+      image_url: body.imageUrl ?? null,
+      is_public: typeof body.isPublic === 'boolean' ? body.isPublic : undefined,
+      ingredients: Array.isArray(body.ingredients) ? body.ingredients : undefined,
+      instructions: Array.isArray(body.instructions) ? body.instructions : undefined,
+      cuisine_types: body.cuisine ? [body.cuisine] : undefined,
+      tags: Array.isArray(body.tags) ? body.tags : undefined,
+      updated_at: new Date().toISOString(),
+    } as const;
 
-        // Insert new ingredients
-        if (body.ingredients.length > 0) {
-          const ingredientData = await Promise.all(
-            body.ingredients.map(async (ing: any) => {
-              // Find or create ingredient
-              const ingredient = await tx.ingredient.upsert({
-                where: { name: ing.name },
-                update: {},
-                create: { 
-                  name: ing.name,
-                  category: 'other'
-                }
-              });
+    const { data: updatedRecipe, error: updateErr } = await supabase
+      .from('recipes')
+      .update(update)
+      .eq('id', params.id)
+      .select('*')
+      .single();
 
-              return {
-                recipeId: params.id,
-                ingredientId: ingredient.id,
-                quantity: ing.quantity,
-                unit: ing.unit,
-                preparation: ing.preparation,
-                notes: ing.notes,
-                optional: ing.optional
-              };
-            })
-          );
+    if (updateErr) {
+      throw new Error(updateErr.message);
+    }
 
-          await tx.recipeIngredient.createMany({
-            data: ingredientData
-          });
-        }
-      }
-
-      // Update instructions if provided
-      if (body.instructions) {
-        // Delete existing instructions
-        await tx.recipeInstruction.deleteMany({
-          where: { recipeId: params.id }
-        });
-
-        // Insert new instructions
-        if (body.instructions.length > 0) {
-          const instructionData = body.instructions.map((inst: any) => ({
-            recipeId: params.id,
-            stepNumber: inst.stepNumber,
-            instruction: inst.instruction,
-            duration: inst.duration,
-            temperature: inst.temperature,
-            notes: inst.notes
-          }));
-
-          await tx.recipeInstruction.createMany({
-            data: instructionData
-          });
-        }
-      }
-
-      return recipe;
-    });
-
-    // Invalidate cache
-    await enhancedCache.invalidatePattern(`recipe:${params.id}:*`);
+    await simpleCache.invalidatePattern(`recipe:${params.id}:*`);
 
     return NextResponse.json(updatedRecipe);
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('Error updating recipe:', error);
-    
-    if (error instanceof MealPlanningError) {
-      return NextResponse.json(
-        { error: error.userMessage || error.message },
-        { status: 400 }
-      );
-    }
-    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
@@ -211,65 +153,50 @@ export async function DELETE(
   { params }: { params: { id: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
-    
-    if (!session?.user?.id) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseAnon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    if (!supabaseUrl || !supabaseAnon) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    const supabase = createRouteHandlerClient<Database>({ cookies });
+
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Check ownership
-    const recipe = await prisma.recipe.findUnique({
-      where: { id: params.id },
-      select: { userId: true, title: true }
-    });
+    const { data: recipe, error: fetchErr } = await supabase
+      .from('recipes')
+      .select('created_by')
+      .eq('id', params.id)
+      .single();
 
-    if (!recipe) {
+    if (fetchErr || !recipe) {
       return NextResponse.json({ error: 'Recipe not found' }, { status: 404 });
     }
 
-    if (recipe.userId !== session.user.id) {
+    if (recipe.created_by !== user.id) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
 
-    // Delete recipe with transaction (cascade will handle related records)
-    await prisma.$transaction(async (tx) => {
-      // Delete related records first
-      await tx.recipeIngredient.deleteMany({
-        where: { recipeId: params.id }
-      });
+    const { error: delErr } = await supabase
+      .from('recipes')
+      .delete()
+      .eq('id', params.id);
 
-      await tx.recipeInstruction.deleteMany({
-        where: { recipeId: params.id }
-      });
+    if (delErr) {
+      throw new Error(delErr.message);
+    }
 
-      await tx.favoriteRecipe.deleteMany({
-        where: { recipeId: params.id }
-      });
-
-      // Delete the recipe itself
-      await tx.recipe.delete({
-        where: { id: params.id }
-      });
-    });
-
-    // Invalidate cache
-    await enhancedCache.invalidatePattern(`recipe:${params.id}:*`);
-    await enhancedCache.invalidatePattern(`recipe:list:*`);
+    await simpleCache.invalidatePattern(`recipe:${params.id}:*`);
+    await simpleCache.invalidatePattern(`recipe:list:*`);
 
     return NextResponse.json({ 
       success: true,
       message: 'Recipe deleted successfully' 
     });
-  } catch (error: unknown) {
+  } catch (error: any) {
     console.error('Error deleting recipe:', error);
-    
-    if (error instanceof MealPlanningError) {
-      return NextResponse.json(
-        { error: error.userMessage || error.message },
-        { status: 400 }
-      );
-    }
-    
     return NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }

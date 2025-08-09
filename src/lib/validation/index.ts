@@ -9,8 +9,8 @@ export * from './schemas';
 // Middleware utilities
 export * from './middleware';
 
-// Client-side validation
-export * from './client';
+// Client-side validation (disabled in stabilization phase)
+// export * from './client';
 
 // Common validation utilities
 export const ValidationUtils = {
